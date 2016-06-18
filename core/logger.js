@@ -35,7 +35,8 @@ if (process.env.NODE_ENV === 'production') {
 			timestamp: true,
 			json: false,
 			prettyPrint: true,
-			handleExceptions: process.env.NODE_ENV === 'production'
+			handleExceptions: process.env.NODE_ENV === 'production',
+			humanReadableUnhandledException: true
 		})
 	)	
 }

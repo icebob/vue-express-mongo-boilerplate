@@ -1,0 +1,18 @@
+extends layout
+
+block content
+	.container
+		.row
+			.col-sm-6.col-sm-offset-3
+				br
+				legend Login
+				form(action="/auth/local", method="POST")
+					input(type="hidden", name="_csrf" value="#{_csrf}")
+					.form-group
+						label(for="username") Username
+						input.form-control(type="text", name="username" id="username", autofocus)
+					.form-group
+						label(for="password") Password
+						input.form-control(type="password", name="password" id="password")
+					.form-group
+						button.btn.btn-primary(type="submit") Login

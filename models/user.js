@@ -5,13 +5,16 @@ let logger    		= require('../core/logger');
 let fs 				= require("fs");
 let path 			= require("path");
 
+let crypto 			= require('crypto');
+let bcrypt 			= require('bcrypt-nodejs');
+
 let db	    		= require('../core/mongo');
 let mongoose 		= require("mongoose");
 let Schema 			= mongoose.Schema;
 let hashids 		= require("../libs/hashids");
 let autoIncrement 	= require('mongoose-auto-increment');
 
-var schemaOptions = {
+let schemaOptions = {
 	timestamps: true,
 	toObject: {
 		virtuals: true
@@ -21,21 +24,74 @@ var schemaOptions = {
 	}
 };
 
+let validateLocalStrategyProperty = function(property) {
+  return (this.provider !== "local" && !this.updated) || property.length;
+};
+
+let validateLocalStrategyPassword = function(password) {
+  return this.provider !== "local" || (password && password.length >= 6);
+};
+
 let UserSchema = new Schema({
-	name: String,
-	email: { type: String, unique: true},
-	password: String,
-	passwordResetToken: String,
-	passwordResetExpires: Date,
-	gender: String,
-	location: String,
-	website: String,
-	picture: String,
-	facebook: String,
-	twitter: String,
-	google: String,
-	vk: String,	
-	metaData: {}
+  fullName: {
+    type: String,
+    trim: true,
+    "default": "",
+    validate: [validateLocalStrategyProperty, "Please fill in your full name"]
+  },
+  displayName: {
+    type: String,
+    trim: true
+  },
+  email: {
+    type: String,
+    trim: true,
+    unique: true,
+    lowercase: true,
+    "default": "",
+    validate: [validateLocalStrategyProperty, "Please fill in your email"],
+    match: [/.+\@.+\..+/, "Please fill a valid email address"]
+  },
+  username: {
+    type: String,
+    unique: true,
+    required: "Please fill in a username",
+    trim: true
+  },
+  password: {
+    type: String,
+    "default": "",
+    validate: [validateLocalStrategyPassword, "Password should be longer"]
+  },
+  salt: {
+    type: String
+  },
+  provider: {
+    type: String,
+    "default": "local"
+  },
+  providerData: {},
+  additionalProvidersData: {},
+  roles: {
+    type: [
+      {
+        type: String,
+        "enum": ["admin", "user", "guest"]
+      }
+    ],
+    "default": ["user"]
+  },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
+  updated: {
+    type: Date
+  },
+  created: {
+    type: Date,
+    "default": Date.now
+  },
+  metadata: {}
+
 }, schemaOptions);
 
 UserSchema.virtual("code").get(function() {

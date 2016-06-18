@@ -30,7 +30,7 @@ module.exports = function() {
 			logger.info();
 
 			if (process.env.NODE_ENV === 'development') {
-				//require("./seed")();
+				require("./seed")();
 			}
 		});
 

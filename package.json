@@ -23,6 +23,7 @@
   "dependencies": {
     "agenda": "0.8.1",
     "async": "2.0.0-rc.1",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "1.15.1",
     "clui": "0.3.1",
     "compression": "1.6.2",
