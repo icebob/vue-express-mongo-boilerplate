@@ -1,0 +1,17 @@
+doctype html
+html
+	head
+		title #{title}
+		include head
+	body
+		include ga	
+
+		block content
+			
+		block scripts
+
+		.footer
+			hr
+			p.copyright &copy; 2016 - #{app.title} v#{app.version}
+			p &nbsp;
+			p.description #{app.description}

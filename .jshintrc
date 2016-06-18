@@ -1,0 +1,8 @@
+{
+	"node": true,
+	"sub": true,
+	"globals": {
+		"require": true,
+		"module": true
+	}
+}
