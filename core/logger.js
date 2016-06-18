@@ -13,15 +13,17 @@ if (!fs.existsSync(logDir)) {
 	});
 }
 
-let logger = new winston.Logger({
-	level: "debug",
-	transports: [
-		new winston.transports.Console({
-			level: "debug",
-			colorize: true,
-			prettyPrint: true,
-			handleExceptions: process.env.NODE_ENV === 'production'
-		}), new (require('winston-daily-rotate-file'))({
+let	transports = [
+	new winston.transports.Console({
+		level: "debug",
+		colorize: true,
+		prettyPrint: true,
+		handleExceptions: process.env.NODE_ENV === 'production'
+	})
+];
+
+if (process.env.NODE_ENV === 'production') {
+		transports.push(new (require('winston-daily-rotate-file'))({
 			filename: path.join(logDir, "server.log"),
 			level: "info",
 			timestamp: true,
@@ -35,7 +37,12 @@ let logger = new winston.Logger({
 			prettyPrint: true,
 			handleExceptions: process.env.NODE_ENV === 'production'
 		})
-	],
+	)	
+}
+
+let logger = new winston.Logger({
+	level: "debug",
+	transports: transports,
 	exitOnError: false
 });
 
