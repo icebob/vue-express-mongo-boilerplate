@@ -9,8 +9,9 @@ logger.info("---------------------[ Server starting at %s ]---------------------
 
 let init		= require("./core/init");
 let db 			= require('./core/mongo')();
-let app 		= require('./core/express')();
+let app 		= require('./core/express')(db);
 let agenda 		= require('./core/agenda');
+let passport	= require('./core/passport/index')()
 
 require("./libs/gracefulExit");
 

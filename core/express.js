@@ -2,6 +2,7 @@
 
 let logger = require('./logger');
 let config = require("../config");
+let secrets = require("./secrets");
 
 let express = require("express");
 let http = require("http");
@@ -10,15 +11,21 @@ let path = require('path');
 let favicon = require('serve-favicon');
 let morgan = require('morgan');
 let bodyParser = require('body-parser');
-//let csrf = require('csurf');
+let cookieParser = require('cookie-parser');
+let csrf = require('csurf');
+
+let passport = require("passport");
+let session = require("express-session");
 let compress = require("compression");
 let methodOverride = require("method-override");
 let helmet = require("helmet");
 let crossdomain = require('helmet-crossdomain');
 let mongoose = require("mongoose");
+let MongoStore = require("connect-mongo")(session);
 
 let stream = require('stream');
 let lmStream = new stream.Stream();
+
 lmStream.writable = true;
 lmStream.write = function(data) {
 	return logger.debug(data);
@@ -51,6 +58,7 @@ module.exports = function(db) {
 
 	// Set view folder
 	app.set("views", path.join(config.rootPath, "views"));
+	app.set("view engine", "jade");
 
 	// Environment dependent middleware
 	if (config.isDevMode()) {
@@ -69,8 +77,6 @@ module.exports = function(db) {
 		app.locals.cache = 'memory';
 		app.set('view cache', true);
 	}
-
-	app.set("view engine", "jade");
 
 	app.use(bodyParser.urlencoded({
 		extended: true,
@@ -92,6 +98,27 @@ module.exports = function(db) {
 	app.use(express["static"](path.join(config.rootPath, "public")));
 	//app.use(favicon(path.join(config.rootPath, "public", "img", "favicon.ico")));
 
+	// Cookie parser should be above session
+	app.use(cookieParser());
+
+	// Express MongoDB session storage
+	app.use(session({
+		saveUninitialized: true,
+		resave: true,
+		secret: secrets.sessionSecret,
+		store: new MongoStore({
+			mongooseConnection: db.connection,
+			collection: config.sessionCollection,
+			autoReconnect: true
+		}),
+		cookie: config.sessionCookie,
+		name: config.sessionName
+	}));
+
+	// Use passport session
+	app.use(passport.initialize());
+	app.use(passport.session());	
+	
 /*
 	if (!config.isTestMode()) {
 		// Handle CSRF

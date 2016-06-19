@@ -25,72 +25,72 @@ let schemaOptions = {
 };
 
 let validateLocalStrategyProperty = function(property) {
-  return (this.provider !== "local" && !this.updated) || property.length;
+	return (this.provider !== "local" && !this.updated) || property.length;
 };
 
 let validateLocalStrategyPassword = function(password) {
-  return this.provider !== "local" || (password && password.length >= 6);
+	return this.provider !== "local" || (password && password.length >= 6);
 };
 
 let UserSchema = new Schema({
-  fullName: {
-    type: String,
-    trim: true,
-    "default": "",
-    validate: [validateLocalStrategyProperty, "Please fill in your full name"]
-  },
-  displayName: {
-    type: String,
-    trim: true
-  },
-  email: {
-    type: String,
-    trim: true,
-    unique: true,
-    lowercase: true,
-    "default": "",
-    validate: [validateLocalStrategyProperty, "Please fill in your email"],
-    match: [/.+\@.+\..+/, "Please fill a valid email address"]
-  },
-  username: {
-    type: String,
-    unique: true,
-    required: "Please fill in a username",
-    trim: true
-  },
-  password: {
-    type: String,
-    "default": "",
-    validate: [validateLocalStrategyPassword, "Password should be longer"]
-  },
-  salt: {
-    type: String
-  },
-  provider: {
-    type: String,
-    "default": "local"
-  },
-  providerData: {},
-  additionalProvidersData: {},
-  roles: {
-    type: [
-      {
-        type: String,
-        "enum": ["admin", "user", "guest"]
-      }
-    ],
-    "default": ["user"]
-  },
-  resetPasswordToken: String,
-  resetPasswordExpires: Date,
-  updated: {
-    type: Date
-  },
-  created: {
-    type: Date,
-    "default": Date.now
-  },
-  metadata: {}
+	fullName: {
+		type: String,
+		trim: true,
+		"default": "",
+		validate: [validateLocalStrategyProperty, "Please fill in your full name"]
+	},
+	displayName: {
+		type: String,
+		trim: true
+	},
+	email: {
+		type: String,
+		trim: true,
+		unique: true,
+		lowercase: true,
+		"default": "",
+		validate: [validateLocalStrategyProperty, "Please fill in your email"],
+		match: [/.+\@.+\..+/, "Please fill a valid email address"]
+	},
+	username: {
+		type: String,
+		unique: true,
+		required: "Please fill in a username",
+		trim: true
+	},
+	password: {
+		type: String,
+		"default": "",
+		validate: [validateLocalStrategyPassword, "Password should be longer"]
+	},
+	salt: {
+		type: String
+	},
+	provider: {
+		type: String,
+		"default": "local"
+	},
+	providerData: {},
+	additionalProvidersData: {},
+	roles: {
+		type: [
+			{
+				type: String,
+				"enum": ["admin", "user", "guest"]
+			}
+		],
+		"default": ["user"]
+	},
+	resetPasswordToken: String,
+	resetPasswordExpires: Date,
+	updated: {
+		type: Date
+	},
+	created: {
+		type: Date,
+		"default": Date.now
+	},
+	metadata: {}
 
 }, schemaOptions);
 

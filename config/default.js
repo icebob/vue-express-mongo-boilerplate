@@ -6,33 +6,55 @@ let pkg = require("../package.json");
 let rootPath = path.normalize(path.join(__dirname, ".."));
 
 module.exports = {
-  app: {
-    title: pkg.name,
-    version: pkg.version,
-    description: pkg.description,
-    keywords: pkg.keywords.join(","),
-    url: 'http://localhost:3000/',
-  },
+	app: {
+		title: pkg.name,
+		version: pkg.version,
+		description: pkg.description,
+		keywords: pkg.keywords.join(","),
+		url: 'http://localhost:3000/',
+		googleAnalyticsID: 'UA-xxxxx-x'
+	},
 
-  ip: '0.0.0.0',
-  port: process.env.PORT || 3000,
-  rootPath: rootPath,
-  dataFolder: path.join(rootPath, "data"),
-  contentMaxLength: 2 * 1024 * 1024, // 2MB
+	ip: '0.0.0.0',
+	port: process.env.PORT || 3000,
+	rootPath: rootPath,
+	dataFolder: path.join(rootPath, "data"),
+	uploadLimit: 2 * 1024 * 1024, // 2MB
 
-  test: false,
+	sessionCookie: {
+		// session expiration is set by default to 24 hours
+		maxAge: 24 * (60 * 60 * 1000),
 
-  db: {
-  	uri: process.env.MONGO_URI || "mongodb://localhost/" + pkg.config.dbName + "-dev",
-    options: {
-      user: '',
-      pass: '',
-      server: {
-        socketOptions: {
-          keepAlive: 1
-        }
-      }
-    }
+		// httpOnly flag makes sure the cookie is only accessed
+		// through the HTTP protocol and not JS/browser
+		httpOnly: true,
 
-  }
+		// secure cookie should be turned to true to provide additional
+		// layer of security so that the cookie is set only when working
+		// in HTTPS mode.
+		secure: false
+	},
+
+	sessionKey: 'sessionId',
+	sessionCollection: 'sessions',	
+
+	test: false,
+
+	mailer: {
+		from: "noreply@bolierplate-app.com"
+	},
+
+	db: {
+		uri: process.env.MONGO_URI || "mongodb://localhost/" + pkg.config.dbName + "-dev",
+		options: {
+			user: '',
+			pass: '',
+			server: {
+				socketOptions: {
+					keepAlive: 1
+				}
+			}
+		}
+
+	}
 };
