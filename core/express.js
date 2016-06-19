@@ -15,7 +15,6 @@ let bodyParser 		= require('body-parser');
 let cookieParser	= require('cookie-parser');
 let csrf 			= require('csurf');
 
-let passport 		= require("passport");
 let session 		= require("express-session");
 let compress 		= require("compression");
 let methodOverride 	= require("method-override");
@@ -118,10 +117,8 @@ module.exports = function(db) {
 
 	app.use(flash());
 
-	// Use passport session
-	app.use(passport.initialize());
-	app.use(passport.session());	
-	
+	// Init auth
+	require('./auth/passport')(app);
 
 	if (!config.isTestMode()) {
 		// Handle CSRF

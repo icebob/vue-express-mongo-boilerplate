@@ -8,7 +8,11 @@ let path = require('path');
 
 let User = require('../../models/user');
 
-module.exports = function() {
+module.exports = function(app) {
+
+	// Use passport session
+	app.use(passport.initialize());
+	app.use(passport.session());	
 
 	passport.serializeUser(function(user, done) {
 		return done(null, user.id);

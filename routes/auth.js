@@ -2,7 +2,6 @@
 
 let config 	= require("../config");
 let logger 	= require('../core/logger');
-let auth = require("../core/auth");
 
 let passport = require('passport');
 let express = require("express");
