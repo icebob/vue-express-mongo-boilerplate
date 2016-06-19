@@ -108,14 +108,15 @@ module.exports = function(db) {
 		secret: secrets.sessionSecret,
 		store: new MongoStore({
 			mongooseConnection: db.connection,
-			collection: config.sessionCollection,
+			collection: config.sessions.collection,
 			autoReconnect: true
 		}),
-		cookie: config.sessionCookie,
-		name: config.sessionName
+		cookie: config.sessions.cookie,
+		name: config.sessions.name
 	}));
 
 	app.use(flash());
+	
 
 	// Init auth
 	require('./auth/passport')(app);
