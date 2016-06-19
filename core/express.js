@@ -1,27 +1,28 @@
 "use strict";
 
-let logger = require('./logger');
-let config = require("../config");
-let secrets = require("./secrets");
+let logger 			= require('./logger');
+let config 			= require("../config");
+let secrets 		= require("./secrets");
 
-let express = require("express");
-let http = require("http");
-let path = require('path');
+let express 		= require("express");
+let http 			= require("http");
+let path 			= require('path');
 
-let favicon = require('serve-favicon');
-let morgan = require('morgan');
-let bodyParser = require('body-parser');
-let cookieParser = require('cookie-parser');
-let csrf = require('csurf');
+let flash 			= require("express-flash");
+let favicon 		= require('serve-favicon');
+let morgan 			= require('morgan');
+let bodyParser 		= require('body-parser');
+let cookieParser	= require('cookie-parser');
+let csrf 			= require('csurf');
 
-let passport = require("passport");
-let session = require("express-session");
-let compress = require("compression");
-let methodOverride = require("method-override");
-let helmet = require("helmet");
-let crossdomain = require('helmet-crossdomain');
-let mongoose = require("mongoose");
-let MongoStore = require("connect-mongo")(session);
+let passport 		= require("passport");
+let session 		= require("express-session");
+let compress 		= require("compression");
+let methodOverride 	= require("method-override");
+let helmet 			= require("helmet");
+let crossdomain 	= require('helmet-crossdomain');
+let mongoose 		= require("mongoose");
+let MongoStore 		= require("connect-mongo")(session);
 
 let stream = require('stream');
 let lmStream = new stream.Stream();
@@ -115,19 +116,23 @@ module.exports = function(db) {
 		name: config.sessionName
 	}));
 
+	app.use(flash());
+
 	// Use passport session
 	app.use(passport.initialize());
 	app.use(passport.session());	
 	
-/*
+
 	if (!config.isTestMode()) {
 		// Handle CSRF
 		app.use(csrf());
+
+		// Keep user, csrf token and config available
 		app.use(function(req, res, next) {
 			res.locals._csrf = req.csrfToken();
 			return next();
 		});
-	}*/
+	}
 
 	// Load routes
 	require("../routes")(app);

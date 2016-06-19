@@ -10,10 +10,29 @@ let express = require("express");
 let User = require("../models/user");
 
 module.exports = function(app) {
-	let authRouter = express.Router();
+
+	// Login page
+	app.get('/login', function(req, res) {
+		if (req.user != null) {
+			return res.redirect("/");
+		}
+		res.render('login');
+	});
+
+	// Logout
+	app.get('/logout', function(req, res) {
+		req.logout();
+		res.redirect("/");
+	});
+
+	// Sign-up
+	app.get('/signup', function(req, res) {
+		res.render("signup");
+	});	
 
 	// User registration
-	authRouter.post("/signup", function(req, res) {
+	app.post("/signup", function(req, res) {
+
 		let user = new User({
 			fullName: req.body.fullName,
 			email: req.body.email,
@@ -25,31 +44,24 @@ module.exports = function(app) {
 
 		user.save(function(err) {
 			if (err)
-				return res.send(401, err);
+				return res.send(400, err);
 			
 			return res.send(200);
 		});
 	});
-	authRouter.post("/local", function(req, res, next) {
-		passport.authenticate("local", function(err, user, info) {
-			var error;
-			error = err || info;
-			if (error)
-				return res.status(401).json(error);
-			
-			if (!user)
-				return res.status(500).json({
-					message: "Something went wrong!"
-				});
-			
-			req.login(user, function(err) {
-				if (err)
-					return next(err);
-				
-				res.redirect("/");
-			});
 
-		})(req, res, next);
+	let authRouter = express.Router();
+
+	authRouter.post('/local', passport.authenticate('local', { 
+		failureRedirect: '/login',
+		failureFlash: 'Invalid username or password!',
+
+	}), function(req, res) {
+		// Remove sensitive data before login
+		req.user.password = undefined;
+		req.user.salt = undefined;
+
+		res.redirect('/');
 	});
 
 	app.use("/auth", authRouter);

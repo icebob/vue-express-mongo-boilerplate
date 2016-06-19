@@ -16,20 +16,6 @@ module.exports = function(app) {
 			res.render('index');
 	});
 
-	// Login page
-	app.get('/login', function(req, res) {
-		if (req.user != null) {
-			return res.redirect("/");
-		}
-		res.render('login');
-	});
-
-	// Logout
-	app.get('/logout', function(req, res) {
-		req.logout();
-		res.redirect("/");
-	});
-
 	// Handle Auth routes
 	require("./auth")(app);
 

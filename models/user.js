@@ -39,10 +39,6 @@ let UserSchema = new Schema({
 		"default": "",
 		validate: [validateLocalStrategyProperty, "Please fill in your full name"]
 	},
-	displayName: {
-		type: String,
-		trim: true
-	},
 	email: {
 		type: String,
 		trim: true,
