@@ -4,10 +4,8 @@ var webpack = require("webpack");
 // var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
-	cache: true,
-	devtool: 'eval-source-map',
 	entry: {
-		app: ['webpack-hot-middleware/client', "./web/app/main.js"]
+		app: ["./web/app/main.js"]
 		//vendor: glob.sync("./src/vendor/**/*.js")
 	},
 	output: {
@@ -45,11 +43,14 @@ module.exports = {
     	extensions: ['', '.vue', '.js', '.json']
 	},
 	plugins: [
-		new webpack.optimize.OccurenceOrderPlugin(),
-		new webpack.HotModuleReplacementPlugin(),
-		new webpack.NoErrorsPlugin()
-
-		//new ExtractTextPlugin("[name].css")
+		new webpack.DefinePlugin({
+			"process.env": {
+				// This has effect on the react lib size
+				"NODE_ENV": JSON.stringify("production")
+			}
+		}),
+		new webpack.optimize.DedupePlugin(),
+		new webpack.optimize.UglifyJsPlugin()
 	],
 
 	vue: {

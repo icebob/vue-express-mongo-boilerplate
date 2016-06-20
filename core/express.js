@@ -24,7 +24,7 @@ let mongoose 		= require("mongoose");
 let MongoStore 		= require("connect-mongo")(session);
 
 let webpack			= require("webpack");
-let wpConfig		= require("../webpack.config");
+let wpConfig		= require("../webpack.dev.config");
 
 let stream = require('stream');
 let lmStream = new stream.Stream();

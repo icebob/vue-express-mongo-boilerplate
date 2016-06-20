@@ -11,7 +11,7 @@ var gulp = require('gulp'),
 	lr = require('tiny-lr')();
 
 var webpack = require('webpack');
-var webpackConfig = require("./webpack.config.js");	
+//var webpackConfig = require("./webpack.config.js");	
 
 var dirs = {
 	serverFiles: {

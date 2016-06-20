@@ -12,4 +12,3 @@
 * [ ] auth response can be JSON if requested content type is application/json
 
 * [ ] Organize gulp tasks
-* [ ] research webpack-express-hot reload
