@@ -21,7 +21,8 @@ var dirs = {
 			"libs/**/*.js",
 			"models/**/*.js",
 			"routes/**/*.js",
-			"server.js"
+			"server.js",
+			"webpack.config.js"
 		]
 	},
 	clientFiles: {
@@ -36,29 +37,29 @@ gulp.task('default', function() {
 });    
 
 gulp.task('sass', function () {
-	return gulp.src('web/scss/**/*.scss')
-		.pipe($.sass().on('error', $.sass.logError))
-		.pipe($.autoprefixer({
-			browsers: ['last 2 versions']
-		}))
-		.pipe(gulp.dest('public/css'));
+	// return gulp.src('web/scss/**/*.scss')
+	// 	.pipe($.sass().on('error', $.sass.logError))
+	// 	.pipe($.autoprefixer({
+	// 		browsers: ['last 2 versions']
+	// 	}))
+	// 	.pipe(gulp.dest('public/css'));
 });
 
 // Webpack futtatása (fejlesztés közben)
 gulp.task("webpack:dev", function(callback) {
-	// modify some webpack config options
-	var wpDevConfig = Object.create(webpackConfig);
-	wpDevConfig.devtool = "inline-sourcemap";
-	wpDevConfig.debug = true;
+	// // modify some webpack config options
+	// var wpDevConfig = Object.create(webpackConfig);
+	// wpDevConfig.devtool = "inline-sourcemap";
+	// wpDevConfig.debug = true;
 
-	// create a single instance of the compiler to allow caching
-	webpack(wpDevConfig, function(err, stats) {
-		if (err) throw new $.util.PluginError("webpack", err);
-		$.util.log("[webpack:build-dev]", stats.toString({
-			colors: true
-		}));
-		callback();
-	});
+	// // create a single instance of the compiler to allow caching
+	// webpack(wpDevConfig, function(err, stats) {
+	// 	if (err) throw new $.util.PluginError("webpack", err);
+	// 	$.util.log("[webpack:build-dev]", stats.toString({
+	// 		colors: true
+	// 	}));
+	// 	callback();
+	// });
 });
 
 gulp.task("webpack:build", function(callback) {
@@ -94,27 +95,27 @@ function notifyLiveReload(files) {
 	});
 } 
 
-gulp.task("dev", ["sass", "webpack:dev"], function() {
+gulp.task("dev", /*["sass", "webpack:dev"],*/ function() {
 
 	gulp.watch(dirs.serverFiles.watching).on('change', function(file) {
 		nodemon.emit("restart");
 	});
 
-	gulp.watch(dirs.clientFiles.watching).on('change', function(file) {
-		gulp.start("webpack:dev", function() {
-			notifyLiveReload(["/"]);
-		});
-	});
+	// gulp.watch(dirs.clientFiles.watching).on('change', function(file) {
+	// 	gulp.start("webpack:dev", function() {
+	// 		notifyLiveReload(["/"]);
+	// 	});
+	// });
 
-	gulp.watch("views/**/*.jade").on('change', function(file) {
-		notifyLiveReload(["/"]);
-	});
+	// gulp.watch("views/**/*.jade").on('change', function(file) {
+	// 	notifyLiveReload(["/"]);
+	// });
 
-	gulp.watch("web/scss/**/*.scss", function(file) {
-		gulp.start("sass", function() {
-			notifyLiveReload(["style.css"]);
-		});
-	});
+	// gulp.watch("web/scss/**/*.scss", function(file) {
+	// 	gulp.start("sass", function() {
+	// 		notifyLiveReload(["style.css"]);
+	// 	});
+	// });
 
 	// Szerver indítása, újraindítása változás esetén
 	var nodemon = $.nodemon({ script: 'server.js', ext: 'nofile', env: { 'NODE_ENV': 'development' } });

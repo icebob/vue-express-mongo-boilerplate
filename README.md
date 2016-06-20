@@ -9,6 +9,7 @@
 * [ ] Add color console messages with chalk
 * [ ] check page error handling (404, 500)
 * [ ] reorganize views
+* [ ] auth response can be JSON if requested content type is application/json
 
 * [ ] Organize gulp tasks
 * [ ] research webpack-express-hot reload

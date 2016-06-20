@@ -23,6 +23,9 @@ let crossdomain 	= require('helmet-crossdomain');
 let mongoose 		= require("mongoose");
 let MongoStore 		= require("connect-mongo")(session);
 
+let webpack			= require("webpack");
+let wpConfig		= require("../webpack.config");
+
 let stream = require('stream');
 let lmStream = new stream.Stream();
 
@@ -95,8 +98,12 @@ module.exports = function(db) {
 	app.set('etag', true); // other values 'weak', 'strong'
 
 	// Setting up static folder
-	app.use(express["static"](path.join(config.rootPath, "public")));
-	//app.use(favicon(path.join(config.rootPath, "public", "img", "favicon.ico")));
+	if (config.isProductionMode()) {
+		app.use(express["static"](path.join(config.rootPath, "public")));
+	}
+	
+	// Favicon
+	app.use(favicon(path.join(config.rootPath, "public", "favicon.ico")));
 
 	// Cookie parser should be above session
 	app.use(cookieParser());
@@ -130,6 +137,24 @@ module.exports = function(db) {
 			res.locals._csrf = req.csrfToken();
 			return next();
 		});
+	}
+
+	// Webpack middleware in development mode
+	if (config.isDevMode()) {
+		let compiler = webpack(wpConfig);
+		let devMiddleware = require('webpack-dev-middleware'); // eslint-disable-line
+		app.use(devMiddleware(compiler, {
+			noInfo: true,
+			publicPath: wpConfig.output.publicPath,
+			headers: { 'Access-Control-Allow-Origin': '*' },
+			//stats: 'errors-only'
+			stats: {colors: true}
+		}));
+
+		let hotMiddleware = require('webpack-hot-middleware'); // eslint-disable-line
+		app.use(hotMiddleware(compiler, {
+			log: logger.info
+		}));
 	}
 
 	// Load routes

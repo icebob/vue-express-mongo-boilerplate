@@ -5,27 +5,31 @@ var webpack = require("webpack");
 module.exports = {
 	cache: true,
 	entry: {
-		app: "./web/app/main.js"
+		app: ['webpack-hot-middleware/client', "./web/app/main.js"]
 		//vendor: glob.sync("./src/vendor/**/*.js")
 	},
 	output: {
-		path: path.join(__dirname, "public", "scripts"),
-		publicPath: path.join("public", "scripts"),
+		path: path.resolve(__dirname, "public", "scripts"),
+		publicPath: "/scripts/",
 		filename: "[name].js",
 		chunkFilename: "[chunkhash].js"
 	},
 	module: {
 		loaders: [
 			// required to write "require('./style.css')"
-			{ test: /\.css$/,    loader: "style-loader!css-loader" },
+			{ test: /\.css$/,    loader: "style!css" },
+
+			{ test: /\.scss$/, loaders: ["style", "css", "sass"] },		
 
 			{ test: /\.json$/,    loader: "json-loader" },
 
 			// ES6/7 syntax and JSX transpiling out of the box
     		{ test: /\.js$/,	 loader: 'babel', 		exclude: [/node_modules/, /vendor/], query: {
-					presets: ['es2015'],
+					presets: ['es2015', 'stage-0']
 				}	
 			},
+
+			{ test: /\.vue$/,    loader: "vue" },
 
 			// required for bootstrap icons
 			{ test: /\.woff$/,   loader: "url-loader?prefix=font/&limit=5000&mimetype=application/font-woff" },
@@ -36,8 +40,17 @@ module.exports = {
 		]
 	},
 	resolve: {
-		// you can now require('file') instead of require('file.coffee')
     	extensions: ['', '.js', '.json']
 	},
-	plugins: []
+	plugins: [
+		new webpack.optimize.OccurenceOrderPlugin(),
+		new webpack.HotModuleReplacementPlugin(),
+		new webpack.NoErrorsPlugin()
+	],
+
+	vue: {
+		autoprefixer: {
+			browsers: ['last 2 versions']
+		}
+	}	
 };
