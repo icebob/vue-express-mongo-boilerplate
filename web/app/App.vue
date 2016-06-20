@@ -24,7 +24,9 @@
 </script>
 
 <style lang="sass" scoped>
-h1 {
-  color: red;
-}
+	@import "../scss/variables";
+
+	h2 {
+	  color: $masterColor;
+	}
 </style>

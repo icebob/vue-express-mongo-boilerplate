@@ -101,22 +101,6 @@ gulp.task("dev", /*["sass", "webpack:dev"],*/ function() {
 		nodemon.emit("restart");
 	});
 
-	// gulp.watch(dirs.clientFiles.watching).on('change', function(file) {
-	// 	gulp.start("webpack:dev", function() {
-	// 		notifyLiveReload(["/"]);
-	// 	});
-	// });
-
-	// gulp.watch("views/**/*.jade").on('change', function(file) {
-	// 	notifyLiveReload(["/"]);
-	// });
-
-	// gulp.watch("web/scss/**/*.scss", function(file) {
-	// 	gulp.start("sass", function() {
-	// 		notifyLiveReload(["style.css"]);
-	// 	});
-	// });
-
 	// Szerver indítása, újraindítása változás esetén
 	var nodemon = $.nodemon({ script: 'server.js', ext: 'nofile', env: { 'NODE_ENV': 'development' } });
 

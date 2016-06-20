@@ -1,16 +1,18 @@
 var path = require("path");
 var glob = require("glob");
 var webpack = require("webpack");
+// var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
 	cache: true,
+	devtool: 'eval-source-map',
 	entry: {
 		app: ['webpack-hot-middleware/client', "./web/app/main.js"]
 		//vendor: glob.sync("./src/vendor/**/*.js")
 	},
 	output: {
-		path: path.resolve(__dirname, "public", "scripts"),
-		publicPath: "/scripts/",
+		path: path.resolve(__dirname, "public", "app"),
+		publicPath: "/app/",
 		filename: "[name].js",
 		chunkFilename: "[chunkhash].js"
 	},
@@ -19,7 +21,7 @@ module.exports = {
 			// required to write "require('./style.css')"
 			{ test: /\.css$/,    loader: "style!css" },
 
-			{ test: /\.scss$/, loaders: ["style", "css", "sass"] },		
+			{ test: /\.scss$/, loaders: ["style", "css", "sass"] },
 
 			{ test: /\.json$/,    loader: "json-loader" },
 
@@ -40,12 +42,14 @@ module.exports = {
 		]
 	},
 	resolve: {
-    	extensions: ['', '.js', '.json']
+    	extensions: ['', '.vue', '.js', '.json']
 	},
 	plugins: [
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoErrorsPlugin()
+
+		//new ExtractTextPlugin("[name].css")
 	],
 
 	vue: {
