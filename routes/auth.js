@@ -8,7 +8,7 @@ let express = require("express");
 
 let User = require("../models/user");
 
-module.exports = function(app) {
+module.exports = function(app, db) {
 
 	// Login page
 	app.get('/login', function(req, res) {

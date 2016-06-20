@@ -4,7 +4,7 @@ let config 	= require("../config");
 let logger 	= require('../core/logger');
 let path 	= require('path');
 
-module.exports = function(app) {
+module.exports = function(app, db) {
 
 	// Index page
 	app.get('/', function(req, res) {
@@ -17,11 +17,11 @@ module.exports = function(app) {
 	});
 
 	// Handle Auth routes
-	require("./auth")(app);
+	require("./auth")(app, db);
 
 	// Handle User CRUD
-	require("./user")(app);
+	require("./user")(app, db);
 
 	// Handle errors
-	require("./errors")(app);	
+	require("./errors")(app, db);	
 };

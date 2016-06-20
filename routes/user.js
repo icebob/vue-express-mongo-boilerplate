@@ -3,7 +3,7 @@
 let config 		= require("../config");
 let logger 		= require('../core/logger');
 
-module.exports = function(app) {
+module.exports = function(app, db) {
 
 	app.post("/user", function(req, res) {
 

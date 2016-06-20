@@ -133,7 +133,7 @@ module.exports = function(db) {
 	}
 
 	// Load routes
-	require("../routes")(app);
+	require("../routes")(app, db);
 
 	return app;
 };

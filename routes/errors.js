@@ -3,7 +3,7 @@
 let config  = require("../config");
 let logger  = require('../core/logger');
 
-module.exports = function(app) {
+module.exports = function(app, db) {
 
 	if (config.isDevMode()) {
 		app.use(function(err, req, res, next) {

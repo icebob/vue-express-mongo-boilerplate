@@ -10,6 +10,7 @@ module.exports = function() {
 		var admin, test;
 		if (docs.length === 0) {
 			logger.warn("Load default Users to DB...");
+
 			let admin = new User({
 				fullName: "Administrator",
 				email: "admin@boilerplate-app.com",
@@ -31,6 +32,7 @@ module.exports = function() {
 					provider: "local",
 					roles: ["user"]
 				});
+				
 				test.save(function() {
 					if (err) 
 						return logger.warn("Unable to create default admin user!");
