@@ -32,7 +32,7 @@ module.exports = function(app, db) {
 	// User registration
 	app.post("/signup", function(req, res) {
 
-		req.assert("fullName", "Name cannot be empty!").notEmpty();
+		req.assert("name", "Name cannot be empty!").notEmpty();
 		req.assert("email", "Email cannot be empty!").notEmpty();
 		req.assert("email", "Email is not valid!").isEmail();
 		req.assert("username", "Username cannot be empty!").notEmpty();
@@ -46,7 +46,7 @@ module.exports = function(app, db) {
 		}
 
 		let user = new User({
-			fullName: req.body.fullName,
+			fullName: req.body.name,
 			email: req.body.email,
 			username: req.body.username,
 			password: req.body.password,
@@ -58,7 +58,8 @@ module.exports = function(app, db) {
 			if (err)
 				return res.send(400, err);
 			
-			return res.send(200);
+			req.user = user;
+			return res.redirect("/");
 		});
 	});
 

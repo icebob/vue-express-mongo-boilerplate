@@ -43,6 +43,7 @@ let UserSchema = new Schema({
 		type: String,
 		trim: true,
 		unique: true,
+		index: true,
 		lowercase: true,
 		"default": "",
 		validate: [validateLocalStrategyProperty, "Please fill in your email"],
@@ -51,6 +52,7 @@ let UserSchema = new Schema({
 	username: {
 		type: String,
 		unique: true,
+		index: true,
 		required: "Please fill in a username",
 		trim: true
 	},
@@ -79,13 +81,15 @@ let UserSchema = new Schema({
 	},
 	resetPasswordToken: String,
 	resetPasswordExpires: Date,
+	
+	/* Mongoose add createdAt and updatedAt fields automatically
 	updated: {
 		type: Date
 	},
 	created: {
 		type: Date,
 		"default": Date.now
-	},
+	},*/
 	lastLogin: {
 		type: Date
 	},
@@ -104,7 +108,8 @@ UserSchema.plugin(autoIncrement.plugin, {
 
 UserSchema.pre('save', function(next) {
 	var user = this;
-	if (!user.isModified('password')) { return next(); }
+	if (!user.isModified('password')) 
+		return next();
 	
 	bcrypt.genSalt(10, function(err, salt) {
 		bcrypt.hash(user.password, salt, null, function(err, hash) {
