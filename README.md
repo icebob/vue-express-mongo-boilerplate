@@ -3,7 +3,7 @@
 ## TODO ##
 * [x] add maingun or sendgrid as mailer
 * [x] Separator Express config to functions 
-* [ ] Add websocket connection
+* [x] Add websocket connection
 * [x] Add color console messages with chalk
 * [x] check page error handling (404, 500)
 * [x] reorganize views
