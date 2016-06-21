@@ -29,13 +29,13 @@ module.exports = function (app, db) {
 		collection: config.sessions.collection,
 		autoReconnect: true
 	});
-/*
+
 	// Intercept Socket.io's handshake request
 	io.use(function (socket, next) {
 		// Use the 'cookie-parser' module to parse the request cookies
 		cookieParser(secrets.sessionSecret)(socket.request, {}, function (err) {
 			// Get the session id from the request cookies
-			var sessionId = socket.request.signedCookies ? socket.request.signedCookies[config.sessionKey] : undefined;
+			var sessionId = socket.request.signedCookies ? socket.request.signedCookies[config.sessions.name] : undefined;
 
 			if (!sessionId) return next(new Error('sessionId was not found in socket.request'), false);
 
@@ -60,7 +60,7 @@ module.exports = function (app, db) {
 			});
 		});
 	});
-*/
+
 	// Add an event listener to the 'connection' event
 	io.on('connection', function (socket) {
 		logger.info("WS client connected!");
@@ -70,7 +70,7 @@ module.exports = function (app, db) {
 		});
 
 		socket.on("welcome", function(msg) {
-			logger.info("Incoming message:", msg);
+			logger.info("Incoming welcome message from " + socket.request.user.username + ":", msg);
 		})
 		socket.on("inc", function(msg) {
 			logger.info("Increment:", msg);
