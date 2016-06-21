@@ -19,12 +19,16 @@ module.exports = function() {
 				logger.error("Could not connect to MongoDB!");
 				return logger.error(err);
 			}
+
+			mongoose.set('debug', config.isDevMode());
 		});
 
 		mongoose.connection.on('error', function(err) {
 			logger.error("Could not connect to MongoDB!");
 			return logger.error(err);
 		});
+
+		autoIncrement.initialize(db);		
 
 		mongoose.connection.once('open', function() {
 			logger.info(chalk.yellow.bold("Mongo DB connected."));
@@ -35,10 +39,10 @@ module.exports = function() {
 			}
 		});
 
-		autoIncrement.initialize(db);		
 		
 	} else {
 		logger.info("Mongo already connected.");
+		db = mongoose.connection;
 	}
 	
 	return db;

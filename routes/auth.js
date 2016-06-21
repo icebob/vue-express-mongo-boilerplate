@@ -32,6 +32,19 @@ module.exports = function(app, db) {
 	// User registration
 	app.post("/signup", function(req, res) {
 
+		req.assert("fullName", "Name cannot be empty!").notEmpty();
+		req.assert("email", "Email cannot be empty!").notEmpty();
+		req.assert("email", "Email is not valid!").isEmail();
+		req.assert("username", "Username cannot be empty!").notEmpty();
+		req.assert("password", "Password cannot be empty!").notEmpty();
+
+		var errors = req.validationErrors();
+
+		if (errors) {
+			req.flash('error', errors);
+			return res.redirect('/signup');
+		}
+
 		let user = new User({
 			fullName: req.body.fullName,
 			email: req.body.email,
@@ -56,11 +69,15 @@ module.exports = function(app, db) {
 		failureFlash: 'Invalid username or password!',
 
 	}), function(req, res) {
-		// Remove sensitive data before login
-		req.user.password = undefined;
-		req.user.salt = undefined;
+		// Update user's record with login time
+		req.user.lastLogin = Date.now();
+		req.user.save(function() {
+			// Remove sensitive data before login
+			req.user.password = undefined;
+			req.user.salt = undefined;
+			res.redirect('/');
+		});
 
-		res.redirect('/');
 	});
 
 	app.use("/auth", authRouter);

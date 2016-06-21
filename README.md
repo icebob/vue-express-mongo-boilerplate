@@ -4,8 +4,8 @@
 * [x] add maingun or sendgrid as mailer
 * [x] Separator Express config to functions 
 * [ ] Add websocket connection
-* [ ] Add color console messages with chalk
-* [ ] check page error handling (404, 500)
+* [x] Add color console messages with chalk
+* [x] check page error handling (404, 500)
 * [x] reorganize views
 
 * [ ] auth response can be JSON if requested content type is application/json

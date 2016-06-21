@@ -13,6 +13,7 @@ let favicon 		= require('serve-favicon');
 let morgan 			= require('morgan');
 let bodyParser 		= require('body-parser');
 let cookieParser	= require('cookie-parser');
+let expressValidator= require('express-validator');
 let csrf 			= require('csurf');
 
 let session 		= require("express-session");
@@ -54,6 +55,7 @@ function initMiddleware(app) {
 		extended: true,
 		limit: config.contentMaxLength * 2
 	}));
+	app.use(expressValidator());
 	app.use(bodyParser.json());	
 	app.use(methodOverride());
 
@@ -100,6 +102,10 @@ function initViewEngine(app) {
 		// Disable views cache
 		app.set('view cache', false);
 		app.use(helmet.noCache());
+
+		// Jade options: Don't minify html, debug intrumentation
+		app.locals.pretty = true;
+  		//app.locals.compileDebug = true;
 
 	} else {
 		app.locals.cache = 'memory';

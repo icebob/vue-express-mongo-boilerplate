@@ -86,6 +86,9 @@ let UserSchema = new Schema({
 		type: Date,
 		"default": Date.now
 	},
+	lastLogin: {
+		type: Date
+	},
 	metadata: {}
 
 }, schemaOptions);

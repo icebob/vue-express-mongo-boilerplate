@@ -11,3 +11,10 @@ if (!fs.existsSync(config.dataFolder)) {
 			throw err;
 	});
 }
+
+// Show config in dev mode
+if (config.isDevMode()) {
+	logger.info("Loaded configuration:");
+	logger.info(config);
+	logger.info();
+}

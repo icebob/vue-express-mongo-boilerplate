@@ -56,5 +56,3 @@ else if (module.exports.isProductionMode()) {
 
 module.exports = _.defaultsDeep(module.exports, config, require('./default'));
 
-if (module.exports.isDevMode())
-	logger.info(module.exports);
