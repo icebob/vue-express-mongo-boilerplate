@@ -46,7 +46,41 @@ module.exports = {
 	test: false,
 
 	mailer: {
-		from: "noreply@bolierplate-app.com"
+		from: "noreply@bolierplate-app.com",
+
+		transport: "smtp",
+		smtp: {
+			host: "mailtrap.io",
+			port: 2525,
+			auth: {
+				user: "367335eaa82697636",
+				pass: "e5a76af9b056d0"
+			}
+		}
+
+		/*transport: "smtp",
+		smtp: {
+			host: "smtp.gmail.com",
+			port: 465,
+			secure: true,
+			auth: {
+				user: "",
+				pass: ""
+			}
+		}*/
+
+		/*
+		transport: "mailgun",
+		mailgun: {
+			apiKey: '',
+			domain: ''
+		}*/
+
+		/*
+		transport: "sendgrid",
+		sendgrid: {
+			apiKey: ""
+		}*/
 	},
 
 	db: {
