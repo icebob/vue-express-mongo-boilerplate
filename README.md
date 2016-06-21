@@ -1,14 +1,15 @@
 # express-mongo-boilerplate #
 
 ## TODO ##
-* [ ] add maingun or sendgrid as mailer
-* [ ] Auth furher functions (forgot, reset)
-* [ ] Passwordless account mode
-* [ ] Separator Express config to functions 
+* [x] add maingun or sendgrid as mailer
+* [x] Separator Express config to functions 
 * [ ] Add websocket connection
 * [ ] Add color console messages with chalk
 * [ ] check page error handling (404, 500)
-* [ ] reorganize views
+* [x] reorganize views
+
 * [ ] auth response can be JSON if requested content type is application/json
+* [ ] Auth furher functions (forgot, reset)
+* [ ] Passwordless account mode
 
 * [ ] Organize gulp tasks

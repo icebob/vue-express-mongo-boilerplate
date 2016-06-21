@@ -3,6 +3,7 @@
 let logger 			= require('./logger');
 let config 			= require("../config");
 
+let chalk 			= require("chalk");
 let mongoose 		= require("mongoose");
 let autoIncrement 	= require('mongoose-auto-increment');
 
@@ -26,7 +27,7 @@ module.exports = function() {
 		});
 
 		mongoose.connection.once('open', function() {
-			logger.info("\x1b[33;1mMongo DB connected.\x1b[22;39m");
+			logger.info(chalk.yellow.bold("Mongo DB connected."));
 			logger.info();
 
 			if (process.env.NODE_ENV === 'development') {
