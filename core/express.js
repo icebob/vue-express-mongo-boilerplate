@@ -203,5 +203,8 @@ module.exports = function(db) {
 	// Load routes
 	require("../routes")(app, db);
 
+	// Load socket.io server
+	app = require('./socket.io')(app, db);
+
 	return app;
 };

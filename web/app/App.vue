@@ -18,6 +18,7 @@
 		methods: {
 			inc() {
 				this.count += 1;
+				window.socket.emit("inc", this.count);
 			}
 		}
 	}

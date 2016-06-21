@@ -7,6 +7,7 @@
 * [x] Add color console messages with chalk
 * [x] check page error handling (404, 500)
 * [x] reorganize views
+* [ ] jade layouts to HTML mail messages
 
 * [ ] auth response can be JSON if requested content type is application/json
 * [ ] Auth furher functions (forgot, reset)

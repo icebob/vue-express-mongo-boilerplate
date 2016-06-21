@@ -11,3 +11,11 @@ new Vue({
   el: 'body',
   components: { App }
 })
+
+var socket = io();
+socket.on("connect", function() {
+	console.log("WS connected!", socket);
+
+	socket.emit("welcome", "Hi I'm here!");
+});
+window.socket = socket;
