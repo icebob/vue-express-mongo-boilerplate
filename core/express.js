@@ -26,14 +26,6 @@ let MongoStore 		= require("connect-mongo")(session);
 let webpack			= require("webpack");
 let wpConfig		= require("../webpack.dev.config");
 
-let stream = require('stream');
-let lmStream = new stream.Stream();
-
-lmStream.writable = true;
-lmStream.write = function(data) {
-	return logger.debug(data);
-};
-
 function initLocalVariables(app) {
 	// Setting application local variables
 	app.locals.app = config.app;
@@ -79,6 +71,21 @@ function initMiddleware(app) {
 	app.set('etag', true); // other values 'weak', 'strong'
 
 	app.use(flash());	
+
+	if (config.isDevMode()) {
+		// Init morgan
+		let stream = require('stream');
+		let lmStream = new stream.Stream();
+
+		lmStream.writable = true;
+		lmStream.write = function(data) {
+			return logger.debug(data);
+		};	
+
+		app.use(morgan("dev", {
+			stream: lmStream
+		}));
+	}
 }
 
 function initViewEngine(app) {
@@ -89,11 +96,6 @@ function initViewEngine(app) {
 	// Environment dependent middleware
 	if (config.isDevMode()) {
 		app.set('showStackError', true);
-
-		// Development logging
-		app.use(morgan("dev", {
-			stream: lmStream
-		}));
 
 		// Disable views cache
 		app.set('view cache', false);
