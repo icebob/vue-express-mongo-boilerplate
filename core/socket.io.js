@@ -20,6 +20,7 @@ module.exports = function (app, db) {
 	// Create a new HTTP server
 	let server = http.createServer(app);
 
+	debugger;
 	// Create a new Socket.io server
 	var io = socketio(server);
 
@@ -37,7 +38,10 @@ module.exports = function (app, db) {
 			// Get the session id from the request cookies
 			var sessionId = socket.request.signedCookies ? socket.request.signedCookies[config.sessions.name] : undefined;
 
-			if (!sessionId) return next(new Error('sessionId was not found in socket.request'), false);
+			if (!sessionId) {
+				logger.warn('sessionId was not found in socket.request');
+				return next(new Error('sessionId was not found in socket.request'), false);
+			}
 
 			// Use the mongoStorage instance to get the Express session information
 			mongoStore.get(sessionId, function (err, session) {
@@ -53,6 +57,7 @@ module.exports = function (app, db) {
 						if (socket.request.user) {
 							next(null, true);
 						} else {
+							logger.warn('Websocket user is not authenticated!');
 							next(new Error('User is not authenticated'), false);
 						}
 					});

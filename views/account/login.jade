@@ -1,4 +1,4 @@
-extends layout
+extends ../layout
 
 block content
 	.container
@@ -7,18 +7,25 @@ block content
 				br
 				legend Login
 				form(action="/auth/local", method="POST")
-					input(type="hidden", name="_csrf" value="#{_csrf}")
+					input(type="hidden", name="_csrf" value=_csrf)
 					.form-group
 						label(for="username") Username
 						input.form-control(type="text", name="username" id="username", autofocus)
 					.form-group
 						label(for="password") Password
 						input.form-control(type="password", name="password" id="password")
+					p
+						a(href='/forgot')
+							strong Forgot your password?
 
 					if messages.error
 						.alert.alert-danger
 							for error in messages.error
-								div= error
+								div= error.msg
 
 					.form-group
 						button.btn.btn-primary(type="submit") Login
+
+				p Don't have an account?
+					a(href='/signup')
+						strong  Sign up						

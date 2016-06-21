@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git@github.com:icebob/express-mongo-boilerplate.git"
   },
   "keywords": [
     "boilerplate",
@@ -39,7 +39,6 @@
     "express-flash": "0.0.2",
     "express-session": "1.13.0",
     "express-validator": "2.20.7",
-    "extract-text-webpack-plugin": "1.0.1",
     "glob": "7.0.4",
     "hashids": "1.0.2",
     "helmet": "2.1.1",
@@ -52,6 +51,7 @@
     "mongoose-auto-increment": "5.0.1",
     "morgan": "1.7.0",
     "node-sass": "3.8.0",
+    "nodemailer": "2.4.2",
     "nodemailer-html-to-text": "2.1.0",
     "nodemailer-mailgun-transport": "1.1.0",
     "nodemailer-sendgrid-transport": "0.2.0",

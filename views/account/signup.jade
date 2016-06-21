@@ -1,4 +1,4 @@
-extends layout
+extends ../layout
 
 block content
 	.container
@@ -7,7 +7,7 @@ block content
 				br
 				br
 				form(action='/signup', method='POST')
-					input(type="hidden", name="_csrf" value="#{_csrf}")
+					input(type="hidden", name="_csrf" value=_csrf)
 					legend Sign Up
 					.form-group
 						label.sr-only(for='name') Name:
@@ -27,7 +27,7 @@ block content
 					if messages.error
 						.alert.alert-danger
 							for error in messages.error
-								div= error.msg ? error.msg : error
+								div= error.msg
 
 					.form-group
 						button.btn.btn-success(type='submit')

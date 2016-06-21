@@ -16,6 +16,9 @@ module.exports = function(app, db) {
 			res.render('index');
 	});
 
+	// Handle account routes
+	require("./account")(app, db);
+
 	// Handle Auth routes
 	require("./auth")(app, db);
 
