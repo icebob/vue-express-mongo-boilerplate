@@ -34,11 +34,7 @@ lmStream.write = function(data) {
 	return logger.debug(data);
 };
 
-module.exports = function(db) {
-
-	// Create express app
-	let app = express();
-
+function initLocalVariables(app) {
 	// Setting application local variables
 	app.locals.app = config.app;
 
@@ -47,7 +43,9 @@ module.exports = function(db) {
 		res.locals.url = req.protocol + '://' + req.headers.host + req.url;
 		return next();
 	});
+}
 
+function initMiddleware(app) {
 	// Should be placed before express.static
 	app.use(compress({
 		filter: function(req, res) {
@@ -59,6 +57,31 @@ module.exports = function(db) {
 	// Configure express app
 	app.set('port', config.port);
 
+	// Request body parsing middleware should be above methodOverride
+	app.use(bodyParser.urlencoded({
+		extended: true,
+		limit: config.contentMaxLength * 2
+	}));
+	app.use(bodyParser.json());	
+	app.use(methodOverride());
+
+	// Setting up static folder
+	if (config.isProductionMode()) {
+		app.use(express["static"](path.join(config.rootPath, "public")));
+	}
+
+	// Favicon
+	app.use(favicon(path.join(config.rootPath, "public", "favicon.ico")));
+
+	// Cookie parser should be above session
+	app.use(cookieParser());
+
+	app.set('etag', true); // other values 'weak', 'strong'
+
+	app.use(flash());	
+}
+
+function initViewEngine(app) {
 	// Set view folder
 	app.set("views", path.join(config.rootPath, "views"));
 	app.set("view engine", "jade");
@@ -80,34 +103,9 @@ module.exports = function(db) {
 		app.locals.cache = 'memory';
 		app.set('view cache', true);
 	}
+}
 
-	app.use(bodyParser.urlencoded({
-		extended: true,
-		limit: config.contentMaxLength * 2
-	}));
-	app.use(bodyParser.json());	
-	app.use(methodOverride());
-
-	// Use helmet to secure Express headers
-	app.use(helmet.xssFilter());
-	app.use(helmet.noSniff());
-	app.use(helmet.ieNoOpen());
-	app.use(crossdomain());
-	app.use(helmet.hidePoweredBy());
-
-	app.set('etag', true); // other values 'weak', 'strong'
-
-	// Setting up static folder
-	if (config.isProductionMode()) {
-		app.use(express["static"](path.join(config.rootPath, "public")));
-	}
-	
-	// Favicon
-	app.use(favicon(path.join(config.rootPath, "public", "favicon.ico")));
-
-	// Cookie parser should be above session
-	app.use(cookieParser());
-
+function initSession(app, db) {
 	// Express MongoDB session storage
 	app.use(session({
 		saveUninitialized: true,
@@ -121,10 +119,18 @@ module.exports = function(db) {
 		cookie: config.sessions.cookie,
 		name: config.sessions.name
 	}));
+}
 
-	app.use(flash());
-	
+function initHelmetHeaders(app) {
+	// Use helmet to secure Express headers
+	app.use(helmet.xssFilter());
+	app.use(helmet.noSniff());
+	app.use(helmet.ieNoOpen());
+	app.use(crossdomain());
+	app.use(helmet.hidePoweredBy());
+}
 
+function initAuth(app) {
 	// Init auth
 	require('./auth/passport')(app);
 
@@ -138,7 +144,9 @@ module.exports = function(db) {
 			return next();
 		});
 	}
+}
 
+function initWebpack(app) {
 	// Webpack middleware in development mode
 	if (config.isDevMode()) {
 		let compiler = webpack(wpConfig);
@@ -156,6 +164,33 @@ module.exports = function(db) {
 			log: logger.info
 		}));
 	}
+}
+
+module.exports = function(db) {
+
+	// Create express app
+	let app = express();
+
+	// Init local variables
+	initLocalVariables(app);
+
+	// Init middlewares
+	initMiddleware(app);
+
+	// Init view engine
+	initViewEngine(app);
+
+	// Init Helmet security headers
+	initHelmetHeaders(app);
+
+	// Init session handler
+	initSession(app, db);
+
+	// Init auth and CSRF module
+	initAuth(app);
+
+	// Init webpack devserver & hot reload module
+	initWebpack(app);
 
 	// Load routes
 	require("../routes")(app, db);
