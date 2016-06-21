@@ -66,7 +66,7 @@ module.exports = function(app, db) {
 			req.login(user, function(err) {
 				if (err)
 					return res.send(400, err);
-				
+
 				res.redirect("/");
 			});
 		});
@@ -117,18 +117,29 @@ module.exports = function(app, db) {
 
 			function sendResetEmailToUser(token, user, done) {
 				let subject = '✔ Reset your password on ' + config.app.title;
-				let body =  'You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n' +
-							'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-							'http://' + req.headers.host + '/reset/' + token + '\n\n' +
-							'If you did not request this, please ignore this email and your password will remain unchanged.\n';
 
-				mailer.send(user.email, subject, body, function(err, info) {
-					if (err)
-						req.flash("error", { msg: "Unable to send email to " + user.email});
-					else
-						req.flash("info", { msg: "An email has been sent to " + user.email + " with further instructions."});
+				res.render('mail/passwordReset', {
+					name: user.fullName,
+					resetLink: 'http://' + req.headers.host + '/reset/' + token
+				}, function(err, html) {
+					if (err) {
+						logger.error(err);
+						return res.status(500).send("Server error");
+					}
+					/*
+					let body =  'You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n' +
+								'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+								'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+								'If you did not request this, please ignore this email and your password will remain unchanged.\n';
+					*/
+					mailer.send(user.email, subject, html, function(err, info) {
+						if (err)
+							req.flash("error", { msg: "Unable to send email to " + user.email});
+						else
+							req.flash("info", { msg: "An email has been sent to " + user.email + " with further instructions."});
 
-					res.redirect("/forgot");
+						res.redirect("/forgot");
+					});
 				});
 			}
 

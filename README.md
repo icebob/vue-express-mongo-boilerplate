@@ -10,7 +10,7 @@
 * [ ] jade layouts to HTML mail messages
 
 * [ ] auth response can be JSON if requested content type is application/json
-* [ ] Auth furher functions (forgot, reset)
+* [x] Auth furher functions (forgot, reset)
 * [ ] Passwordless account mode
 
 * [ ] Organize gulp tasks

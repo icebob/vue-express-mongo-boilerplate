@@ -8,6 +8,7 @@ let express 		= require("express");
 let http 			= require("http");
 let path 			= require('path');
 
+let moment 			= require("moment");
 let flash 			= require("express-flash");
 let favicon 		= require('serve-favicon');
 let morgan 			= require('morgan');
@@ -36,6 +37,8 @@ function initLocalVariables(app) {
 		res.locals.url = req.protocol + '://' + req.headers.host + req.url;
 		return next();
 	});
+
+	app.locals.year = moment().format('YYYY');
 }
 
 function initMiddleware(app) {
