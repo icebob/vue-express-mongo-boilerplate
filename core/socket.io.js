@@ -20,7 +20,6 @@ module.exports = function (app, db) {
 	// Create a new HTTP server
 	let server = http.createServer(app);
 
-	debugger;
 	// Create a new Socket.io server
 	var io = socketio(server);
 
@@ -68,7 +67,7 @@ module.exports = function (app, db) {
 
 	// Add an event listener to the 'connection' event
 	io.on('connection', function (socket) {
-		logger.info("WS client connected!");
+		logger.info("WS client connected! User: " + socket.request.user.username);
 
 		socket.on('disconnect', function() {
 			logger.info("WS client disconnected!");

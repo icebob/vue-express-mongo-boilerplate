@@ -1,6 +1,7 @@
 {
   "name": "express-mongo-boilerplate",
   "version": "1.3.0",
+  "title": "Express-Mongo BoilerPlate",
   "description": "Express Mongo NodeJS server boilerplate",
   "main": "server.js",
   "scripts": {

@@ -16,6 +16,7 @@ var webpack = require('webpack');
 var dirs = {
 	serverFiles: {
 		watching: [
+			"applogic/**/*.js",
 			"config/**/*.js",
 			"core/**/*.js",
 			"libs/**/*.js",

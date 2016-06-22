@@ -28,7 +28,10 @@ block content
 						.alert.alert-danger
 							for error in messages.error
 								div= error.msg
-
+					if messages.info
+						.alert.alert-success
+							for info in messages.info
+								div= info.msg
 					.form-group
 						button.btn.btn-success(type='submit')
 							i.fa.fa-check

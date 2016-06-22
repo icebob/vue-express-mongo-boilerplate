@@ -7,7 +7,7 @@ let rootPath = path.normalize(path.join(__dirname, ".."));
 
 module.exports = {
 	app: {
-		title: pkg.name,
+		title: pkg.title,
 		version: pkg.version,
 		description: pkg.description,
 		keywords: pkg.keywords.join(","),
@@ -96,5 +96,7 @@ module.exports = {
 			}
 		}
 
-	}
+	},
+
+	verificationRequired: true
 };

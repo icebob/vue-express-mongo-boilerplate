@@ -10,6 +10,7 @@
 * [ ] jade layouts to HTML mail messages
 
 * [ ] auth response can be JSON if requested content type is application/json
+* [ ] welcome and email verification emails
 * [x] Auth furher functions (forgot, reset)
 * [ ] Passwordless account mode
 

@@ -82,6 +82,15 @@ let UserSchema = new Schema({
 	resetPasswordToken: String,
 	resetPasswordExpires: Date,
 	
+	verified: { 
+		type: Boolean, 
+		default: false 
+	},
+	
+	verifyToken: { 
+		type: String 
+	},
+
 	/* Mongoose add createdAt and updatedAt fields automatically
 	updated: {
 		type: Date

@@ -25,6 +25,9 @@ module.exports = function(app, db) {
 	// Handle User CRUD
 	require("./user")(app, db);
 
+	// Load applogic routes
+	require("../applogic/routes")(app, db);
+
 	// Handle errors
 	require("./errors")(app, db);	
 };

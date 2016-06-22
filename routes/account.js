@@ -50,27 +50,180 @@ module.exports = function(app, db) {
 			return res.redirect('/signup');
 		}
 
-		let user = new User({
-			fullName: req.body.name,
-			email: req.body.email,
-			username: req.body.username,
-			password: req.body.password,
-			roles: ["user"],
-			provider: "local"
-		});
+		async.waterfall([
 
-		user.save(function(err) {
-			if (err)
-				return res.send(400, err);
-			
-			req.login(user, function(err) {
-				if (err)
-					return res.send(400, err);
+			function generateVerificationToken(done) {
+				if (config.verificationRequired) {
+					crypto.randomBytes(25, function(err, buf) {
+						done(err, err ? null : buf.toString("hex"))
+					});
+				} else {
+					done(null, null);
+				}
+			},
 
-				res.redirect("/");
-			});
+			function createUser(token, done) {
+
+				let user = new User({
+					fullName: req.body.name,
+					email: req.body.email,
+					username: req.body.username,
+					password: req.body.password,
+					roles: ["user"],
+					provider: "local"
+				});
+
+				if (token) {
+					user.verified = false;
+					user.verifyToken = token;
+				} else {
+					user.verified = true;
+				}
+
+				user.save(function(err, user) {
+					if (err && err.code === 11000) {
+						req.flash('error', { msg: 'An account with that email address already exists!' });
+					}
+					done(err, user);
+				});
+			},
+
+			function sendEmail(user, done) {
+				if (user.verified) {
+					// Send welcome email
+					let subject = '✔ Welcome to ' + config.app.title + "!";
+
+					res.render('mail/welcome', {
+						name: user.fullName
+					}, function(err, html) {
+						if (err) {
+							return done(err);
+						}
+
+						mailer.send(user.email, subject, html, function(err, info) {
+							if (err)
+								req.flash("error", { msg: "Unable to send email to " + user.email});
+							else
+								req.flash("info", { msg: 'Please check your email to verify your account. Thanks for signing up!'});
+
+							done(null, user);
+						});
+					});	
+
+				} else {
+					// Send verification email
+					let subject = '✔ Activate your new ' + config.app.title + ' account';
+
+					res.render('mail/accountVerify', {
+						name: user.fullName,
+						validateLink: 'http://' + req.headers.host + '/verify/' + user.verifyToken
+					}, function(err, html) {
+						if (err) {
+							return done(err);
+						}
+						mailer.send(user.email, subject, html, function(err, info) {
+							if (err)
+								req.flash("error", { msg: "Unable to send email to " + user.email});
+							else
+								req.flash("info", { msg: 'Please check your email to verify your account. Thanks for signing up!'});
+
+
+							done(err, user);
+						});
+					});					
+				}
+			}
+
+		], function(err, user) {
+			if (err) {
+				logger.error(err);
+				return res.redirect("back");
+			}
+
+			if (user.verified) {
+				req.login(user, function(err) {
+					if (err)
+						return res.send(400, err);
+
+					return res.redirect("/");
+				});
+			}
+			else
+				res.redirect("/signup");
 		});
 	});
+
+
+	// Verify account
+	app.get('/verify/:token', function(req, res) {
+		if (req.isAuthenticated())
+			return res.redirect('/');
+		
+		async.waterfall([
+
+			function checkToken(done) {
+				User			
+					.findOne({ verifyToken: req.params.token })
+					.exec( (err, user) => {
+						if (err) 
+							return done(err);
+
+						if (!user) {
+							req.flash('error', { msg: 'Your account verification is invalid or expired.' });
+							return done("Verification is invalid!");
+						}
+
+						user.verified = true;
+						user.verifyToken = undefined;
+						user.lastLogin = Date.now();
+
+						user.save(function(err) {
+							if (err) {
+								req.flash('error', { msg: 'Unable to modify your account!' });
+								return done(err);
+							}
+
+							done(null, user);
+						});
+					});			
+			},
+
+			function sendWelcomeEmailToUser(user, done) {
+				let subject = '✔ Welcome to ' + config.app.title + "!";
+
+				res.render('mail/welcome', {
+					name: user.fullName
+				}, function(err, html) {
+					if (err) {
+						return done(err);
+					}
+
+					mailer.send(user.email, subject, html, function(err, info) {
+						if (err)
+							req.flash("error", { msg: "Unable to send email to " + user.email});
+						else
+							req.flash("info", { msg: 'Please check your email to verify your account. Thanks for signing up!'});
+
+						done(null, user);
+					});
+				});	
+			},
+
+			function loginUser(user, done) {
+				req.login(user, function(err) {
+					done(err, user);
+				});				
+			}
+
+		], function(err) {
+			if (err) {
+				logger.error(err);
+				return res.redirect("/signup");
+			}
+
+			res.redirect("/");
+		});
+	});	
 
 	// Forgot password
 	app.get('/forgot', function(req, res) {
@@ -95,7 +248,7 @@ module.exports = function(app, db) {
 		async.waterfall([
 
 			function generateToken(done) {
-				crypto.randomBytes(16, function(err, buf) {
+				crypto.randomBytes(25, function(err, buf) {
 					done(err, err ? null : buf.toString("hex"))
 				});
 			},
@@ -145,6 +298,8 @@ module.exports = function(app, db) {
 
 		]);
 	});	
+
+
 
 	// Reset password
 	app.get('/reset/:token', function(req, res) {
@@ -196,6 +351,7 @@ module.exports = function(app, db) {
 						user.password = req.body.password;
 						user.resetPasswordToken = undefined;
 						user.resetPasswordExpires = undefined;
+						user.lastLogin = Date.now();
 
 						user.save(function(err) {
 							if (err) 
