@@ -14,14 +14,18 @@ block content
 					.form-group
 						label(for="password") Password
 						input.form-control(type="password", name="password" id="password")
+						#hint If the password is empty, we will send an email with a login link (passwordless login)
 					p
 						a(href='/forgot')
 							strong Forgot your password?
-
 					if messages.error
 						.alert.alert-danger
 							for error in messages.error
 								div= error.msg
+					if messages.info
+						.alert.alert-success
+							for info in messages.info
+								div= info.msg
 
 					.form-group
 						button.btn.btn-primary(type="submit") Login

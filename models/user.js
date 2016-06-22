@@ -61,7 +61,11 @@ let UserSchema = new Schema({
 		"default": "",
 		validate: [validateLocalStrategyPassword, "Password should be longer"]
 	},
-	salt: {
+	passwordLess: {
+		type: Boolean,
+		default: false
+	},
+	passwordLessToken: {
 		type: String
 	},
 	provider: {
@@ -86,7 +90,7 @@ let UserSchema = new Schema({
 		type: Boolean, 
 		default: false 
 	},
-	
+
 	verifyToken: { 
 		type: String 
 	},

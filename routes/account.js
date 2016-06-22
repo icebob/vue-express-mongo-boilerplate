@@ -39,9 +39,15 @@ module.exports = function(app, db) {
 		req.assert("name", "Name cannot be empty!").notEmpty();
 		req.assert("email", "Email cannot be empty!").notEmpty();
 		req.assert("email", "Email is not valid!").isEmail();
-		req.assert("username", "Username cannot be empty!").notEmpty();
-		req.assert("password", "Password cannot be empty!").notEmpty();
 		req.sanitize('email').normalizeEmail({ remove_dots: false });
+
+		req.assert("username", "Username cannot be empty!").notEmpty();
+
+		req.sanitize('passwordless').toBoolean();
+		let passwordless = req.body.passwordless === true;
+		if (!passwordless) {
+			req.assert("password", "Password cannot be empty!").notEmpty();
+		}
 
 		var errors = req.validationErrors();
 
@@ -62,13 +68,24 @@ module.exports = function(app, db) {
 				}
 			},
 
-			function createUser(token, done) {
+			function passwordless(token, done) {
+				if (passwordless) {
+					crypto.randomBytes(25, function(err, buf) {
+						logger.info("generated pass: ", buf.toString("hex"));
+						done(err, token, err ? null : buf.toString("hex"));
+					});
+				}
+				else
+					done(null, token, req.body.password);
+			},
+
+			function createUser(token, password, done) {
 
 				let user = new User({
 					fullName: req.body.name,
 					email: req.body.email,
 					username: req.body.username,
-					password: req.body.password,
+					password: password,
 					roles: ["user"],
 					provider: "local"
 				});
@@ -225,6 +242,59 @@ module.exports = function(app, db) {
 		});
 	});	
 
+	// Passwordless login
+	app.get('/passwordless/:token', function(req, res) {
+		if (req.isAuthenticated())
+			return res.redirect('/');
+		
+		async.waterfall([
+
+			function checkToken(done) {
+				User			
+					.findOne({ passwordLessToken: req.params.token })
+					.exec( (err, user) => {
+						if (err) 
+							return done(err);
+
+						if (!user) {
+							req.flash('error', { msg: 'Your passwordless token is invalid or expired.' });
+							return done("Token is invalid!");
+						}
+
+						user.passwordLessToken = undefined;
+						if (!user.verified) {
+							user.verified = true;
+							user.verifyToken = undefined;
+						}
+						user.lastLogin = Date.now();
+
+						user.save(function(err) {
+							if (err) {
+								req.flash('error', { msg: 'Unable to modify account details!' });
+								return done(err);
+							}
+
+							done(null, user);
+						});
+					});			
+			},
+
+			function loginUser(user, done) {
+				req.login(user, function(err) {
+					done(err, user);
+				});				
+			}
+
+		], function(err) {
+			if (err) {
+				logger.error(err);
+				return res.redirect("/login");
+			}
+
+			res.redirect("/");
+		});
+	});	
+
 	// Forgot password
 	app.get('/forgot', function(req, res) {
 		if (req.isAuthenticated())
@@ -257,6 +327,7 @@ module.exports = function(app, db) {
 				User.findOne({ email: req.body.email }, function(err, user) {
 					if (!user) {
 						req.flash('error', { msg: 'The email address ' + req.body.email + ' is not associated with any account.' });
+						done();
 						return res.redirect('/forgot');
 					}
 
@@ -277,6 +348,7 @@ module.exports = function(app, db) {
 				}, function(err, html) {
 					if (err) {
 						logger.error(err);
+						done();
 						return res.status(500).send("Server error");
 					}
 					/*

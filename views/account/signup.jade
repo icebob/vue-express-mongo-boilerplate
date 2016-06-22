@@ -18,11 +18,15 @@ block content
 						#hint
 					.form-group
 						label.sr-only(for='username') Username:
-						input.form-control(type='username', name='username', id='username', placeholder='Your username', required)
+						input.form-control(type='text', name='username', id='username', placeholder='Your username', required)
 						#hint
 					.form-group
+						label.sr-only(for='passwordless') Passwordless account
+						input.form-control(type='checkbox', name='passwordless', id='passwordless')
+
+					.form-group
 						label.sr-only(for='password') Password:
-						input.form-control(type='password', name='password', id='password', placeholder='Password', autocomplete='off', required)
+						input.form-control(type='password', name='password', id='password', placeholder='Password', autocomplete='off')
 
 					if messages.error
 						.alert.alert-danger
