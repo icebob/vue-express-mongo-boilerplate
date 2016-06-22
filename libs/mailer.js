@@ -42,9 +42,10 @@ module.exports = {
 			transporter.use('compile', htmlToText());
 			transporter.sendMail(mailOptions, (err, info) => {
 				if (err)
-					return logger.warn("Unable to send email: ", err);
-
-				logger.info("Email message sent.", info.response);
+					logger.warn("Unable to send email: ", err);
+				else
+					logger.info("Email message sent.", info.response);
+				
 				if (cb)
 					cb(err, info);
 			});
