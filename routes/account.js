@@ -420,6 +420,10 @@ module.exports = function(app, db) {
 							return res.redirect('back');
 						}
 
+						// Clear passwordless flag, if the user change password
+						if (user.passwordLess)
+							user.passwordLess = false;
+
 						user.password = req.body.password;
 						user.resetPasswordToken = undefined;
 						user.resetPasswordExpires = undefined;
@@ -437,18 +441,32 @@ module.exports = function(app, db) {
 			},
 
 			function sendPasswordChangeEmailToUser(user, done) {
-				let subject = 'Your password has been changed on ' + config.app.title;
-				let body =  'Hello,\n\nThis is a confirmation that the password for your account ' + user.email + ' has just been changed.\n';
+				let subject = '✔ Your password has been changed on ' + config.app.title;
 
-				mailer.send(user.email, subject, body, function(err, info) {
-					req.flash("info", { msg: "Success! Your password has been changed."});
-					done();
+				res.render('mail/passwordChange', {
+					name: user.fullName
+				}, function(err, html) {
+					if (err) {
+						logger.error(err);
+						done();
+						return res.status(500).send("Server error");
+					}
+					mailer.send(user.email, subject, html, function(err, info) {
+						if (err)
+							req.flash("error", { msg: "Unable to send email to " + user.email});
+						else
+							req.flash("info", { msg: "Success! Your password has been changed."});
+
+						done();
+					});
 				});
 			}
 
 		], function(err) {
-			if (err)
-				return next(err);
+			if (err) {
+				logger.error(err);
+				return res.redirect('back');
+			}
 
 			res.redirect("/");
 		});

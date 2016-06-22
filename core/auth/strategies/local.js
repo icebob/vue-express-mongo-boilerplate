@@ -24,7 +24,13 @@ module.exports = function() {
 				return done(null, false, {
 					message: 'Please activate your account!'
 				});
-			
+
+			console.log(user);
+			if (user.passwordLess)
+				return done(null, false, {
+					message: 'This is a passwordless account! Please leave empty the password field.'
+				});
+
 			user.comparePassword(password, function(err, isMatch) {
 				if (err)
 					return done(err);
