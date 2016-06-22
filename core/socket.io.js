@@ -14,6 +14,7 @@ let	socketio 		= require('socket.io');
 let	session 		= require('express-session');
 let	MongoStore 		= require('connect-mongo')(session);
 
+let socketHandlers  = require('../applogic/socketHandlers');
 // Define the Socket.io configuration method
 module.exports = function (app, db) {
 
@@ -67,18 +68,19 @@ module.exports = function (app, db) {
 
 	// Add an event listener to the 'connection' event
 	io.on('connection', function (socket) {
-		logger.info("WS client connected! User: " + socket.request.user.username);
+		logger.debug("WS client connected! User: " + socket.request.user.username);
 
 		socket.on('disconnect', function() {
-			logger.info("WS client disconnected!");
+			logger.debug("WS client disconnected!");
 		});
 
-		socket.on("welcome", function(msg) {
-			logger.info("Incoming welcome message from " + socket.request.user.username + ":", msg);
-		})
-		socket.on("inc", function(msg) {
-			logger.info("Increment:", msg);
-		})
+		// Add an event listener to the 'connection' event
+		io.on('connection', function (socket) {
+			socketHandlers.handlers.forEach((handler) => {
+				require(path.resolve(handler))(io, socket);
+			});
+		});
+
 	});
 
 	return server;
