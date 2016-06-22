@@ -146,12 +146,16 @@ function initAuth(app) {
 	require('./auth/passport')(app);
 
 	if (!config.isTestMode()) {
+
 		// Handle CSRF
 		app.use(csrf());
 
 		// Keep user, csrf token and config available
 		app.use(function(req, res, next) {
-			res.locals._csrf = req.csrfToken();
+			let token = req.csrfToken();
+			res.locals._csrf = token;
+			res.cookie('XSRF-TOKEN', token);
+
 			return next();
 		});
 	}

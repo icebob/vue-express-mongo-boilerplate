@@ -72,7 +72,7 @@ module.exports = function(app, db) {
 						// Remove sensitive data before login
 						req.user.password = undefined;
 						req.user.salt = undefined;
-						res.redirect('/');
+						response(req, res, '/');
 					});
 
 				});
