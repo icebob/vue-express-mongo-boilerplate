@@ -19,6 +19,11 @@ module.exports = function() {
 				return done(null, false, {
 					message: 'Unknow username'
 				});
+
+			if (!user.verified)
+				return done(null, false, {
+					message: 'Please activate your account!'
+				});
 			
 			user.comparePassword(password, function(err, isMatch) {
 				if (err)
