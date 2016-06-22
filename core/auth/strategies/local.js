@@ -25,7 +25,6 @@ module.exports = function() {
 					message: 'Please activate your account!'
 				});
 
-			console.log(user);
 			if (user.passwordLess)
 				return done(null, false, {
 					message: 'This is a passwordless account! Please leave empty the password field.'

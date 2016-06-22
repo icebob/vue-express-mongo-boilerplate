@@ -71,7 +71,6 @@ module.exports = function(app, db) {
 			function passwordless(token, done) {
 				if (passwordless) {
 					crypto.randomBytes(25, function(err, buf) {
-						logger.info("generated pass: ", buf.toString("hex"));
 						done(err, token, err ? null : buf.toString("hex"));
 					});
 				}
