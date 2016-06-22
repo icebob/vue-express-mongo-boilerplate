@@ -27,7 +27,7 @@ module.exports = function(app, db) {
 				return res.json({ 
 					error: {
 						code: err.status || 500,
-						message: 'Server error!' 
+						msg: 'Server error!' 
 					}
 				});
 			}
@@ -53,7 +53,7 @@ module.exports = function(app, db) {
 			return res.json({ 
 				error: {
 					code: 404,
-					message: 'Not found!'
+					msg: 'Not found!'
 				} 
 			});
 		}

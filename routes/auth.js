@@ -13,6 +13,25 @@ let mailer = require("../libs/mailer");
 
 let User = require("../models/user");
 
+
+function response(req, res, redirect) {
+	if (req.accepts('json') && !req.accepts('html')) {
+
+		let result = {};
+
+		//console.log(req.session.flash);
+		if (req.session.flash && req.session.flash.error && req.session.flash.error.length > 0)
+			result.error = req.session.flash.error;
+		else
+			result.result = "OK";
+
+		//console.log(result);
+		return res.json(result);
+	}
+	else if (redirect)
+		res.redirect(redirect);
+}
+
 module.exports = function(app, db) {
 
 	let authRouter = express.Router();
@@ -30,7 +49,7 @@ module.exports = function(app, db) {
 		let errors = req.validationErrors();
 		if (errors) {
 			req.flash('error', errors);
-			return res.redirect('/login');
+			return response(req, res, '/login');
 		}
 
 		if (req.body.password) {
@@ -38,13 +57,13 @@ module.exports = function(app, db) {
 			passport.authenticate('local', function(err, user, info) { 
 				if (!user) {
 					req.flash('error', { msg: info.message });
-					return res.redirect("/login");
+					return response(req, res, '/login');
 				}
 
 				req.login(user, function(err) {
 					if (err) {
-						req.flash('error', err);
-						return res.redirect("/login");
+						req.flash('error', { msg: err });
+						return response(req, res, '/login');
 					}
 
 					// Update user's record with login time
@@ -75,7 +94,7 @@ module.exports = function(app, db) {
 					User.findOne({ username: username }, function(err, user) {
 						if (!user) {
 							req.flash('error', { msg: 'The username ' + username + ' is not associated with any account.' });
-							done("Invalid username " + username);
+							return done("Invalid username " + username);
 						}
 
 						user.passwordLessToken = token;
@@ -93,11 +112,9 @@ module.exports = function(app, db) {
 						name: user.fullName,
 						loginLink: 'http://' + req.headers.host + '/passwordless/' + token
 					}, function(err, html) {
-						if (err) {
-							logger.error(err);
-							done();
-							return res.status(500).send("Server error");
-						}
+						if (err)
+							return done(err);
+
 						mailer.send(user.email, subject, html, function(err, info) {
 							if (err)
 								req.flash("error", { msg: "Unable to send email to " + user.email});
@@ -111,10 +128,10 @@ module.exports = function(app, db) {
 
 			], function(err, user) {
 				if (err) {
-					logger.err(err);
+					logger.error(err);
 				}
 
-				res.redirect("back");
+				response(req, res, "back");
 			});
 		}
 
