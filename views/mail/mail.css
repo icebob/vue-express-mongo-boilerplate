@@ -1,9 +1,5 @@
-@font-face {
-  font-family: "proxima_nova";
-  src: url("//skeleton-fonts.s3-website-us-west-2.amazonaws.com/proxima-nova-regular.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
-}
+@import url(//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&subset=latin,latin-ext);
+
 a {
   color: #007ee6;
   text-decoration: none;

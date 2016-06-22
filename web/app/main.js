@@ -4,6 +4,8 @@ import style from "../scss/style.scss";
 import Vue from 'vue';
 import App from './App';
 
+import io from "socket.io-client";
+
 console.log("App started!");
 
 
