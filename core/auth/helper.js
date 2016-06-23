@@ -3,7 +3,7 @@
 let logger = require('../logger');
 let config = require("../../config");
 
-let User 			= require('../../models/user');
+let User 	= require('../../models/user');
 
 module.exports.isAuthenticated = function isAuthenticated(req, res, next) {
 	if (req.isAuthenticated())
@@ -39,6 +39,7 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 
 	if (req.user) {
 		logger.debug("Van beloginolva user. Megkeressük, hozzá van-e kötve valamelyik accounthoz");
+		
 		// There is logged in user. We only assign with this social account
 		let search = {};
 		search[`socialLinks.${provider}`] = profile.id;
@@ -77,11 +78,13 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 		 
 		
 	} else {
+		
 		// No logged in user
 		logger.debug("Nincs bejelentkezve user. Megkeressük kihez van linkelve");
 		let search = {};
 		search[`socialLinks.${provider}`] = profile.id;
 		User.findOne(search, function(err, existingUser) {
+			
 			if (existingUser) {
 				logger.debug("Megvan, sikeres login.");
 				return done(err, existingUser);
