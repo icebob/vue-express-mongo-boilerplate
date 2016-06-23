@@ -137,5 +137,30 @@ module.exports = function(app, db) {
 
 	});
 
+	// Available scopes: https://developers.google.com/+/web/api/rest/oauth#authorization-scopes
+	authRouter.get('/google', passport.authenticate('google', {
+		scope: 'profile email'
+		/*scope: [
+			'https://www.googleapis.com/auth/plus.login',
+			'https://www.googleapis.com/auth/plus.profile.emails.read'
+		]*/
+	}));
+
+	authRouter.get('/google/callback', passport.authenticate('google', {
+		failureRedirect: '/login'
+	}), function(req, res) {
+		res.redirect("/");
+	});
+
+	authRouter.get('/facebook', passport.authenticate('facebook', {
+		scope: ['email', 'user_location']
+	}));
+
+	authRouter.get('/facebook/callback', passport.authenticate('facebook', {
+		failureRedirect: '/login'
+	}), function(req, res) {
+		res.redirect("/");
+	});	
+
 	app.use("/auth", authRouter);
 };

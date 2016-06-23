@@ -146,7 +146,7 @@ function initAuth(app) {
 	require('./auth/passport')(app);
 
 	if (!config.isTestMode()) {
-
+/*
 		// Handle CSRF
 		app.use(csrf());
 
@@ -157,7 +157,7 @@ function initAuth(app) {
 			res.cookie('XSRF-TOKEN', token);
 
 			return next();
-		});
+		});*/
 	}
 }
 

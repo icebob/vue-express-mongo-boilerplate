@@ -72,8 +72,13 @@ let UserSchema = new Schema({
 		type: String,
 		"default": "local"
 	},
-	providerData: {},
-	additionalProvidersData: {},
+	profile: {},
+	socialLinks: {
+		facebook: { type: String, unique: true, sparse: true },
+		twitter: { type: String, unique: true, sparse: true },
+		google: { type: String, unique: true, sparse: true },
+		github: { type: String, unique: true, sparse: true }
+	},
 	roles: {
 		type: [
 			{

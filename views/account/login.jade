@@ -7,6 +7,16 @@ block content
 				br
 				legend Login
 				form(action="/auth/local", method="POST")
+
+					.form-group
+						a.btn.btn-block.btn-social.btn-google-plus.btn-lg(href='/auth/google')
+							i.fa.fa-fw.fa-google-plus
+							| &nbsp;Sign in with Google
+					.form-group
+						a.btn.btn-block.btn-social.btn-facebook.btn-lg(href='/auth/facebook')
+							i.fa.fa-fw.fa-facebook
+							| &nbsp;Sign in with Facebook
+
 					input(type="hidden", name="_csrf" value=_csrf)
 					.form-group
 						label(for="username") Username
