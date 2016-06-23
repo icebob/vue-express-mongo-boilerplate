@@ -162,5 +162,23 @@ module.exports = function(app, db) {
 		res.redirect("/");
 	});	
 
+	authRouter.get('/twitter', passport.authenticate('twitter'));
+
+	authRouter.get('/twitter/callback', passport.authenticate('twitter', {
+		failureRedirect: '/login'
+	}), function(req, res) {
+		res.redirect("/");
+	});	
+
+	authRouter.get('/github', passport.authenticate('github', {
+		scope: "user:email"
+	}));
+
+	authRouter.get('/github/callback', passport.authenticate('github', {
+		failureRedirect: '/login'
+	}), function(req, res) {
+		res.redirect("/");
+	});	
+
 	app.use("/auth", authRouter);
 };

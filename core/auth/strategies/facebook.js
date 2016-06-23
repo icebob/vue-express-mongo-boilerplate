@@ -9,7 +9,7 @@ let passport 			= require('passport');
 let FacebookStrategy  	= require('passport-facebook').Strategy;
 let User 				= require('../../../models/user');
 
-// https://developers.facebook.com/apps/263499360672568/dashboard/
+// https://developers.facebook.com/apps/
 module.exports = function() {
 	if (secrets.apiKeys && secrets.apiKeys.facebook && secrets.apiKeys.facebook.clientID) {
 
