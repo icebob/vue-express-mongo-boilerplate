@@ -22,7 +22,7 @@ block content
 						input(type='text', name='username', id='username', placeholder='Your username')
 						.hint
 					.form-group
-						label(for='passwordless') Passwordless account
+						label(for='passwordless') Passwordless account?
 						input(type='checkbox', name='passwordless', id='passwordless')
 						.hint
 
@@ -47,15 +47,14 @@ block content
 						span or
 
 					.socials
-						a.group.facebook(title="Sign up with Facebook")
+						a.group.facebook(href="/auth/facebook", title="Sign up with Facebook")
 							i.fa.fa-facebook
-						a.group.google(title="Sign up with Google")
+						a.group.google(href="/auth/google", title="Sign up with Google")
 							i.fa.fa-google-plus
-						a.group.twitter(title="Sign up with Twitter")
+						a.group.twitter(href="/auth/twitter", title="Sign up with Twitter")
 							i.fa.fa-twitter
-						a.group.github(title="Sign up with Github")
+						a.group.github(href="/auth/github", title="Sign up with Github")
 							i.fa.fa-github
-
 
 					hr
 					.alreadyLink
@@ -63,4 +62,4 @@ block content
 						a(href='/login') Login
 
 block scripts
-	script(src='/app/frontend.js')						
+	script(src='/app/frontend.js')

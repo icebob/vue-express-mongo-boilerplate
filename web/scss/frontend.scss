@@ -77,7 +77,7 @@ body {
 .panel {
 	width: 350px;
 	position: relative;
-	//overflow: hidden;
+	overflow: hidden;
 	text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
 
 	background-color: rgba(10, 10, 10, 0.5);
@@ -88,7 +88,6 @@ body {
 	box-shadow: 0 0 10px rgba(0,0,0,1);
 	
 	.bg {
-		z-index: -1;
 		background-image: url('~images/frontend-background.jpg');
 		background-size: cover;
 		background-position: center center;
@@ -97,15 +96,16 @@ body {
 	} // .bg
 	
 	.bg-overlay {
-		z-index: -1;
-		background: radial-gradient(circle farthest-side at top, #2b7689, Black);
+		background: radial-gradient(circle at top, #2b7689, Black);
+		background-image: -webkit-radial-gradient(top center, #2b7689, #000000);
 		position: absolute;
 		left: 0; right: 0; top: 0; bottom: 0;
 		opacity: 0.9;
 	} // .bg-overlay
 	
 	.content {
-		z-index: 1;
+		position: relative;
+
 		header {
 			text-align: center;
 			font-size: 2.5rem;
@@ -126,7 +126,7 @@ body {
 			font-family: $fontFamily;
 			color: $textColor;
 
-			margin: 10px 0px;
+			margin: 3px 0px 10px 0px;
 
 			border: none;
 			padding: 10px;
@@ -148,6 +148,7 @@ body {
 				height: 40px;
 				cursor: pointer;
 				background-color: #0E4880;
+				color: $textColor;
 				padding: 8px;
 				font-size: 1.2em;
 				text-align: center;
@@ -252,7 +253,7 @@ body {
 		hr {
 			border: 0;
 			border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-			margin-bottom: 12px;
+			margin: 12px 0;
 		}
 		
 		.alreadyLink {
