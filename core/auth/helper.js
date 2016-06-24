@@ -84,13 +84,14 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 		let search = {};
 		search[`socialLinks.${provider}`] = profile.id;
 		User.findOne(search, function(err, existingUser) {
-			
+
 			if (existingUser) {
 				logger.debug("Megvan, sikeres login.");
 				return done(err, existingUser);
 			}
 
 			logger.debug("Nincs, keresünk email alapján:", email);
+			if (email) {
 			User.findOne({email: email}, function(err, existingEmailUser) {
 				if (existingEmailUser) {
 					logger.debug("Van e-mailhez rendelve. Hozzárendeljük ahhoz");
@@ -131,6 +132,12 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 				});
 
 			});
+
+			} else {
+				// Not provided email address
+				req.flash("error", { msg: 'Missing email address. Please signup manually!'});
+				done();
+			}
 		});
 	}
 
