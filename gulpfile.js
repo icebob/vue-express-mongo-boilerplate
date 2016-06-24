@@ -23,7 +23,7 @@ var dirs = {
 			"models/**/*.js",
 			"routes/**/*.js",
 			"server.js",
-			"webpack.config.js"
+			"webpack.*.config.js"
 		]
 	},
 	clientFiles: {

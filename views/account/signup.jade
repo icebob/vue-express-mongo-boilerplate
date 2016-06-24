@@ -1,44 +1,66 @@
 extends ../layout
 
 block content
-	.container
-		.row
-			.col-sm-6.col-sm-offset-3
-				br
-				br
+	.center-container
+		.panel
+			.bg
+			.bg-overlay
+			.content
 				form(action='/signup', method='POST')
 					input(type="hidden", name="_csrf" value=_csrf)
-					legend Sign Up
+
+					header Sign Up
 					.form-group
-						label.sr-only(for='name') Name:
-						input.form-control(type='text', name='name', id='name', placeholder='Your Name', autofocus=true, required)
+						label(for='name') Name:
+						input(type='text', name='name', id='name', placeholder='Your Name', autofocus=true, required)
 					.form-group
-						label.sr-only(for='email') Email:
-						input.form-control(type='email', name='email', id='email', placeholder='Use a real email address to see the welcome email', required)
-						#hint
+						label(for='email') Email:
+						input(type='email', name='email', id='email', placeholder='Use a real email address to see the welcome email', required)
+						.hint
 					.form-group
-						label.sr-only(for='username') Username:
-						input.form-control(type='text', name='username', id='username', placeholder='Your username')
-						#hint
+						label(for='username') Username:
+						input(type='text', name='username', id='username', placeholder='Your username')
+						.hint
 					.form-group
-						label.sr-only(for='passwordless') Passwordless account
-						input.form-control(type='checkbox', name='passwordless', id='passwordless')
+						label(for='passwordless') Passwordless account
+						input(type='checkbox', name='passwordless', id='passwordless')
+						.hint
 
 					.form-group
-						label.sr-only(for='password') Password:
-						input.form-control(type='password', name='password', id='password', placeholder='Password', autocomplete='off')
+						label(for='password') Password:
+						input(type='password', name='password', id='password', placeholder='Password')
 
-					if messages.error
-						.alert.alert-danger
-							for error in messages.error
-								div= error.msg
-					if messages.info
-						.alert.alert-success
-							for info in messages.info
-								div= info.msg
+					.flash
+						if messages.error
+							.alert.alert-danger
+								for error in messages.error
+									div= error.msg
+						if messages.info
+							.alert.alert-success
+								for info in messages.info
+									div= info.msg
+
 					.form-group
-						button.btn.btn-success(type='submit')
-							i.fa.fa-check
-							| &nbsp;Sign Up
-						| &nbsp;
-						a.btn.btn-link(href='/login') Already have an account?
+						button.signup(type='submit') Sign Up
+
+					.or
+						span or
+
+					.socials
+						a.group.facebook(title="Sign up with Facebook")
+							i.fa.fa-facebook
+						a.group.google(title="Sign up with Google")
+							i.fa.fa-google-plus
+						a.group.twitter(title="Sign up with Twitter")
+							i.fa.fa-twitter
+						a.group.github(title="Sign up with Github")
+							i.fa.fa-github
+
+
+					hr
+					.alreadyLink
+						span Already have an account?
+						a(href='/login') Login
+
+block scripts
+	script(src='/app/frontend.js')						

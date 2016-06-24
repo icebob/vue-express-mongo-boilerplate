@@ -5,7 +5,8 @@ var webpack = require("webpack");
 
 module.exports = {
 	entry: {
-		app: ["./web/app/main.js"]
+		app: ["./web/app/main.js"],
+		frontend: ["./web/frontend/main.js"]
 		//vendor: glob.sync("./src/vendor/**/*.js")
 	},
 	output: {
@@ -30,6 +31,10 @@ module.exports = {
 			},
 
 			{ test: /\.vue$/,    loader: "vue" },
+
+			{ test: /\.gif$/, 	loader: "url-loader?limit=100000" },
+			{ test: /\.png$/, 	loader: "url-loader?limit=100000" },
+			{ test: /\.jpg$/, 	loader: "file-loader" },			
 
 			// required for bootstrap icons
 			{ test: /\.woff$/,   loader: "url-loader?prefix=font/&limit=5000&mimetype=application/font-woff" },

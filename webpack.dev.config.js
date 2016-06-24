@@ -6,7 +6,8 @@ var webpack = require("webpack");
 module.exports = {
 	devtool: 'eval-source-map',
 	entry: {
-		app: ['webpack-hot-middleware/client', "./web/app/main.js"]
+		app: ['webpack-hot-middleware/client', "./web/app/main.js"],
+		frontend: ['webpack-hot-middleware/client', "./web/frontend/main.js"]
 		//vendor: glob.sync("./src/vendor/**/*.js")
 	},
 	output: {
@@ -18,30 +19,37 @@ module.exports = {
 	module: {
 		loaders: [
 			// required to write "require('./style.css')"
-			{ test: /\.css$/,    loader: "style!css" },
+			{ test: /\.css$/,   loader: "style!css" },
 
-			{ test: /\.scss$/, loaders: ["style", "css", "sass"] },
+			{ test: /\.scss$/, 	loaders: ["style", "css", "sass"] },
 
-			{ test: /\.json$/,    loader: "json-loader" },
+			{ test: /\.json$/,   loader: "json-loader" },
 
 			// ES6/7 syntax and JSX transpiling out of the box
-    		{ test: /\.js$/,	 loader: 'babel', 		exclude: [/node_modules/, /vendor/], query: {
+    		{ test: /\.js$/,	loader: 'babel', 		exclude: [/node_modules/, /vendor/], query: {
 					presets: ['es2015', 'stage-0']
 				}	
 			},
 
-			{ test: /\.vue$/,    loader: "vue" },
+			{ test: /\.vue$/,   loader: "vue" },
+
+			{ test: /\.gif$/, 	loader: "url-loader?limit=100000" },
+			{ test: /\.png$/, 	loader: "url-loader?limit=100000" },
+			{ test: /\.jpg$/, 	loader: "file-loader" },			
 
 			// required for bootstrap icons
-			{ test: /\.woff$/,   loader: "url-loader?prefix=font/&limit=5000&mimetype=application/font-woff" },
-			{ test: /\.ttf$/,    loader: "file-loader?prefix=font/" },
-			{ test: /\.eot$/,    loader: "file-loader?prefix=font/" },
-			{ test: /\.svg$/,    loader: "file-loader?prefix=font/" }
+			{ test: /\.woff$/,  loader: "url-loader?prefix=font/&limit=5000&mimetype=application/font-woff" },
+			{ test: /\.ttf$/,   loader: "file-loader?prefix=font/" },
+			{ test: /\.eot$/,   loader: "file-loader?prefix=font/" },
+			{ test: /\.svg$/,   loader: "file-loader?prefix=font/" }
 
 		]
 	},
 	resolve: {
-    	extensions: ['', '.vue', '.js', '.json']
+    	extensions: ['', '.vue', '.js', '.json'],
+    	alias: {
+    		'images': path.resolve(__dirname, 'web', 'images')
+    	}
 	},
 	plugins: [
 		new webpack.optimize.OccurenceOrderPlugin(),

@@ -1,8 +1,11 @@
 // Style variables 
-$backgroundColor: #e6e6e6;
-//$backgroundColor: Orange;
-$textColor: #000;
+$backgroundColor: #292C33;
+$textColor: White;
 $masterColor: #389BFE;
 
-$fontFamily: Tahoma, Helvetica, sans-serif;
-$fontFamilyHeader: Arial, sans-serif;
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900|Dosis:300,400,600,700,800|Droid+Sans:400,700|Lato:300,400,700,900|PT+Sans:400,700|Ubuntu:300,400,500,700|Open+Sans:400,300,600,700|Roboto:400,300,500,700,900|Roboto+Condensed:400,300,700|Open+Sans+Condensed:300,700|Work+Sans:400,300,700|Play:400,700|Maven+Pro:400,500,700,900&subset=latin,latin-ext);
+
+@import url(http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css);
+
+$fontFamily: 'Work Sans', 'Helvetica', 'Arial', sans-serif;
+$fontFamilyHeader: 'Work Sans', 'Helvetica', 'Arial', sans-serif;
