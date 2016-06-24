@@ -11,7 +11,10 @@ module.exports = function() {
 		passReqToCallback : true
 	}, function(req, username, password, done) {
 		return User.findOne({
-			username: username
+			$or: [ 
+				{ 'username': username}, 
+				{ 'email': username}
+			]
 		}, function(err, user) {
 			if (err)
 				return done(err);

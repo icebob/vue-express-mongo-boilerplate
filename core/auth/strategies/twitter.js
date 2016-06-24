@@ -19,7 +19,7 @@ module.exports = function() {
 			callbackURL: '/auth/twitter/callback',
 			passReqToCallback: true
 		}, function(req, accessToken, refreshToken, profile, done) {
-			logger.info("Received profile: ", profile);
+			//logger.info("Received profile: ", profile);
 
 			helper.linkToSocialAccount({
 				req, 

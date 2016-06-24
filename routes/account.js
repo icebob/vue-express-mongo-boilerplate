@@ -41,7 +41,10 @@ module.exports = function(app, db) {
 		req.assert("email", "Email is not valid!").isEmail();
 		req.sanitize('email').normalizeEmail({ remove_dots: false });
 
-		req.assert("username", "Username cannot be empty!").notEmpty();
+		//req.assert("username", "Username cannot be empty!").notEmpty();
+		
+		if (!req.body.username)
+			req.body.username = req.body.email;
 
 		req.sanitize('passwordless').toBoolean();
 		let passwordless = req.body.passwordless === true;
