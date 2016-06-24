@@ -33,9 +33,9 @@ module.exports = {
 
 			{ test: /\.vue$/,   loader: "vue" },
 
-			{ test: /\.gif$/, 	loader: "url-loader?limit=100000" },
-			{ test: /\.png$/, 	loader: "url-loader?limit=100000" },
-			{ test: /\.jpg$/, 	loader: "file-loader" },			
+			{ test: /\.gif$/, 	loader: "url-loader?name=images/[name]-[hash:6].[ext]&limit=100000" },
+			{ test: /\.png$/, 	loader: "url-loader?name=images/[name]-[hash:6].[ext]&limit=100000" },
+			{ test: /\.jpg$/, 	loader: "file-loader?name=images/[name]-[hash:6].[ext]" },		
 
 			// required for bootstrap icons
 			{ test: /\.woff$/,  loader: "url-loader?prefix=font/&limit=5000&mimetype=application/font-woff" },

@@ -1,4 +1,14 @@
-@import "variables";
+// Style variables 
+$backgroundColor: #292C33;
+$textColor: White;
+$masterColor: #389BFE;
+
+@import url(http://fonts.googleapis.com/css?family=Work+Sans:400,300,700&subset=latin,latin-ext);
+
+@import url(http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css);
+
+$fontFamily: 'Work Sans', 'Helvetica', 'Arial', sans-serif;
+$fontFamilyHeader: 'Work Sans', 'Helvetica', 'Arial', sans-serif;
 
 // Common style
 * {

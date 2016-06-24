@@ -32,9 +32,9 @@ module.exports = {
 
 			{ test: /\.vue$/,    loader: "vue" },
 
-			{ test: /\.gif$/, 	loader: "url-loader?limit=100000" },
-			{ test: /\.png$/, 	loader: "url-loader?limit=100000" },
-			{ test: /\.jpg$/, 	loader: "file-loader" },			
+			{ test: /\.gif$/, 	loader: "url-loader?name=images/[name]-[hash:6].[ext]&limit=100000" },
+			{ test: /\.png$/, 	loader: "url-loader?name=images/[name]-[hash:6].[ext]&limit=100000" },
+			{ test: /\.jpg$/, 	loader: "file-loader?name=images/[name]-[hash:6].[ext]" },			
 
 			// required for bootstrap icons
 			{ test: /\.woff$/,   loader: "url-loader?prefix=font/&limit=5000&mimetype=application/font-woff" },
@@ -45,7 +45,10 @@ module.exports = {
 		]
 	},
 	resolve: {
-    	extensions: ['', '.vue', '.js', '.json']
+    	extensions: ['', '.vue', '.js', '.json'],
+    	alias: {
+    		'images': path.resolve(__dirname, 'web', 'images')
+    	}
 	},
 	plugins: [
 		new webpack.DefinePlugin({
@@ -55,7 +58,11 @@ module.exports = {
 			}
 		}),
 		new webpack.optimize.DedupePlugin(),
-		new webpack.optimize.UglifyJsPlugin()
+		new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        })
 	],
 
 	vue: {
