@@ -55,11 +55,12 @@ body {
 		height: 100%;
 		background-size: cover;
 
-		-webkit-filter: blur(4px);
-		-moz-filter: blur(4px);
-		-o-filter: blur(4px);
-		-ms-filter: blur(4px);
-		filter: blur(4px);
+		$blur: 6px;
+		-webkit-filter: blur($blur);
+		-moz-filter: blur($blur);
+		-o-filter: blur($blur);
+		-ms-filter: blur($blur);
+		filter: blur($blur);
 	} // .bg
 
 	> .bg-overlay {
@@ -68,7 +69,7 @@ body {
 		top: 0; bottom: 0;
 
 		display: block;
-		background-color: rgba(#348598, 0.8);
+		background-color: rgba(32, 88, 101, 0.8);
 		width: 100%;
 		height: 100%;
 

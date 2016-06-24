@@ -100,6 +100,7 @@ $ node server.js
 * [ ] style for login site
 * [ ] try Apollo graphql stack
 * [ ] create a sample VueJS app
+* [ ] add PostCSS with autoprefixer for frontend.scss
 
 ## Contribution
 Please send pull requests improving the usage and fixing bugs, improving documentation and providing better examples, or providing some testing, because these things are important.
