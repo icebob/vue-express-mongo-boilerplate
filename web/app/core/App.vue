@@ -8,11 +8,23 @@
 
 <script>
 	import io from "socket.io-client";
+	import store from "./store";
+	import { increment } from "./actions";
 
 	export default {
+		store: store,
+
+		vuex: {
+			getters: {
+				count: state => state.count
+			},
+			actions: {
+				increment
+			}
+		},
+
 		data () {
 			return {
-				count: 0,
 				msg: 'Hello Vue!',
 
 				socket: null
@@ -21,7 +33,7 @@
 
 		methods: {
 			inc() {
-				this.count += 1;
+				this.increment(store);
 				this.socket.emit("inc", this.count);
 			}
 		},
