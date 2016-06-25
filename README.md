@@ -13,6 +13,9 @@ Inspired by dstroot/skeleton and sahat/hackathon-starter
 	* winston
 * Client-side
  * **VueJS**
+ * Vuex
+ * Vue-router
+ * Vue-resource
  * **Websocket with socket.io**
  * Jade
  * Webpack

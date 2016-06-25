@@ -8,8 +8,8 @@
 
 <script>
 	import io from "socket.io-client";
-	import store from "./store";
-	import { increment } from "./actions";
+	import store from "../vuex/store";
+	import { increment } from "../vuex/actions";
 
 	export default {
 		store: store,
