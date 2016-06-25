@@ -15,11 +15,11 @@ block content
 						input(type='text', name='name', id='name', placeholder='Your Name', autofocus=true, required)
 					.form-group
 						label(for='email') Email:
-						input(type='email', name='email', id='email', placeholder='Use a real email address to see the welcome email', required)
+						input(type='email', name='email', id='email', placeholder='Your email address', required)
 						.hint
 					.form-group
 						label(for='username') Username:
-						input(type='text', name='username', id='username', placeholder='Your username')
+						input(type='text', name='username', id='username', placeholder='Your username (optional)')
 						.hint
 					.form-group
 						label(for='passwordless') Passwordless account?
@@ -51,10 +51,6 @@ block content
 							i.fa.fa-facebook
 						a.group.google(href="/auth/google", title="Sign up with Google")
 							i.fa.fa-google-plus
-						a.group.twitter(href="/auth/twitter", title="Sign up with Twitter")
-							i.fa.fa-twitter
-						a.group.github(href="/auth/github", title="Sign up with Github")
-							i.fa.fa-github
 
 					hr
 					.alreadyLink

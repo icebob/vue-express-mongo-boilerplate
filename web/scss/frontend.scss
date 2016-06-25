@@ -1,7 +1,8 @@
 // Style variables 
 $backgroundColor: #292C33;
 $textColor: White;
-$masterColor: #389BFE;
+//$masterColor: #2b7689;
+$masterColor: #4686c5;
 
 @import url(http://fonts.googleapis.com/css?family=Work+Sans:400,300,700&subset=latin,latin-ext);
 
@@ -69,7 +70,7 @@ body {
 		top: 0; bottom: 0;
 
 		display: block;
-		background-color: rgba(32, 88, 101, 0.8);
+		background-color: rgba(darken($masterColor, 5%), 0.8);
 		width: 100%;
 		height: 100%;
 
@@ -91,7 +92,6 @@ body {
 	overflow: hidden;
 	text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
 
-	background-color: rgba(10, 10, 10, 0.5);
 	margin: auto auto;  
 	padding: 20px;
 	
@@ -107,8 +107,8 @@ body {
 	} // .bg
 	
 	.bg-overlay {
-		background: radial-gradient(circle at top, #2b7689, Black);
-		background-image: -webkit-radial-gradient(top center, #2b7689, #000000);
+		background: radial-gradient(circle at top, $masterColor, Black);
+		background-image: -webkit-radial-gradient(top center, $masterColor, Black);
 		position: absolute;
 		left: 0; right: 0; top: 0; bottom: 0;
 		opacity: 0.9;
@@ -158,7 +158,6 @@ body {
 				width: 40px;
 				height: 40px;
 				cursor: pointer;
-				background-color: #0E4880;
 				color: $textColor;
 				padding: 8px;
 				font-size: 1.2em;
@@ -228,8 +227,9 @@ body {
 					display: block;
 					width: 500px;
 					position: absolute;
-					top: 0.5em;
+					top: 0.6em;
 					border-top: 1px solid $textColor;
+					opacity: 0.5;
 				}
 
 				&:before {
@@ -240,30 +240,54 @@ body {
 					left: 60%;
 				}
 			}
-		} // .or		
+		} // .or	
+
+		.flash {
+			
+			.alert {
+				text-align: center;
+				padding: 0.2rem 0.6rem;
+				margin: 0.5rem 0;
+
+				border-radius: 4px;
+			}
+
+			.alert-danger {
+				$c: #ad3a3a;
+				background-color: $c;
+				border: 1px solid lighten($c, 10%);
+			}
+
+			.alert-success {
+				$c: #3aad71;
+				background-color: $c;
+				border: 1px solid lighten($c, 10%);
+			}
+
+		} // .flash
 	
 		button {
-			background-color: #bae98b;
+			background-color: $masterColor;
+			color: $textColor;
 			border: 0;
 			margin: 10px 0;
 			font-size: 1.2rem;
 			padding: 8px 0;
 			font-family: $fontFamily;
 			text-transform: uppercase;
-			color: #05152e;
-			font-weight: 600;
+			font-weight: 400;
 			width: 100%;
 			border-radius: 20px;
 			cursor: pointer;
 			
 			&:hover {
-				background-color: lighten(#bae98b, 10%);
+				background-color: lighten($masterColor, 10%);
 			}
 		} // button
 		
 		hr {
 			border: 0;
-			border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+			border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 			margin: 12px 0;
 		}
 		
@@ -274,16 +298,16 @@ body {
 			color: rgba(255, 255, 255, 0.6);
 			
 			span {
-				margin-right: 0.3em;
+				margin-right: 0.5em;
 			}
 
 			a {
 				color: $textColor;
-				border-bottom: 1px solid #277d8e;
+				border-bottom: 1px solid $masterColor;
 				text-decoration: none;
 				
 				&:hover {
-					border-bottom: 2px solid #277d8e;
+					border-bottom: 2px solid $masterColor;
 				}
 			}
 		}

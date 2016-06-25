@@ -1,56 +1,112 @@
 extends ../layout
 
 block content
-	.container
-		.row
-			.col-sm-6.col-sm-offset-3
-				br
-				legend Login
-				form(action="/auth/local", method="POST")
-
-					.form-group
-						a.btn.btn-block.btn-social.btn-google-plus.btn-lg(href='/auth/google')
-							i.fa.fa-fw.fa-google-plus
-							| &nbsp;Sign in with Google
-					.form-group
-						a.btn.btn-block.btn-social.btn-facebook.btn-lg(href='/auth/facebook')
-							i.fa.fa-fw.fa-facebook
-							| &nbsp;Sign in with Facebook
-					.form-group
-						a.btn.btn-block.btn-social.btn-twitter.btn-lg(href='/auth/twitter')
-							i.fa.fa-fw.fa-twitter
-							| &nbsp;Sign in with Twitter
-					.form-group
-						a.btn.btn-block.btn-social.btn-github.btn-lg(href='/auth/github')
-							i.fa.fa-fw.fa-github
-							| &nbsp;Sign in with Github
-
+	.center-container
+		.panel
+			.bg
+			.bg-overlay
+			.content
+				form(action='/auth/local', method='POST')
 					input(type="hidden", name="_csrf" value=_csrf)
+
+					header Login
 					.form-group
-						label(for="username") Username or e-mail
-						input.form-control(type="text", name="username" id="username", autofocus)
+						label(for='username') Username or e-mail:
+						input(type='text', name='username', id='username', placeholder='Your username  or email address')
+						.hint
 					.form-group
-						label(for="password") Password
-						input.form-control(type="password", name="password" id="password")
-						#hint If the password is empty, we will send an email with a login link (passwordless login)
-					p
-						a(href='/forgot')
-							strong Forgot your password?
-					if messages.error
-						.alert.alert-danger
-							for error in messages.error
-								div= error.msg
-					if messages.info
-						.alert.alert-success
-							for info in messages.info
-								div= info.msg
+						label(for='password') Password:
+						input(type='password', name='password', id='password', placeholder='Password')
+
+					.flash
+						if messages.error
+							.alert.alert-danger
+								for error in messages.error
+									div= error.msg
+						if messages.info
+							.alert.alert-success
+								for info in messages.info
+									div= info.msg
 
 					.form-group
-						button.btn.btn-primary(type="submit") Login
+						button.signup(type='submit') Login
 
-				p Don't have an account?
-					a(href='/signup')
-						strong  Sign up						
+					.or
+						span or
+
+					.socials
+						a.group.facebook(href="/auth/facebook", title="Login with Facebook")
+							i.fa.fa-facebook
+						a.group.google(href="/auth/google", title="Login with Google")
+							i.fa.fa-google-plus
+						a.group.twitter(href="/auth/twitter", title="Login with Twitter")
+							i.fa.fa-twitter
+						a.group.github(href="/auth/github", title="Login with Github")
+							i.fa.fa-github
+
+					hr
+					.alreadyLink
+						span Don't have an account?
+						a(href='/signup') Sign up
 
 block scripts
-	script(src='/app/frontend.js')						
+	script(src='/app/frontend.js')
+
+
+//
+	extends ../layout
+
+	block content
+		.container
+			.row
+				.col-sm-6.col-sm-offset-3
+					br
+					legend Login
+					form(action="/auth/local", method="POST")
+
+						.form-group
+							a.btn.btn-block.btn-social.btn-google-plus.btn-lg(href='/auth/google')
+								i.fa.fa-fw.fa-google-plus
+								| &nbsp;Sign in with Google
+						.form-group
+							a.btn.btn-block.btn-social.btn-facebook.btn-lg(href='/auth/facebook')
+								i.fa.fa-fw.fa-facebook
+								| &nbsp;Sign in with Facebook
+						.form-group
+							a.btn.btn-block.btn-social.btn-twitter.btn-lg(href='/auth/twitter')
+								i.fa.fa-fw.fa-twitter
+								| &nbsp;Sign in with Twitter
+						.form-group
+							a.btn.btn-block.btn-social.btn-github.btn-lg(href='/auth/github')
+								i.fa.fa-fw.fa-github
+								| &nbsp;Sign in with Github
+
+						input(type="hidden", name="_csrf" value=_csrf)
+						.form-group
+							label(for="username") Username or e-mail
+							input.form-control(type="text", name="username" id="username", autofocus)
+						.form-group
+							label(for="password") Password
+							input.form-control(type="password", name="password" id="password")
+							#hint If the password is empty, we will send an email with a login link (passwordless login)
+						p
+							a(href='/forgot')
+								strong Forgot your password?
+						if messages.error
+							.alert.alert-danger
+								for error in messages.error
+									div= error.msg
+						if messages.info
+							.alert.alert-success
+								for info in messages.info
+									div= info.msg
+
+						.form-group
+							button.btn.btn-primary(type="submit") Login
+
+					p Don't have an account?
+						a(href='/signup')
+							strong  Sign up						
+
+	block scripts
+		script(src='/app/frontend.js')						
