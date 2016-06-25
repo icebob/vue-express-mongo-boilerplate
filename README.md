@@ -99,8 +99,11 @@ $ node server.js
 * [ ] Organize gulp tasks
 * [ ] style for login site
 * [ ] try Apollo graphql stack
+* [ ] vue-router & vuex to client side
 * [ ] create a sample VueJS app
 * [ ] add PostCSS with autoprefixer for frontend.scss
+* [ ] add Devices sample API test to client & server side
+
 
 ## Contribution
 Please send pull requests improving the usage and fixing bugs, improving documentation and providing better examples, or providing some testing, because these things are important.

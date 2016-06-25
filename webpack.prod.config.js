@@ -1,7 +1,12 @@
 var path = require("path");
 var glob = require("glob");
 var webpack = require("webpack");
-// var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+var precss = require("precss");
+var autoprefixer = require("autoprefixer");
+var postscss = require("postcss-scss");
+
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
 	entry: {
@@ -20,7 +25,8 @@ module.exports = {
 			// required to write "require('./style.css')"
 			{ test: /\.css$/,    loader: "style!css" },
 
-			{ test: /\.scss$/, loaders: ["style", "css", "sass"] },
+			//{ test: /\.scss$/, loaders: ["style", "css", "sass"] },
+			{ test: /\.scss$/, loader: ExtractTextPlugin.extract('style-loader', ['css-loader', 'postcss-loader', 'sass-loader'])},
 
 			{ test: /\.json$/,    loader: "json-loader" },
 
@@ -57,13 +63,23 @@ module.exports = {
 				"NODE_ENV": JSON.stringify("production")
 			}
 		}),
+		//new StatsPlugin('stats.json'),
 		new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false
             }
-        })
+        }),
+
+        new ExtractTextPlugin('[name].css')
 	],
+
+	postcss: function () {
+		return [
+			autoprefixer({ browsers: ['last 2 versions'] }), 
+			precss
+		];
+	},	
 
 	vue: {
 		autoprefixer: {

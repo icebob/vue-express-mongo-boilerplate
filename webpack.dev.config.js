@@ -1,6 +1,10 @@
 var path = require("path");
 var glob = require("glob");
 var webpack = require("webpack");
+
+var precss = require("precss");
+var autoprefixer = require("autoprefixer");
+var postscss = require("postcss-scss");
 // var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
@@ -21,7 +25,7 @@ module.exports = {
 			// required to write "require('./style.css')"
 			{ test: /\.css$/,   loader: "style!css" },
 
-			{ test: /\.scss$/, 	loaders: ["style", "css", "sass"] },
+			{ test: /\.scss$/, 	loaders: ["style", "css", "postcss", "sass?sourceMap"] },
 
 			{ test: /\.json$/,   loader: "json-loader" },
 
@@ -58,6 +62,13 @@ module.exports = {
 
 		//new ExtractTextPlugin("[name].css")
 	],
+
+	postcss: function () {
+		return [
+			autoprefixer({ browsers: ['last 2 versions'] }), 
+			precss
+		];
+	},	
 
 	vue: {
 		autoprefixer: {
