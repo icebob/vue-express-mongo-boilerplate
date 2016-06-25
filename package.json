@@ -1,8 +1,8 @@
 {
-  "name": "express-mongo-boilerplate",
-  "version": "1.3.0",
-  "title": "Express-Mongo BoilerPlate",
-  "description": "Express Mongo NodeJS server boilerplate",
+  "name": "vue-express-mongo-boilerplate",
+  "version": "0.3.0",
+  "title": "Vue-Express-Mongo BoilerPlate",
+  "description": "Express NodeJS application server boilerplate with Mongo and VueJS",
   "main": "server.js",
   "scripts": {
     "build": "webpack --progress --colors -p --config webpack.prod.config.js",
