@@ -47,6 +47,8 @@
 
 				this.socket.emit("welcome", "Hi I'm here!");
 			});
+
+			window.app = this;
 		},
 		destroyed() {
 			if (this.socket)
