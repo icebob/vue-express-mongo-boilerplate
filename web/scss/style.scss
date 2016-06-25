@@ -32,3 +32,12 @@ body {
 	margin: 0;
 }
 
+a {
+	color: $textColor;
+	border-bottom: 1px solid $masterColor;
+	text-decoration: none;
+	
+	&:hover {
+		border-bottom: 2px solid $masterColor;
+	}
+}

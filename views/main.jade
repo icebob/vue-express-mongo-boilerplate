@@ -3,7 +3,8 @@ extends layout
 block content
 	h1 Hello #{user.fullName}!
 
-	app
+	#app
+		router-view
 
 	a(href="/logout") Logout
 

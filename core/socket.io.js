@@ -75,10 +75,8 @@ module.exports = function (app, db) {
 		});
 
 		// Add an event listener to the 'connection' event
-		io.on('connection', function (socket) {
-			socketHandlers.handlers.forEach((handler) => {
-				require(path.resolve(handler))(io, socket);
-			});
+		socketHandlers.handlers.forEach((handler) => {
+			require(path.resolve(handler))(io, socket);
 		});
 
 	});

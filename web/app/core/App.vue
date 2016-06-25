@@ -1,0 +1,52 @@
+<template lang="jade">
+	div
+		h2 {{ msg }}
+		h3 {{ count }}
+		button(@click="inc") Increment
+		br
+</template>
+
+<script>
+	import io from "socket.io-client";
+
+	export default {
+		data () {
+			return {
+				count: 0,
+				msg: 'Hello Vue!',
+
+				socket: null
+			}
+		},
+
+		methods: {
+			inc() {
+				this.count += 1;
+				this.socket.emit("inc", this.count);
+			}
+		},
+
+		created() {
+			console.log("App started!");
+
+			this.socket = io();
+			this.socket.on("connect", () => {
+				console.log("WS connected!", this.socket);
+
+				this.socket.emit("welcome", "Hi I'm here!");
+			});
+		},
+		destroyed() {
+			if (this.socket)
+				this.socket.disconnect();
+		}
+	}
+</script>
+
+<style lang="sass" scoped>
+	@import "../../scss/variables";
+
+	h2 {
+	  color: $masterColor;
+	}
+</style>

@@ -15,8 +15,9 @@ Inspired by dstroot/skeleton and sahat/hackathon-starter
  * **VueJS**
  * **Websocket with socket.io**
  * Jade
- * SCSS
  * Webpack
+ * SCSS
+ * PostCSS with precss and autoprefixer
  * Babel
  * Passwordless mode
  * **Passport.JS**
@@ -101,7 +102,6 @@ $ node server.js
 * [ ] try Apollo graphql stack
 * [ ] vue-router & vuex to client side
 * [ ] create a sample VueJS app
-* [ ] add PostCSS with autoprefixer for frontend.scss
 * [ ] add Devices sample API test to client & server side
 
 

@@ -25,7 +25,7 @@ module.exports = {
 			// required to write "require('./style.css')"
 			{ test: /\.css$/,   loader: "style!css" },
 
-			{ test: /\.scss$/, 	loaders: ["style", "css", "postcss", "sass?sourceMap"] },
+			{ test: /\.scss$/, 	loaders: ["style", "css", "postcss", "sass"] },
 
 			{ test: /\.json$/,   loader: "json-loader" },
 

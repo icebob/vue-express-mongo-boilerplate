@@ -2,22 +2,16 @@
 
 import style from "../scss/style.scss";
 import Vue from 'vue';
-import App from './App';
+import VueRouter from 'vue-router';
+import VueResource from 'vue-resource';
 
-import io from "socket.io-client";
+import App from './core/App';
 
-console.log("App started!");
+Vue.use(VueRouter);
+Vue.use(VueResource);
 
+Vue.config.debug = true;
 
-new Vue({
-  el: 'body',
-  components: { App }
-})
+let router = require('./core/router')();
 
-var socket = io();
-socket.on("connect", function() {
-	console.log("WS connected!", socket);
-
-	socket.emit("welcome", "Hi I'm here!");
-});
-window.socket = socket;
+router.start(App, "#app");
