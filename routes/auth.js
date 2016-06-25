@@ -119,7 +119,7 @@ module.exports = function(app, db) {
 							if (err)
 								req.flash("error", { msg: "Unable to send email to " + user.email});
 							else
-								req.flash("info", { msg: "An email has been sent to " + user.email + " with login link."});
+								req.flash("info", { msg: "An email has been sent to " + user.email + " with magic link. Please check your spam folder if it does not arrive."});
 
 							done(err);
 						});
