@@ -110,6 +110,7 @@ $ NODE_ENV=production npm start
 * [x] style for login site
 * [ ] try Apollo graphql stack
 * [x] vue-router & vuex to client side
+* [ ] add api/v1 routes
 * [ ] create a sample VueJS app
 * [ ] add Devices sample API test to client & server side
 * [ ] add test with nightmare & mocha, chai, sinon
