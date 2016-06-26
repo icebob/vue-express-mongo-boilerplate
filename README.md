@@ -1,6 +1,7 @@
 # vue-express-mongo-boilerplate #
-This is a VueJS webapp boilerplate project with Express + Mongo server.
-Inspired by dstroot/skeleton and sahat/hackathon-starter
+This is a VueJS webapp boilerplate project with ExpressJS + Mongo server.
+
+Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/hackathon-starter](https://github.com/sahat/hackathon-starter)
 
 ## Features
 **Server-side**
