@@ -1,15 +1,23 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import types from "./types";
+
 Vue.use(Vuex);
 
 const state = {
-	count: 0
+	count: 0,
+	devices: []
 }
 
 const mutations = {
-	INCREMENT (state) {
+	[types.INCREMENT] (state) {
 		state.count += 1;
+	},
+
+	[types.ADD_DEVICES] (state, devices) {
+		state.devices.splice(0);
+		state.devices.push(...devices);
 	}
 }
 

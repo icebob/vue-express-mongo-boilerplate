@@ -19,20 +19,23 @@
 					td {{ device.name }}
 					td {{ device.description }}
 					td {{ device.status }}
-					td {{ device.lastCommunication }}
+					td {{ device.lastCommunication | ago }}
 
 
 </template>
 
 <script>
+	import { getDevices } from "../../vuex/actions";
+	
+	import { devices } from "../../vuex/getters";
 
 	export default {
 
-		data() {
-			return {
-				devices: []
+		vuex: {
+			getters: {
+				devices
 			}
-		},
+		},			
 
 		route: {
 			activate() {
@@ -40,15 +43,27 @@
 			},
 
 			data(transition) {
-				this.$http.get("/devices").then((response) => {
-					console.log(response.json());
-
-					this.devices = response.json();
-				});
+				
 			}
+		},
+
+		created() {
+			getDevices(this.$store);
 		}
 	}
 </script>
 
 <style lang="sass" scoped>
+	table {
+		width: 100%;
+
+		tr {
+
+			td {
+				text-align: center;
+			}
+
+		}
+
+	}
 </style>

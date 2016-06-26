@@ -9,12 +9,13 @@
 
 <script>
 	import { increment } from "../../vuex/actions";
+	import { count } from "../../vuex/getters";
 
 	export default {
 
 		vuex: {
 			getters: {
-				count: state => state.count
+				count
 			},
 			actions: {
 				increment
