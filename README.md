@@ -29,7 +29,7 @@ Inspired by dstroot/skeleton and sahat/hackathon-starter
 ## Usage
 For development
 ```bash
-$ gulp
+$ npm run dev
 ```
 
 For production
@@ -100,12 +100,13 @@ $ node server.js
 - Copy and paste *Consumer Key* and *Consumer Secret* keys into `secrets.json` file
 
 ## TODO
-* [ ] Organize gulp tasks
 * [x] style for login site
 * [ ] try Apollo graphql stack
 * [x] vue-router & vuex to client side
 * [ ] create a sample VueJS app
 * [ ] add Devices sample API test to client & server side
+* [ ] add test with nightmare & karma (mocha, chai, sinon)
+		https://github.com/MikaelSoderstrom/nightmarejs-demo
 
 
 ## Contribution

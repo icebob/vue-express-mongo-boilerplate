@@ -3,6 +3,8 @@
 let config 	= require("../config");
 let logger 	= require('../core/logger');
 
+let secrets 	= require('../core/secrets');
+
 let crypto = require('crypto');
 let async = require("async");
 let passport = require('passport');
@@ -12,6 +14,30 @@ let mailer = require("../libs/mailer");
 
 let User = require("../models/user");
 
+function checkAvailableSocialAuth() {
+	// set social options
+	let social = {};
+
+	if (secrets.apiKeys) {
+		if (secrets.apiKeys.google && secrets.apiKeys.google.clientID)
+			social.google = true;
+
+		if (secrets.apiKeys.facebook && secrets.apiKeys.facebook.clientID)
+			social.facebook = true;
+
+		if (secrets.apiKeys.github && secrets.apiKeys.github.clientID)
+			social.github = true;
+
+		if (secrets.apiKeys.twitter && secrets.apiKeys.twitter.clientID)
+			social.twitter = true;
+	}
+
+	if (Object.keys(social).length > 0)
+		return social;
+
+	return null;
+}
+
 module.exports = function(app, db) {
 
 	// Login page
@@ -19,7 +45,10 @@ module.exports = function(app, db) {
 		if (req.user != null) {
 			return res.redirect("/");
 		}
-		res.render('account/login');
+
+		res.render('account/login', {
+			socialAuth: checkAvailableSocialAuth()
+		});
 	});
 
 	// Logout
@@ -30,7 +59,10 @@ module.exports = function(app, db) {
 
 	// Sign-up
 	app.get('/signup', function(req, res) {
-		res.render("account/signup");
+		res.render('account/signup', {
+			socialAuth: checkAvailableSocialAuth()
+		});
+
 	});	
 
 	// User registration

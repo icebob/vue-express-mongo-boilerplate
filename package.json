@@ -4,7 +4,7 @@
   "title": "Vue-Express-Mongo BoilerPlate",
   "description": "Express NodeJS application server boilerplate with Mongo and VueJS",
   "main": "server.js",
-  "scripts": {    
+  "scripts": {
     "build": "webpack --progress --colors -p --config webpack.prod.config.js",
     "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -83,6 +83,7 @@
     "css-loader": "0.23.1",
     "file-loader": "0.9.0",
     "json-loader": "0.5.4",
+    "nightmare": "2.5.2",
     "postcss-loader": "0.9.1",
     "precss": "1.4.0",
     "style-loader": "0.13.1",

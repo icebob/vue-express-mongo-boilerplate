@@ -32,18 +32,23 @@ block content
 					.form-group
 						button.signup(type='submit') Login
 
-					.or
-						span or
+					if socialAuth
+						.or
+							span or
 
-					.socials
-						a.group.facebook(href="/auth/facebook", title="Login with Facebook")
-							i.fa.fa-facebook
-						a.group.google(href="/auth/google", title="Login with Google")
-							i.fa.fa-google-plus
-						a.group.twitter(href="/auth/twitter", title="Login with Twitter")
-							i.fa.fa-twitter
-						a.group.github(href="/auth/github", title="Login with Github")
-							i.fa.fa-github
+						.socials
+							if socialAuth.facebook
+								a.group.facebook(href="/auth/facebook", title="Login with Facebook")
+									i.fa.fa-facebook
+							if socialAuth.google
+								a.group.google(href="/auth/google", title="Login with Google")
+									i.fa.fa-google-plus
+							if socialAuth.twitter
+								a.group.twitter(href="/auth/twitter", title="Login with Twitter")
+									i.fa.fa-twitter
+							if socialAuth.github
+								a.group.github(href="/auth/github", title="Login with Github")
+									i.fa.fa-github
 
 					hr
 					.alreadyLink

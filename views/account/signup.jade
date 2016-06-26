@@ -43,14 +43,17 @@ block content
 					.form-group
 						button.signup(type='submit') Sign Up
 
-					.or
-						span or
+					if socialAuth
+						.or
+							span or
 
-					.socials
-						a.group.facebook(href="/auth/facebook", title="Sign up with Facebook")
-							i.fa.fa-facebook
-						a.group.google(href="/auth/google", title="Sign up with Google")
-							i.fa.fa-google-plus
+						.socials
+							if socialAuth.facebook
+								a.group.facebook(href="/auth/facebook", title="Sign up with Facebook")
+									i.fa.fa-facebook
+							if socialAuth.google
+								a.group.google(href="/auth/google", title="Sign up with Google")
+									i.fa.fa-google-plus
 
 					hr
 					.alreadyLink
