@@ -12,7 +12,7 @@ module.exports = {
 		description: pkg.description,
 		keywords: pkg.keywords.join(","),
 		url: 'http://localhost:3000/',
-		googleAnalyticsID: 'UA-xxxxx-x',
+		//googleAnalyticsID: 'UA-xxxxx-x',
 		contactEmail: "hello@boilerplate-app.com"
 	},
 

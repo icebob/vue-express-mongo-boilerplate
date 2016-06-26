@@ -1,0 +1,22 @@
+{
+	"ignore": ["node_modules", ".git", "web/**/*.*"],
+
+	"verbose": false,
+
+	"watch": [
+		"applogic",
+		"config",
+		"core",
+		"libs",
+		"models",
+		"routes",
+		"server.js",
+		"webpack.*.config.js"
+	],
+
+	"env": {
+		"NODE_ENV": "development"
+	},
+
+	"ext": "js, json"
+}
