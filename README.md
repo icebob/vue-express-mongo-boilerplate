@@ -3,7 +3,7 @@ This is a VueJS webapp boilerplate project with Express + Mongo server.
 Inspired by dstroot/skeleton and sahat/hackathon-starter
 
 ## Features
-* Server-side
+* **Server-side**
 	* **[Node.JS](https://nodejs.org)**
 	* **[Express](https://github.com/expressjs/express)**
 	* [MongoDB](https://www.mongodb.com/) with [Mongoose](https://github.com/Automattic/mongoose)
@@ -11,7 +11,7 @@ Inspired by dstroot/skeleton and sahat/hackathon-starter
 	* [Helmet](https://github.com/helmetjs/helmet)
 	* [Express-validator](https://github.com/ctavan/express-validator)
 	* [winston](https://github.com/winstonjs/winston)
-* Client-side
+* **Client-side**
  * **[VueJS](https://github.com/vuejs/vue)**
  * [Vuex]()
  * [Vue-router](https://github.com/vuejs/vue-router)
@@ -32,11 +32,16 @@ For development
 $ npm run dev
 ```
 
-For production
+Build web app scripts and styles:
 ```bash
 $ npm run build
-$ node server.js
 ```
+
+For production
+```bash
+$ NODE_ENV=production npm start
+```
+
 
 ## Obtaining API keys for social signup/login
 
