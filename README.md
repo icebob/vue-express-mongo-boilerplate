@@ -15,14 +15,14 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 
 **Client-side**
 * **[VueJS](https://github.com/vuejs/vue)**
-* [Vuex]()
+* [Vuex](https://github.com/vuejs/vuex)
 * [Vue-router](https://github.com/vuejs/vue-router)
 * [Vue-resource](https://github.com/vuejs/vue-resource)
 * **Websocket with [socket.io](https://github.com/socketio/socket.io)**
 * [Jade](https://github.com/pugjs/pug)
 * [Webpack](https://github.com/webpack/webpack)
 * SCSS
-* PostCSS with precss and autoprefixer
+* [PostCSS](https://github.com/postcss/postcss) with precss and autoprefixer
 * Babel
 * [Passwordless](https://www.sitepoint.com/passwordless-authentication-works/) mode
 * **[Passport.JS](http://passportjs.org/)**
@@ -107,12 +107,10 @@ $ NODE_ENV=production npm start
 - Copy and paste *Consumer Key* and *Consumer Secret* keys into `secrets.json` file
 
 ## TODO
-* [x] style for login site
-* [ ] try Apollo graphql stack
-* [x] vue-router & vuex to client side
 * [ ] add api/v1 routes
 * [ ] create a sample VueJS app
 * [ ] add Devices sample API test to client & server side
+* [ ] try Apollo graphql stack
 * [ ] add test with nightmare & mocha, chai, sinon
 		https://github.com/MikaelSoderstrom/nightmarejs-demo
 
