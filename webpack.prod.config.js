@@ -71,7 +71,7 @@ module.exports = {
             }
         }),
 
-        new ExtractTextPlugin('[name].css')
+        new ExtractTextPlugin('styles/[name].css')
 	],
 
 	postcss: function () {

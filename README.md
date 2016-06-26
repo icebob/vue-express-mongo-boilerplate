@@ -105,7 +105,7 @@ $ node server.js
 * [x] vue-router & vuex to client side
 * [ ] create a sample VueJS app
 * [ ] add Devices sample API test to client & server side
-* [ ] add test with nightmare & karma (mocha, chai, sinon)
+* [ ] add test with nightmare & mocha, chai, sinon
 		https://github.com/MikaelSoderstrom/nightmarejs-demo
 
 

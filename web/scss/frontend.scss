@@ -141,6 +141,11 @@ body {
 		label {
 
 		}
+
+		p {
+			text-align: center;
+			font-size: 0.9rem;
+		}
 		
 		input {
 			width: 100%;
@@ -304,6 +309,12 @@ body {
 			border: 0;
 			border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 			margin: 12px 0;
+		}
+
+		.forgot {
+			text-align: center;
+			font-size: 0.9rem;
+			margin: 0.5rem;
 		}
 		
 		.alreadyLink {
