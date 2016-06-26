@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+import Home from "../modules/home";
+import Devices from "../modules/devices";
+
 module.exports = function() {
 
 	Vue.use(VueRouter);
@@ -9,15 +12,15 @@ module.exports = function() {
 		linkActiveClass: "active"
 	});
 
-	/*
+	
 	router.map({
-		'/foo': {
-			component: Foo
+		'/devices': {
+			component: Devices
 		},
-		'/bar': {
-			component: Bar
+		'*': {
+			component: Home
 		}
-	});*/
+	});
 
 	return router;
 }

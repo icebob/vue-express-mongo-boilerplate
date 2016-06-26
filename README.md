@@ -101,7 +101,7 @@ $ node server.js
 
 ## TODO
 * [ ] Organize gulp tasks
-* [ ] style for login site
+* [x] style for login site
 * [ ] try Apollo graphql stack
 * [ ] vue-router & vuex to client side
 * [ ] create a sample VueJS app
