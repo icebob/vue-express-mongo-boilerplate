@@ -3,28 +3,29 @@ This is a VueJS webapp boilerplate project with Express + Mongo server.
 Inspired by dstroot/skeleton and sahat/hackathon-starter
 
 ## Features
-* **Server-side**
-	* **[Node.JS](https://nodejs.org)**
-	* **[Express](https://github.com/expressjs/express)**
-	* [MongoDB](https://www.mongodb.com/) with [Mongoose](https://github.com/Automattic/mongoose)
-	* [NodeMailer](https://github.com/nodemailer/nodemailer) with SMTP, MailGun or SendGrid
-	* [Helmet](https://github.com/helmetjs/helmet)
-	* [Express-validator](https://github.com/ctavan/express-validator)
-	* [winston](https://github.com/winstonjs/winston)
-* **Client-side**
- * **[VueJS](https://github.com/vuejs/vue)**
- * [Vuex]()
- * [Vue-router](https://github.com/vuejs/vue-router)
- * [Vue-resource](https://github.com/vuejs/vue-resource)
- * **Websocket with [socket.io](https://github.com/socketio/socket.io)**
- * [Jade](https://github.com/pugjs/pug)
- * [Webpack](https://github.com/webpack/webpack)
- * SCSS
- * PostCSS with precss and autoprefixer
- * Babel
- * [Passwordless](https://www.sitepoint.com/passwordless-authentication-works/) mode
- * **[Passport.JS](http://passportjs.org/)**
- 	* Social signup/login with Facebook, Google, Twitter, Github
+**Server-side**
+* **[Node.JS](https://nodejs.org)**
+* **[Express](https://github.com/expressjs/express)**
+* [MongoDB](https://www.mongodb.com/) with [Mongoose](https://github.com/Automattic/mongoose)
+* [NodeMailer](https://github.com/nodemailer/nodemailer) with SMTP, MailGun or SendGrid
+* [Helmet](https://github.com/helmetjs/helmet)
+* [Express-validator](https://github.com/ctavan/express-validator)
+* [winston](https://github.com/winstonjs/winston)
+
+**Client-side**
+* **[VueJS](https://github.com/vuejs/vue)**
+* [Vuex]()
+* [Vue-router](https://github.com/vuejs/vue-router)
+* [Vue-resource](https://github.com/vuejs/vue-resource)
+* **Websocket with [socket.io](https://github.com/socketio/socket.io)**
+* [Jade](https://github.com/pugjs/pug)
+* [Webpack](https://github.com/webpack/webpack)
+* SCSS
+* PostCSS with precss and autoprefixer
+* Babel
+* [Passwordless](https://www.sitepoint.com/passwordless-authentication-works/) mode
+* **[Passport.JS](http://passportjs.org/)**
+	* Social signup/login with Facebook, Google, Twitter, Github
 
 ## Usage
 For development
