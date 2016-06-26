@@ -1,4 +1,0 @@
-module.exports = {
-	INCREMENT: "INCREMENT",
-	ADD_DEVICES: "ADD_DEVICES"
-}

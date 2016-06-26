@@ -1,13 +1,13 @@
 import Vue from "vue";
-import types from "./types";
+import { INCREMENT, ADD_DEVICES } from "./mutation-types";
 
 export const increment = ({ dispatch }) => {
-	dispatch(types.INCREMENT);
+	dispatch(INCREMENT);
 }
 
 export const getDevices = ({ dispatch }) => {
 	Vue.http.get("/devices").then((response) => {
-		dispatch(types.ADD_DEVICES, response.json());
+		dispatch(ADD_DEVICES, response.json());
 	});
 
 }
