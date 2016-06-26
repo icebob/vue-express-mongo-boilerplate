@@ -1,5 +1,9 @@
 extends ../layout
 
+block styles
+	// Site stylesheet
+	link(rel='stylesheet', href='/app/styles/frontend.css')
+
 block content
 	.center-container
 		.panel
@@ -28,6 +32,10 @@ block content
 							.alert.alert-success
 								for info in messages.info
 									div= info.msg
+
+					if messages.error
+						.forgot
+							a(href='/forgot') Forgot your password?
 
 					.form-group
 						button.signup(type='submit') Login

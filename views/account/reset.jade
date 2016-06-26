@@ -1,31 +1,38 @@
 extends ../layout
 
+block styles
+	// Site stylesheet
+	link(rel='stylesheet', href='/app/styles/frontend.css')
+
 block content
-	.col-sm-8.col-sm-offset-2
+	.center-container
+		.panel
+			.bg
+			.bg-overlay
+			.content
+				form(method='POST')
+					input(type='hidden', name='_csrf', value=_csrf)
 
-		form(method='POST')
-			legend Reset Password
-			input(type='hidden', name='_csrf', value=_csrf)
-				
-			.form-group
-				label(for='password') New Password
-				input.form-control(type='password', name='password', id='password', placeholder='New password', autofocus, required)
-			.form-group
-				label(for='confirm') Confirm Password
-				input.form-control(type='password', name='confirm', id='confirm', placeholder='Confirm password', required)
+					header Reset
+						
+					.form-group
+						label(for='password') New Password
+						input.form-control(type='password', name='password', id='password', placeholder='New password', autofocus, required)
+					.form-group
+						label(for='confirm') Confirm Password
+						input.form-control(type='password', name='confirm', id='confirm', placeholder='Confirm password', required)
 
-			if messages.info
-				.alert.alert-info
-					for info in messages.info
-						div= info.msg
-			if messages.error
-				.alert.alert-danger
-					for error in messages.error
-						div= error.msg			
-			.form-group
-				button.btn.btn-primary.btn-reset(type='submit')
-					i.fa.fa-keyboard-o
-					| Change Password
+					.flash
+						if messages.info
+							.alert.alert-success
+								for info in messages.info
+									div= info.msg
+						if messages.error
+							.alert.alert-danger
+								for error in messages.error
+									div= error.msg	
+					.form-group
+						button(type='submit') Change Password
 
 block scripts
 	script(src='/app/frontend.js')					
