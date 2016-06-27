@@ -4,8 +4,6 @@ var webpack = require("webpack");
 
 var precss = require("precss");
 var autoprefixer = require("autoprefixer");
-var postscss = require("postcss-scss");
-// var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
 	devtool: 'eval-source-map',
