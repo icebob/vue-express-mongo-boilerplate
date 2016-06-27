@@ -27,6 +27,7 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 * [Passwordless](https://www.sitepoint.com/passwordless-authentication-works/) mode
 * **[Passport.JS](http://passportjs.org/)**
 	* Social signup/login with Facebook, Google, Twitter, Github
+	* API key authentication for REST API calls
 
 ## Usage
 For development

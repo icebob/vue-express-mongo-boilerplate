@@ -2,14 +2,43 @@
 
 let logger = require('../logger');
 let config = require("../../config");
+let passport = require("passport");
 
 let User 	= require('../../models/user');
 
 module.exports.isAuthenticated = function isAuthenticated(req, res, next) {
 	if (req.isAuthenticated())
 		return next();
-	else
+	else {
 		return res.sendStatus(401);
+	}
+};
+
+module.exports.isAuthenticatedOrApiKey = function isAuthenticated(req, res, next) {
+	if (req.isAuthenticated())
+		return next();
+	else {
+		// Try authenticate with API KEY
+		if (req.headers.apikey || req.query.apikey || req.body.apikey) {
+			passport.authenticate('localapikey', (err, user, info) => {
+				if (err) 
+					return res.sendStatus(50);
+
+				if (!user)
+					return res.status(401).send(info.message || '');
+
+				req.login(user, function(err) {
+					if (err) 
+						return res.sendStatus(50);
+
+					return next();
+				});
+
+			})(req, res, next);
+		}
+		else
+			return res.sendStatus(401);
+	}
 };
 
 module.exports.hasRole = function hasRole(roleRequired) {

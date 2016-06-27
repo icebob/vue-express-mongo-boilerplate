@@ -7,29 +7,27 @@ let response  = require('../core/response');
 
 module.exports = function(app, db) {
 
-	if (config.isDevMode()) {
-		app.use(function(err, req, res, next) {
-			if (!err) {
-				return next();
-			}
+	app.use(function(err, req, res, next) {
+		if (!err) {
+			return next();
+		}
 
-			logger.error(err.stack);
-			res.status(err.status || 500);
+		logger.error(err.stack);
+		res.status(err.status || 500);
 
-			 // Respond with html page
-			if (req.accepts('html')) {
-				return res.render('500', {
-					url: req.originalUrl,
-					error: err
-				});
-			}
+		 // Respond with html page
+		if (req.accepts('html')) {
+			return res.render('500', {
+				url: req.originalUrl,
+				error: err
+			});
+		}
 
-			// Respond with json
-			if (req.accepts('json')) {
-				return response.json(res, null, response.SERVER_ERROR);
-			}
-		});
-	}
+		// Respond with json
+		if (req.accepts('json')) {
+			return response.json(res, null, response.SERVER_ERROR);
+		}
+	});
 
 	app.use(function(req, res) {
 		res.status(404);

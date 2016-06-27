@@ -14,7 +14,7 @@ module.exports = function(app, db) {
 
 	let router = express.Router();
 
-	//router.use(auth.isAuthenticated);
+	router.use(auth.isAuthenticatedOrApiKey);
 
 	router.route('/')
 		
