@@ -16,8 +16,11 @@ module.exports = function(app, db) {
 
 	//router.use(auth.isAuthenticated);
 
-	// Get device list
 	router.route('/')
+		
+		/**
+		 * Get all devices
+		 */
 		.get((req, res) => {
 		
 			Device.find({}).exec((err, docs) => {
@@ -37,7 +40,9 @@ module.exports = function(app, db) {
 			});
 		})
 		
-		// Save new device
+		/**
+		 * Save a new device
+		 */
 		.post((req, res) => {
 
 			req.assert('name', 'Device name cannot be blank!').notEmpty();
@@ -62,7 +67,10 @@ module.exports = function(app, db) {
 			});
 		});
 
-	// Resolve deviceID and device
+	/**
+	 * Resolve the deviceID URL parameter. First decode the hashed ID 
+	 * and search device by ID in database
+	 */
 	router.param("deviceID", function(req, res, next, deviceID) {
 		let id = hashids.decodeHex(deviceID);
 		if (id == null || id == "")
@@ -80,19 +88,27 @@ module.exports = function(app, db) {
 		});
 	})
 
+	/**
+	 * Handle deviceID specific routes
+	 */
 	router.route("/:deviceID")
 
+		// Call every request method
 		.all((req, res, next) => {
 
 			next();
 		})
 
-		// Get device
+		/**
+		 * Get a devices
+		 */
 		.get((req, res) => {
 			return response.json(res, req.device.toJSON());
 		})
 
-		// Modify device
+		/**
+		 * Modify a device
+		 */
 		.put((req, res) => {
 			if (req.body.address != null)
 				req.device.address = req.body.address;
@@ -117,7 +133,9 @@ module.exports = function(app, db) {
 			});
 		})
 
-		// Delete device
+		/**
+		 * Delete a devices
+		 */
 		.delete((req, res) => {
 			Device.remove({ _id: req.device.id }, (err) => {
 				if (err)
