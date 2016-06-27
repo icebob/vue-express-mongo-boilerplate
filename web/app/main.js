@@ -14,6 +14,7 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 //Vue.http.headers.common['X-CSRF-TOKEN'] = $('input[name="csrf"]').val();
+Vue.http.headers.common['Accept'] = "application/json";
 
 Vue.config.debug = true;
 

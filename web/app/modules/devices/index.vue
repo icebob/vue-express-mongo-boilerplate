@@ -13,29 +13,43 @@
 					th Last communication
 
 			tbody
-				tr(v-for="device in devices")
+				tr(v-for="device in devices", @click="selectDevice(device)", :class="{ selected: device == selected }")
 					td {{ device.code }}
 					td {{ device.address }}
 					td {{ device.name }}
 					td {{ device.description }}
-					td {{ device.status }}
+					td {{ device.status | status }}
 					td {{ device.lastCommunication | ago }}
 
 
 </template>
 
 <script>
-	import { getDevices } from "../../vuex/actions";
+	import { getDevices, selectDevice } from "../../vuex/actions";
 	
-	import { devices } from "../../vuex/getters";
+	import { devices, selected } from "../../vuex/getters";
 
 	export default {
 
 		vuex: {
 			getters: {
-				devices
+				devices,
+				selected
+			},
+
+			actions: {
+				selectDevice
 			}
-		},			
+		},	
+
+		filters: {
+			status(val) {
+				if (val == 1)
+					return "Active";
+				else
+					return "Inactive";
+			}
+		},	
 
 		route: {
 			activate() {
@@ -54,15 +68,21 @@
 </script>
 
 <style lang="sass" scoped>
+	@import "../../../scss/variables";
+
 	table {
 		width: 100%;
 
 		tr {
+			cursor: pointer;
 
 			td {
 				text-align: center;
 			}
 
+			&.selected {
+				background-color: rgba($masterColor, 0.3);
+			}
 		}
 
 	}

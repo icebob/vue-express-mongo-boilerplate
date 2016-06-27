@@ -3,6 +3,8 @@
 let config  = require("../config");
 let logger  = require('../core/logger');
 
+let response  = require('../core/response');
+
 module.exports = function(app, db) {
 
 	if (config.isDevMode()) {
@@ -24,12 +26,7 @@ module.exports = function(app, db) {
 
 			// Respond with json
 			if (req.accepts('json')) {
-				return res.json({ 
-					error: {
-						code: err.status || 500,
-						msg: 'Server error!' 
-					}
-				});
+				return response.json(res, null, response.SERVER_ERROR);
 			}
 		});
 	}
@@ -50,12 +47,7 @@ module.exports = function(app, db) {
 
 		// Respond with json
 		if (req.accepts('json')) {
-			return res.json({ 
-				error: {
-					code: 404,
-					msg: 'Not found!'
-				} 
-			});
+			return response.json(res, null, response.NOT_FOUND);
 		}
 	});
 

@@ -1,13 +1,18 @@
-import { ADD_DEVICES } from "../mutation-types";
+import { ADD_DEVICES, SELECT_DEVICE } from "../mutation-types";
 
 const state = {
-	all: []
+	all: [],
+	selected: null
 }
 
 const mutations = {
 	[ADD_DEVICES] (state, devices) {
 		state.all.splice(0);
 		state.all.push(...devices);
+	},
+
+	[SELECT_DEVICE] (state, device) {
+		state.selected = device;
 	}
 }
 

@@ -6,9 +6,9 @@ let config 			= require("../../../config");
 let express			= require("express");
 
 let auth			= require("../../../core/auth/helper");
+let response		= require("../../../core/response");
 let Device 			= require("../../../models/devices");
 let hashids			= require("../../../libs/hashids");
-let response		= require("../../../libs/response");
 
 module.exports = function(app, db) {
 
