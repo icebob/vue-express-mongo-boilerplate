@@ -1,15 +1,15 @@
 import Vue from "vue";
-import { ADD_DEVICES, SELECT_DEVICE } from "../../mutation-types";
+import { LOAD_DEVICES, ADD_DEVICE, SELECT_DEVICE, UPDATE_DEVICE, REMOVE_DEVICE } from "../../mutation-types";
 
 export const selectDevice = ({ dispatch }, device) => {
 	dispatch(SELECT_DEVICE, device);
 }
 
-export const getDevices = ({ dispatch }) => {
+export const downloadDevices = ({ dispatch }) => {
 	Vue.http.get("/devices").then((response) => {
 		let res = response.json();
 		if (res.status == 200)
-			dispatch(ADD_DEVICES, res.data);
+			dispatch(LOAD_DEVICES, res.data);
 		else
 			console.error("Request error!", res.error);
 
@@ -17,4 +17,16 @@ export const getDevices = ({ dispatch }) => {
 		console.error("Request error!", response.statusText);
 	});
 
+}
+
+export const addDevice = ({ dispatch }, device) => {
+	dispatch(ADD_DEVICE, device);
+}
+
+export const updateDevice = ({ dispatch }, device) => {
+	dispatch(UPDATE_DEVICE, device);
+}
+
+export const removeDevice = ({ dispatch }, device) => {
+	dispatch(REMOVE_DEVICE, device);
 }

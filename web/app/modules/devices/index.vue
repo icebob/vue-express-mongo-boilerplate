@@ -13,7 +13,7 @@
 					th Last communication
 
 			tbody
-				tr(v-for="device in devices", @click="select(device)", :class="{ selected: device == selected, inactive: device.status != 1 }")
+				tr(v-for="device in devices", @click="selectDevice(device)", :class="{ selected: device == selected, inactive: device.status != 1 }")
 					td {{ device.code }}
 					td {{ device.address }}
 					td {{ device.name }}
@@ -49,7 +49,7 @@
 
 	import { cloneDeep } from "lodash";
 
-	import { getDevices, selectDevice } from "../../vuex/modules/devices/actions";
+	import { downloadDevices, selectDevice, addDevice, updateDevice, removeDevice } from "../../vuex/modules/devices/actions";
 	import { devices, selected } from "../../vuex/modules/devices/getters";
 
 	// Initialize vue-form-generator
@@ -77,7 +77,11 @@
 				selected
 			},
 			actions: {
-				selectDevice
+				downloadDevices, 
+				selectDevice, 
+				addDevice, 
+				updateDevice, 
+				removeDevice
 			}
 		},	
 
@@ -99,13 +103,14 @@
 			}
 		},	
 
-		methods: {
-			select(device) {
+		watch: {
+			selected() {
 				this.isNewModel = false;
-				this.model = cloneDeep(device);
+				this.model = cloneDeep(this.selected);
+			}
+		},
 
-				this.selectDevice(device);
-			},
+		methods: {
 
 			newModel() {
 				console.log("Create new model...");
@@ -127,13 +132,15 @@
 
 					if (this.isNewModel) {
 						this.$http.post("/devices", this.model).then((response) => {
-							let res = response.json();
-							// TODO add new device to store.device.all
+							let res = response.data;
+							if (res.data)
+								this.addDevice(res.data);
 						});						
 					} else
 						this.$http.put("/devices/" + this.model.code, this.model).then((response) => {
-							let res = response.json();
-							// TODO refresh device properties from response
+							let res = response.data;
+							if (res.data)
+								this.updateDevice(res.data);
 						});
 
 				} else {
@@ -143,8 +150,10 @@
 
 			deleteModel() {
 				if (this.selected) {
-					this.$http.delete("/devices/" + this.model.code).then((response) => {
+					let device = this.selected;
+					this.$http.delete("/devices/" + device.code).then((response) => {
 						this.selectDevice(null);
+						this.removeDevice(device);
 					});
 				}
 			},
@@ -165,7 +174,7 @@
 		},
 
 		created() {
-			getDevices(this.$store);
+			this.downloadDevices();
 		}
 	}
 </script>

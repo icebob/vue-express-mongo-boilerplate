@@ -112,6 +112,7 @@ $ NODE_ENV=production npm start
 * [ ] rewrite account.js response handlers
 * [ ] add Devices sample API test to client & server side
 * [ ] try Apollo graphql stack
+* [ ] remove not verified accounts with agenda after 1 day
 * [ ] add test with nightmare & mocha, chai, sinon
 		https://github.com/MikaelSoderstrom/nightmarejs-demo
 
