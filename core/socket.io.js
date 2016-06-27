@@ -81,5 +81,7 @@ module.exports = function (app, db) {
 
 	});
 
+	server.io = io;
+
 	return server;
 };

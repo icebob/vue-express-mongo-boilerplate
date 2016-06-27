@@ -64,7 +64,7 @@
 				isNewModel: false,
 
 				formOptions: {
-					validateAfterLoad: true,
+					validateAfterLoad: false,
 					validateAfterChanged: false,
 					validateBeforeSave: true
 				}
@@ -114,11 +114,13 @@
 
 			newModel() {
 				console.log("Create new model...");
+
 				this.selectDevice(null);
 
 				let newRow = VueFormGenerator.schema.createDefaultObject(Schema)
 				this.isNewModel = true;
 				this.model = newRow;
+
 
 				let el = document.querySelector("div.form input:nth-child(1):not([readonly]):not(:disabled)");
 				if (el)
@@ -133,8 +135,9 @@
 					if (this.isNewModel) {
 						this.$http.post("/devices", this.model).then((response) => {
 							let res = response.data;
-							if (res.data)
-								this.addDevice(res.data);
+							// It's not neccessary, because we will get the new object via websocket
+							//if (res.data)
+							//	this.addDevice(res.data);
 						});						
 					} else
 						this.$http.put("/devices/" + this.model.code, this.model).then((response) => {

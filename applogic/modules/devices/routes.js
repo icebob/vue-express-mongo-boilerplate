@@ -64,7 +64,10 @@ module.exports = function(app, db) {
 				if (err)
 					return response.json(res, null, response.SERVER_ERROR, err);
 
-				return response.json(res, device.toJSON());
+				let json = device.toJSON();
+				app.io.emit("newDevice", json);
+
+				return response.json(res, json);
 			});
 		});
 
@@ -130,7 +133,10 @@ module.exports = function(app, db) {
 				if (err)
 					return response.json(res, null, response.BAD_REQUEST, err);
 
-				return response.json(res, req.device.toJSON());
+				let json = req.device.toJSON();
+				app.io.emit("updateDevice", json);
+
+				return response.json(res, json);
 			});
 		})
 
@@ -141,6 +147,8 @@ module.exports = function(app, db) {
 			Device.remove({ _id: req.device.id }, (err) => {
 				if (err)
 					return response.json(res, null, response.BAD_REQUEST, err);
+
+				app.io.emit("removeDevice", req.device.toJSON());
 
 				return response.json(res);
 			});

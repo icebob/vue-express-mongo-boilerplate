@@ -1,6 +1,6 @@
 import { LOAD_DEVICES, ADD_DEVICE, SELECT_DEVICE, UPDATE_DEVICE, REMOVE_DEVICE } from "../../mutation-types";
 
-import { each, assign, remove } from "lodash";
+import { each, find, assign, remove } from "lodash";
 
 const state = {
 	all: [],
@@ -30,8 +30,13 @@ const mutations = {
 	},
 
 	[REMOVE_DEVICE] (state, device) {
-		state.all.$remove(device);
-		state.selected = null;
+		// We need find the exact object, because device may come via websocket
+		let found = find(state.all, (item) => item.id == device.id);
+
+		if (found) {
+			state.all.$remove(found);
+			state.selected = null;
+		}
 	}	
 }
 

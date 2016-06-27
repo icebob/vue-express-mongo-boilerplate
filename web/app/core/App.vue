@@ -20,6 +20,7 @@
 	import store from "../vuex/store";
 
 	import { changeValue } from "../vuex/modules/counter/actions";
+	import { addDevice, updateDevice, removeDevice } from "../vuex/modules/devices/actions";
 
 	export default {
 		store: store,
@@ -31,7 +32,10 @@
 
 		vuex: {
 			actions: {
-				changeValue
+				changeValue, 
+				addDevice,
+				updateDevice,
+				removeDevice
 			}
 		},
 
@@ -44,7 +48,23 @@
 				console.log("New counter value: " + msg);
 				this.changeValue(msg);
 
-			})
+			});
+
+
+			this.$socket.on("newDevice", (device) => {
+				console.log("New device added: ", device);
+				this.addDevice(device);
+			});			
+
+			this.$socket.on("updateDevice", (device) => {
+				console.log("Update device: ", device);
+				this.updateDevice(device);
+			});			
+
+			this.$socket.on("removeDevice", (device) => {
+				console.log("Remove device: ", device);
+				this.removeDevice(device);
+			});			
 
 			window.app = this;
 		},

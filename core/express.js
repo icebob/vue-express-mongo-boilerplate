@@ -211,7 +211,10 @@ module.exports = function(db) {
 	require("../routes")(app, db);
 
 	// Load socket.io server
-	app = require('./socket.io')(app, db);
+	let server = require('./socket.io')(app, db);
 
-	return app;
+	// Make pointer to Socket.IO object
+	app.io = server.io;
+
+	return server;
 };
