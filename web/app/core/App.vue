@@ -16,12 +16,10 @@
 
 <script>
 	import Vue from "vue";
-	import io from "socket.io-client";
+	import socket from "./socket-io";
 	import store from "../vuex/store";
 
 	import { changeValue } from "../vuex/modules/counter/actions";
-
-	Vue.prototype.$socket = io();
 
 	export default {
 		store: store,
@@ -31,20 +29,22 @@
 			}
 		},
 
+		vuex: {
+			actions: {
+				changeValue
+			}
+		},
+
 		created() {
 			console.log("App started!");
 
-			this.$socket.on("connect", () => {
-				console.log("WS connected!", this.$socket);
+			this.$socket.emit("welcome", "Hi I'm here!");
 
-				this.$socket.emit("welcome", "Hi I'm here!");
+			this.$socket.on("counter", (msg) => {
+				console.log("New counter value: " + msg);
+				this.changeValue(msg);
 
-				this.$socket.on("counter", (msg) => {
-					console.log("New counter value: ", msg);
-					changeValue(this.$store, msg);
-
-				})
-			});
+			})
 
 			window.app = this;
 		},

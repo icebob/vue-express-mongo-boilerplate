@@ -3,6 +3,8 @@
 let logger 			= require('./logger');
 let config 			= require("../config");
 
+let tokgen 			= require('../libs/tokgen');
+
 let User 			= require("../models/user");
 
 module.exports = function() {
@@ -17,7 +19,8 @@ module.exports = function() {
 				username: "admin",
 				password: "admin1234",
 				provider: "local",
-				roles: ["admin", "user"]
+				roles: ["admin", "user"],
+				verified: true
 			});
 
 			admin.save(function(err) {
@@ -30,7 +33,9 @@ module.exports = function() {
 					username: "test",
 					password: "test1234",
 					provider: "local",
-					roles: ["user"]
+					roles: ["user"],
+					verified: true,
+					apiKey: tokgen()
 				});
 				
 				test.save(function() {
