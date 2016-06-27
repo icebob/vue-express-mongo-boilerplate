@@ -19,7 +19,7 @@
 	import io from "socket.io-client";
 	import store from "../vuex/store";
 
-	import { changeValue } from "../vuex/actions";
+	import { changeValue } from "../vuex/modules/counter/actions";
 
 	Vue.prototype.$socket = io();
 

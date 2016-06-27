@@ -1,17 +1,5 @@
 import Vue from "vue";
-import { INCREMENT, DECREMENT, CHANGE_VALUE, ADD_DEVICES, SELECT_DEVICE } from "./mutation-types";
-
-export const increment = ({ dispatch }) => {
-	dispatch(INCREMENT);
-}
-
-export const decrement = ({ dispatch }) => {
-	dispatch(DECREMENT);
-}
-
-export const changeValue = ({ dispatch }, newValue) => {
-	dispatch(CHANGE_VALUE, newValue);
-}
+import { ADD_DEVICES, SELECT_DEVICE } from "../../mutation-types";
 
 export const selectDevice = ({ dispatch }, device) => {
 	dispatch(SELECT_DEVICE, device);

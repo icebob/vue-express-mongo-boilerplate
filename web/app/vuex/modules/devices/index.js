@@ -1,4 +1,4 @@
-import { ADD_DEVICES, SELECT_DEVICE } from "../mutation-types";
+import { ADD_DEVICES, SELECT_DEVICE } from "../../mutation-types";
 
 const state = {
 	all: [],

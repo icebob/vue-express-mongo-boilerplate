@@ -21,7 +21,9 @@ module.exports = {
 				{ id: "nanopi", name: "NanoPI" },
 				{ id: "pc", name: "PC" }
 			],
-			default: "raspberry"
+			default: "rasperry",
+			validator: validators.required
+
 		},	
 		{
 			type: "text",
