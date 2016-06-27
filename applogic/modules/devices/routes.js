@@ -7,7 +7,7 @@ let express			= require("express");
 
 let auth			= require("../../../core/auth/helper");
 let response		= require("../../../core/response");
-let Device 			= require("../../../models/devices");
+let Device 			= require("./model.device");
 let hashids			= require("../../../libs/hashids");
 
 module.exports = function(app, db) {

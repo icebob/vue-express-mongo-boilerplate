@@ -4,9 +4,10 @@ let logger 			= require('../core/logger');
 let config 			= require("../config");
 
 let path 			= require("path");
+let chalk 			= require("chalk");
 
 logger.info("");
-logger.info("Search socket handlers...");
+logger.info(chalk.bold("Search socket handlers..."));
 
 module.exports.handlers = config.getGlobbedFiles(path.join(__dirname, "modules", "**", "*socket.js"));
 

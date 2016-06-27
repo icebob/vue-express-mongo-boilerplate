@@ -4,11 +4,12 @@ let logger 			= require('../core/logger');
 let config 			= require("../config");
 
 let path 			= require("path");
+let chalk 			= require("chalk");
 
 module.exports = function(app, db) {
 
 	logger.info("");
-	logger.info("Search routes...");
+	logger.info(chalk.bold("Search routes..."));
 
 	let files = config.getGlobbedFiles(path.join(__dirname, "modules", "**", "*routes.js"));
 
