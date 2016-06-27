@@ -101,7 +101,10 @@ let UserSchema = new Schema({
 	},
 
 	apiKey: {
-		type: String
+		type: String,
+		unique: true,
+		index: true,
+		sparse: true
 	},
 
 	/* Mongoose add createdAt and updatedAt fields automatically

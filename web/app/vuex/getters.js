@@ -1,5 +1,5 @@
 export function count(state) {
-	return state.count.count;
+	return state.counter.count;
 }
 
 export function devices(state) {

@@ -19,12 +19,12 @@
 	import io from "socket.io-client";
 	import store from "../vuex/store";
 
+	import { changeValue } from "../vuex/actions";
+
 	Vue.prototype.$socket = io();
 
 	export default {
 		store: store,
-
-
 
 		data () {
 			return {
@@ -38,6 +38,12 @@
 				console.log("WS connected!", this.$socket);
 
 				this.$socket.emit("welcome", "Hi I'm here!");
+
+				this.$socket.on("counter", (msg) => {
+					console.log("New counter value: ", msg);
+					changeValue(this.$store, msg);
+
+				})
 			});
 
 			window.app = this;

@@ -108,8 +108,8 @@ $ NODE_ENV=production npm start
 - Copy and paste *Consumer Key* and *Consumer Secret* keys into `secrets.json` file
 
 ## TODO
-* [ ] add api/v1 routes
 * [ ] create a sample VueJS app
+* [ ] rewrite account.js response handlers
 * [ ] add Devices sample API test to client & server side
 * [ ] try Apollo graphql stack
 * [ ] add test with nightmare & mocha, chai, sinon

@@ -4,12 +4,14 @@ let config 	= require("../config");
 let logger 	= require('../core/logger');
 
 let secrets 	= require('../core/secrets');
+let tokgen 		= require('../libs/tokgen');
 
 let crypto = require('crypto');
 let async = require("async");
 let passport = require('passport');
 let express = require("express");
 
+let response = require("../core/response");
 let mailer = require("../libs/mailer");
 
 let User = require("../models/user");
@@ -503,4 +505,31 @@ module.exports = function(app, db) {
 			res.redirect("/");
 		});
 	});
+
+	// Generate API key
+	app.get('/generateAPIKey', function(req, res) {
+		if (!req.isAuthenticated())
+			return response.json(res, null, response.UNAUTHORIZED);
+		
+		User
+			.findById(req.user.id)
+			.exec((err, user) => {
+				if (err) 
+					return response.json(res, null, response.SERVER_ERROR);
+
+				if (!user) {
+					return response.json(res, null, response.NOT_FOUND, "Invalid user!");
+				}
+
+				user.apiKey = tokgen();
+
+				user.save((err) => {
+					if (err) 
+						return response.json(res, null, response.SERVER_ERROR);
+
+					return response.json(res, user);
+				})
+
+			});
+	});	
 };

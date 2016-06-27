@@ -3,12 +3,19 @@
 		h2 Home page
 
 		h3 {{ count }}
-		button(@click="inc") Increment
+		button(@click="inc") 
+			i.fa.fa-arrow-up 
+			| Increment
+		br
+		br
+		button(@click="dec") 
+			i.fa.fa-arrow-up 
+			| Decrement
 
 </template>
 
 <script>
-	import { increment } from "../../vuex/actions";
+	import { increment, decrement } from "../../vuex/actions";
 	import { count } from "../../vuex/getters";
 
 	export default {
@@ -18,14 +25,20 @@
 				count
 			},
 			actions: {
-				increment
+				increment, 
+				decrement
 			}
 		},	
 
 		methods: {
 			inc() {
 				this.increment(this.store);
-				this.$socket.emit("inc", this.count);
+				this.$socket.emit("counter", this.count);
+			},
+
+			dec() {
+				this.decrement(this.store);
+				this.$socket.emit("counter", this.count);
 			}
 		}
 
