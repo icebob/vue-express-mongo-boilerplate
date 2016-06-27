@@ -51,7 +51,7 @@ module.exports = {
 			type: "label",
 			label: "Last communication",
 			model: "lastCommunication",
-			get(model) { return model && model.created ? moment(model.created).format("LLL") : "-"; }
+			get(model) { return model && model.lastCommunication ? moment(model.lastCommunication).fromNow() : "-"; }
 		},
 		{
 			type: "switch",

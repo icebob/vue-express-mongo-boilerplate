@@ -13,7 +13,7 @@
 					th Last communication
 
 			tbody
-				tr(v-for="device in devices", @click="select(device)", :class="{ selected: device == selected }")
+				tr(v-for="device in devices", @click="select(device)", :class="{ selected: device == selected, inactive: device.status != 1 }")
 					td {{ device.code }}
 					td {{ device.address }}
 					td {{ device.name }}
@@ -22,6 +22,8 @@
 					td {{ device.lastCommunication | ago }}
 
 		.device-form
+			vue-form-generator(:schema='schema', :model='model', :options='formOptions', :multiple="false", v-ref:form, :is-new-model="isNewModel")
+
 			.errors.text-center
 				div.alert.alert-danger(v-for="item in validationErrors", track-by="$index") {{ item.field.label}}: 
 					strong {{ item.error }}
@@ -37,7 +39,6 @@
 					i.fa.fa-trash
 					| Delete
 
-			vue-form-generator(:schema='schema', :model='model', :options='formOptions', :multiple="false", v-ref:form, :is-new-model="isNewModel")
 
 </template>
 
@@ -100,9 +101,10 @@
 
 		methods: {
 			select(device) {
+				this.isNewModel = false;
 				this.model = cloneDeep(device);
 
-				this.selectDevice(this.$store, device);
+				this.selectDevice(device);
 			},
 
 			newModel() {
@@ -181,10 +183,30 @@
 				text-align: center;
 			}
 
+			&.inactive {
+				font-style: italic;
+				color: #BBB;
+			}
+
 			&.selected {
 				background-color: rgba($masterColor, 0.3);
 			}
 		}
 
+	}
+
+	.device-form {
+		background-color: #EEE;
+		color: Black;
+
+		margin: 1rem;
+
+		.buttons {
+			padding: 0.5rem;
+
+			button {
+				margin: 0 0.3rem;
+			}
+		}
 	}
 </style>
