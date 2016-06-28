@@ -15,12 +15,13 @@
 </template>
 
 <script>
-	import io from "socket.io-client";
+	import MixinsIO from "../../core/mixins/io";
 
 	import * as actions from "./vuex/actions";
 	import * as getters from "./vuex/getters";
 
 	export default {
+		mixins: [ MixinsIO("/counter") ],
 
 		vuex: {
 			getters,
@@ -39,21 +40,12 @@
 			}
 		},
 
-		created() {
-			console.log("Created counter page");
-			this.$socket = io.connect("/counter");
-
-			this.$socket.on("changed", (msg) => {
+		sockets: {
+			changed(msg) {
 				console.log("New counter value: " + msg);
 				this.changeValue(msg);
-			});		
-
-		},
-
-		destroyed() {
-			this.$socket.off("changed");
-		}		
-
+			}
+		}
 	}
 </script>
 

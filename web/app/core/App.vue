@@ -17,35 +17,26 @@
 <script>
 	import Vue from "vue";
 	import VueFormGenerator from "vue-form-generator";
-	import IO from "socket.io-client";
+	import MixinsIO from "./mixins/io";
 	import store from "../store";
 
-	// Initialize vue-form-generator
+	// Register vue-form-generator
 	Vue.use(VueFormGenerator);
 
 	export default {
+		mixins: [ MixinsIO() ],
+
 		store: store,
 
-		data () {
-			return {
+		sockets: {
+			connect() {
+				this.$socket.emit("welcome", "Hello! " + navigator.userAgent);
 			}
 		},
 
 		created() {
 			console.log("App started!");
-
-			this.$socket = IO();
-			this.$socket.on("connect", () => {
-				console.log("Websocket connected!");
-
-				this.$socket.emit("welcome", "Hello! " + navigator.userAgent);
-			})
-
 			window.app = this;
-		},
-		destroyed() {
-			if (this.$socket)
-				this.$socket.disconnect();
 		}
 	}
 </script>

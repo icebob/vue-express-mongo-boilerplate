@@ -14,7 +14,7 @@ let favicon 		= require('serve-favicon');
 let morgan 			= require('morgan');
 let bodyParser 		= require('body-parser');
 let cookieParser	= require('cookie-parser');
-let expressValidator= require('express-validator');
+let validator 		= require('express-validator');
 let csrf 			= require('csurf');
 
 let session 		= require("express-session");
@@ -58,7 +58,7 @@ function initMiddleware(app) {
 		extended: true,
 		limit: config.contentMaxLength * 2
 	}));
-	app.use(expressValidator());
+	app.use(validator());
 	app.use(bodyParser.json());	
 	app.use(methodOverride());
 

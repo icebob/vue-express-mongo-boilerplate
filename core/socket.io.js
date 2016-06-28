@@ -19,8 +19,9 @@ let socketHandlers  = require('../applogic/socketHandlers');
 
 let self = {
 
-	/*
-		IO namespaces
+	/**
+	 * IO namespaces
+	 * @type {Object}
 	 */
 	namespaces: {},
 
@@ -83,7 +84,7 @@ let self = {
 	 * @param  {Object} mongoStore Mongo Session store
 	 */
 	initNameSpace(ns, io, mongoStore) {
-		
+
 		// Intercept Socket.io's handshake request
 		io.use(function (socket, next) {
 			// Use the 'cookie-parser' module to parse the request cookies

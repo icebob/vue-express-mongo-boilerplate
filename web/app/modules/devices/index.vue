@@ -7,10 +7,13 @@
 	import AdminPage from '../../core/DefaultAdminPage.vue';
 	import schema from "./schema";
 
+	import MixinsIO from "../../core/mixins/io";
+
 	import * as actions from "./vuex/actions";
 	import * as getters from "./vuex/getters";
 
 	export default {
+		mixins: [ MixinsIO("/devices") ],
 
 		components: {
 			AdminPage: AdminPage
@@ -37,33 +40,25 @@
 			}
 		},
 
-		created() {
-			this.downloadRows();
-
-			console.log("Add io handlers...");
-
-			this.$socket.on("newDevice", (row) => {
+		sockets: {
+			new(row) {
 				console.log("New device: ", row);
 				this.rowAdded(row);
-			});			
+			},
 
-			this.$socket.on("updateDevice", (row) => {
+			update(row) {
 				console.log("Update device: ", row);
 				this.rowChanged(row);
-			});			
+			},
 
-			this.$socket.on("removeDevice", (row) => {
+			remove(row) {
 				console.log("Remove device: ", row);
-				this.rowRemoved(row);
-			});			
+				this.rowRemoved(row);	
+			}
+		},		
 
-		},
-
-		destroyed() {
-			console.log("Remove io handlers...");
-			this.$socket.off("newDevice");
-			this.$socket.off("updateDevice");
-			this.$socket.off("removeDevice");
+		created() {
+			this.downloadRows();
 		}
 	}
 </script>
