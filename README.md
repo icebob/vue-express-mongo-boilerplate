@@ -18,7 +18,7 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 * [Vuex](https://github.com/vuejs/vuex)
 * [Vue-router](https://github.com/vuejs/vue-router)
 * [Vue-resource](https://github.com/vuejs/vue-resource)
-* **Websocket with [socket.io](https://github.com/socketio/socket.io)**
+* **[socket.io](https://github.com/socketio/socket.io) connection with namespaces**
 * [Jade](https://github.com/pugjs/pug)
 * [Webpack](https://github.com/webpack/webpack)
 * SCSS
