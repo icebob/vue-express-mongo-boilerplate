@@ -157,6 +157,7 @@ module.exports = function(app, db) {
 					return response.json(res, null, response.BAD_REQUEST, err);
 
 				if (io.namespaces[namespace])
+					io.namespaces[namespace].emit("remove", req.device.toJSON());
 
 				return response.json(res);
 			});
