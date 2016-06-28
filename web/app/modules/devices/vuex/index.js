@@ -1,41 +1,57 @@
-import { LOAD_DEVICES, ADD_DEVICE, SELECT_DEVICE, UPDATE_DEVICE, REMOVE_DEVICE } from "../../../vuex/mutation-types";
+import { LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE } from "./types";
 
-import { each, find, assign, remove } from "lodash";
+import { each, find, assign, remove, isArray } from "lodash";
 
 const state = {
 	all: [],
-	selected: null
+	selected: []
 }
 
 const mutations = {
-	[LOAD_DEVICES] (state, devices) {
+	[LOAD] (state, devices) {
 		state.all.splice(0);
 		state.all.push(...devices);
 	},
 
-	[ADD_DEVICE] (state, device) {
+	[ADD] (state, device) {
 		state.all.push(device);
-		state.selected = device;
 	},
 
-	[SELECT_DEVICE] (state, device) {
-		state.selected = device;
+	[SELECT] (state, row, multiSelect) {
+		if (isArray(row)) {
+			state.selected.splice(0);
+			state.selected.push(...row);
+		} else {
+			if (multiSelect === true) {
+				if (state.selected.indexOf(row) != -1)
+					state.selected.$remove(row);
+				else
+					state.selected.push(row);
+
+			} else {
+				state.selected.splice(0);
+				state.selected.push(row);
+			}
+		}
 	},
 
-	[UPDATE_DEVICE] (state, device) {
+	[CLEAR_SELECT] (state) {
+		state.selected.splice(0);
+	},
+
+	[UPDATE] (state, device) {
 		each(state.all, (item) => {
 			if (item.id == device.id)
 				assign(item, device);
 		});
 	},
 
-	[REMOVE_DEVICE] (state, device) {
+	[REMOVE] (state, device) {
 		// We need find the exact object, because device may come via websocket
 		let found = find(state.all, (item) => item.id == device.id);
 
 		if (found) {
 			state.all.$remove(found);
-			state.selected = null;
 		}
 	}	
 }

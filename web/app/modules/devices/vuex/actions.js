@@ -1,15 +1,19 @@
 import Vue from "vue";
-import { LOAD_DEVICES, ADD_DEVICE, SELECT_DEVICE, UPDATE_DEVICE, REMOVE_DEVICE } from "../../../vuex/mutation-types";
+import { LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE } from "./types";
 
-export const selectDevice = ({ dispatch }, device) => {
-	dispatch(SELECT_DEVICE, device);
+export const selectDevice = ({ dispatch }, device, multiSelect) => {
+	dispatch(SELECT, device, multiSelect);
+}
+
+export const clearSelection = ({ dispatch }) => {
+	dispatch(CLEAR_SELECT);
 }
 
 export const downloadDevices = ({ dispatch }) => {
 	Vue.http.get("/devices").then((response) => {
 		let res = response.json();
 		if (res.status == 200)
-			dispatch(LOAD_DEVICES, res.data);
+			dispatch(LOAD, res.data);
 		else
 			console.error("Request error!", res.error);
 
@@ -19,14 +23,16 @@ export const downloadDevices = ({ dispatch }) => {
 
 }
 
-export const addDevice = ({ dispatch }, device) => {
-	dispatch(ADD_DEVICE, device);
+export const addDevice = ({ dispatch }, device, needSelect) => {
+	dispatch(ADD, device);
+	if (needSelect)
+		dispatch(SELECT, device, false);
 }
 
 export const updateDevice = ({ dispatch }, device) => {
-	dispatch(UPDATE_DEVICE, device);
+	dispatch(UPDATE, device);
 }
 
 export const removeDevice = ({ dispatch }, device) => {
-	dispatch(REMOVE_DEVICE, device);
+	dispatch(REMOVE, device);
 }

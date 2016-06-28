@@ -1,4 +1,4 @@
-export function devices(state) {
+export function rows(state) {
 	return state.devices.all;
 }
 

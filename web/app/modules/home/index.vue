@@ -15,7 +15,7 @@
 </template>
 
 <script>
-	import { increment, decrement } from "./vuex/actions";
+	import { increment, decrement, changeValue } from "./vuex/actions";
 	import { count } from "./vuex/getters";
 
 	export default {
@@ -26,7 +26,8 @@
 			},
 			actions: {
 				increment, 
-				decrement
+				decrement,
+				changeValue
 			}
 		},	
 
@@ -40,7 +41,20 @@
 				this.decrement(this.store);
 				this.$socket.emit("counter", this.count);
 			}
-		}
+		},
+
+		created() {
+			this.$socket.on("counter", (msg) => {
+				console.log("New counter value: " + msg);
+				this.changeValue(msg);
+
+			});		
+
+		},
+
+		destroyed() {
+			this.$socket.off("counter");
+		}		
 
 	}
 </script>

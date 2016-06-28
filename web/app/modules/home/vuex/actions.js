@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { INCREMENT, DECREMENT, CHANGE_VALUE } from "../../../vuex/mutation-types";
+import { INCREMENT, DECREMENT, CHANGE_VALUE } from "./types";
 
 export const increment = ({ dispatch }) => {
 	dispatch(INCREMENT);

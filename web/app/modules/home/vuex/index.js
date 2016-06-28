@@ -1,4 +1,4 @@
-import { INCREMENT, DECREMENT, CHANGE_VALUE } from "../../../vuex/mutation-types";
+import { INCREMENT, DECREMENT, CHANGE_VALUE } from "./types";
 
 const state = {
 	count: 0
