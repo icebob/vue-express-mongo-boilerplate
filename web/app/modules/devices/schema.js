@@ -5,13 +5,7 @@ import { validators } from "vue-form-generator";
 module.exports = {
 
 	id: "devices",
-	name: "Devices",
-	resources: {
-		addCaption: "Add new device",
-		saveCaption: "Save",
-		cloneCaption: "Clone",
-		deleteCaption: "Delete"
-	},
+	title: "Devices",
 
 	table: {
 		multiSelect: true,
@@ -134,6 +128,9 @@ module.exports = {
 	},
 
 	options: {
+		searchable: true,
+
+
 		enableNewButton: true,
 		enabledSaveButton: true,
 		enableDeleteButton: true,
@@ -155,5 +152,13 @@ module.exports = {
 			if (errors.length > 0)
 				console.warn("Validation error in page! Errors:", errors, ", Model:", model);
 		}
-	}
+	},
+
+	resources: {
+		addCaption: "Add new device",
+		saveCaption: "Save",
+		cloneCaption: "Clone",
+		deleteCaption: "Delete"
+	},
+
 }

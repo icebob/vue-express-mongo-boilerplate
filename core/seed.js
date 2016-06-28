@@ -3,12 +3,17 @@
 let logger 			= require('./logger');
 let config 			= require("../config");
 
+let _ 				= require("lodash");
+
 let tokgen 			= require('../libs/tokgen');
 
 let User 			= require("../models/user");
+let Device 			= require("../applogic/modules/devices/model.device");
+
+let fakerator		= require("fakerator")();
 
 module.exports = function() {
-	return User.find({}).exec(function(err, docs) {
+	User.find({}).exec(function(err, docs) {
 		var admin, test;
 		if (docs.length === 0) {
 			logger.warn("Load default Users to DB...");
@@ -48,4 +53,28 @@ module.exports = function() {
 			});
 		}
 	});
+
+	Device.find({}).exec(function(err, docs) {
+		if (docs.length === 0) {
+			logger.warn("Load default Devices to DB...");
+
+			_.times(5, () => {
+
+				let device = new Device({
+					address: fakerator.internet.ip(),
+					type: fakerator.random.arrayElement(["rasperry", "odroid", "nanopi", "pc"]),
+					name: fakerator.populate("#{names.firstName}'s device"),
+					description: fakerator.lorem.sentence(),
+					status: fakerator.random.boolean("80") ? 1 : 0,
+					lastCommunication: Date.now()
+				});
+
+				device.save(function(err) {
+					if (err) 
+						return logger.warn("Unable to create default devices!", err);
+				});
+			});
+		}
+	});
+
 };

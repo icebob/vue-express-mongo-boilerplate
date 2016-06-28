@@ -3,10 +3,10 @@
 		h3 {{ schema.title }}
 
 		.headerbar
-			.newItem(v-if="options.enableNewButton !== false")
+			.newItem(v-if="enabledNew")
 				button.btn.btn-primary.new(@click="newModel") {{ schema.resources.addCaption || "Add"}}
 			.info Selected {{ selected.length }} of {{ rows.length }}
-			.searchBar.input-group
+			.searchBar.input-group(v-if="options.searchable")
 				span.input-group-addon
 					i.fa.fa-search
 				input.form-control(type="search", placeholder="Search...", v-model="search")
@@ -84,6 +84,10 @@
 		computed: {
 			options() {
 				return this.schema.options || {};
+			},
+
+			enabledNew() {
+				return (this.options.enableNewButton !== false);
 			},
 
 			enabledSave() {
