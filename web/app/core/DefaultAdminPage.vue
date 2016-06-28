@@ -60,20 +60,6 @@
 			}
 		},
 
-		filters: {
-			status(val) {
-				if (val == 1)
-					return "Active";
-				else
-					return "Inactive";
-			},
-
-			deviceType(val) {
-				let type = find(types.deviceTypes, (type) => type.id == val);
-				return type ? type.name : "";
-			}
-		},	
-
 		computed: {
 			options() 		{ return this.schema.options || {};	},
 

@@ -111,6 +111,7 @@ $ NODE_ENV=production npm start
 * [ ] create a sample VueJS app
 * [ ] rewrite account.js response handlers
 * [ ] add Devices sample API test to client & server side
+* [ ] use namespace or room in websocket (simple user can't get admin ws events)
 * [ ] try Apollo graphql stack
 * [ ] remove not verified accounts with agenda after 1 day
 * [ ] add test with nightmare & mocha, chai, sinon
