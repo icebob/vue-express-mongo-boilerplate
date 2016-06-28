@@ -18,10 +18,7 @@
 
 		data() {
 			return {
-				schema,
-				getters, 
-				actions,
-				base: this
+				schema
 			}
 		},
 
@@ -41,23 +38,23 @@
 		},
 
 		created() {
-			this.downloadDevices();
+			this.downloadRows();
 
 			console.log("Add io handlers...");
 
-			this.$socket.on("newDevice", (device) => {
-				console.log("New device added: ", device);
-				this.addDevice(device);
+			this.$socket.on("newDevice", (row) => {
+				console.log("New device: ", row);
+				this.addRow(row);
 			});			
 
-			this.$socket.on("updateDevice", (device) => {
-				console.log("Update device: ", device);
-				this.updateDevice(device);
+			this.$socket.on("updateDevice", (row) => {
+				console.log("Update device: ", row);
+				this.updateRow(row);
 			});			
 
-			this.$socket.on("removeDevice", (device) => {
-				console.log("Remove device: ", device);
-				this.removeDevice(device);
+			this.$socket.on("removeDevice", (row) => {
+				console.log("Remove device: ", row);
+				this.removeRow(row);
 			});			
 
 		},

@@ -35,9 +35,6 @@
 
 	import { each, find, cloneDeep, isFunction } from "lodash";
 
-	//import * as actions from "../modules/devices/vuex/actions";
-	//import * as getters from "../modules/devices/vuex/getters";
-
 	export default {
 
 		components: {
@@ -63,11 +60,6 @@
 			}
 		},
 
-		/*vuex: {
-			getters,
-			actions
-		},	*/
-
 		filters: {
 			status(val) {
 				if (val == 1)
@@ -83,25 +75,12 @@
 		},	
 
 		computed: {
-			options() {
-				return this.schema.options || {};
-			},
+			options() 		{ return this.schema.options || {};	},
 
-			enabledNew() {
-				return (this.options.enableNewButton !== false);
-			},
-
-			enabledSave() {
-				return (this.model && this.options.enabledSaveButton !== false);
-			},
-
-			enabledClone() {
-				return (this.model && !this.isNewModel && this.options.enableDeleteButton !== false);
-			},
-
-			enabledDelete() {
-				return (this.model && !this.isNewModel && this.options.enableDeleteButton !== false);
-			},
+			enabledNew() 	{ return (this.options.enableNewButton !== false); },
+			enabledSave() 	{ return (this.model && this.options.enabledSaveButton !== false); },
+			enabledClone() 	{ return (this.model && !this.isNewModel && this.options.enableDeleteButton !== false); },
+			enabledDelete() { return (this.model && !this.isNewModel && this.options.enableDeleteButton !== false); },
 
 			validationErrors() {
 				if (this.$refs.form && this.$refs.form.errors) 
@@ -133,9 +112,9 @@
 				this.isNewModel = false;
 				
 				if (this.schema.table.multiSelect === true && (add || (event && event.ctrlKey))) {
-					this.$parent.selectDevice(row, true);
+					this.$parent.selectRow(row, true);
 				} else {
-					this.$parent.selectDevice(row, false);
+					this.$parent.selectRow(row, false);
 				}
 			},
 
@@ -147,7 +126,7 @@
 
 				if (this.selected.length < filteredRows.length) {
 					// Select all
-					this.$parent.selectDevice(filteredRows, false);
+					this.$parent.selectRow(filteredRows, false);
 				} else {
 					// Unselect all 
 					this.$parent.clearSelection();
@@ -160,7 +139,6 @@
 				}
 				else if (this.selected.length > 1) {
 					this.model = schemaUtils.mergeMultiObjectFields(this.schema.form, this.selected);
-					//console.log("Model: ", this.model);
 				}
 				else
 					this.model = null;
@@ -174,7 +152,6 @@
 				let newRow = schemaUtils.createDefaultObject(this.schema.form);
 				this.isNewModel = true;
 				this.model = newRow;
-				console.log(this.model);
 
 				this.$nextTick(() => {
 					let el = document.querySelector("div.form input:nth-child(1):not([readonly]):not(:disabled)");
@@ -210,7 +187,7 @@
 						this.$http.put("/devices/" + this.model.code, this.model).then((response) => {
 							let res = response.data;
 							if (res.data)
-								this.$parent.updateDevice(res.data);
+								this.$parent.updateRow(res.data);
 						});
 
 				} else {
@@ -222,7 +199,7 @@
 				if (this.selected.length > 0) {
 					each(this.selected, (device) => {
 						this.$http.delete("/devices/" + device.code).then((response) => {
-							this.$parent.removeDevice(device);
+							this.$parent.removeRow(device);
 						});
 					});
 					this.$parent.clearSelection();

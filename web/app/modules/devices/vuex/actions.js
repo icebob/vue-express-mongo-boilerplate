@@ -1,15 +1,15 @@
 import Vue from "vue";
 import { LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE } from "./types";
 
-export const selectDevice = ({ dispatch }, device, multiSelect) => {
-	dispatch(SELECT, device, multiSelect);
+export const selectRow = ({ dispatch }, row, multiSelect) => {
+	dispatch(SELECT, row, multiSelect);
 }
 
 export const clearSelection = ({ dispatch }) => {
 	dispatch(CLEAR_SELECT);
 }
 
-export const downloadDevices = ({ dispatch }) => {
+export const downloadRows = ({ dispatch }) => {
 	Vue.http.get("/devices").then((response) => {
 		let res = response.json();
 		if (res.status == 200)
@@ -23,16 +23,16 @@ export const downloadDevices = ({ dispatch }) => {
 
 }
 
-export const addDevice = ({ dispatch }, device, needSelect) => {
-	dispatch(ADD, device);
+export const addRow = ({ dispatch }, row, needSelect) => {
+	dispatch(ADD, row);
 	if (needSelect)
-		dispatch(SELECT, device, false);
+		dispatch(SELECT, row, false);
 }
 
-export const updateDevice = ({ dispatch }, device) => {
-	dispatch(UPDATE, device);
+export const updateRow = ({ dispatch }, row) => {
+	dispatch(UPDATE, row);
 }
 
-export const removeDevice = ({ dispatch }, device) => {
-	dispatch(REMOVE, device);
+export const removeRow = ({ dispatch }, row) => {
+	dispatch(REMOVE, row);
 }
