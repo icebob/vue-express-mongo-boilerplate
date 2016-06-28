@@ -10,6 +10,10 @@ let response		= require("../../../core/response");
 let Device 			= require("./model.device");
 let hashids			= require("../../../libs/hashids");
 
+let io 				= require("../../../core/socket");
+
+let namespace = "/devices";
+
 module.exports = function(app, db) {
 
 	let router = express.Router();
@@ -65,7 +69,9 @@ module.exports = function(app, db) {
 					return response.json(res, null, response.SERVER_ERROR, err);
 
 				let json = device.toJSON();
-				app.io.emit("newDevice", json);
+
+				if (io.namespaces[namespace])
+					io.namespaces[namespace].emit("new", json);
 
 				return response.json(res, json);
 			});
@@ -134,7 +140,9 @@ module.exports = function(app, db) {
 					return response.json(res, null, response.BAD_REQUEST, err);
 
 				let json = req.device.toJSON();
-				app.io.emit("updateDevice", json);
+
+				if (io.namespaces[namespace])
+					io.namespaces[namespace].emit("update", json);
 
 				return response.json(res, json);
 			});
@@ -148,7 +156,7 @@ module.exports = function(app, db) {
 				if (err)
 					return response.json(res, null, response.BAD_REQUEST, err);
 
-				app.io.emit("removeDevice", req.device.toJSON());
+				if (io.namespaces[namespace])
 
 				return response.json(res);
 			});

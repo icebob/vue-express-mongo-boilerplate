@@ -211,7 +211,7 @@ module.exports = function(db) {
 	require("../routes")(app, db);
 
 	// Load socket.io server
-	let server = require('./socket.io').init(app, db);
+	let server = require('./socket').init(app, db);
 
 	return server;
 };
