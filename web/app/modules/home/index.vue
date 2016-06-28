@@ -15,8 +15,8 @@
 </template>
 
 <script>
-	import { increment, decrement } from "../../vuex/modules/counter/actions";
-	import { count } from "../../vuex/modules/counter/getters";
+	import { increment, decrement } from "./vuex/actions";
+	import { count } from "./vuex/getters";
 
 	export default {
 

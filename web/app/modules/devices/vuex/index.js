@@ -1,4 +1,4 @@
-import { LOAD_DEVICES, ADD_DEVICE, SELECT_DEVICE, UPDATE_DEVICE, REMOVE_DEVICE } from "../../mutation-types";
+import { LOAD_DEVICES, ADD_DEVICE, SELECT_DEVICE, UPDATE_DEVICE, REMOVE_DEVICE } from "../../../vuex/mutation-types";
 
 import { each, find, assign, remove } from "lodash";
 

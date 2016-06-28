@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { LOAD_DEVICES, ADD_DEVICE, SELECT_DEVICE, UPDATE_DEVICE, REMOVE_DEVICE } from "../../mutation-types";
+import { LOAD_DEVICES, ADD_DEVICE, SELECT_DEVICE, UPDATE_DEVICE, REMOVE_DEVICE } from "../../../vuex/mutation-types";
 
 export const selectDevice = ({ dispatch }, device) => {
 	dispatch(SELECT_DEVICE, device);

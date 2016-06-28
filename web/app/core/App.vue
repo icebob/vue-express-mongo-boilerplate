@@ -19,8 +19,8 @@
 	import socket from "./socket-io";
 	import store from "../vuex/store";
 
-	import { changeValue } from "../vuex/modules/counter/actions";
-	import { addDevice, updateDevice, removeDevice } from "../vuex/modules/devices/actions";
+	import { changeValue } from "../modules/home/vuex/actions";
+	import { addDevice, updateDevice, removeDevice } from "../modules/devices/vuex/actions";
 
 	export default {
 		store: store,

@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import devices from "./modules/devices";
-import counter from "./modules/counter";
+import devices from "../modules/devices/vuex";
+import counter from "../modules/home/vuex";
 
 Vue.use(Vuex);
 

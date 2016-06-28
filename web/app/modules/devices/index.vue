@@ -49,8 +49,8 @@
 
 	import { cloneDeep } from "lodash";
 
-	import { downloadDevices, selectDevice, addDevice, updateDevice, removeDevice } from "../../vuex/modules/devices/actions";
-	import { devices, selected } from "../../vuex/modules/devices/getters";
+	import { downloadDevices, selectDevice, addDevice, updateDevice, removeDevice } from "./vuex/actions";
+	import { devices, selected } from "./vuex/getters";
 
 	// Initialize vue-form-generator
 	Vue.use(VueFormGenerator);
