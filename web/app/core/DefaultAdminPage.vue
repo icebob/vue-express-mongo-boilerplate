@@ -176,19 +176,10 @@
 				console.log("Save model...");
 				if (this.options.validateBeforeSave === false ||  this.validate()) {
 
-					if (this.isNewModel) {
-						this.$http.post("/devices", this.model).then((response) => {
-							let res = response.data;
-							// It's not neccessary, because we will get the new object via websocket
-							//if (res.data)
-							//	this.addDevice(res.data);
-						});						
-					} else
-						this.$http.put("/devices/" + this.model.code, this.model).then((response) => {
-							let res = response.data;
-							if (res.data)
-								this.$parent.updateRow(res.data);
-						});
+					if (this.isNewModel)
+						this.$parent.saveRow(this.model);
+					else
+						this.$parent.updateRow(this.model);
 
 				} else {
 					// Validation error
@@ -197,11 +188,7 @@
 
 			deleteModel() {
 				if (this.selected.length > 0) {
-					each(this.selected, (device) => {
-						this.$http.delete("/devices/" + device.code).then((response) => {
-							this.$parent.removeRow(device);
-						});
-					});
+					each(this.selected, (row) => this.$parent.removeRow(row) );
 					this.$parent.clearSelection();
 				}
 			},

@@ -44,17 +44,17 @@
 
 			this.$socket.on("newDevice", (row) => {
 				console.log("New device: ", row);
-				this.addRow(row);
+				this.rowAdded(row);
 			});			
 
 			this.$socket.on("updateDevice", (row) => {
 				console.log("Update device: ", row);
-				this.updateRow(row);
+				this.rowChanged(row);
 			});			
 
 			this.$socket.on("removeDevice", (row) => {
 				console.log("Remove device: ", row);
-				this.removeRow(row);
+				this.rowRemoved(row);
 			});			
 
 		},
