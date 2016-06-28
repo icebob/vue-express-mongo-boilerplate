@@ -15,22 +15,9 @@ let	session 		= require('express-session');
 let	MongoStore 		= require('connect-mongo')(session);
 
 let socketHandlers  = require('../applogic/socketHandlers');
-// Define the Socket.io configuration method
-module.exports = function (app, db) {
 
-	// Create a new HTTP server
-	let server = http.createServer(app);
 
-	// Create a new Socket.io server
-	var io = socketio(server);
-
-	// Create a MongoDB storage object
-	var mongoStore = new MongoStore({
-		mongooseConnection: db.connection,
-		collection: config.sessions.collection,
-		autoReconnect: true
-	});
-
+function InitializeIONameSpace(io, mongoStore) {
 	// Intercept Socket.io's handshake request
 	io.use(function (socket, next) {
 		// Use the 'cookie-parser' module to parse the request cookies
@@ -51,6 +38,10 @@ module.exports = function (app, db) {
 				// Set the Socket.io session information
 				socket.request.session = session;
 
+				// Set the socketID to session
+				session.socket = socket.id;
+				mongoStore.set(sessionId, session);
+
 				// Use Passport to populate the user details
 				passport.initialize()(socket.request, {}, function () {
 					passport.session()(socket.request, {}, function () {
@@ -68,20 +59,47 @@ module.exports = function (app, db) {
 
 	// Add an event listener to the 'connection' event
 	io.on('connection', function (socket) {
-		logger.debug("WS client connected! User: " + socket.request.user.username);
+		logger.debug("WS client connected to namespace: " + io.name + "! User: " + socket.request.user.username);
 
 		socket.on('disconnect', function() {
-			logger.debug("WS client disconnected!");
+			logger.debug("WS client disconnected from namespace: " + io.name + "!");
 		});
+	});
+}
 
-		// Add an event listener to the 'connection' event
-		socketHandlers.handlers.forEach((handler) => {
-			require(path.resolve(handler))(io, socket);
-		});
+// Define the Socket.io configuration method
+module.exports = function (app, db) {
 
+	// Create a new HTTP server
+	let server = http.createServer(app);
+
+	// Create a new Socket.io server
+	var IO = socketio(server);
+
+	// Create a MongoDB storage object
+	var mongoStore = new MongoStore({
+		mongooseConnection: db.connection,
+		collection: config.sessions.collection,
+		autoReconnect: true
 	});
 
-	server.io = io;
+	// Add an event listener to the 'connection' event
+	socketHandlers.handlers.forEach((handler) => {
+		let Handler = require(path.resolve(handler));
+		let io = Handler(IO);
+		if (io)
+			InitializeIONameSpace(io, mongoStore);
+	});
+
+	// Add event handler to the root namespace
+	InitializeIONameSpace(IO, mongoStore);
+	IO.on('connection', function (socket) {
+		socket.on("welcome", function(msg) {
+			logger.info("Incoming welcome message from " + socket.request.user.username + ":", msg);
+		});
+	});
+
+	app.io = IO;
 
 	return server;
 };
