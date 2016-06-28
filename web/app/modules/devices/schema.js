@@ -7,7 +7,7 @@ module.exports = {
 	id: "devices",
 	name: "Devices",
 	resources: {
-		addCaption: "Add new user",
+		addCaption: "Add new device",
 		saveCaption: "Save",
 		cloneCaption: "Clone",
 		deleteCaption: "Delete"

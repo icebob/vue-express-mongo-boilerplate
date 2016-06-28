@@ -37,8 +37,10 @@
 
 	import { each, find, cloneDeep, isFunction } from "lodash";
 
-	import { downloadDevices, selectDevice, clearSelection, addDevice, updateDevice, removeDevice } from "./vuex/actions";
-	import { rows, selected } from "./vuex/getters";
+	import * as actions from "./vuex/actions";
+	import * as getters from "./vuex/getters";
+
+	console.log(actions);
 
 	export default {
 
@@ -61,18 +63,8 @@
 		},
 
 		vuex: {
-			getters: {
-				rows,
-				selected
-			},
-			actions: {
-				downloadDevices, 
-				selectDevice, 
-				clearSelection,
-				addDevice, 
-				updateDevice, 
-				removeDevice
-			}
+			getters,
+			actions
 		},	
 
 		filters: {
@@ -222,7 +214,7 @@
 			},
 
 			deleteModel() {
-				if (this.selected) {
+				if (this.selected.length > 0) {
 					each(this.selected, (device) => {
 						this.$http.delete("/devices/" + device.code).then((response) => {
 							this.removeDevice(device);
@@ -296,6 +288,34 @@
 <style lang="sass" scoped>
 	@import "../../../scss/variables";
 
+	.headerbar {
+		display: flex;
+		justify-content: space-between;
+		align-self: middle;
+		margin-bottom: 0.5em;
+
+		.info {
+			margin: auto;
+		}
+		
+		.searchBar {
+			width: 300px;
+
+			.input-group-addon {
+				background-color: inherit;
+				padding: 6px 6px;
+			}
+
+			input {
+				font-family: "Open Sans";
+				border-left: 0;
+				padding-left: 6px;
+			}
+		}
+
+
+	}
+
 	.form {
 		background-color: #EEE;
 		color: Black;
@@ -303,10 +323,14 @@
 		margin: 1rem;
 
 		.buttons {
-			padding: 0.5rem;
-
+			margin: 10px 0;
+			text-align: center;
 			button {
-				margin: 0 0.3rem;
+				margin: 0 10px;
+				padding: 6px 20px;
+
+				border-radius: 4px;
+				border: 1px solid #666;
 			}
 		}
 	}
