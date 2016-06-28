@@ -17,8 +17,8 @@
 <script>
 	import Vue from "vue";
 	import VueFormGenerator from "vue-form-generator";
-	import socket from "./socket-io";
-	import store from "../vuex/store";
+	import IO from "socket.io-client";
+	import store from "../store";
 
 	// Initialize vue-form-generator
 	Vue.use(VueFormGenerator);
@@ -34,7 +34,12 @@
 		created() {
 			console.log("App started!");
 
-			this.$socket.emit("welcome", "Hi I'm here!");
+			this.$socket = IO();
+			this.$socket.on("connect", () => {
+				console.log("Websocket connected!");
+
+				this.$socket.emit("welcome", "Hello! " + navigator.userAgent);
+			})
 
 			window.app = this;
 		},

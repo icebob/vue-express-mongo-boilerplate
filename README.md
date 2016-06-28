@@ -113,6 +113,7 @@ $ NODE_ENV=production npm start
 * [ ] add Devices sample API test to client & server side
 * [ ] use namespace or room in websocket (simple user can't get admin ws events)
 * [ ] try Apollo graphql stack
+* [ ] eslint
 * [ ] remove not verified accounts with agenda after 1 day
 * [ ] add test with nightmare & mocha, chai, sinon
 		https://github.com/MikaelSoderstrom/nightmarejs-demo

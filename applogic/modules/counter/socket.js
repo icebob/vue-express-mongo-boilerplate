@@ -5,19 +5,20 @@ let config 			= require("../../../config");
 
 let store 			= require("./memstore");
 
-module.exports = function(io, socket) {
+module.exports = function(IO) {
 
-	socket.on("welcome", function(msg) {
-		logger.info("Incoming welcome message from " + socket.request.user.username + ":", msg);
+	let io = IO.of("/counter");
+	io.on("connection", (socket) => {
 
-		// Send the last value to counter
-		socket.emit("counter", store.counter);
+		socket.on("changed", function(msg) {
+			store.counter = msg;
+			logger.info(socket.request.user.username + " increment the counter to ", store.counter);
+			socket.broadcast.emit("changed", store.counter);
+		});
+
+		socket.emit("changed", store.counter);
+
 	});
 
-	socket.on("counter", function(msg) {
-		store.counter = msg;
-		logger.info(socket.request.user.username + " increment the counter to ", store.counter);
-		socket.broadcast.emit("counter", store.counter);
-	});
-
+	return io;
 };

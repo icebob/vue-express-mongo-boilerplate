@@ -51,7 +51,7 @@
 			return {
 				search: '',
 				order: {
-					field: null,
+					field: "id",
 					direction: 1
 				},
 

@@ -2,6 +2,8 @@ import moment from "moment";
 import { deviceTypes } from "./types";
 import { validators } from "vue-form-generator";
 
+import { find } from "lodash";
+
 module.exports = {
 
 	id: "devices",

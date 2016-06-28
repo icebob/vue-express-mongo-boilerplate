@@ -15,6 +15,8 @@
 </template>
 
 <script>
+	import io from "socket.io-client";
+
 	import * as actions from "./vuex/actions";
 	import * as getters from "./vuex/getters";
 
@@ -27,18 +29,21 @@
 
 		methods: {
 			inc() {
-				this.increment(this.store);
-				this.$socket.emit("counter", this.count);
+				this.increment();
+				this.$socket.emit("changed", this.count);
 			},
 
 			dec() {
-				this.decrement(this.store);
-				this.$socket.emit("counter", this.count);
+				this.decrement();
+				this.$socket.emit("changed", this.count);
 			}
 		},
 
 		created() {
-			this.$socket.on("counter", (msg) => {
+			console.log("Created counter page");
+			this.$socket = io.connect("/counter");
+
+			this.$socket.on("changed", (msg) => {
 				console.log("New counter value: " + msg);
 				this.changeValue(msg);
 			});		
@@ -46,7 +51,7 @@
 		},
 
 		destroyed() {
-			this.$socket.off("counter");
+			this.$socket.off("changed");
 		}		
 
 	}
