@@ -14,7 +14,7 @@
 		data-table(:schema="schema.table", :rows="rows", :order="order", :search="search", :selected="selected", :select="select", :select-all="selectAll")
 
 		.form(v-if="model")
-			vue-form-generator(:schema='schema.form', :model='model', :options='options', :multiple="false", v-ref:form, :is-new-model="isNewModel")
+			vue-form-generator(:schema='schema.form', :model='model', :options='options', :multiple="selected.length > 1", v-ref:form, :is-new-model="isNewModel")
 
 			.errors.text-center
 				div.alert.alert-danger(v-for="item in validationErrors", track-by="$index") {{ item.field.label}}: 

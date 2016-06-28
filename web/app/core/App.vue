@@ -1,10 +1,10 @@
 <template lang="jade">
 	div
 		ul
-			li
-				a(v-link="'home'") Home
-			li
-				a(v-link="'devices'") Devices
+			li(v-link-active)
+				a(v-link="'/home'") Home
+			li(v-link-active)
+				a(v-link="'/devices'") Devices
 
 		router-view(keep-alive)
 
@@ -46,5 +46,11 @@
 
 	h2 {
 	  color: $masterColor;
+	}
+
+	li.active {
+		a {
+			font-weight: 600;
+		}
 	}
 </style>
