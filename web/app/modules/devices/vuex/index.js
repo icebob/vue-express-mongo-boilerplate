@@ -3,18 +3,18 @@ import { LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE } from "./types";
 import { each, find, assign, remove, isArray } from "lodash";
 
 const state = {
-	all: [],
+	rows: [],
 	selected: []
 }
 
 const mutations = {
 	[LOAD] (state, devices) {
-		state.all.splice(0);
-		state.all.push(...devices);
+		state.rows.splice(0);
+		state.rows.push(...devices);
 	},
 
 	[ADD] (state, device) {
-		state.all.push(device);
+		state.rows.push(device);
 	},
 
 	[SELECT] (state, row, multiSelect) {
@@ -40,7 +40,7 @@ const mutations = {
 	},
 
 	[UPDATE] (state, device) {
-		each(state.all, (item) => {
+		each(state.rows, (item) => {
 			if (item.id == device.id)
 				assign(item, device);
 		});
@@ -48,10 +48,10 @@ const mutations = {
 
 	[REMOVE] (state, device) {
 		// We need find the exact object, because device may come via websocket
-		let found = find(state.all, (item) => item.id == device.id);
+		let found = find(state.rows, (item) => item.id == device.id);
 
 		if (found) {
-			state.all.$remove(found);
+			state.rows.$remove(found);
 		}
 	}	
 }

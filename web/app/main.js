@@ -4,7 +4,7 @@ import style from "../scss/style.scss";
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
-import Filters from './core/filters';
+import Filters from './core/Filters';
 
 import App from './core/App';
 

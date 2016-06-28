@@ -15,20 +15,14 @@
 </template>
 
 <script>
-	import { increment, decrement, changeValue } from "./vuex/actions";
-	import { count } from "./vuex/getters";
+	import * as actions from "./vuex/actions";
+	import * as getters from "./vuex/getters";
 
 	export default {
 
 		vuex: {
-			getters: {
-				count
-			},
-			actions: {
-				increment, 
-				decrement,
-				changeValue
-			}
+			getters,
+			actions
 		},	
 
 		methods: {
@@ -47,7 +41,6 @@
 			this.$socket.on("counter", (msg) => {
 				console.log("New counter value: " + msg);
 				this.changeValue(msg);
-
 			});		
 
 		},

@@ -1,5 +1,5 @@
 export function rows(state) {
-	return state.devices.all;
+	return state.devices.rows;
 }
 
 export function selected(state) {
