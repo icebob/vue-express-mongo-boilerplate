@@ -17,11 +17,20 @@ let	MongoStore 		= require('connect-mongo')(session);
 
 let socketHandlers  = require('../applogic/socketHandlers');
 
-
-// Define the Socket.io configuration method
 let self = {
+
+	/*
+		IO namespaces
+	 */
 	namespaces: {},
 
+	/**
+	 * Init Socket.IO module and looad socket handlers 
+	 * from applogic
+	 * 
+	 * @param  {Object} app Express App
+	 * @param  {Object} db  MongoDB connection
+	 */
 	init(app, db) {
 
 		// Create a new HTTP server
@@ -37,7 +46,7 @@ let self = {
 		// Create a new Socket.io server
 		var IO = socketio(server);
 
-		// Add event handler to the root namespace
+		// Add common handler to the root namespace
 		self.initNameSpace("/", IO, mongoStore);
 		IO.on('connection', function (socket) {
 			socket.on("welcome", function(msg) {
@@ -45,8 +54,7 @@ let self = {
 			});
 		});
 
-
-		// Initialize every event handler
+		// Initialize every socket handler
 		socketHandlers.handlers.forEach((handler) => {
 			let Handler = require(path.resolve(handler));
 
@@ -62,13 +70,20 @@ let self = {
 			}
 		});
 
-
-		app.io = IO;
+		app.io = self;
 
 		return server;
 	},
 
+	/**
+	 * Initialize IO namespace. Apply authentication middleware
+	 * 
+	 * @param  {String} ns         Name of namespace
+	 * @param  {Object} io         IO instance
+	 * @param  {Object} mongoStore Mongo Session store
+	 */
 	initNameSpace(ns, io, mongoStore) {
+		
 		// Intercept Socket.io's handshake request
 		io.use(function (socket, next) {
 			// Use the 'cookie-parser' module to parse the request cookies
