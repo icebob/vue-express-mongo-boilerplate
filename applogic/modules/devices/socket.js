@@ -3,6 +3,13 @@
 let logger 			= require('../../../core/logger');
 let config 			= require("../../../config");
 
-module.exports = function(io, socket) {
+module.exports = {
 
+	namespace: "/devices",
+
+	init(io) {
+		io.on("connection", (socket) => {
+			
+		});		
+	}
 }
