@@ -31,7 +31,7 @@
 <script>
 	import Vue from "vue";
 	import { schema as schemaUtils } from "vue-form-generator";
-	import DataTable from '../../core/dataTable.vue';
+	import DataTable from '../../core/DataTable.vue';
 	import Schema from "./schema";
 	import types from "./types";
 
