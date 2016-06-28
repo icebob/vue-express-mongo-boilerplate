@@ -9,6 +9,8 @@ module.exports = {
 
 	init(io) {
 		io.on("connection", (socket) => {
+
+			// Handle imcoming messages
 			
 		});		
 	}
