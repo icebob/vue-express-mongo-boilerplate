@@ -1,5 +1,5 @@
 <template lang="jade">
-	admin-page(:schema="schema", :vuex-getters="getters", :vuex-actions="actions")
+	admin-page(:schema="schema", :selected="selected", :rows="rows")
 </template>
 
 <script>
@@ -13,14 +13,15 @@
 	export default {
 
 		components: {
-			AdminPage
+			AdminPage: AdminPage
 		},
 
 		data() {
 			return {
 				schema,
 				getters, 
-				actions
+				actions,
+				base: this
 			}
 		},
 
@@ -58,7 +59,7 @@
 				console.log("Remove device: ", device);
 				this.removeDevice(device);
 			});			
-			console.log(this);
+
 		},
 
 		destroyed() {
