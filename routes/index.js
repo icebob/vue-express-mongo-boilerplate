@@ -22,9 +22,6 @@ module.exports = function(app, db) {
 	// Handle Auth routes
 	require("./auth")(app, db);
 
-	// Handle User CRUD
-	require("./user")(app, db);
-
 	// Load applogic routes
 	require("../applogic/routeHandlers")(app, db);
 

@@ -13,20 +13,25 @@ let mailer = require("../libs/mailer");
 
 let User = require("../models/user");
 
+let Response = require("../core/response");
 
-function response(req, res, redirect) {
+function response(req, res, redirect, err) {
 	if (req.accepts('json') && !req.accepts('html')) {
 
-		let result = {};
+		let flash = req.flash();
 
-		//console.log(req.session.flash);
-		if (req.session.flash && req.session.flash.error && req.session.flash.error.length > 0)
-			result.error = req.session.flash.error;
-		else
-			result.result = "OK";
+		if (flash && flash.error && flash.error.length > 0) {
 
-		//console.log(result);
-		return res.json(result);
+			let errMessage = flash.error[0].msg;
+			Response.json(res, null, err || Response.REQUEST_FAILED, errMessage);
+		}
+		else {
+			let successData = "OK";
+			if (flash && flash.info && flash.info.length > 0)
+				successData = flash.info[0].msg;
+			Response.json(res, successData);
+		}
+
 	}
 	else if (redirect)
 		res.redirect(redirect);
@@ -49,7 +54,7 @@ module.exports = function(app, db) {
 		let errors = req.validationErrors();
 		if (errors) {
 			req.flash('error', errors);
-			return response(req, res, '/login');
+			return response(req, res, '/login', Response.BAD_REQUEST);
 		}
 
 		if (req.body.password) {

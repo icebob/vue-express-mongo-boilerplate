@@ -16,6 +16,10 @@ let mailer = require("../libs/mailer");
 
 let User = require("../models/user");
 
+/**
+ * Check what social API are configured. We only show
+ * this social buttons on login # signup pages
+ */
 function checkAvailableSocialAuth() {
 	// set social options
 	let social = {};
