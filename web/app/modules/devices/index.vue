@@ -6,6 +6,7 @@
 	import Vue from "vue";
 	import AdminPage from '../../core/DefaultAdminPage.vue';
 	import schema from "./schema";
+	import toast from "../../core/toastr";
 
 	import MixinsIO from "../../core/mixins/io";
 
@@ -64,6 +65,8 @@
 			new(row) {
 				console.log("New device: ", row);
 				this.rowAdded(row);
+
+				toast.success(`Device '${row.name} added!`, "Device added");
 			},
 
 			/**
@@ -73,6 +76,8 @@
 			update(row) {
 				console.log("Update device: ", row);
 				this.rowChanged(row);
+
+				toast.success(`Device '${row.name} updated!`, "Device updated");
 			},
 
 			/**
@@ -82,6 +87,8 @@
 			remove(row) {
 				console.log("Remove device: ", row);
 				this.rowRemoved(row);	
+
+				toast.success(`Device '${row.name} deleted!`, "Device deleted");
 			}
 		},		
 

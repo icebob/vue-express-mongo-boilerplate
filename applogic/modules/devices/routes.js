@@ -22,7 +22,7 @@ module.exports = function(app, db) {
 	router.use(auth.isAuthenticatedOrApiKey);
 
 	// Must be admin role
-	router.use(auth.hasRole("admin"));
+	//router.use(auth.hasRole("admin"));
 
 	router.route('/')
 		
