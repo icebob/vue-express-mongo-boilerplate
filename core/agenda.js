@@ -26,7 +26,6 @@ agenda.on("fail", function(err, job) {
  */
 
 agenda.define("removeUnverifiedAccounts", function(job, done) {
-	var error, removeList;
 	logger.debug("Running 'removeUnverifiedAccounts' process...");
 	try {
 
@@ -48,12 +47,13 @@ agenda.define("removeUnverifiedAccounts", function(job, done) {
 	}
 });
 
-agenda.on('ready', function() {
-	if (!config.isTestMode()) {
-		agenda.every('8 hours', 'removeUnverifiedAccounts'); 
-		agenda.start();
-		logger.info(chalk.yellow("Agenda started!"));
-	}
+agenda.on("ready", function() {
+	if (config.isTestMode())
+		return;
+
+	agenda.every("8 hours", "removeUnverifiedAccounts"); 
+	agenda.start();
+	logger.info(chalk.yellow("Agenda started!"));
 });
 
 module.exports = agenda;
