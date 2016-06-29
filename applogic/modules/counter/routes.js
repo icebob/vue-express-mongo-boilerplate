@@ -8,7 +8,7 @@ let store 			= require("./memstore");
 
 module.exports = function(app, db) {
 
-	// Valami
+	// Get current value of counter
 	app.get('/counter', auth.isAuthenticated, function(req, res) {
 		res.send("Hello Counter! " + store.counter);
 	});

@@ -11,7 +11,14 @@ module.exports = {
 	init(io) {
 		io.on("connection", (socket) => {
 
-			// Handle imcoming messages
+			// Handle imcoming websocket messages
+			// 
+			// For example:
+			// 
+			// 	socket.on("message", function(payload) {
+			// 		console.log(payload + " received from " + socket.request.user.username);
+			// 	}
+			// 	
 			
 		});		
 	}
