@@ -18,7 +18,7 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 * [Vuex](https://github.com/vuejs/vuex)
 * [Vue-router](https://github.com/vuejs/vue-router)
 * [Vue-resource](https://github.com/vuejs/vue-resource)
-* **[socket.io](https://github.com/socketio/socket.io) connection with namespaces**
+* **[socket.io](https://github.com/socketio/socket.io) connection with namespaces & authorization**
 * [Jade](https://github.com/pugjs/pug)
 * [Webpack](https://github.com/webpack/webpack)
 * SCSS
@@ -108,10 +108,7 @@ $ NODE_ENV=production npm start
 - Copy and paste *Consumer Key* and *Consumer Secret* keys into `secrets.json` file
 
 ## TODO
-* [ ] create a sample VueJS app
 * [ ] rewrite account.js response handlers
-* [ ] add Devices sample API test to client & server side
-* [ ] use namespace or room in websocket (simple user can't get admin ws events)
 * [ ] try Apollo graphql stack
 * [ ] eslint
 * [ ] remove not verified accounts with agenda after 1 day

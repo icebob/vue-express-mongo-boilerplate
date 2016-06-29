@@ -14,6 +14,15 @@ export default function createIOMixin(connection, opts) {
 		console.log("Websocket connected to " + socket.nsp);
 	});
 
+	socket.on("disconnect", () => {
+		console.log("Websocket disconnected from " + socket.nsp);
+	});	
+
+	socket.on("error", (err) => {
+		console.error("Websocket error!", err);
+	});
+
+
 	return {
 
 		created() {

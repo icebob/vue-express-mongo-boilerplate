@@ -120,7 +120,7 @@ let self = {
 										next(null, true);	
 									else {
 										logger.warn(`Websocket user has no access to this namespace '${ns}'!`);
-										next(new Error('User has no access to this namespace!'), false);
+										next(new Error(`You have NO access to this namespace '${ns}'!`), false);
 									}
 								}
 								else
@@ -128,7 +128,7 @@ let self = {
 
 							} else {
 								logger.warn('Websocket user is not authenticated!');
-								next(new Error('User is not authenticated'), false);
+								next(new Error('User is not authenticated! Please login first!'), false);
 							}
 						});
 					});
