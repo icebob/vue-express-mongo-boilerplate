@@ -23,6 +23,7 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 * [Webpack](https://github.com/webpack/webpack)
 * SCSS
 * [PostCSS](https://github.com/postcss/postcss) with precss and autoprefixer
+* [Toastr](https://github.com/CodeSeven/toastr)
 * Babel
 * [Passwordless](https://www.sitepoint.com/passwordless-authentication-works/) mode
 * **[Passport.JS](http://passportjs.org/)**
