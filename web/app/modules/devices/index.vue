@@ -13,23 +13,35 @@
 	import * as getters from "./vuex/getters";
 
 	export default {
+		/**
+		 * Create websocket connection to '/devices' namespace
+		 */
 		mixins: [ MixinsIO("/devices") ],
 
 		components: {
 			AdminPage: AdminPage
 		},
 
+		/**
+		 * Set page schema as data property
+		 */
 		data() {
 			return {
 				schema
 			}
 		},
 
+		/**
+		 * Set Vuex actions & getters
+		 */
 		vuex: {
 			getters,
 			actions
 		},		
 
+		/**
+		 * Route handlers
+		 */
 		route: {
 			activate() {
 
@@ -40,24 +52,44 @@
 			}
 		},
 
+		/**
+		 * Socket handlers. Every property is an event handler
+		 */
 		sockets: {
+
+			/**
+			 * New device added
+			 * @param  {Object} row Device object
+			 */
 			new(row) {
 				console.log("New device: ", row);
 				this.rowAdded(row);
 			},
 
+			/**
+			 * Device updated
+			 * @param  {Object} row Device object
+			 */
 			update(row) {
 				console.log("Update device: ", row);
 				this.rowChanged(row);
 			},
 
+			/**
+			 * Device removed
+			 * @param  {Object} row Device object
+			 */
 			remove(row) {
 				console.log("Remove device: ", row);
 				this.rowRemoved(row);	
 			}
 		},		
 
+		/**
+		 * Call if the component is created
+		 */
 		created() {
+			// Download rows for the page
 			this.downloadRows();
 		}
 	}
