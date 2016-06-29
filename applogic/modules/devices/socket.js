@@ -6,6 +6,7 @@ let config 			= require("../../../config");
 module.exports = {
 
 	namespace: "/devices",
+	role: "admin",
 
 	init(io) {
 		io.on("connection", (socket) => {

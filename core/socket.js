@@ -26,7 +26,7 @@ let self = {
 	namespaces: {},
 
 	/**
-	 * Init Socket.IO module and looad socket handlers 
+	 * Init Socket.IO module and load socket handlers 
 	 * from applogic
 	 * 
 	 * @param  {Object} app Express App
@@ -64,7 +64,7 @@ let self = {
 			let io = self.namespaces[Handler.namespace];
 			if (io == null) {
 				io = IO.of(Handler.namespace);
-				self.initNameSpace(Handler.namespace, io, mongoStore);
+				self.initNameSpace(Handler.namespace, io, mongoStore, Handler.role);
 				
 				if (_.isFunction(Handler.init))
 					Handler.init(io);
@@ -83,7 +83,7 @@ let self = {
 	 * @param  {Object} io         IO instance
 	 * @param  {Object} mongoStore Mongo Session store
 	 */
-	initNameSpace(ns, io, mongoStore) {
+	initNameSpace(ns, io, mongoStore, roleRequired) {
 
 		// Intercept Socket.io's handshake request
 		io.use(function (socket, next) {
@@ -113,7 +113,19 @@ let self = {
 					passport.initialize()(socket.request, {}, function () {
 						passport.session()(socket.request, {}, function () {
 							if (socket.request.user) {
-								next(null, true);
+								let user = socket.request.user;
+
+								if (roleRequired) {
+									if (user.roles && user.roles.indexOf(roleRequired) !== -1) 
+										next(null, true);	
+									else {
+										logger.warn(`Websocket user has no access to this namespace '${ns}'!`);
+										next(new Error('User has no access to this namespace!'), false);
+									}
+								}
+								else
+									next(null, true);
+
 							} else {
 								logger.warn('Websocket user is not authenticated!');
 								next(new Error('User is not authenticated'), false);

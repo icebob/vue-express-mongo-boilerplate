@@ -46,7 +46,7 @@ module.exports.hasRole = function hasRole(roleRequired) {
 		throw new Error("Required role needs to be set");
 
 	return function(req, res, next) {
-		return isAuthenticated(req, res, function() {
+		return module.exports.isAuthenticated(req, res, function() {
 			if (req.user && req.user.roles && req.user.roles.indexOf(roleRequired) !== -1)
 				next();
 			else
@@ -54,6 +54,10 @@ module.exports.hasRole = function hasRole(roleRequired) {
 		});
 	};
 };
+
+module.exports.hasAdminRole = function hasAdminRole() {
+	return module.exports.hasRole("admin");
+}
 
 module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 

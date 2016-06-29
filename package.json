@@ -93,6 +93,7 @@
     "precss": "1.4.0",
     "style-loader": "0.13.1",
     "tiny-lr": "0.2.1",
+    "toastr": "2.1.2",
     "url-loader": "0.5.7",
     "uuid": "2.0.2",
     "vue": "1.0.25",
