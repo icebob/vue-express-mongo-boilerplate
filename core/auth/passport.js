@@ -1,13 +1,13 @@
 "use strict";
 
-let logger 			= require('../logger');
+let logger 			= require("../logger");
 let config 			= require("../../config");
 
-let passport 		= require('passport');
-let path 			= require('path');
+let passport 		= require("passport");
+let path 			= require("path");
 let chalk 			= require("chalk");
 
-let User 			= require('../../models/user');
+let User 			= require("../../models/user");
 
 module.exports = function(app) {
 
@@ -22,7 +22,7 @@ module.exports = function(app) {
 	passport.deserializeUser(function(id, done) {
 		User.findOne({
 			_id: id
-		}, '-password', function(err, user) {
+		}, "-password", function(err, user) {
 			return done(err, user);
 		});
 	});
@@ -30,7 +30,7 @@ module.exports = function(app) {
 	logger.info("");
 	logger.info(chalk.bold("Search passport strategies..."));
 
-	return config.getGlobbedFiles(path.join(__dirname, 'strategies', '**', '*.js')).forEach(function(strategy) {
+	return config.getGlobbedFiles(path.join(__dirname, "strategies", "**", "*.js")).forEach(function(strategy) {
 		logger.info("  Loading passport strategy file " + path.basename(strategy) + "...");
 		return require(path.resolve(strategy))();
 	});

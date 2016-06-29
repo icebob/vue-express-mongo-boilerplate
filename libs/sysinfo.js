@@ -1,9 +1,9 @@
 "use strict";
 
-let os = require('os');
-let clui = require('clui');
-let pretty = require('pretty-bytes');
-let logger = require('../core/logger');
+let os = require("os");
+let clui = require("clui");
+let pretty = require("pretty-bytes");
+let logger = require("../core/logger");
 
 module.exports = function() {
 	let Gauge = clui.Gauge;

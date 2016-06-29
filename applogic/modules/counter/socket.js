@@ -1,6 +1,6 @@
 "use strict";
 
-let logger 			= require('../../../core/logger');
+let logger 			= require("../../../core/logger");
 let config 			= require("../../../config");
 
 let store 			= require("./memstore");

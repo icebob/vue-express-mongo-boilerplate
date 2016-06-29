@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-let logger 			= require('../core/logger');
+let logger 			= require("../core/logger");
 let config 			= require("../config");
 
 let path 			= require("path");
@@ -18,4 +18,4 @@ module.exports = function(app, db) {
 		logger.info("  Load", path.relative(path.join(__dirname, "modules"), file), "route...");
 		require(path.resolve(file))(app, db);
 	});
-}
+};

@@ -1,22 +1,22 @@
 "use strict";
 
-let logger 	= require('../../logger');
+let logger 	= require("../../logger");
 let config 	= require("../../../config");
-let secrets = require('../../secrets');
-let helper 	= require('../helper');
+let secrets = require("../../secrets");
+let helper 	= require("../helper");
 
-let passport 		= require('passport');
-let GoogleStrategy  = require('passport-google-oauth').OAuth2Strategy;
-let User 			= require('../../../models/user');
+let passport 		= require("passport");
+let GoogleStrategy  = require("passport-google-oauth").OAuth2Strategy;
+let User 			= require("../../../models/user");
 
 // https://console.developers.google.com/project/express-mongo-boilerplate/apiui/consent
 module.exports = function() {
 	if (secrets.apiKeys && secrets.apiKeys.google && secrets.apiKeys.google.clientID) {
 
-		passport.use('google', new GoogleStrategy({
+		passport.use("google", new GoogleStrategy({
 			clientID: secrets.apiKeys.google.clientID,
 			clientSecret: secrets.apiKeys.google.clientSecret,
-			callbackURL: '/auth/google/callback',
+			callbackURL: "/auth/google/callback",
 			passReqToCallback: true
 		}, function(req, accessToken, refreshToken, profile, done) {
 			//logger.info("Received profile: ", profile);

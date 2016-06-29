@@ -3,11 +3,11 @@ import Devices from "./modules/devices";
 
 module.exports = {
 
-	'/devices': {
+	"/devices": {
 		component: Devices
 	},
 
-	'*': {
+	"*": {
 		component: Home
 	}
 	

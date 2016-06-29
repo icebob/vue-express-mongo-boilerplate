@@ -5,7 +5,7 @@ import { each } from "lodash";
 export default function createIOMixin(connection, opts) {
 	let socket;
 
-	if (typeof connection === 'object')
+	if (typeof connection === "object")
 		socket = connection;
 	else
 		socket = IO(connection, opts);
@@ -42,5 +42,5 @@ export default function createIOMixin(connection, opts) {
 				this.$socket.disconnect();
 		}
 
-	}
+	};
 }

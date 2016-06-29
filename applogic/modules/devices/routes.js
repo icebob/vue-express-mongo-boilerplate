@@ -1,6 +1,6 @@
 "use strict";
 
-let logger 			= require('../../../core/logger');
+let logger 			= require("../../../core/logger");
 let config 			= require("../../../config");
 
 let express			= require("express");
@@ -24,7 +24,7 @@ module.exports = function(app, db) {
 	// Must be admin role
 	//router.use(auth.hasRole("admin"));
 
-	router.route('/')
+	router.route("/")
 		
 		/**
 		 * Get all devices
@@ -53,7 +53,7 @@ module.exports = function(app, db) {
 		 */
 		.post((req, res) => {
 
-			req.assert('name', 'Device name cannot be blank!').notEmpty();
+			req.assert("name", "Device name cannot be blank!").notEmpty();
 
 			let errors = req.validationErrors();
 			if (errors)
@@ -64,7 +64,7 @@ module.exports = function(app, db) {
 				address: req.body.address,
 				type: req.body.type,
 				name: req.body.name,
-				description: req.body.description,
+				description: req.body.description
 			});
 
 			device.save((err) => {
@@ -94,12 +94,12 @@ module.exports = function(app, db) {
 				return response.json(res, null, response.BAD_REQUEST, err);
 			
 			if (!doc) 
-			return response.json(res, null, response.NOT_FOUND, "Device not found!");
+				return response.json(res, null, response.NOT_FOUND, "Device not found!");
 
 			req.device = doc;
 			next();
 		});
-	})
+	});
 
 	/**
 	 * Handle deviceID specific routes

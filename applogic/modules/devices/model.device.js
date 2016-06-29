@@ -1,13 +1,13 @@
 "use strict";
 
 let config    		= require("../../../config");
-let logger    		= require('../../../core/logger');
+let logger    		= require("../../../core/logger");
 
-let db	    		= require('../../../core/mongo');
+let db	    		= require("../../../core/mongo");
 let mongoose 		= require("mongoose");
 let Schema 			= mongoose.Schema;
 let hashids 		= require("../../../libs/hashids");
-let autoIncrement 	= require('mongoose-auto-increment');
+let autoIncrement 	= require("mongoose-auto-increment");
 
 let schemaOptions = {
 	timestamps: true,

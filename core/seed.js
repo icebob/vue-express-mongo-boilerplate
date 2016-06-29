@@ -1,11 +1,11 @@
 "use strict";
 
-let logger 			= require('./logger');
+let logger 			= require("./logger");
 let config 			= require("../config");
 
 let _ 				= require("lodash");
 
-let tokgen 			= require('../libs/tokgen');
+let tokgen 			= require("../libs/tokgen");
 
 let User 			= require("../models/user");
 let Device 			= require("../applogic/modules/devices/model.device");

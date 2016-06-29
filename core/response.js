@@ -69,7 +69,7 @@ module.exports = {
 			response.error = err;
 			response.status = err.status || 500;
 			if (errMessage)
-				response.error.message = errMessage
+				response.error.message = errMessage;
 
 			response.data = data;
 
@@ -82,4 +82,4 @@ module.exports = {
 		return res.json(response);
 	}
 
-}
+};

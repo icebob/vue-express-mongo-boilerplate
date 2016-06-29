@@ -2,7 +2,7 @@ import { INCREMENT, DECREMENT, CHANGE_VALUE } from "./types";
 
 const state = {
 	count: 0
-}
+};
 
 const mutations = {
 	[INCREMENT] (state) {
@@ -16,7 +16,7 @@ const mutations = {
 	[CHANGE_VALUE] (state, newValue) {
 		state.count = newValue;
 	}
-}
+};
 
 export default {
 	state,

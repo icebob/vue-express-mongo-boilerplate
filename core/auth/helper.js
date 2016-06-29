@@ -1,10 +1,10 @@
 "use strict";
 
-let logger = require('../logger');
+let logger = require("../logger");
 let config = require("../../config");
 let passport = require("passport");
 
-let User 	= require('../../models/user');
+let User 	= require("../../models/user");
 
 // TODO response 
 
@@ -22,12 +22,12 @@ module.exports.isAuthenticatedOrApiKey = function isAuthenticated(req, res, next
 	else {
 		// Try authenticate with API KEY
 		if (req.headers.apikey || req.query.apikey || req.body.apikey) {
-			passport.authenticate('localapikey', (err, user, info) => {
+			passport.authenticate("localapikey", (err, user, info) => {
 				if (err) 
 					return res.sendStatus(500);
 
 				if (!user)
-					return res.status(401).send(info.message || '');
+					return res.status(401).send(info.message || "");
 
 				req.login(user, function(err) {
 					if (err) 
@@ -59,7 +59,7 @@ module.exports.hasRole = function hasRole(roleRequired) {
 
 module.exports.hasAdminRole = function hasAdminRole() {
 	return module.exports.hasRole("admin");
-}
+};
 
 module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 
@@ -80,7 +80,7 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 			if (existingUser) {
 				if (existingUser._id != req.user._id) {
 					// It's linked to an other account!
-					req.flash("error", { msg: 'There is already an account that belongs to you. Sign in with that account or delete it, then link it with your current account.'});
+					req.flash("error", { msg: "There is already an account that belongs to you. Sign in with that account or delete it, then link it with your current account."});
 					return done(err);
 				}
 				else
@@ -100,7 +100,7 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 					user.profile.location = user.profile.location || userData.location;
 
 					user.save(function(err) {
-						req.flash("info", { msg: 'Account has been linked.'});
+						req.flash("info", { msg: "Account has been linked."});
 						done(err, user);
 					});
 				});
@@ -134,7 +134,7 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 						user.profile.location = user.profile.location || userData.location;
 
 						user.save(function(err) {
-							req.flash("info", { msg: 'Account has been linked.'});
+							req.flash("info", { msg: "Account has been linked."});
 							done(err, user);
 						});
 
@@ -163,11 +163,11 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 
 			} else {
 				// Not provided email address
-				req.flash("error", { msg: 'Missing email address. Please signup manually!'});
+				req.flash("error", { msg: "Missing email address. Please signup manually!"});
 				done();
 			}
 		});
 	}
 
 
-}
+};

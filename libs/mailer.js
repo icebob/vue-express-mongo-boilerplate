@@ -1,9 +1,9 @@
 "use strict";
 
 let config    	= require("../config");
-let logger    	= require('../core/logger');
+let logger    	= require("../core/logger");
 let nodemailer 	= require("nodemailer");
-let htmlToText 	= require('nodemailer-html-to-text').htmlToText;
+let htmlToText 	= require("nodemailer-html-to-text").htmlToText;
 
 module.exports = {
 	send: function(recipients, subject, body, cb) {
@@ -13,7 +13,7 @@ module.exports = {
 			from: config.mailer.from,
 			to: recipients,
 			subject: subject,
-			html: body,
+			html: body
 		};
 
 		let transporter;
@@ -21,7 +21,7 @@ module.exports = {
 			transporter = nodemailer.createTransport(config.mailer.smtp);
 		}
 		else if (config.mailer.transport == "mailgun") {
-			let mg = require('nodemailer-mailgun-transport');
+			let mg = require("nodemailer-mailgun-transport");
 			transporter = nodemailer.createTransport(mg({
 				auth: {
 					api_key: config.mailer.mailgun.apiKey,
@@ -30,7 +30,7 @@ module.exports = {
 			}));
 		}
 		else if (config.mailer.transport == "sendgrid") {
-			let sgTransport = require('nodemailer-sendgrid-transport');
+			let sgTransport = require("nodemailer-sendgrid-transport");
 			transporter = nodemailer.createTransport(sgTransport({
 				auth: {
 					api_key: config.mailer.sendgrid.apiKey
@@ -39,7 +39,7 @@ module.exports = {
 		}
 
 		if (transporter) {
-			transporter.use('compile', htmlToText());
+			transporter.use("compile", htmlToText());
 			transporter.sendMail(mailOptions, (err, info) => {
 				if (err)
 					logger.warn("Unable to send email: ", err);
@@ -53,4 +53,4 @@ module.exports = {
 		else 
 			logger.warn("Unable to send email! Invalid mailer transport: " + config.mailer.transport);
 	}
-}
+};

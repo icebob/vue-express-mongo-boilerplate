@@ -1,6 +1,6 @@
 "use strict";
 
-let path = require('path');
+let path = require("path");
 let pkg = require("../package.json");
 
 let rootPath = path.normalize(path.join(__dirname, ".."));
@@ -11,12 +11,12 @@ module.exports = {
 		version: pkg.version,
 		description: pkg.description,
 		keywords: pkg.keywords.join(","),
-		url: 'http://localhost:3000/',
+		url: "http://localhost:3000/",
 		//googleAnalyticsID: 'UA-xxxxx-x',
 		contactEmail: "hello@boilerplate-app.com"
 	},
 
-	ip: '0.0.0.0',
+	ip: "0.0.0.0",
 	port: process.env.PORT || 3000,
 	rootPath: rootPath,
 	dataFolder: path.join(rootPath, "data"),
@@ -38,10 +38,10 @@ module.exports = {
 		},
 
 		// Cookie key name
-		name: 'sessionId',
+		name: "sessionId",
 
 		// Mongo store collection name
-		collection: 'sessions',
+		collection: "sessions"
 	},
 
 	test: false,
@@ -87,8 +87,8 @@ module.exports = {
 	db: {
 		uri: process.env.MONGO_URI || "mongodb://localhost/" + pkg.config.dbName + "-dev",
 		options: {
-			user: '',
-			pass: '',
+			user: "",
+			pass: "",
 			server: {
 				socketOptions: {
 					keepAlive: 1

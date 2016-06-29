@@ -40,7 +40,7 @@ module.exports = {
 				title: "Status",
 				field: "status",
 				formatter(value, model, col) {
-					return value ? "<i class='fa fa-check'/>" : "<i class='fa fa-ban'/>"
+					return value ? "<i class='fa fa-check'/>" : "<i class='fa fa-ban'/>";
 				},
 				align: "center"
 			},
@@ -56,7 +56,7 @@ module.exports = {
 		rowClasses: function(model) {
 			return {
 				inactive: !model.status
-			}
+			};
 		}
 
 	},
@@ -161,6 +161,6 @@ module.exports = {
 		saveCaption: "Save",
 		cloneCaption: "Clone",
 		deleteCaption: "Delete"
-	},
+	}
 
-}
+};

@@ -1,19 +1,19 @@
 "use strict";
 
-let passport = require('passport');
-let LocalStrategy = require('passport-local').Strategy;
-let User = require('../../../models/user');
+let passport = require("passport");
+let LocalStrategy = require("passport-local").Strategy;
+let User = require("../../../models/user");
 
 module.exports = function() {
 	passport.use(new LocalStrategy({
-		usernameField: 'username',
-		passwordField: 'password',
+		usernameField: "username",
+		passwordField: "password",
 		passReqToCallback : true
 	}, function(req, username, password, done) {
 		return User.findOne({
 			$or: [ 
-				{ 'username': username}, 
-				{ 'email': username}
+				{ "username": username}, 
+				{ "email": username}
 			]
 		}, function(err, user) {
 			if (err)
@@ -21,17 +21,17 @@ module.exports = function() {
 			
 			if (!user)
 				return done(null, false, {
-					message: 'Unknow username'
+					message: "Unknow username"
 				});
 
 			if (!user.verified)
 				return done(null, false, {
-					message: 'Please activate your account!'
+					message: "Please activate your account!"
 				});
 
 			if (user.passwordLess)
 				return done(null, false, {
-					message: 'This is a passwordless account! Please leave empty the password field.'
+					message: "This is a passwordless account! Please leave empty the password field."
 				});
 
 			user.comparePassword(password, function(err, isMatch) {
@@ -40,7 +40,7 @@ module.exports = function() {
 
 				if (isMatch !== true)
 					return done(null, false, {
-						message: 'Invalid password'
+						message: "Invalid password"
 					});
 
 				else

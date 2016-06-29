@@ -5,7 +5,7 @@ import { each, find, assign, remove, isArray } from "lodash";
 const state = {
 	rows: [],
 	selected: []
-}
+};
 
 const mutations = {
 	[LOAD] (state, devices) {
@@ -54,7 +54,7 @@ const mutations = {
 			state.rows.$remove(found);
 		}
 	}	
-}
+};
 
 
 export default {

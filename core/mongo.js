@@ -1,11 +1,11 @@
 "use strict";
 
-let logger 			= require('./logger');
+let logger 			= require("./logger");
 let config 			= require("../config");
 
 let chalk 			= require("chalk");
 let mongoose 		= require("mongoose");
-let autoIncrement 	= require('mongoose-auto-increment');
+let autoIncrement 	= require("mongoose-auto-increment");
 
 module.exports = function() {
 	let db;
@@ -20,21 +20,21 @@ module.exports = function() {
 				return logger.error(err);
 			}
 
-			mongoose.set('debug', config.isDevMode());
+			mongoose.set("debug", config.isDevMode());
 		});
 
-		mongoose.connection.on('error', function(err) {
+		mongoose.connection.on("error", function(err) {
 			logger.error("Could not connect to MongoDB!");
 			return logger.error(err);
 		});
 
 		autoIncrement.initialize(db);		
 
-		mongoose.connection.once('open', function() {
+		mongoose.connection.once("open", function() {
 			logger.info(chalk.yellow.bold("Mongo DB connected."));
 			logger.info();
 
-			if (process.env.NODE_ENV === 'development') {
+			if (process.env.NODE_ENV === "development") {
 				require("./seed")();
 			}
 		});

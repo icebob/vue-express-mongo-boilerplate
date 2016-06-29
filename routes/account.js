@@ -1,14 +1,14 @@
 "use strict";
 
 let config 	= require("../config");
-let logger 	= require('../core/logger');
+let logger 	= require("../core/logger");
 
-let secrets 	= require('../core/secrets');
-let tokgen 		= require('../libs/tokgen');
+let secrets 	= require("../core/secrets");
+let tokgen 		= require("../libs/tokgen");
 
-let crypto = require('crypto');
+let crypto = require("crypto");
 let async = require("async");
-let passport = require('passport');
+let passport = require("passport");
 let express = require("express");
 
 let response = require("../core/response");
@@ -47,25 +47,25 @@ function checkAvailableSocialAuth() {
 module.exports = function(app, db) {
 
 	// Login page
-	app.get('/login', function(req, res) {
+	app.get("/login", function(req, res) {
 		if (req.user != null) {
 			return res.redirect("/");
 		}
 
-		res.render('account/login', {
+		res.render("account/login", {
 			socialAuth: checkAvailableSocialAuth()
 		});
 	});
 
 	// Logout
-	app.get('/logout', function(req, res) {
+	app.get("/logout", function(req, res) {
 		req.logout();
 		res.redirect("/");
 	});
 
 	// Sign-up
-	app.get('/signup', function(req, res) {
-		res.render('account/signup', {
+	app.get("/signup", function(req, res) {
+		res.render("account/signup", {
 			socialAuth: checkAvailableSocialAuth()
 		});
 
@@ -77,14 +77,14 @@ module.exports = function(app, db) {
 		req.assert("name", "Name cannot be empty!").notEmpty();
 		req.assert("email", "Email cannot be empty!").notEmpty();
 		req.assert("email", "Email is not valid!").isEmail();
-		req.sanitize('email').normalizeEmail({ remove_dots: false });
+		req.sanitize("email").normalizeEmail({ remove_dots: false });
 
 		//req.assert("username", "Username cannot be empty!").notEmpty();
 		
 		if (!req.body.username)
 			req.body.username = req.body.email;
 
-		req.sanitize('passwordless').toBoolean();
+		req.sanitize("passwordless").toBoolean();
 		let passwordless = req.body.passwordless === true;
 		if (!passwordless) {
 			req.assert("password", "Password cannot be empty!").notEmpty();
@@ -93,8 +93,8 @@ module.exports = function(app, db) {
 		var errors = req.validationErrors();
 
 		if (errors) {
-			req.flash('error', errors);
-			return res.redirect('/signup');
+			req.flash("error", errors);
+			return res.redirect("/signup");
 		}
 
 		async.waterfall([
@@ -102,7 +102,7 @@ module.exports = function(app, db) {
 			function generateVerificationToken(done) {
 				if (config.verificationRequired) {
 					crypto.randomBytes(25, function(err, buf) {
-						done(err, err ? null : buf.toString("hex"))
+						done(err, err ? null : buf.toString("hex"));
 					});
 				} else {
 					done(null, null);
@@ -143,9 +143,9 @@ module.exports = function(app, db) {
 						field = field.split(" dup key")[0];
 						field = field.substring(0, field.lastIndexOf("_"));						
 						if (field == "email")
-							req.flash('error', { msg: 'An account with that email address already exists!' });
+							req.flash("error", { msg: "An account with that email address already exists!" });
 						else 
-							req.flash('error', { msg: 'An account with that username already exists!' });
+							req.flash("error", { msg: "An account with that username already exists!" });
 					}
 					done(err, user);
 				});
@@ -154,9 +154,9 @@ module.exports = function(app, db) {
 			function sendEmail(user, done) {
 				if (user.verified) {
 					// Send welcome email
-					let subject = '✔ Welcome to ' + config.app.title + "!";
+					let subject = "✔ Welcome to " + config.app.title + "!";
 
-					res.render('mail/welcome', {
+					res.render("mail/welcome", {
 						name: user.fullName
 					}, function(err, html) {
 						if (err)
@@ -166,7 +166,7 @@ module.exports = function(app, db) {
 							if (err)
 								req.flash("error", { msg: "Unable to send email to " + user.email});
 							else
-								req.flash("info", { msg: 'Please check your email to verify your account. Thanks for signing up!'});
+								req.flash("info", { msg: "Please check your email to verify your account. Thanks for signing up!"});
 
 							done(null, user);
 						});
@@ -174,11 +174,11 @@ module.exports = function(app, db) {
 
 				} else {
 					// Send verification email
-					let subject = '✔ Activate your new ' + config.app.title + ' account';
+					let subject = "✔ Activate your new " + config.app.title + " account";
 
-					res.render('mail/accountVerify', {
+					res.render("mail/accountVerify", {
 						name: user.fullName,
-						validateLink: 'http://' + req.headers.host + '/verify/' + user.verifyToken
+						validateLink: "http://" + req.headers.host + "/verify/" + user.verifyToken
 					}, function(err, html) {
 						if (err)
 							return done(err);
@@ -187,14 +187,14 @@ module.exports = function(app, db) {
 							if (err)
 								req.flash("error", { msg: "Unable to send email to " + user.email});
 							else
-								req.flash("info", { msg: 'Please check your email to verify your account. Thanks for signing up!'});
+								req.flash("info", { msg: "Please check your email to verify your account. Thanks for signing up!"});
 
 
 							done(err, user);
 						});
 					});					
 				}
-			},
+			}
 
 		], function(err, user) {
 			if (err) {
@@ -217,9 +217,9 @@ module.exports = function(app, db) {
 
 
 	// Verify account
-	app.get('/verify/:token', function(req, res) {
+	app.get("/verify/:token", function(req, res) {
 		if (req.isAuthenticated())
-			return res.redirect('/');
+			return res.redirect("/");
 		
 		async.waterfall([
 
@@ -231,7 +231,7 @@ module.exports = function(app, db) {
 							return done(err);
 
 						if (!user) {
-							req.flash('error', { msg: 'Your account verification is invalid or expired.' });
+							req.flash("error", { msg: "Your account verification is invalid or expired." });
 							return done("Verification is invalid!");
 						}
 
@@ -241,7 +241,7 @@ module.exports = function(app, db) {
 
 						user.save(function(err) {
 							if (err) {
-								req.flash('error', { msg: 'Unable to modify your account!' });
+								req.flash("error", { msg: "Unable to modify your account!" });
 								return done(err);
 							}
 
@@ -251,9 +251,9 @@ module.exports = function(app, db) {
 			},
 
 			function sendWelcomeEmailToUser(user, done) {
-				let subject = '✔ Welcome to ' + config.app.title + "!";
+				let subject = "✔ Welcome to " + config.app.title + "!";
 
-				res.render('mail/welcome', {
+				res.render("mail/welcome", {
 					name: user.fullName
 				}, function(err, html) {
 					if (err)
@@ -263,7 +263,7 @@ module.exports = function(app, db) {
 						if (err)
 							req.flash("error", { msg: "Unable to send email to " + user.email});
 						else
-							req.flash("info", { msg: 'Please check your email to verify your account. Thanks for signing up!'});
+							req.flash("info", { msg: "Please check your email to verify your account. Thanks for signing up!"});
 
 						done(null, user);
 					});
@@ -287,9 +287,9 @@ module.exports = function(app, db) {
 	});	
 
 	// Passwordless login
-	app.get('/passwordless/:token', function(req, res) {
+	app.get("/passwordless/:token", function(req, res) {
 		if (req.isAuthenticated())
-			return res.redirect('/');
+			return res.redirect("/");
 		
 		async.waterfall([
 
@@ -301,7 +301,7 @@ module.exports = function(app, db) {
 							return done(err);
 
 						if (!user) {
-							req.flash('error', { msg: 'Your passwordless token is invalid or expired.' });
+							req.flash("error", { msg: "Your passwordless token is invalid or expired." });
 							return done("Token is invalid!");
 						}
 
@@ -314,7 +314,7 @@ module.exports = function(app, db) {
 
 						user.save(function(err) {
 							if (err) {
-								req.flash('error', { msg: 'Unable to modify account details!' });
+								req.flash("error", { msg: "Unable to modify account details!" });
 								return done(err);
 							}
 
@@ -340,37 +340,37 @@ module.exports = function(app, db) {
 	});	
 
 	// Forgot password
-	app.get('/forgot', function(req, res) {
+	app.get("/forgot", function(req, res) {
 		if (req.isAuthenticated())
-			return res.redirect('/');
+			return res.redirect("/");
 		
 		res.render("account/forgot");
 	});	
 
 	// Forgot password
-	app.post('/forgot', function(req, res) {
-		req.assert('email', 'Email is not valid!').isEmail();
-		req.assert('email', 'Email cannot be blank!').notEmpty();
-		req.sanitize('email').normalizeEmail({ remove_dots: false });
+	app.post("/forgot", function(req, res) {
+		req.assert("email", "Email is not valid!").isEmail();
+		req.assert("email", "Email cannot be blank!").notEmpty();
+		req.sanitize("email").normalizeEmail({ remove_dots: false });
 		
 		let errors = req.validationErrors();
 		if (errors) {
-			req.flash('error', errors);
-			return res.redirect('back');
+			req.flash("error", errors);
+			return res.redirect("back");
 		}	
 
 		async.waterfall([
 
 			function generateToken(done) {
 				crypto.randomBytes(25, function(err, buf) {
-					done(err, err ? null : buf.toString("hex"))
+					done(err, err ? null : buf.toString("hex"));
 				});
 			},
 
 			function getUserAndSaveToken(token, done) {
 				User.findOne({ email: req.body.email }, function(err, user) {
 					if (!user) {
-						req.flash('error', { msg: 'The email address ' + req.body.email + ' is not associated with any account.' });
+						req.flash("error", { msg: "The email address " + req.body.email + " is not associated with any account." });
 						return done("Email address " + req.body.email + " is not registered!");
 					}
 
@@ -383,11 +383,11 @@ module.exports = function(app, db) {
 			},
 
 			function sendResetEmailToUser(token, user, done) {
-				let subject = '✔ Reset your password on ' + config.app.title;
+				let subject = "✔ Reset your password on " + config.app.title;
 
-				res.render('mail/passwordReset', {
+				res.render("mail/passwordReset", {
 					name: user.fullName,
-					resetLink: 'http://' + req.headers.host + '/reset/' + token
+					resetLink: "http://" + req.headers.host + "/reset/" + token
 				}, function(err, html) {
 					if (err)
 						return done(err);
@@ -407,42 +407,42 @@ module.exports = function(app, db) {
 			if (err)
 				logger.error(err);
 
-			res.redirect('back');
+			res.redirect("back");
 		});
 	});	
 
 
 
 	// Reset password
-	app.get('/reset/:token', function(req, res) {
+	app.get("/reset/:token", function(req, res) {
 		if (req.isAuthenticated())
-			return res.redirect('/');
+			return res.redirect("/");
 		
 		User
 			.findOne({ resetPasswordToken: req.params.token })
-			.where('resetPasswordExpires').gt(Date.now())
+			.where("resetPasswordExpires").gt(Date.now())
 			.exec((err, user) => {
 				if (err) 
 					return next(err);
 
 				if (!user) {
-					req.flash('error', { msg: 'Password reset token is invalid or has expired.' });
-					return res.redirect('/forgot');
+					req.flash("error", { msg: "Password reset token is invalid or has expired." });
+					return res.redirect("/forgot");
 				}
 
-				res.render('account/reset');
+				res.render("account/reset");
 			});
 	});
 
 	// Reset password
 	app.post("/reset/:token", function(req, res, next) {
-		req.assert('password', 'Password must be at least 6 characters long.').len(6);
-		req.assert('confirm', 'Passwords must match.').equals(req.body.password);
+		req.assert("password", "Password must be at least 6 characters long.").len(6);
+		req.assert("confirm", "Passwords must match.").equals(req.body.password);
 
 		const errors = req.validationErrors();
 		if (errors) {
-			req.flash('error', errors);
-			return res.redirect('back');
+			req.flash("error", errors);
+			return res.redirect("back");
 		}
 
 		async.waterfall([
@@ -450,14 +450,14 @@ module.exports = function(app, db) {
 			function checkTokenAndExpires(done) {
 				User			
 					.findOne({ resetPasswordToken: req.params.token })
-					.where('resetPasswordExpires').gt(Date.now())
+					.where("resetPasswordExpires").gt(Date.now())
 					.exec( (err, user) => {
 						if (err) 
 							return done(err);
 
 						if (!user) {
-							req.flash('error', { msg: 'Password reset token is invalid or has expired.' });
-							return done('Password reset token is invalid or has expired.');
+							req.flash("error", { msg: "Password reset token is invalid or has expired." });
+							return done("Password reset token is invalid or has expired.");
 						}
 
 						// Clear passwordless flag, if the user change password
@@ -481,9 +481,9 @@ module.exports = function(app, db) {
 			},
 
 			function sendPasswordChangeEmailToUser(user, done) {
-				let subject = '✔ Your password has been changed on ' + config.app.title;
+				let subject = "✔ Your password has been changed on " + config.app.title;
 
-				res.render('mail/passwordChange', {
+				res.render("mail/passwordChange", {
 					name: user.fullName
 				}, function(err, html) {
 					if (err)
@@ -503,7 +503,7 @@ module.exports = function(app, db) {
 		], function(err) {
 			if (err) {
 				logger.error(err);
-				return res.redirect('back');
+				return res.redirect("back");
 			}
 
 			res.redirect("/");
@@ -511,7 +511,7 @@ module.exports = function(app, db) {
 	});
 
 	// Generate API key
-	app.get('/generateAPIKey', function(req, res) {
+	app.get("/generateAPIKey", function(req, res) {
 		if (!req.isAuthenticated())
 			return response.json(res, null, response.UNAUTHORIZED);
 		
@@ -532,7 +532,7 @@ module.exports = function(app, db) {
 						return response.json(res, null, response.SERVER_ERROR);
 
 					return response.json(res, user);
-				})
+				});
 
 			});
 	});	

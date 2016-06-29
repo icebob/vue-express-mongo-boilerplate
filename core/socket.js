@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 
-let logger 			= require('./logger');
+let logger 			= require("./logger");
 let config 			= require("../config");
 let secrets 		= require("./secrets");
 
-let	path 			= require('path');
-let	fs 				= require('fs');
-let	http 			= require('http');
+let	path 			= require("path");
+let	fs 				= require("fs");
+let	http 			= require("http");
 let _ 				= require("lodash");
 
-let	cookieParser 	= require('cookie-parser');
-let	passport 		= require('passport');
-let	socketio 		= require('socket.io');
-let	session 		= require('express-session');
-let	MongoStore 		= require('connect-mongo')(session);
+let	cookieParser 	= require("cookie-parser");
+let	passport 		= require("passport");
+let	socketio 		= require("socket.io");
+let	session 		= require("express-session");
+let	MongoStore 		= require("connect-mongo")(session);
 
-let socketHandlers  = require('../applogic/socketHandlers');
+let socketHandlers  = require("../applogic/socketHandlers");
 
 let self = {
 
@@ -49,7 +49,7 @@ let self = {
 
 		// Add common handler to the root namespace
 		self.initNameSpace("/", IO, mongoStore);
-		IO.on('connection', function (socket) {
+		IO.on("connection", function (socket) {
 			socket.on("welcome", function(msg) {
 				logger.info("Incoming welcome message from " + socket.request.user.username + ":", msg);
 			});
@@ -93,14 +93,14 @@ let self = {
 				var sessionId = socket.request.signedCookies ? socket.request.signedCookies[config.sessions.name] : undefined;
 
 				if (!sessionId) {
-					logger.warn('sessionId was not found in socket.request');
-					return next(new Error('sessionId was not found in socket.request'), false);
+					logger.warn("sessionId was not found in socket.request");
+					return next(new Error("sessionId was not found in socket.request"), false);
 				}
 
 				// Use the mongoStorage instance to get the Express session information
 				mongoStore.get(sessionId, function (err, session) {
 					if (err) return next(err, false);
-					if (!session) return next(new Error('session was not found for ' + sessionId), false);
+					if (!session) return next(new Error("session was not found for " + sessionId), false);
 
 					// Set the Socket.io session information
 					socket.request.session = session;
@@ -127,8 +127,8 @@ let self = {
 									next(null, true);
 
 							} else {
-								logger.warn('Websocket user is not authenticated!');
-								next(new Error('User is not authenticated! Please login first!'), false);
+								logger.warn("Websocket user is not authenticated!");
+								next(new Error("User is not authenticated! Please login first!"), false);
 							}
 						});
 					});
@@ -137,10 +137,10 @@ let self = {
 		});
 
 		// Add an event listener to the 'connection' event
-		io.on('connection', function (socket) {
+		io.on("connection", function (socket) {
 			logger.debug("WS client connected to namespace " + (io.name || "root") + "! User: " + socket.request.user.username);
 
-			socket.on('disconnect', function() {
+			socket.on("disconnect", function() {
 				logger.debug("WS client disconnected from namespace " + (io.name || "root") + "!");
 			});
 		});

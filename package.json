@@ -8,7 +8,10 @@
     "build": "webpack --progress --colors -p --config webpack.prod.config.js",
     "dev": "nodemon",
     "start": "cross-env NODE_ENV=production node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+
+    "lint": "eslint --ext=.js,.vue applogic config core libs models routes tests web server.js",
+    "lint:fix": "eslint --fix --ext=.js,.vue applogic config core libs models routes tests web server.js"
   },
   "repository": {
     "type": "git",
@@ -86,6 +89,10 @@
     "babel-preset-stage-0": "6.5.0",
     "babel-runtime": "6.9.2",
     "css-loader": "0.23.1",
+    "eslint": "2.13.1",
+    "eslint-friendly-formatter": "2.0.5",
+    "eslint-loader": "1.3.0",
+    "eslint-plugin-html": "1.5.1",
     "file-loader": "0.9.0",
     "jquery": "3.0.0",
     "json-loader": "0.5.4",

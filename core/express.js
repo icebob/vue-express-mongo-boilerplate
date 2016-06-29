@@ -1,27 +1,27 @@
 "use strict";
 
-let logger 			= require('./logger');
+let logger 			= require("./logger");
 let config 			= require("../config");
 let secrets 		= require("./secrets");
 
 let express 		= require("express");
 let http 			= require("http");
-let path 			= require('path');
+let path 			= require("path");
 
 let moment 			= require("moment");
 let flash 			= require("express-flash");
-let favicon 		= require('serve-favicon');
-let morgan 			= require('morgan');
-let bodyParser 		= require('body-parser');
-let cookieParser	= require('cookie-parser');
-let validator 		= require('express-validator');
-let csrf 			= require('csurf');
+let favicon 		= require("serve-favicon");
+let morgan 			= require("morgan");
+let bodyParser 		= require("body-parser");
+let cookieParser	= require("cookie-parser");
+let validator 		= require("express-validator");
+let csrf 			= require("csurf");
 
 let session 		= require("express-session");
 let compress 		= require("compression");
 let methodOverride 	= require("method-override");
 let helmet 			= require("helmet");
-let crossdomain 	= require('helmet-crossdomain');
+let crossdomain 	= require("helmet-crossdomain");
 let mongoose 		= require("mongoose");
 let MongoStore 		= require("connect-mongo")(session);
 
@@ -34,24 +34,24 @@ function initLocalVariables(app) {
 
 	// Passing the request url to environment locals
 	app.use(function(req, res, next) {
-		res.locals.url = req.protocol + '://' + req.headers.host + req.url;
+		res.locals.url = req.protocol + "://" + req.headers.host + req.url;
 		return next();
 	});
 
-	app.locals.year = moment().format('YYYY');
+	app.locals.year = moment().format("YYYY");
 }
 
 function initMiddleware(app) {
 	// Should be placed before express.static
 	app.use(compress({
 		filter: function(req, res) {
-			return /json|text|javascript|css/.test(res.getHeader('Content-Type'));
+			return /json|text|javascript|css/.test(res.getHeader("Content-Type"));
 		},
 		level: 3
 	}));
 
 	// Configure express app
-	app.set('port', config.port);
+	app.set("port", config.port);
 
 	// Request body parsing middleware should be above methodOverride
 	app.use(bodyParser.urlencoded({
@@ -73,13 +73,13 @@ function initMiddleware(app) {
 	// Cookie parser should be above session
 	app.use(cookieParser());
 
-	app.set('etag', true); // other values 'weak', 'strong'
+	app.set("etag", true); // other values 'weak', 'strong'
 
 	app.use(flash());	
 
 	if (config.isDevMode()) {
 		// Init morgan
-		let stream = require('stream');
+		let stream = require("stream");
 		let lmStream = new stream.Stream();
 
 		lmStream.writable = true;
@@ -100,10 +100,10 @@ function initViewEngine(app) {
 
 	// Environment dependent middleware
 	if (config.isDevMode()) {
-		app.set('showStackError', true);
+		app.set("showStackError", true);
 
 		// Disable views cache
-		app.set('view cache', false);
+		app.set("view cache", false);
 		app.use(helmet.noCache());
 
 		// Jade options: Don't minify html, debug intrumentation
@@ -111,8 +111,8 @@ function initViewEngine(app) {
   		//app.locals.compileDebug = true;
 
 	} else {
-		app.locals.cache = 'memory';
-		app.set('view cache', true);
+		app.locals.cache = "memory";
+		app.set("view cache", true);
 	}
 }
 
@@ -143,7 +143,7 @@ function initHelmetHeaders(app) {
 
 function initAuth(app) {
 	// Init auth
-	require('./auth/passport')(app);
+	require("./auth/passport")(app);
 
 	if (!config.isTestMode()) {
 /*
@@ -169,7 +169,7 @@ function initWebpack(app) {
 		app.use(devMiddleware(compiler, {
 			noInfo: true,
 			publicPath: wpConfig.output.publicPath,
-			headers: { 'Access-Control-Allow-Origin': '*' },
+			headers: { "Access-Control-Allow-Origin": "*" },
 			//stats: 'errors-only'
 			stats: {colors: true}
 		}));
@@ -211,7 +211,7 @@ module.exports = function(db) {
 	require("../routes")(app, db);
 
 	// Load socket.io server
-	let server = require('./socket').init(app, db);
+	let server = require("./socket").init(app, db);
 
 	return server;
 };

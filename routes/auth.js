@@ -1,12 +1,12 @@
 "use strict";
 
 let config 	= require("../config");
-let logger 	= require('../core/logger');
+let logger 	= require("../core/logger");
 
-let crypto = require('crypto');
+let crypto = require("crypto");
 let async = require("async");
 
-let passport = require('passport');
+let passport = require("passport");
 let express = require("express");
 
 let mailer = require("../libs/mailer");
@@ -16,7 +16,7 @@ let User = require("../models/user");
 let Response = require("../core/response");
 
 function response(req, res, redirect, err) {
-	if (req.accepts('json') && !req.accepts('html')) {
+	if (req.accepts("json") && !req.accepts("html")) {
 
 		let flash = req.flash();
 
@@ -41,9 +41,9 @@ module.exports = function(app, db) {
 
 	let authRouter = express.Router();
 
-	authRouter.post('/local', function(req, res, next) {
+	authRouter.post("/local", function(req, res, next) {
 
-		req.assert('username', 'Username cannot be blank!').notEmpty();
+		req.assert("username", "Username cannot be blank!").notEmpty();
 		//req.assert('email', 'Email is not valid!').isEmail();
 		//req.assert('email', 'Email cannot be blank!').notEmpty();
 		//req.sanitize('email').normalizeEmail({ remove_dots: false });
@@ -53,22 +53,22 @@ module.exports = function(app, db) {
 
 		let errors = req.validationErrors();
 		if (errors) {
-			req.flash('error', errors);
-			return response(req, res, '/login', Response.BAD_REQUEST);
+			req.flash("error", errors);
+			return response(req, res, "/login", Response.BAD_REQUEST);
 		}
 
 		if (req.body.password) {
 			// Login with password
-			passport.authenticate('local', function(err, user, info) { 
+			passport.authenticate("local", function(err, user, info) { 
 				if (!user) {
-					req.flash('error', { msg: info.message });
-					return response(req, res, '/login');
+					req.flash("error", { msg: info.message });
+					return response(req, res, "/login");
 				}
 
 				req.login(user, function(err) {
 					if (err) {
-						req.flash('error', { msg: err });
-						return response(req, res, '/login');
+						req.flash("error", { msg: err });
+						return response(req, res, "/login");
 					}
 
 					// Update user's record with login time
@@ -77,7 +77,7 @@ module.exports = function(app, db) {
 						// Remove sensitive data before login
 						req.user.password = undefined;
 						req.user.salt = undefined;
-						response(req, res, '/');
+						response(req, res, "/");
 					});
 
 				});
@@ -90,7 +90,7 @@ module.exports = function(app, db) {
 
 				function generateToken(done) {
 					crypto.randomBytes(25, function(err, buf) {
-						done(err, err ? null : buf.toString("hex"))
+						done(err, err ? null : buf.toString("hex"));
 					});
 				},
 
@@ -98,7 +98,7 @@ module.exports = function(app, db) {
 					let username = req.body.username;
 					User.findOne({ username: username }, function(err, user) {
 						if (!user) {
-							req.flash('error', { msg: 'The username ' + username + ' is not associated with any account.' });
+							req.flash("error", { msg: "The username " + username + " is not associated with any account." });
 							return done("Invalid username " + username);
 						}
 
@@ -111,11 +111,11 @@ module.exports = function(app, db) {
 				},
 
 				function sendResetEmailToUser(token, user, done) {
-					let subject = '✔ Login to your account on ' + config.app.title;
+					let subject = "✔ Login to your account on " + config.app.title;
 
-					res.render('mail/passwordLessLogin', {
+					res.render("mail/passwordLessLogin", {
 						name: user.fullName,
-						loginLink: 'http://' + req.headers.host + '/passwordless/' + token
+						loginLink: "http://" + req.headers.host + "/passwordless/" + token
 					}, function(err, html) {
 						if (err)
 							return done(err);
@@ -143,44 +143,44 @@ module.exports = function(app, db) {
 	});
 
 	// Available scopes: https://developers.google.com/+/web/api/rest/oauth#authorization-scopes
-	authRouter.get('/google', passport.authenticate('google', {
-		scope: 'profile email'
+	authRouter.get("/google", passport.authenticate("google", {
+		scope: "profile email"
 		/*scope: [
 			'https://www.googleapis.com/auth/plus.login',
 			'https://www.googleapis.com/auth/plus.profile.emails.read'
 		]*/
 	}));
 
-	authRouter.get('/google/callback', passport.authenticate('google', {
-		failureRedirect: '/login'
+	authRouter.get("/google/callback", passport.authenticate("google", {
+		failureRedirect: "/login"
 	}), function(req, res) {
 		res.redirect("/");
 	});
 
-	authRouter.get('/facebook', passport.authenticate('facebook', {
-		scope: ['email', 'user_location']
+	authRouter.get("/facebook", passport.authenticate("facebook", {
+		scope: ["email", "user_location"]
 	}));
 
-	authRouter.get('/facebook/callback', passport.authenticate('facebook', {
-		failureRedirect: '/login'
+	authRouter.get("/facebook/callback", passport.authenticate("facebook", {
+		failureRedirect: "/login"
 	}), function(req, res) {
 		res.redirect("/");
 	});	
 
-	authRouter.get('/twitter', passport.authenticate('twitter'));
+	authRouter.get("/twitter", passport.authenticate("twitter"));
 
-	authRouter.get('/twitter/callback', passport.authenticate('twitter', {
-		failureRedirect: '/login'
+	authRouter.get("/twitter/callback", passport.authenticate("twitter", {
+		failureRedirect: "/login"
 	}), function(req, res) {
 		res.redirect("/");
 	});	
 
-	authRouter.get('/github', passport.authenticate('github', {
+	authRouter.get("/github", passport.authenticate("github", {
 		scope: "user:email"
 	}));
 
-	authRouter.get('/github/callback', passport.authenticate('github', {
-		failureRedirect: '/login'
+	authRouter.get("/github/callback", passport.authenticate("github", {
+		failureRedirect: "/login"
 	}), function(req, res) {
 		res.redirect("/");
 	});	

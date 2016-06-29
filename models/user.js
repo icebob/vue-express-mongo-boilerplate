@@ -1,18 +1,18 @@
 "use strict";
 
 let config    		= require("../config");
-let logger    		= require('../core/logger');
+let logger    		= require("../core/logger");
 let fs 				= require("fs");
 let path 			= require("path");
 
-let crypto 			= require('crypto');
-let bcrypt 			= require('bcrypt-nodejs');
+let crypto 			= require("crypto");
+let bcrypt 			= require("bcrypt-nodejs");
 
-let db	    		= require('../core/mongo');
+let db	    		= require("../core/mongo");
 let mongoose 		= require("mongoose");
 let Schema 			= mongoose.Schema;
 let hashids 		= require("../libs/hashids");
-let autoIncrement 	= require('mongoose-auto-increment');
+let autoIncrement 	= require("mongoose-auto-increment");
 
 let schemaOptions = {
 	timestamps: true,
@@ -131,9 +131,9 @@ UserSchema.plugin(autoIncrement.plugin, {
 	startAt: 1
 });
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre("save", function(next) {
 	var user = this;
-	if (!user.isModified('password')) 
+	if (!user.isModified("password")) 
 		return next();
 	
 	bcrypt.genSalt(10, function(err, salt) {
@@ -150,12 +150,12 @@ UserSchema.methods.comparePassword = function(password, cb) {
 	});
 };
 
-UserSchema.virtual('gravatar').get(function() {
-	if (!this.get('email')) {
-		return 'https://gravatar.com/avatar/?s=200&d=retro';
+UserSchema.virtual("gravatar").get(function() {
+	if (!this.get("email")) {
+		return "https://gravatar.com/avatar/?s=200&d=retro";
 	}
-	var md5 = crypto.createHash('md5').update(this.get('email')).digest('hex');
-	return 'https://gravatar.com/avatar/' + md5 + '?s=200&d=retro';
+	var md5 = crypto.createHash("md5").update(this.get("email")).digest("hex");
+	return "https://gravatar.com/avatar/" + md5 + "?s=200&d=retro";
 });
 
 let User = mongoose.model("User", UserSchema);

@@ -1,21 +1,21 @@
 "use strict";
 
-let _ 		= require('lodash');
+let _ 		= require("lodash");
 let glob 	= require("glob");
-let logger 	= require('../core/logger');
+let logger 	= require("../core/logger");
 
 module.exports = {
 
 	isDevMode() {
-		return !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+		return !process.env.NODE_ENV || process.env.NODE_ENV === "development";
 	}, 
 
 	isProductionMode() {
-		return process.env.NODE_ENV === 'production';
+		return process.env.NODE_ENV === "production";
 	},
 
 	isTestMode() {
-		return process.env.NODE_ENV === 'test';
+		return process.env.NODE_ENV === "test";
 	},
 
 	getGlobbedFiles(globPatterns, removeRoot) {
@@ -54,5 +54,5 @@ else if (module.exports.isProductionMode()) {
 	config = require("./prod");
 }
 
-module.exports = _.defaultsDeep(module.exports, config, require('./default'));
+module.exports = _.defaultsDeep(module.exports, config, require("./default"));
 
