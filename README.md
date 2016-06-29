@@ -112,10 +112,6 @@ $ NODE_ENV=production npm start
 ## TODO
 * [ ] rewrite account.js response handlers
 * [ ] try Apollo graphql stack
-* [x] eslint
-* [x] toastr
-* [ ] signup enable/disable in config
-* [ ] remove not verified accounts with agenda after 1 day
 * [ ] add test with nightmare & mocha, chai, sinon
 		https://github.com/MikaelSoderstrom/nightmarejs-demo
 

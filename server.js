@@ -30,9 +30,6 @@ app.listen(config.port, function() {
 
 	logger.info("----------------------------------------------");
 
-	if (!config.isTestMode())
-		return agenda.start();
-
 });
 
 

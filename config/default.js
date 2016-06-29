@@ -99,5 +99,7 @@ module.exports = {
 	},
 
 	disableSignUp: false,
-	verificationRequired: true
+	verificationRequired: true,
+
+	agendaTimer: "one minute"
 };
