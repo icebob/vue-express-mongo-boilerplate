@@ -98,5 +98,6 @@ module.exports = {
 
 	},
 
+	disableSignUp: true,
 	verificationRequired: true
 };

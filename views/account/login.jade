@@ -58,10 +58,11 @@ block content
 								a.group.github(href="/auth/github", title="Login with Github")
 									i.fa.fa-github
 
-					hr
-					.alreadyLink
-						span Don't have an account?
-						a(href='/signup') Sign up
+					if disableSignUp !== true
+						hr
+						.alreadyLink
+							span Don't have an account?
+							a(href='/signup') Sign up
 
 block scripts
 	script(src='/app/frontend.js')

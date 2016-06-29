@@ -65,6 +65,9 @@ module.exports = function(app, db) {
 
 	// Sign-up
 	app.get("/signup", function(req, res) {
+		if (config.disableSignUp === true)
+			return res.redirect("/login");
+
 		res.render("account/signup", {
 			socialAuth: checkAvailableSocialAuth()
 		});
@@ -73,6 +76,8 @@ module.exports = function(app, db) {
 
 	// User registration
 	app.post("/signup", function(req, res) {
+		if (config.disableSignUp === true)
+			return res.redirect("/");
 
 		req.assert("name", "Name cannot be empty!").notEmpty();
 		req.assert("email", "Email cannot be empty!").notEmpty();

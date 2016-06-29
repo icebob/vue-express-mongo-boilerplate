@@ -118,53 +118,58 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 				return done(err, existingUser);
 			}
 
-			if (email) {
-				// If come back email address from social provider, search user by email
-				User.findOne({email: email}, function(err, existingEmailUser) {
-					if (existingEmailUser) {
-						let user = existingEmailUser;
-						user.socialLinks = user.socialLinks || {};
-						user.socialLinks[provider] = profile.id;
+			if (!email) {
+				// Not provided email address
+				req.flash("error", { msg: "Missing email address. Please signup manually!"});
+				return done();				
+			}
 
-						user.profile = user.profile || {};
-						user.profile.name = user.profile.name || userData.name;
-						user.profile.gender = user.profile.gender || userData.gender;
-						user.profile.picture = user.profile.picture || userData.picture;
-						user.profile.location = user.profile.location || userData.location;
-
-						user.save(function(err) {
-							req.flash("info", { msg: "Account has been linked."});
-							done(err, user);
-						});
-
-						return;
-					}
-
-					// Create a new user by social profile
-					let user = new User();
-					user.fullName = userData.name;
-					user.email = email;
-					user.username = email;
-					user.provider = provider;
-					user.verified = true;
-					user.passwordLess = true;
-
-					user.socialLinks = {};
+			// If come back email address from social provider, search user by email
+			User.findOne({email: email}, function(err, existingEmailUser) {
+				if (existingEmailUser) {
+					let user = existingEmailUser;
+					user.socialLinks = user.socialLinks || {};
 					user.socialLinks[provider] = profile.id;
 
-					user.profile = userData;
+					user.profile = user.profile || {};
+					user.profile.name = user.profile.name || userData.name;
+					user.profile.gender = user.profile.gender || userData.gender;
+					user.profile.picture = user.profile.picture || userData.picture;
+					user.profile.location = user.profile.location || userData.location;
 
 					user.save(function(err) {
+						req.flash("info", { msg: "Account has been linked."});
 						done(err, user);
 					});
 
+					return;
+				}
+
+				if (config.disableSignUp === true) {
+					req.flash("error", { msg: "Sign up is disabled. Please login first, if you have an account!"});
+					return done();
+				}
+
+				// Create a new user by social profile
+				let user = new User();
+				user.fullName = userData.name;
+				user.email = email;
+				user.username = email;
+				user.provider = provider;
+				user.verified = true;
+				user.passwordLess = true;
+
+				user.socialLinks = {};
+				user.socialLinks[provider] = profile.id;
+
+				user.profile = userData;
+
+				user.save(function(err) {
+					done(err, user);
 				});
 
-			} else {
-				// Not provided email address
-				req.flash("error", { msg: "Missing email address. Please signup manually!"});
-				done();
-			}
+			});
+
 		});
 	}
 

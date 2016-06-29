@@ -39,6 +39,7 @@ function initLocalVariables(app) {
 	});
 
 	app.locals.year = moment().format("YYYY");
+	app.locals.disableSignUp = config.disableSignUp || false;
 }
 
 function initMiddleware(app) {
