@@ -7,7 +7,7 @@ module.exports = function() {
 
 	Vue.use(VueRouter);
 
-	var router = new VueRouter({
+	let router = new VueRouter({
 		linkActiveClass: "active"
 	});
 

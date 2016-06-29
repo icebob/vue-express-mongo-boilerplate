@@ -4,7 +4,7 @@
 
 <script>
 	import Vue from "vue";
-	import AdminPage from '../../core/DefaultAdminPage.vue';
+	import AdminPage from "../../core/DefaultAdminPage.vue";
 	import schema from "./schema";
 	import toast from "../../core/toastr";
 
@@ -29,7 +29,7 @@
 		data() {
 			return {
 				schema
-			}
+			};
 		},
 
 		/**
@@ -99,5 +99,5 @@
 			// Download rows for the page
 			this.downloadRows();
 		}
-	}
+	};
 </script>

@@ -106,7 +106,6 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 				});
 			}
 		});
-		 
 		
 	} else {
 		

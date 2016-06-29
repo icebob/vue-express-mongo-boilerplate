@@ -1,3 +1,4 @@
+/* global __dirname */
 "use strict";
 
 let logger 			= require("../core/logger");

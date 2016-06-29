@@ -70,7 +70,7 @@
 				this.changeValue(msg);
 			}
 		}
-	}
+	};
 </script>
 
 <style lang="sass" scoped>

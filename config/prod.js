@@ -3,9 +3,8 @@
 let pkg = require("../package.json");
 
 module.exports = {
-	app: {
-    																					url: "http://e-paper-space/"
-	},
+	app: {},
+	
 	ip: process.env.SERVER_IP || "127.0.0.1",
 
 	db: {

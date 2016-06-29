@@ -5,7 +5,8 @@ module.exports = {
         "commonjs": true,
         "es6": true,
         "jquery": true,
-        mocha: true
+        "mocha": true,
+        "node": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
@@ -34,6 +35,9 @@ module.exports = {
             "off"
         ],
         "no-unused-vars": [
+            "off"
+        ],
+        "no-mixed-spaces-and-tabs": [
             "warn"
         ]
     }

@@ -90,7 +90,7 @@ module.exports = function(app, db) {
 			req.assert("password", "Password cannot be empty!").notEmpty();
 		}
 
-		var errors = req.validationErrors();
+		let errors = req.validationErrors();
 
 		if (errors) {
 			req.flash("error", errors);
@@ -414,7 +414,7 @@ module.exports = function(app, db) {
 
 
 	// Reset password
-	app.get("/reset/:token", function(req, res) {
+	app.get("/reset/:token", function(req, res, next) {
 		if (req.isAuthenticated())
 			return res.redirect("/");
 		

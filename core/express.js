@@ -108,7 +108,7 @@ function initViewEngine(app) {
 
 		// Jade options: Don't minify html, debug intrumentation
 		app.locals.pretty = true;
-  		//app.locals.compileDebug = true;
+		//app.locals.compileDebug = true;
 
 	} else {
 		app.locals.cache = "memory";

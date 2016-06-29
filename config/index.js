@@ -19,7 +19,7 @@ module.exports = {
 	},
 
 	getGlobbedFiles(globPatterns, removeRoot) {
-		var _this, files, output, urlRegex;
+		let _this, files, output, urlRegex;
 		_this = this;
 		urlRegex = new RegExp("^(?:[a-z]+:)?//", "i");
 		output = [];

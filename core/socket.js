@@ -38,14 +38,14 @@ let self = {
 		let server = http.createServer(app);
 
 		// Create a MongoDB storage object
-		var mongoStore = new MongoStore({
+		let mongoStore = new MongoStore({
 			mongooseConnection: db.connection,
 			collection: config.sessions.collection,
 			autoReconnect: true
 		});
 
 		// Create a new Socket.io server
-		var IO = socketio(server);
+		let IO = socketio(server);
 
 		// Add common handler to the root namespace
 		self.initNameSpace("/", IO, mongoStore);
@@ -90,7 +90,7 @@ let self = {
 			// Use the 'cookie-parser' module to parse the request cookies
 			cookieParser(secrets.sessionSecret)(socket.request, {}, function (err) {
 				// Get the session id from the request cookies
-				var sessionId = socket.request.signedCookies ? socket.request.signedCookies[config.sessions.name] : undefined;
+				let sessionId = socket.request.signedCookies ? socket.request.signedCookies[config.sessions.name] : undefined;
 
 				if (!sessionId) {
 					logger.warn("sessionId was not found in socket.request");

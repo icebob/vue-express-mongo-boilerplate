@@ -1,5 +1,5 @@
-var Nightmare = require("nightmare");
-var nightmare = Nightmare({ show: false });
+let Nightmare = require("nightmare");
+let nightmare = Nightmare({ show: false });
 
 nightmare
 	.goto("http://yahoo.com")

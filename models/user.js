@@ -132,7 +132,7 @@ UserSchema.plugin(autoIncrement.plugin, {
 });
 
 UserSchema.pre("save", function(next) {
-	var user = this;
+	let user = this;
 	if (!user.isModified("password")) 
 		return next();
 	
@@ -154,7 +154,7 @@ UserSchema.virtual("gravatar").get(function() {
 	if (!this.get("email")) {
 		return "https://gravatar.com/avatar/?s=200&d=retro";
 	}
-	var md5 = crypto.createHash("md5").update(this.get("email")).digest("hex");
+	let md5 = crypto.createHash("md5").update(this.get("email")).digest("hex");
 	return "https://gravatar.com/avatar/" + md5 + "?s=200&d=retro";
 });
 

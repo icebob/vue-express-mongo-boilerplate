@@ -14,7 +14,7 @@ let fakerator		= require("fakerator")();
 
 module.exports = function() {
 	User.find({}).exec(function(err, docs) {
-		var admin, test;
+		let admin, test;
 		if (docs.length === 0) {
 			logger.warn("Load default Users to DB...");
 

@@ -31,7 +31,7 @@
 <script>
 	import Vue from "vue";
 	import { schema as schemaUtils } from "vue-form-generator";
-	import DataTable from './DataTable.vue';
+	import DataTable from "./DataTable.vue";
 
 	import { each, find, cloneDeep, isFunction } from "lodash";
 
@@ -49,7 +49,7 @@
 
 		data() {
 			return {
-				search: '',
+				search: "",
 				order: {
 					field: "id",
 					direction: 1
@@ -57,7 +57,7 @@
 
 				model: null,
 				isNewModel: false
-			}
+			};
 		},
 
 		computed: {
@@ -80,7 +80,7 @@
 			selected() {
 				if (!this.isNewModel)
 					this.generateModel();
-			},
+			}
 
 			/*
 			model: {
@@ -107,7 +107,7 @@
 			selectAll(event) {
 				this.isNewModel = false;
 
-				let filter = Vue.filter('filterBy');
+				let filter = Vue.filter("filterBy");
 				let filteredRows = filter(this.rows, this.search);
 
 				if (this.selected.length < filteredRows.length) {
@@ -142,7 +142,7 @@
 				this.$nextTick(() => {
 					let el = document.querySelector("div.form input:nth-child(1):not([readonly]):not(:disabled)");
 					if (el)
-						el.focus()
+						el.focus();
 				});
 			},	
 
@@ -201,8 +201,9 @@
 		},
 
 		created() {
-		}			
-	}
+		}	
+				
+	};
 
 </script>
 

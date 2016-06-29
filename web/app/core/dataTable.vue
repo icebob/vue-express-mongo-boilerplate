@@ -19,7 +19,7 @@
 </template>
 
 <script>
-	import {each, isArray, isFunction, isNil, defaults} from 'lodash';
+	import {each, isArray, isFunction, isNil, defaults} from "lodash";
 
 
 	export default {
@@ -49,7 +49,7 @@
 				if (formatter) {
 					if (isArray(formatter)) {
 						each(formatter, (fmt) => {
-							value = fmt(value, this.row, this.col)
+							value = fmt(value, this.row, this.col);
 						});
 					} else if (isFunction(formatter))
 						value = formatter(value, this.row, this.col);
@@ -110,7 +110,7 @@
 				if (!isNil(col.align))
 					return {
 						["align-" + col.align]: true
-					}
+					};
 			},
 
 			/**
@@ -143,7 +143,7 @@
 
 		}
 
-	}
+	};
 
 </script>
 

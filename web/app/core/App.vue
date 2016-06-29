@@ -36,7 +36,7 @@
 		data() {
 			return {
 				wsReconnecting: false
-			}
+			};
 		},
 
 		/**
@@ -72,7 +72,7 @@
 			console.log("App started!");
 			window.app = this;
 		}
-	}
+	};
 </script>
 
 <style lang="sass">
