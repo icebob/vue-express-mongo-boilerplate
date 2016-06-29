@@ -35,6 +35,14 @@
 		],
 
 		filters: {
+			/**
+			 * Format the cell value by schema
+			 *
+			 * You can add custom formatter func in schema.table.columns. It can be also an array of functions.
+			 * 
+			 * @param  {*} 		value Value of cell
+			 * @return {String}       Formatted string
+			 */
 			tableFormatter: function(value) {
 				if (isNil(value)) return;
 				let formatter = this.col.formatter;
@@ -53,6 +61,14 @@
 
 		methods: {
 
+			/**
+			 * Get the cell value from row. If the schema of column 
+			 * has a get() method, it will call it, otherwise, get 
+			 * the value from the row property
+			 * 
+			 * @param  {Object} self 	Iterator object
+			 * @return {*}      		Cell value
+			 */
 			getCellValue(self) {
 				let col = self.col;
 				let value;
@@ -64,6 +80,13 @@
 				return value;
 			},
 
+			/**
+			 * Get classes for row. Handle the selected row.
+			 * If has 'rowClasses' in schema, it will be called.
+			 * 
+			 * @param  {Object} row Row object
+			 * @return {Object}     Object with classes
+			 */
 			getRowClasses(row) {
 				// Default classes
 				let res = {
@@ -77,6 +100,12 @@
 				return res;
 			},
 
+			/**
+			 * Get classes for cell. Handle the column.align property
+			 * @param  {Object} row Row object
+			 * @param  {Object} col Column schema
+			 * @return {Object}     Object with classes
+			 */
 			getCellClasses(row, col) {
 				if (!isNil(col.align))
 					return {
@@ -84,6 +113,14 @@
 					}
 			},
 
+			/**
+			 * Change the sort field and direction.
+			 * If field is changed, the direction will be ascending.
+			 * If field is not changed, toggle the direction
+			 * 
+			 * @param  {Object} col Column schema
+			 * @return {[type]}     [description]
+			 */
 			orderBy(col) {
 				if (col.field) {
 					if (this.order.field == col.field) {
@@ -95,6 +132,11 @@
 				}
 			},
 
+			/**
+			 * Get the row is selected
+			 * @param  {Object}  row Row object
+			 * @return {Boolean}     Is selected?
+			 */
 			isSelected(row) {
 				return this.selected.indexOf(row) != -1;
 			}
