@@ -33,6 +33,7 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 ## Usage
 For development
 ```bash
+$ npm install nodemon -g
 $ npm run dev
 ```
 
