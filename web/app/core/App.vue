@@ -24,16 +24,50 @@
 	Vue.use(VueFormGenerator);
 
 	export default {
+
+		/**
+		 * Create websocket connection to the root namespace
+		 */		
 		mixins: [ MixinsIO() ],
 
-		store: store,
-
-		sockets: {
-			connect() {
-				this.$socket.emit("welcome", "Hello! " + navigator.userAgent);
+		/**
+		 * Create app data object
+		 */
+		data() {
+			return {
+				wsReconnecting: false
 			}
 		},
 
+		/**
+		 * Set the vuex store object
+		 */
+		store: store,
+
+		/**
+		 * Socket handlers. Every property is an event handler
+		 */
+		sockets: {
+
+			/**
+			 * Send welcome message after connect
+			 */
+			connect() {
+				if (this.wsReconnecting)
+					// Reload browser if connection established after disconnect
+					window.location.reload(true);
+				else
+					this.$socket.emit("welcome", "Hello! " + navigator.userAgent);
+			},
+
+			disconnect() {
+				this.wsReconnecting = true;
+			}
+		},
+
+		/**
+		 * Application created
+		 */
 		created() {
 			console.log("App started!");
 			window.app = this;
