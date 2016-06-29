@@ -98,6 +98,6 @@ module.exports = {
 
 	},
 
-	disableSignUp: true,
+	disableSignUp: false,
 	verificationRequired: true
 };
