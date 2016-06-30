@@ -1,27 +1,23 @@
-/**
- *  * Color palettes:
- * 	https://coolors.co/app/ffffff-00171f-003459-007ea7-00a8e8
- * 	https://coolors.co/app/0a1128-001f54-034078-1282a2-fefcfb
- */
-
-/* Coolors Exported Palette - coolors.co/ffffff-00171f-003459-007ea7-00a8e8 */
+/* Coolors Exported Palette - coolors.co/00171f-007ea7-00a8e8-ffffff-ef7f0a */
 /* Complementer color - http://colorschemedesigner.com/csd-3.5/#3o21Ttqx7w0w0 */
 
 $color1: #00171f; //rgba(0, 23, 31, 100)
-$color2: #003459; //rgba(0, 52, 89, 100)
-$color3: #007ea7; //rgba(0, 126, 167, 100)
-$color4: #00a8e8; //rgba(0, 168, 232, 100)
-$color5: #ffffff; //rgba(255, 255, 255, 100)
-$secondColor: #ef7f0a; // Original: #ff8300;
+$color2: #007ea7; //rgba(0, 126, 167, 100)
+$color3: #00a8e8; //rgba(0, 168, 232, 100)
+$color4: #ffffff; //rgba(255, 255, 255, 100)
+$color5: #ef7f0a; //rgba(239, 127, 10, 100)
 
 /* Assign colors from palette */
-$backgroundColor: $color3;
-$overlayColor: $color4;
-$textColor: $color5;
-$masterColor: $color3;
-$overlayColor: darken($color3, 5%);
-$buttonColor: $secondColor;
-$buttonTextColor: $color5;
+$masterColor: $color2;
+
+$backgroundColor: $color2;
+$overlayColor: darken($color2, 5%);
+
+$textColor: $color4;
+$altTextColor: $color1;
+
+$buttonColor: $color5;
+$buttonTextColor: $textColor;
 
 /* Load fonts */
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400,700,900|Work+Sans:400,300,700&subset=latin,latin-ext);
