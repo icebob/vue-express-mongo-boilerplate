@@ -118,9 +118,6 @@ $ NODE_ENV=production npm start
 		https://github.com/MikaelSoderstrom/nightmarejs-demo
 
 
-## Contribution
-Please send pull requests improving the usage and fixing bugs, improving documentation and providing better examples, or providing some testing, because these things are important.
-
 ## License
 vue-express-mongo-boilerplate is available under the [MIT license](https://tldrlegal.com/license/mit-license).
 

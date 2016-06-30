@@ -152,8 +152,8 @@
 
 	table {
 		width: 100%;
-		//border: 1px solid #AAA;
-		//border-collapse: collapse;
+		border: 0px;
+		border-collapse: collapse;
 
 		thead tr {
 
@@ -194,9 +194,8 @@
 
 			td {
 				text-align: center;
-				/*border: 1px solid #CCC;
-				font-size: 0.9em;
-				padding: 3px 5px;*/
+				font-size: 1.0em;
+				padding: 5px 5px;
 
 				span.labels {
 					margin-left: 0.3em;
@@ -215,10 +214,10 @@
 				color: #BBB;
 				font-style: italic;
 			}
-/*
+
 			&:hover {
-				background-color: #EEE;
-			}*/
+				background-color: rgba($masterColor, 0.1);
+			}
 
 			&.selected {
 				background-color: rgba($masterColor, 0.3);
