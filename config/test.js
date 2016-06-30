@@ -10,7 +10,7 @@ module.exports = {
 	test: true,
 
 	db: {
-		uri: process.env.MONGO_URI || "mongodb://mongo/" + pkg.config.dbName + "-test",
+		uri: process.env.MONGO_URI || "mongodb://localhost/" + pkg.config.dbName + "-test",
 		options: {
 			user: "",
 			pass: ""

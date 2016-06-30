@@ -42,7 +42,7 @@ module.exports = function() {
 		
 	} else {
 		logger.info("Mongo already connected.");
-		db = mongoose.connection;
+		db = mongoose;
 	}
 	
 	return db;

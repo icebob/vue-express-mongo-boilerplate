@@ -6,11 +6,14 @@
   "main": "server.js",
   "scripts": {
     "build": "webpack --progress --colors -p --config webpack.prod.config.js",
-    "dev": "nodemon",
+    "dev": "cross-env NODE_ENV=development nodemon",
     "start": "cross-env NODE_ENV=production node server.js",
-    "test": "mocha --require babel-core/register --reporter spec tests/unit",
+    "test:unit": "cross-env NODE_ENV=test mocha --require babel-core/register --reporter spec tests/unit",
+    "ci": "cross-env NODE_ENV=test nodemon --exec \"mocha --require babel-core/register --reporter dot --watch tests/unit\" tests/unit",
     "lint": "eslint --ext=.js,.vue applogic config core libs models routes tests web server.js",
-    "lint:fix": "eslint --fix --ext=.js,.vue applogic config core libs models routes tests web server.js"
+    "lint:fix": "eslint --fix --ext=.js,.vue applogic config core libs models routes tests web server.js",
+
+    "ci2": "cross-env NODE_ENV=test mocha --require babel-core/register --reporter dot --watch tests/unit"
   },
   "repository": {
     "type": "git",

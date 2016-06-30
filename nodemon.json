@@ -15,7 +15,7 @@
 		"webpack.*.config.js"
 	],
 
-	"env": {
+	"__skip__env": {
 		"NODE_ENV": "development"
 	},
 

@@ -31,7 +31,8 @@ module.exports = function(app, db) {
 
 	app.use(function(req, res) {
 		res.status(404);
-		logger.warn("404 error! URL:", req.url);
+		if (!config.isTestMode())
+			logger.warn("404 error! URL:", req.url);
 
 		// Respond with html page
 		if (req.accepts("html")) {
