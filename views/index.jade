@@ -6,12 +6,24 @@ block styles
 
 block content
 	.page
-		h2 Welcome to #{app.title}
-		a.btn.btn-success(href="/login") Login
-		br
-		br
-		if disableSignUp !== true
-			a.btn.btn-success(href="/signup") Signup
+		h1 Welcome to #{app.title}
+
+		.logos
+			h3 Powered by
+			img(src="http://vuejs.org/images/logo.png")
+			span.plus +
+			img(src="https://coligo.io/images/express.svg")
+			span.plus +
+			img(src="https://upload.wikimedia.org/wikipedia/en/thumb/4/45/MongoDB-Logo.svg/527px-MongoDB-Logo.svg.png")
+			span.plus +
+			img(src="https://worldvectorlogo.com/logos/nodejs-icon.svg")
+			h4 with
+			img(src="https://camo.githubusercontent.com/66747a6e05a799aec9c6e04a3e721ca567748e8b/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313336353838312f313931383337332f32653035373166612d376462632d313165332d383436352d3839356632393164343366652e706e67")
+
+		.buttons
+			a.button(href="/login") Login
+			if disableSignUp !== true
+				a.button(href="/signup") Signup
 
 	include parts/footer
 
