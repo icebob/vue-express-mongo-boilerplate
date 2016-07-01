@@ -17,7 +17,6 @@ _.each(posts, (post) => {
 	let user = fakerator.random.arrayElement(users);
 	post.id = id++;
 	post.author = user;
-	post.views = fakerator.random.number(200);
 	user.posts.push(post);
 });
 
@@ -43,6 +42,9 @@ module.exports = {
 	Post: {
 		author(post) {
 			return post.author;
+		},
+		views(post) {
+			return fakerator.random.number(200);
 		}
 	}
 }

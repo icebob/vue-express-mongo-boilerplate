@@ -14,6 +14,7 @@ module.exports = function(app, db) {
 		graphiql: true,
 		pretty: true,
 		schema: Schema,
+		printErrors: true,
 		//mocks: Mocks
 		resolvers: Resolvers
 	}));
