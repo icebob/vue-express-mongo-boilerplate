@@ -11,7 +11,8 @@ $color5: #df691a; //rgba(239, 127, 10, 100)
 $masterColor: $color2;
 
 $backgroundColor: $color2;
-$overlayColor: darken($color2, 5%);
+$overlayColor: lighten(desaturate($color3, 30%), 10%);
+$overlayColor: $color2;
 
 $textColor: $color4;
 $altTextColor: $color1;
