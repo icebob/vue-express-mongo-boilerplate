@@ -111,11 +111,11 @@ $ NODE_ENV=production npm start
 
 ## TODO
 * [ ] rewrite account.js response handlers
-* [ ] try Apollo graphql stack
-* [ ] check ORM http://bookshelfjs.org/
+* [ ] **try Apollo graphql stack**
+* [ ] check ORM http://bookshelfjs.org/ or sequelize
 * [ ] check https://github.com/keystonejs/keystone
 * [ ] add test with nightmare & mocha, chai, sinon
-		https://github.com/MikaelSoderstrom/nightmarejs-demo
+* [ ] add E2E test with https://github.com/MikaelSoderstrom/nightmarejs-demo
 
 
 ## License
