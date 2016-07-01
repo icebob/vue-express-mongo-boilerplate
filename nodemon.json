@@ -9,6 +9,7 @@
 		"core",
 		"libs",
 		"models",
+		"schema",
 		"routes",
 		"server.js",
 		"secrets.json",

@@ -12,7 +12,6 @@
     "ci": "cross-env NODE_ENV=test nodemon --exec \"mocha --require babel-core/register --reporter dot --watch tests/unit\" tests/unit",
     "lint": "eslint --ext=.js,.vue applogic config core libs models routes tests web server.js",
     "lint:fix": "eslint --fix --ext=.js,.vue applogic config core libs models routes tests web server.js",
-
     "ci2": "cross-env NODE_ENV=test mocha --require babel-core/register --reporter dot --watch tests/unit"
   },
   "repository": {
@@ -31,6 +30,7 @@
   "license": "MIT",
   "dependencies": {
     "agenda": "0.8.1",
+    "apollo-server": "0.1.5",
     "async": "2.0.0-rc.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "1.15.2",
@@ -47,6 +47,8 @@
     "express-validator": "2.20.8",
     "fakerator": "0.2.0",
     "glob": "7.0.5",
+    "graphql": "0.6.0",
+    "graphql-tools": "0.6.0",
     "hashids": "1.0.2",
     "helmet": "2.1.1",
     "helmet-crossdomain": "0.1.0",

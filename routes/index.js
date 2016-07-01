@@ -25,6 +25,9 @@ module.exports = function(app, db) {
 	// Load applogic routes
 	require("../applogic/routeHandlers")(app, db);
 
+	// Handle Graphql request
+	require("./graphql")(app, db);
+
 	// Handle errors
 	require("./errors")(app, db);	
 };
