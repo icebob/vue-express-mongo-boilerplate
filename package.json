@@ -9,6 +9,7 @@
     "dev": "cross-env NODE_ENV=development nodemon",
     "start": "cross-env NODE_ENV=production node server.js",
     "test:unit": "cross-env NODE_ENV=test mocha --require babel-core/register --reporter spec tests/unit",
+    "test:e2e": "cross-env NODE_ENV=test mocha --require babel-core/register --timeout 30000 --reporter spec tests/e2e",
     "ci": "cross-env NODE_ENV=test nodemon --exec \"mocha --require babel-core/register --reporter dot --watch tests/unit\" tests/unit",
     "lint": "eslint --ext=.js,.vue applogic config core libs models routes tests web server.js",
     "lint:fix": "eslint --fix --ext=.js,.vue applogic config core libs models routes tests web server.js",
