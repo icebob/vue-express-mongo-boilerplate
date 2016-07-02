@@ -12,6 +12,7 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 * [Helmet](https://github.com/helmetjs/helmet)
 * [Express-validator](https://github.com/ctavan/express-validator)
 * [winston](https://github.com/winstonjs/winston)
+* [GraphQL](http://graphql.org/) with [Apollo stack](http://www.apollostack.com/)
 
 **Client-side**
 * **[VueJS](https://github.com/vuejs/vue)**
@@ -111,7 +112,6 @@ $ NODE_ENV=production npm start
 
 ## TODO
 * [ ] rewrite account.js response handlers
-* [ ] **try Apollo graphql stack**
 * [ ] check ORM http://bookshelfjs.org/ or sequelize
 * [ ] check https://github.com/keystonejs/keystone
 * [ ] add test with nightmare & mocha, chai, sinon

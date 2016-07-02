@@ -2,31 +2,48 @@
 
 import { expect } from "chai";
 
-//import app from "../load-server";
+import app from "../load-server";
 import Nightmare from "nightmare";
 
-describe('test yahoo search results', function() {
-
-	let nightmare;
-
-	beforeEach( () => {
-		nightmare = Nightmare( { show: true });
-	});
-
-	it('should find the nightmare github link first', function(done) {
-		var nightmare = Nightmare()
+describe('test login page', function() {
+/*
+	it('should jump to main page after login', function(done) {
+		var nightmare = Nightmare({ show: true })
 		nightmare
-			.goto('http://yahoo.com')
-			.type('form[action*="/search"] [name=p]', 'github nightmare')
-			.click('form[action*="/search"] [type=submit]')
-			.wait('#main')
+			.goto('http://localhost:3000/login')
+			.type('form #username', 'test')
+			.type('form #password', 'test1234')
+			.click('form [type=submit]')
+			.wait("#app")
 			.evaluate(function () {
-				return document.querySelector('#main .searchCenterMiddle li a').href
+				//return document.querySelector('#app h2').textContent
+				return document.title
 			})
 			.end()
-			.then(function(link) {
-				expect(link).to.equal('https://github.com/segmentio/nightmare');
+			.then(function(title) {
+				console.log("then", title);
+				expect(title).to.equal('Home page');
 				done();
 			})
-	});
+	});*/
+
+	it('should jump to main page after login', function(done) {
+		var nightmare = Nightmare({ show: true })
+		nightmare
+			.goto('http://localhost:3000/login')
+			.type('form #username', 'test')
+			.type('form #password', 'test1234')
+			.click('form [type=submit]')
+			.wait("#app")
+			.evaluate(function () {
+				return document.querySelector('#app')
+				//return document.title
+			})
+			.run(function(error, result) {
+				expect(error).to.be.null;
+				expect(result).to.be.defined;
+				console.log(result);
+				done();
+			})
+	});	
 });

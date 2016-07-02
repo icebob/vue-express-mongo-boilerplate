@@ -34,7 +34,7 @@ module.exports = function() {
 			logger.info(chalk.yellow.bold("Mongo DB connected."));
 			logger.info();
 
-			if (process.env.NODE_ENV === "development") {
+			if (!config.isProduction) {
 				require("./seed")();
 			}
 		});
