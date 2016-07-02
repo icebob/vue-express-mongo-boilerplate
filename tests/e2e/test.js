@@ -6,26 +6,6 @@ import app from "../load-server";
 import Nightmare from "nightmare";
 
 describe('test login page', function() {
-/*
-	it('should jump to main page after login', function(done) {
-		var nightmare = Nightmare({ show: true })
-		nightmare
-			.goto('http://localhost:3000/login')
-			.type('form #username', 'test')
-			.type('form #password', 'test1234')
-			.click('form [type=submit]')
-			.wait("#app")
-			.evaluate(function () {
-				//return document.querySelector('#app h2').textContent
-				return document.title
-			})
-			.end()
-			.then(function(title) {
-				console.log("then", title);
-				expect(title).to.equal('Home page');
-				done();
-			})
-	});*/
 
 	it('should jump to main page after login', function(done) {
 		var nightmare = Nightmare({ show: true })
@@ -45,5 +25,5 @@ describe('test login page', function() {
 				console.log(result);
 				done();
 			})
-	});	
+	});
 });
