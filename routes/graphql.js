@@ -10,7 +10,7 @@ let Resolvers = require("../schema/resolvers");
 module.exports = function(app, db) {
 
 	// Register graphql server
-	app.use('/graphql', ApolloServer({
+	app.use("/graphql", ApolloServer({
 		graphiql: true,
 		pretty: true,
 		schema: Schema,

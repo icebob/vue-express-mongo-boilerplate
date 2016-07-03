@@ -47,4 +47,4 @@ module.exports = {
 			return fakerator.random.number(200);
 		}
 	}
-}
+};

@@ -5,34 +5,34 @@ import { expect } from "chai";
 import request from "supertest";
 import app from "../load-server";
 
-describe('GET /', () => {
-	it('should return 200 OK', (done) => {
+describe("GET /", () => {
+	it("should return 200 OK", (done) => {
 		request(app)
-			.get('/')
+			.get("/")
 			.expect(200, done);
 	});
 });
 
-describe('GET /login', () => {
-	it('should return 200 OK', (done) => {
+describe("GET /login", () => {
+	it("should return 200 OK", (done) => {
 		request(app)
-			.get('/login')
+			.get("/login")
 			.expect(200, done);
 	});
 });
 
-describe('GET /signup', () => {
-	it('should return 200 OK', (done) => {
+describe("GET /signup", () => {
+	it("should return 200 OK", (done) => {
 		request(app)
-			.get('/signup')
+			.get("/signup")
 			.expect(200, done);
 	});
 });
 
-describe('GET /random-url', () => {
-	it('should return 404', (done) => {
+describe("GET /random-url", () => {
+	it("should return 404", (done) => {
 		request(app)
-			.get('/reset')
+			.get("/reset")
 			.expect(404, done);
 	});
 });

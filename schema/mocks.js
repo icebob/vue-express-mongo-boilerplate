@@ -3,7 +3,7 @@
 let fakerator = require("fakerator")();
 
 const mocks = {
-	String: () => 'It works!',
+	String: () => "It works!",
 	Query: () => ({
 		author: (root, args) => {
 			return { firstName: args.firstName, lastName: args.lastName };
