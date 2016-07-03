@@ -164,7 +164,7 @@ function initAuth(app) {
 
 function initWebpack(app) {
 	// Webpack middleware in development mode
-	if (config.isDevMode()) {
+	if (!config.isProductionMode()) {
 		let compiler = webpack(wpConfig);
 		let devMiddleware = require('webpack-dev-middleware'); // eslint-disable-line
 		app.use(devMiddleware(compiler, {

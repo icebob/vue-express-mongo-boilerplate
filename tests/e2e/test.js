@@ -16,12 +16,12 @@ describe('test login page', function() {
 			.click('form [type=submit]')
 			.wait("#app")
 			.evaluate(function () {
-				return document.querySelector('#app')
+				return document.querySelector('#app h2').textContent
 				//return document.title
 			})
 			.run(function(error, result) {
 				expect(error).to.be.null;
-				expect(result).to.be.defined;
+				expect(result).to.be.equal("Home page");
 				console.log(result);
 				done();
 			})
