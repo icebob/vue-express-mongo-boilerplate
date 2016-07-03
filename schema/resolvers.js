@@ -1,50 +1,113 @@
 "use strict";
 
-let _ = require("lodash");
-let fakerator = require("fakerator")();
+let logger 			= require("../core/logger");
+let config 			= require("../config");
 
-let users = fakerator.times(fakerator.entity.user, 5);
-let posts = fakerator.times(fakerator.entity.post, 10);
+let _ 				= require("lodash");
+let hashids 		= require("../libs/hashids");
 
-let i = 1;
-_.each(users, (user) => {
-	user.id = i++;
-	user.posts = [];
-});
+let Device 			= require("../applogic/modules/devices/model.device");
+let User 			= require("../models/user");
 
-let id = 1;
-_.each(posts, (post) => {
-	let user = fakerator.random.arrayElement(users);
-	post.id = id++;
-	post.author = user;
-	user.posts.push(post);
-});
-
-//console.log(users);
-//console.log(posts);
 
 module.exports = {
-	Query: {
-		author(root, args) {
-			return _.find(users, (user) => user.id == args.id);
+
+	Timestamp: {
+		__parseValue(value) {
+			return new Date(value);
 		},
-		post(root, args) {
-			return _.find(posts, (post) => post.id == args.id);
+		__serialize(value) {
+			return value.getTime();
+		},
+		__parseLiteral(ast) {
+			console.log(ast); // ???? when will be called it?
+			if (ast.kind === Kind.INT) {
+				return parseInt(ast.value, 10);
+			}
 		}
 	},
 
+	Query: {
+		devices(root, args, context) {
+			// Require 'user' role
+			if (context.user.roles.indexOf("user") == -1) 
+				return null;
+
+			return Device.find({}).exec();
+		},
+
+		device(root, args, context) {
+			// Require 'user' role
+			if (context.user.roles.indexOf("user") == -1)
+				return null;
+
+			let id = args.id;
+
+			if (args.code)
+				id = hashids.decodeHex(args.code);
+
+			if (id)
+				return Device.findById(id).exec();
+
+		},
+
+		users(root, args, context) {
+			// Require 'user' role
+			if (context.user.roles.indexOf("admin") == -1) 
+				return null;
+
+			return User.find({}).exec();
+		},
+
+		user(root, args, context) {
+			// Require 'user' role
+			if (context.user.roles.indexOf("admin") == -1)
+				return null;
+
+			let id = args.id;
+
+			if (args.code)
+				id = hashids.decodeHex(args.code);
+
+			if (id)
+				return User.findById(id).exec();
+		}
+		/*,
+
+		post(root, args, context) {
+			// Require 'admin' role
+			if (context.user.roles.indexOf("admin") !== -1)
+				return _.find(posts, (post) => post.id == args.id);
+		}*/
+	}/*,
+
+	Device: {
+		lastCommunication(device) {
+			return new Date(device.lastCommunication).valueOf();
+		}
+	},
+
+	User: {
+		lastLogin(device) {
+			return new Date(device.lastLogin).valueOf();
+		}
+	}*/
+	/*,
+
 	Author: {
-		posts(author) {
-			return author.posts;
+		posts(author, args, context) {
+			// Require 'admin' role
+			if (context.user.roles.indexOf("admin") !== -1)
+				return author.posts;
 		}
 	},
 
 	Post: {
-		author(post) {
+		author(post, args, context) {
 			return post.author;
 		},
-		views(post) {
+		views(post, args, context) {
 			return fakerator.random.number(200);
 		}
-	}
+	}*/
 };

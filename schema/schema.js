@@ -1,27 +1,40 @@
 "use strict";
 
 const typeDefinitions = `
+
+scalar Timestamp
+
 type Query {
-  author(id: Int): Author
-  post(id: Int): Post
-  getFortuneCookie: String
+	devices: [Device]
+	device(id: Int!): Device
+	#deviceByCode(code: String!): Device
+
+	users: [User]
+	user(id: Int!): User
+	#userByCode(code: String!): User
 }
 
-type Author {
-	id: Int
-	firstName: String
-	lastName: String,
+type Device {
+	id: Int!
+	code: String!
+	address: String
+	type: String
+	name: String
+	description: String
+	status: Int
+	lastCommunication: Timestamp
+}
+
+type User {
+	id: Int!
+	code: String!
+	fullName: String
 	email: String
-	posts: [Post]
-}
-
-type Post {
-	id: Int
-	title: String
-	text: String 
-	keywords: [String]
-	views: Int 
-	author: Author
+	username: String
+	provider: String,
+	roles: [String]
+	verified: Boolean
+	lastLogin: Timestamp
 }
 
 schema {
