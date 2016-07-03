@@ -10,6 +10,11 @@
 
 	import MixinsIO from "../../core/mixins/io";
 
+	import gql from 'graphql-tag';
+	window['gql'] = gql;
+
+	import ApolloClient, { createNetworkInterface } from "apollo-client";
+
 	import * as actions from "./vuex/actions";
 	import * as getters from "./vuex/getters";
 
@@ -98,6 +103,52 @@
 		created() {
 			// Download rows for the page
 			this.downloadRows();
+
+
+			const networkInterface = createNetworkInterface('/graphql');
+
+			networkInterface.use([{
+				applyMiddleware(req, next) {
+					if (!req.options.headers)
+						req.options.headers = {};
+
+					req.options.headers.apikey =  "dIiFNT7nlqXfAnT4jhrasQbnLUNlTeNHNI91NpOa95i"; // test user apikey
+					next();
+				}
+			}]);
+
+			let client = new ApolloClient({
+				networkInterface
+			});
+
+			client.query({
+				query: gql`
+					query getDevice($deviceID: Int!) { 
+						device(id: $deviceID) {
+							code
+							name
+							description
+							address
+							type
+							status
+							lastCommunication
+						}
+					}
+				`, 
+				variables: {
+					deviceID: 22
+				},
+				forceFetch: false
+			}).then( (result) => {
+				if (result.errors)
+					return console.error("Got some GraphQL execution errors!", result.errors);
+
+				if (result.data) {
+					console.log(result.data);
+				}
+			}).catch( (error) => {
+				console.error("There was an error sending the query", error);
+			});
 		}
 	};
 </script>
