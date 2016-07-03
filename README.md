@@ -112,6 +112,7 @@ $ NODE_ENV=production npm start
 
 ## TODO
 * [ ] rewrite account.js response handlers
+* [ ] token or cookie for graphql client fetch
 * [ ] check ORM http://bookshelfjs.org/ or sequelize
 * [ ] check https://github.com/keystonejs/keystone
 * [ ] add test with nightmare & mocha, chai, sinon
