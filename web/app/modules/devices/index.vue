@@ -109,10 +109,8 @@
 
 			networkInterface.use([{
 				applyMiddleware(req, next) {
-					if (!req.options.headers)
-						req.options.headers = {};
-
-					req.options.headers.apikey =  "dIiFNT7nlqXfAnT4jhrasQbnLUNlTeNHNI91NpOa95i"; // test user apikey
+					// Send to back the session ID
+					req.options.credentials = "same-origin";
 					next();
 				}
 			}]);
