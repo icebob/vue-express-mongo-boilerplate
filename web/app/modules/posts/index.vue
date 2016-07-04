@@ -39,12 +39,18 @@
 					.views.badge Views: {{ post.views }}
 					.createdBy Created {{ post.createdAt | ago }} by {{ post.author.fullName }}
 
+			.functions
+				.edit(title="Edit post", @click="editPost(post)")
+					i.fa.fa-pencil
+				.delete(title="Delete post", @click="deletePost(post)")
+					i.fa.fa-trash
 
 </template>
 
 <script>
 	import Vue from "vue";
 	import toast from "../../core/toastr";
+	import { cloneDeep } from "lodash";
 	import { validators, schema as schemaUtils } from "vue-form-generator";
 
 	import MixinsIO from "../../core/mixins/io";
@@ -182,10 +188,22 @@
 				this.isNewPost = true;
 
 				this.$nextTick(() => {
-					let el = document.querySelector("div.form input:nth-child(1):not([readonly]):not(:disabled)");
+					let el = document.querySelector(".postForm input:nth-child(1):not([readonly]):not(:disabled)");
 					if (el)
 						el.focus();
 				});				
+			},
+
+			editPost(post) {
+				this.model = cloneDeep(post);
+				this.showForm = true;
+				this.isNewPost = false;
+
+				this.$nextTick(() => {
+					let el = document.querySelector(".postForm input:nth-child(1):not([readonly]):not(:disabled)");
+					if (el)
+						el.focus();
+				});
 			},
 
 			savePost() {
@@ -202,8 +220,11 @@
 			cancelPost() {
 				this.showForm = false;
 				this.model = null;
-			}
+			},
 
+			deletePost(post) {
+				this.removeRow(post);
+			}
 
 		},
 
@@ -393,7 +414,30 @@
 
 			}
 
+			.functions {
+				position: absolute;
+				top: 0;
+				right: 0;
+				padding: 0.5rem;
+				display: none;
 
+				> div {
+					font-size: 1.3rem;
+					display: inline-block;
+					margin: 0 0.5rem;
+					color: $textColor;
+
+					&:hover {
+						color: $headerTextColor;
+					}
+				}
+			}
+
+			&:hover {
+				.functions {
+					display: block;
+				}
+			}
 
 		}
 	}

@@ -188,7 +188,7 @@ module.exports = function(app, db) {
 			if (errors)
 				return response.json(res, null, response.BAD_REQUEST, errors);
 
-			if (req.post.author != req.user.id) {
+			if (req.post.author.id != req.user.id) {
 				return response.json(res, null, response.BAD_REQUEST, "Only the author can edit this post!");
 			}
 
@@ -212,6 +212,11 @@ module.exports = function(app, db) {
 		 * Delete a post
 		 */
 		.delete((req, res) => {
+
+			if (req.post.author.id != req.user.id) {
+				return response.json(res, null, response.BAD_REQUEST, "Only the author can delete this post!");
+			}
+
 			Post.remove({ _id: req.post.id }, (err) => {
 				if (err)
 					return response.json(res, null, response.BAD_REQUEST, err);
