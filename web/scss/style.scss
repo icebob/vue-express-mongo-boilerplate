@@ -16,7 +16,6 @@ html {
 }
 
 body {
-	overflow: hidden;
 	padding: 0;
 	margin: 0;
 }
@@ -36,3 +35,24 @@ a {
 		border-bottom: 1px solid $color5;
 	}
 }
+
+button {
+	background-color: $buttonColor;
+	color: $buttonTextColor;
+	border: 0;
+	margin: 0px 0.5em;
+	font-size: 1.0rem;
+	padding: 0.5em 1em;
+	font-family: $fontFamily;
+	font-weight: 400;
+	border-radius: 8px;
+	cursor: pointer;
+	
+	&:hover {
+		background-color: lighten($buttonColor, 10%);
+	}
+
+	&:active {
+		background-color: darken($buttonColor, 10%);
+	}	
+} // button

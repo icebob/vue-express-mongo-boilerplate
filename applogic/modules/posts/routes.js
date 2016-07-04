@@ -33,12 +33,16 @@ module.exports = function(app, db) {
 			if (err)
 				return response.json(res, null, response.BAD_REQUEST, err);
 
-			let json = doc.toJSON();
+			doc.populate("author", "fullName code email gravatar", (err) => {
 
-			if (io.namespaces[namespace])
-				io.namespaces[namespace].emit("update", json);
+				let json = doc.toJSON();
 
-			return response.json(res, json);
+				if (io.namespaces[namespace])
+					io.namespaces[namespace].emit("update", json);
+
+				return response.json(res, json);
+
+			});
 		});
 
 	});
@@ -52,12 +56,14 @@ module.exports = function(app, db) {
 			if (err)
 				return response.json(res, null, response.BAD_REQUEST, err);
 
-			let json = doc.toJSON();
+			doc.populate("author", "fullName code email gravatar", (err) => {
+				let json = doc.toJSON();
 
-			if (io.namespaces[namespace])
-				io.namespaces[namespace].emit("update", json);
+				if (io.namespaces[namespace])
+					io.namespaces[namespace].emit("update", json);
 
-			return response.json(res, json);
+				return response.json(res, json);
+			});
 		});
 
 	});	
@@ -83,7 +89,7 @@ module.exports = function(app, db) {
 		if (req.query.limit)
 			query.limit(req.query.limit || 20);
 	
-		query.populate("author", "fullName code gravatar");
+		query.populate("author", "fullName code email gravatar");
 
 		query.exec((err, docs) => {
 			if (!docs || docs.length == 0) return response.json(res, []);
@@ -113,12 +119,15 @@ module.exports = function(app, db) {
 			if (err)
 				return response.json(res, null, response.SERVER_ERROR, err);
 
-			let json = post.toJSON();
+			post.populate("author", "fullName code email gravatar", (err) => {
 
-			if (io.namespaces[namespace])
-				io.namespaces[namespace].emit("new", json);
+				let json = post.toJSON();
 
-			return response.json(res, json);
+				if (io.namespaces[namespace])
+					io.namespaces[namespace].emit("new", json);
+
+				return response.json(res, json);
+			});
 		});
 	});
 
@@ -138,8 +147,12 @@ module.exports = function(app, db) {
 			if (!doc) 
 				return response.json(res, null, response.NOT_FOUND, "Post not found!");
 
-			req.post = doc;
-			next();
+			doc.populate("author", "fullName code email gravatar", (err) => {
+
+				req.post = doc;
+				next();
+
+			});
 		});
 	});
 

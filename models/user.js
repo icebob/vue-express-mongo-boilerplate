@@ -151,12 +151,27 @@ UserSchema.methods.comparePassword = function(password, cb) {
 };
 
 UserSchema.virtual("gravatar").get(function() {
-	if (!this.get("email")) {
-		return "https://gravatar.com/avatar/?s=64&d=retro";
+	if (!this.email) {
+		return "https://gravatar.com/avatar/?s=64&d=wavatar";
 	}
-	let md5 = crypto.createHash("md5").update(this.get("email")).digest("hex");
-	return "https://gravatar.com/avatar/" + md5 + "?s=64&d=retro";
+	let md5 = crypto.createHash("md5").update(this.email).digest("hex");
+	return "https://gravatar.com/avatar/" + md5 + "?s=64&d=wavatar";
 });
+
+/*
+UserSchema.methods.gravatar = function (size, defaults) {
+	if (!size)
+		size = 200;
+
+	if (!defaults)
+		defaults = 'wavatar';
+
+	if (!this.email)
+		return `https://gravatar.com/avatar/?s=${size}&d=${defaults}`;
+
+	let md5 = crypto.createHash('md5').update(this.email).digest("hex");
+	return `https://gravatar.com/avatar/${md5}?s=${size}&d=${defaults}`;
+};*/
 
 let User = mongoose.model("User", UserSchema);
 

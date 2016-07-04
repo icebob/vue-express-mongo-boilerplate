@@ -7,24 +7,35 @@
 			a(@click="setSort('mostviewed')", :class="{ active: sort == 'mostviewed' }") Most viewed
 			a(@click="setSort('new')", :class="{ active: sort == 'new' }") New
 
+		.add
+			button(@click="newPost") New post
+
 		.filter 
 			a(@click="setViewMode('all')", :class="{ active: viewMode == 'all' }") All posts
 			a(@click="setViewMode('my')", :class="{ active: viewMode == 'my' }") My posts
+
+	.postForm(v-if="showForm")
+		vue-form-generator(:schema='schema', :model='model', :options='{}', :multiple="false", v-ref:form, :is-new-model="isNewPost")
+
+		.buttons
+			button.save(@click="savePost") Save
+			button.cancel(@click="cancelPost") Cancel
+
 
 	ul.posts
 		li(v-for="post in rows")
 			.image
 				img(:src="post.author.gravatar")
 				.votes
-					.up(@click="upVote(post)")
+					.count {{ post.votes }}
+					.thumb.up(@click="upVote(post)")
 						i.fa.fa-thumbs-o-up
-					.down(@click="downVote(post)")
+					.thumb.down(@click="downVote(post)")
 						i.fa.fa-thumbs-o-down
 			.container
 				.title {{ post.title }}
 				.content {{ post.content }}
 				.footer
-					.votes.badge Votes: {{ post.votes }}
 					.views.badge Views: {{ post.views }}
 					.createdBy Created {{ post.createdAt | ago }} by {{ post.author.fullName }}
 
@@ -34,6 +45,7 @@
 <script>
 	import Vue from "vue";
 	import toast from "../../core/toastr";
+	import { validators, schema as schemaUtils } from "vue-form-generator";
 
 	import MixinsIO from "../../core/mixins/io";
 
@@ -57,7 +69,34 @@
 		data() {
 			return {
 				sort: "hot",
-				viewMode: "all"
+				viewMode: "all",
+
+				showForm: false,
+				isNewPost: false,
+				model: null,
+				schema: {
+					fields: [
+						{
+							type: "text",
+							label: "Title",
+							model: "title",
+							featured: true,
+							required: true,
+							placeholder: "Title of post",
+							validator: validators.string
+						},				
+						{
+							type: "textArea",
+							label: "Content",
+							model: "content",
+							featured: true,
+							required: true,
+							rows: 4,
+							placeholder: "Content of post",
+							validator: validators.string
+						}
+					]
+				}
 			};
 		},
 
@@ -119,7 +158,7 @@
 
 				toast.success(`Post '${row.name}' deleted!`, "Post deleted");
 			}
-		},		
+		},	
 
 		methods: {
 			getPosts() {
@@ -135,7 +174,36 @@
 			setViewMode(mode) {
 				this.viewMode = mode;
 				this.getPosts();
+			},
+
+			newPost() {
+				this.model = schemaUtils.createDefaultObject(this.schema);
+				this.showForm = true;
+				this.isNewPost = true;
+
+				this.$nextTick(() => {
+					let el = document.querySelector("div.form input:nth-child(1):not([readonly]):not(:disabled)");
+					if (el)
+						el.focus();
+				});				
+			},
+
+			savePost() {
+				if (this.$refs.form.validate()) {
+					if (this.isNewPost)
+						this.saveRow(this.model);
+					else
+						this.updateRow(this.model);
+
+					this.cancelPost();
+				}
+			},
+
+			cancelPost() {
+				this.showForm = false;
+				this.model = null;
 			}
+
 
 		},
 
@@ -208,6 +276,10 @@
 			}		
 		}
 
+		.add {
+			float: left;
+		}
+
 		.filter {
 			float: right;
 		}
@@ -215,6 +287,20 @@
 		@include clearfix();
 
 	} // .header
+
+	.postForm {
+
+		background-color: #EEE;
+		color: Black;
+
+		margin: 1rem;
+
+		.buttons {
+			padding: 0.5em;
+			text-align: right;
+		}
+
+	} // .postForm
 
 	.badge {
 		padding: 2px 8px;
@@ -242,12 +328,20 @@
 			display: flex;
 
 			.image {
-				width: 80px;
+				width: 64px;
+				margin-right: 1rem;
 				margin-top: 0.5rem;
 
 				.votes {
 
-					> div {
+					.count {
+						font-size: 3.0em;
+						text-align: center;
+						font-family: $fontFamilyHeader;
+						font-weight: 300;
+					}
+
+					.thumb {
 						display: inline-block;
 						cursor: pointer;
 						margin: 0 8px;

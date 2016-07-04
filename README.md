@@ -111,6 +111,7 @@ $ NODE_ENV=production npm start
 - Copy and paste *Consumer Key* and *Consumer Secret* keys into `secrets.json` file
 
 ## TODO
+* [ ] create posts page with GraphQL
 * [ ] rewrite account.js response handlers
 * [ ] check ORM http://bookshelfjs.org/ or sequelize
 * [ ] check https://github.com/keystonejs/keystone

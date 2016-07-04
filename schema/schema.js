@@ -31,9 +31,10 @@ type User {
 	fullName: String
 	email: String
 	username: String
-	provider: String,
+	provider: String
 	roles: [String]
 	verified: Boolean
+	gravatar: String
 	lastLogin: Timestamp
 }
 

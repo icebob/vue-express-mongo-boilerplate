@@ -19,10 +19,7 @@ const mutations = {
 	[UPDATE] (state, post) {
 		each(state.rows, (item) => {
 			if (item.id == post.id) {
-				// TODO: author will be lost
-				let author = item.author;
 				assign(item, post);
-				item.author = author;
 			}
 		});
 	},
