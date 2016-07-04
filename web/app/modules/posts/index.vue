@@ -102,7 +102,7 @@
 							model: "content",
 							featured: true,
 							required: true,
-							rows: 4,
+							rows: 10,
 							placeholder: "Content of post",
 							validator: validators.string
 						}
@@ -145,7 +145,7 @@
 				console.log("New post: ", row);
 				this.rowAdded(row);
 
-				toast.success(`Post '${row.name}' added!`, "Post added");
+				toast.success(`Post '${row.title}' added!`, "Post added");
 			},
 
 			/**
@@ -156,7 +156,7 @@
 				console.log("Update post: ", row);
 				this.rowChanged(row);
 
-				toast.success(`Post '${row.name}' updated!`, "Post updated");
+				toast.success(`Post '${row.title}' updated!`, "Post updated");
 			},
 
 			/**
@@ -167,7 +167,7 @@
 				console.log("Remove post: ", row);
 				this.rowRemoved(row);	
 
-				toast.success(`Post '${row.name}' deleted!`, "Post deleted");
+				toast.success(`Post '${row.title}' deleted!`, "Post deleted");
 			}
 		},	
 
