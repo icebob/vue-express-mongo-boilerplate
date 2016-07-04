@@ -34,7 +34,7 @@
 						i.fa.fa-thumbs-o-down
 			.container
 				.title {{ post.title }}
-				.content {{ post.content }}
+				.content(v-html="post.content | marked")
 				.footer
 					.views.badge Views: {{ post.views }}
 					.createdBy Created {{ post.createdAt | ago }} by {{ post.author.fullName }}
@@ -49,6 +49,7 @@
 
 <script>
 	import Vue from "vue";
+	import marked from "marked";
 	import toast from "../../core/toastr";
 	import { cloneDeep } from "lodash";
 	import { validators, schema as schemaUtils } from "vue-form-generator";
@@ -68,6 +69,10 @@
 		 * Create websocket connection to '/posts' namespace
 		 */
 		mixins: [ MixinsIO("/posts") ],
+
+		filters: {
+			marked
+		},
 
 		/**
 		 * Set page schema as data property
