@@ -358,6 +358,10 @@
 				margin-right: 1rem;
 				margin-top: 0.5rem;
 
+				img {
+					border-radius: 20%;
+				}
+
 				.votes {
 
 					.count {
@@ -395,6 +399,11 @@
 				}
 
 				.content {
+					text-align: justify;
+
+					p {
+						text-align: justify;
+					}
 				}
 
 				.footer {

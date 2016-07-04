@@ -48,6 +48,8 @@ For production
 $ NODE_ENV=production npm start
 ```
 
+## Directory structure
+TODO
 
 ## Obtaining API keys for social signup/login
 
@@ -111,7 +113,7 @@ $ NODE_ENV=production npm start
 - Copy and paste *Consumer Key* and *Consumer Secret* keys into `secrets.json` file
 
 ## TODO
-* [ ] create posts page with GraphQL
+* [ ] create posts page with GraphQL with mutations
 * [ ] rewrite account.js response handlers
 * [ ] check ORM http://bookshelfjs.org/ or sequelize
 * [ ] check https://github.com/keystonejs/keystone
