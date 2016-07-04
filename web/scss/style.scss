@@ -6,24 +6,13 @@
 }
 
 html {
-	background-color: $backgroundColor;
+	background-color: $color1;
 	color: $textColor;
 	font-size: 14px;
 	font-family: $fontFamily;
 	font-weight: 400;
 	font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;	
-}
-
-@mixin clearfix() {
-    &:before,
-    &:after {
-        content: "";
-        display: table;
-    }
-    &:after {
-        clear: both;
-    }
 }
 
 body {
@@ -38,6 +27,12 @@ a {
 	text-decoration: none;
 	
 	&:hover {
-		border-bottom: 2px solid $masterColor;
+		border-bottom: 1px solid $color5;
+	}
+
+	&.active, &:active {
+		color: $color5;	
+		font-weight: 600;
+		border-bottom: 1px solid $color5;
 	}
 }

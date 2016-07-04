@@ -5,6 +5,8 @@
 				a(v-link="'/home'") Home
 			li(v-link-active)
 				a(v-link="'/devices'") Devices
+			li(v-link-active)
+				a(v-link="'/posts'") Posts
 
 		router-view(keep-alive)
 
@@ -85,6 +87,7 @@
 	li.active {
 		a {
 			font-weight: 600;
+			color: $color5;
 		}
 	}
 </style>

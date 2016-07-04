@@ -113,7 +113,7 @@ module.exports = function(app, db) {
 		})
 
 		/**
-		 * Get a devices
+		 * Get a device
 		 */
 		.get((req, res) => {
 			return response.json(res, req.device.toJSON());
@@ -152,7 +152,7 @@ module.exports = function(app, db) {
 		})
 
 		/**
-		 * Delete a devices
+		 * Delete a device
 		 */
 		.delete((req, res) => {
 			Device.remove({ _id: req.device.id }, (err) => {

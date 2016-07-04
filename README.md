@@ -116,6 +116,7 @@ $ NODE_ENV=production npm start
 * [ ] check https://github.com/keystonejs/keystone
 * [ ] add test with nightmare & mocha, chai, sinon
 * [ ] add E2E test with https://github.com/MikaelSoderstrom/nightmarejs-demo
+* [ ] localization on client-side
 
 
 ## License

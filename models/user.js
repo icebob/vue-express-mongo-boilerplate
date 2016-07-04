@@ -152,10 +152,10 @@ UserSchema.methods.comparePassword = function(password, cb) {
 
 UserSchema.virtual("gravatar").get(function() {
 	if (!this.get("email")) {
-		return "https://gravatar.com/avatar/?s=200&d=retro";
+		return "https://gravatar.com/avatar/?s=64&d=retro";
 	}
 	let md5 = crypto.createHash("md5").update(this.get("email")).digest("hex");
-	return "https://gravatar.com/avatar/" + md5 + "?s=200&d=retro";
+	return "https://gravatar.com/avatar/" + md5 + "?s=64&d=retro";
 });
 
 let User = mongoose.model("User", UserSchema);

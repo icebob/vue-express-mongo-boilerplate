@@ -1,11 +1,30 @@
-// Style variables 
-$backgroundColor: #3a3e48;
-$textColor: White;
-$masterColor: #389BFE;
+/* Coolors Exported Palette - coolors.co/00171f-007ea7-00a8e8-ffffff-ef7f0a */
+/* Complementer color - http://colorschemedesigner.com/csd-3.5/#3o21Ttqx7w0w0 */
 
+$color1: #00171f; //rgba(0, 23, 31, 100)
+$color2: #007ea7; //rgba(0, 126, 167, 100)
+$color3: #00a8e8; //rgba(0, 168, 232, 100)
+$color4: #ffffff; //rgba(255, 255, 255, 100)
+$color5: #df691a; //rgba(239, 127, 10, 100)
+
+/* Assign colors from palette */
+$masterColor: $color2;
+
+$backgroundColor: $color2;
+$overlayColor: lighten(desaturate($color3, 30%), 10%);
+$overlayColor: $color2;
+
+$textColor: $color4;
+$altTextColor: $color1;
+$headerTextColor: $color5;
+
+$buttonColor: $color5;
+$buttonTextColor: $textColor;
+
+/* Load fonts */
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900|Dosis:300,400,600,700,800|Droid+Sans:400,700|Lato:300,400,700,900|PT+Sans:400,700|Ubuntu:300,400,500,700|Open+Sans:400,300,600,700|Roboto:400,300,500,700,900|Roboto+Condensed:400,300,700|Open+Sans+Condensed:300,700|Work+Sans:400,300,700|Play:400,700|Maven+Pro:400,500,700,900&subset=latin,latin-ext);
+@import url(http://netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.css);
 
-@import url(http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css);
-
+/* Set font family styles */
 $fontFamily: 'Work Sans', 'Helvetica', 'Arial', sans-serif;
 $fontFamilyHeader: 'Lato', 'Work Sans', 'Helvetica', 'Arial', sans-serif;
