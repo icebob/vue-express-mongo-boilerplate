@@ -23,7 +23,7 @@
 
 
 	ul.posts
-		li(v-for="post in rows")
+		li(v-for="post of rows | orderBy orderPosts", track-by="code")
 			.image
 				img(:src="post.author.gravatar")
 				.votes
@@ -172,6 +172,14 @@
 		},	
 
 		methods: {
+			orderPosts() {
+				switch(this.sort) {
+					case "hot": return "'votes' -1";
+					case "mostviewed": return "'views' -1";
+					case "new": return "'createdAt' -1";
+				}
+			},
+
 			getPosts() {
 				// Download rows for the page
 				this.downloadRows(this.viewMode, this.sort);
