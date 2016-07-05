@@ -41,13 +41,13 @@ module.exports = function(app, db) {
 
 			function removeUserFromDownVoters(done) {
 				if (req.post.downVoters.indexOf(req.user.id) !== -1) 
-					Post.findByIdAndUpdate(req.post.id, { $pull: { downVoters: req.user.id } }, { 'new': true }, done);
+					Post.findByIdAndUpdate(req.post.id, { $pull: { downVoters: req.user.id }, $inc: { votes: 1 } }, { 'new': true }, done);
 				else
-					done();
+					done(null, null);
 			},
 
 			function addUserToUpVoters(doc, done) {
-				Post.findByIdAndUpdate(req.post.id, { $addToSet: { upVoters: req.user.id } }, { 'new': true }, done);
+				Post.findByIdAndUpdate(req.post.id, { $addToSet: { upVoters: req.user.id }, $inc: { votes: 1 } }, { 'new': true }, done);
 			},
 
 			function populateAuthorOfPost(doc, done) {
@@ -78,13 +78,13 @@ module.exports = function(app, db) {
 				throw new Error("You have already voted this post!");
 
 		}).then(() => {
-			// Remove user from upVoters if it is in the list
+			// Remove user from upVoters if it is on the list
 			if (req.post.upVoters.indexOf(req.user.id) !== -1) 
-				return Post.findByIdAndUpdate(req.post.id, { $pull: { upVoters: req.user.id } }, { 'new': true });
+				return Post.findByIdAndUpdate(req.post.id, { $pull: { upVoters: req.user.id }, $inc: { votes: -1 } }, { 'new': true });
 
 		}).then(() => {
 			// Add user to downVoters
-			return Post.findByIdAndUpdate(req.post.id, { $addToSet: { downVoters: req.user.id } }, { 'new': true });
+			return Post.findByIdAndUpdate(req.post.id, { $addToSet: { downVoters: req.user.id } , $inc: { votes: -1 }}, { 'new': true });
 
 		}).then((doc) => {
 			// Populate author

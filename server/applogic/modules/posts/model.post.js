@@ -30,7 +30,7 @@ let PostSchema = new Schema({
 	},
 	author: {
 		type: Number,
-		required: "Please fill in an author ObjectId",
+		required: "Please fill in an author ID",
 		ref: "User"
 	},
 	views: {
@@ -43,24 +43,16 @@ let PostSchema = new Schema({
 	downVoters: {
 		type: [Number]
 	},
+	votes: {
+		type: Number,
+		default: 0
+	},
 	metadata: {}
 
 }, schemaOptions);
 
 PostSchema.virtual("code").get(function() {
 	return hashids.encodeHex(this._id);
-});
-
-PostSchema.virtual("upVotes").get(function() {
-	return this.upVoters.length;
-});
-
-PostSchema.virtual("downVotes").get(function() {
-	return this.downVoters.length;
-});
-
-PostSchema.virtual("votes").get(function() {
-	return this.upVoters.length - this.downVoters.length;
 });
 
 PostSchema.plugin(autoIncrement.plugin, {
