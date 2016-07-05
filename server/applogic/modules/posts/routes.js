@@ -73,27 +73,25 @@ module.exports = function(app, db) {
 	 */
 	router.get("/downvote/:postID", (req, res) => {
 		Promise.resolve().then(() => {		
+			// Check user is on downVoters
 			if (req.post.downVoters.indexOf(req.user.id) !== -1) 
 				throw new Error("You have already voted this post!");
 
 		}).then(() => {
+			// Remove user from upVoters if it is in the list
 			if (req.post.upVoters.indexOf(req.user.id) !== -1) 
 				return Post.findByIdAndUpdate(req.post.id, { $pull: { upVoters: req.user.id } }, { 'new': true });
 
 		}).then(() => {
+			// Add user to downVoters
 			return Post.findByIdAndUpdate(req.post.id, { $addToSet: { downVoters: req.user.id } }, { 'new': true });
 
 		}).then((doc) => {
-			return new Promise((resolve, reject) => {
-				doc.populate("author", "fullName code email gravatar", (err, doc) => {
-					if (err)
-						reject(err);
-					else
-						resolve(doc);
-				});
-			});
+			// Populate author
+			return Post.populate(doc, { path: 'author', select: 'fullName code email gravatar'});
 
 		}).then((doc) => {
+			// Send back the response
 			let json = doc.toJSON();
 
 			if (io.namespaces[namespace])
@@ -102,6 +100,7 @@ module.exports = function(app, db) {
 			response.json(res, json);
 
 		}).catch((err)=> {
+			// Send error response
 			response.json(res, null, response.BAD_REQUEST, err.message);
 		});
 
