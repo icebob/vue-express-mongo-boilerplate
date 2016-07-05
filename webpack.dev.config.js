@@ -8,12 +8,11 @@ var autoprefixer = require("autoprefixer");
 module.exports = {
 	devtool: 'eval-source-map',
 	entry: {
-		app: ['webpack-hot-middleware/client', "./web/app/main.js"],
-		frontend: ['webpack-hot-middleware/client', "./web/frontend/main.js"]
-		//vendor: glob.sync("./src/vendor/**/*.js")
+		app: ['webpack-hot-middleware/client', "./client/app/main.js"],
+		frontend: ['webpack-hot-middleware/client', "./client/frontend/main.js"]
 	},
 	output: {
-		path: path.resolve(__dirname, "public", "app"),
+		path: path.resolve(__dirname, "server", "public", "app"),
 		publicPath: "/app/",
 		filename: "[name].js",
 		chunkFilename: "[chunkhash].js"
@@ -50,7 +49,7 @@ module.exports = {
 	resolve: {
     	extensions: ['', '.vue', '.js', '.json'],
     	alias: {
-    		'images': path.resolve(__dirname, 'web', 'images')
+    		'images': path.resolve(__dirname, 'client', 'images')
     	}
 	},
 	plugins: [

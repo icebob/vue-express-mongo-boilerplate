@@ -1,9 +1,9 @@
 "use strict";
 
 let path = require("path");
-let pkg = require("../package.json");
+let pkg = require("../../package.json");
 
-let rootPath = path.normalize(path.join(__dirname, ".."));
+let rootPath = path.normalize(path.join(__dirname, "..", ".."));
 
 module.exports = {
 	app: {

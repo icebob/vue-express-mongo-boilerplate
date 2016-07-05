@@ -10,12 +10,12 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
 	entry: {
-		app: ["./web/app/main.js"],
-		frontend: ["./web/frontend/main.js"]
+		app: ["./client/app/main.js"],
+		frontend: ["./client/frontend/main.js"]
 		//vendor: glob.sync("./src/vendor/**/*.js")
 	},
 	output: {
-		path: path.resolve(__dirname, "public", "app"),
+		path: path.resolve(__dirname, "server", "public", "app"),
 		publicPath: "/app/",
 		filename: "[name].js",
 		chunkFilename: "[chunkhash].js"
@@ -53,7 +53,7 @@ module.exports = {
 	resolve: {
     	extensions: ['', '.vue', '.js', '.json'],
     	alias: {
-    		'images': path.resolve(__dirname, 'web', 'images')
+    		'images': path.resolve(__dirname, 'client', 'images')
     	}
 	},
 	plugins: [
