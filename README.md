@@ -3,31 +3,33 @@ This is a VueJS webapp boilerplate project with ExpressJS + Mongo server.
 
 Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/hackathon-starter](https://github.com/sahat/hackathon-starter)
 
+*This is just my personal boilerplate, it may or may not be a good fit for your project(s).*
+
 ## Features
 **Server-side**
-* **[Node.JS](https://nodejs.org)**
-* **[Express](https://github.com/expressjs/express)**
-* [MongoDB](https://www.mongodb.com/) with [Mongoose](https://github.com/Automattic/mongoose)
-* [NodeMailer](https://github.com/nodemailer/nodemailer) with SMTP, MailGun or SendGrid
-* [Helmet](https://github.com/helmetjs/helmet)
-* [Express-validator](https://github.com/ctavan/express-validator)
-* [winston](https://github.com/winstonjs/winston)
-* [GraphQL](http://graphql.org/) with [Apollo stack](http://www.apollostack.com/)
+* [ ] **[Node.JS](https://nodejs.org)**
+* [ ] **[Express](https://github.com/expressjs/express)**
+* [ ] [MongoDB](https://www.mongodb.com/) with [Mongoose](https://github.com/Automattic/mongoose)
+* [ ] [NodeMailer](https://github.com/nodemailer/nodemailer) with SMTP, MailGun or SendGrid
+* [ ] [Helmet](https://github.com/helmetjs/helmet)
+* [ ] [Express-validator](https://github.com/ctavan/express-validator)
+* [ ] [winston](https://github.com/winstonjs/winston)
+* [ ] [GraphQL](http://graphql.org/) with [Apollo stack](http://www.apollostack.com/)
 
 **Client-side**
-* **[VueJS](https://github.com/vuejs/vue)**
-* [Vuex](https://github.com/vuejs/vuex)
-* [Vue-router](https://github.com/vuejs/vue-router)
-* [Vue-resource](https://github.com/vuejs/vue-resource)
-* **[socket.io](https://github.com/socketio/socket.io) connection with namespaces & authorization**
-* [Jade](https://github.com/pugjs/pug)
-* [Webpack](https://github.com/webpack/webpack)
+* [ ] **[VueJS](https://github.com/vuejs/vue)**
+* [ ] [Vuex](https://github.com/vuejs/vuex)
+* [ ] [Vue-router](https://github.com/vuejs/vue-router)
+* [ ] [Vue-resource](https://github.com/vuejs/vue-resource)
+* [ ] **[socket.io](https://github.com/socketio/socket.io) connection with namespaces & authorization**
+* [ ] [Jade](https://github.com/pugjs/pug)
+* [ ] [Webpack](https://github.com/webpack/webpack)
 * SCSS
-* [PostCSS](https://github.com/postcss/postcss) with precss and autoprefixer
-* [Toastr](https://github.com/CodeSeven/toastr)
-* Babel
-* [Passwordless](https://www.sitepoint.com/passwordless-authentication-works/) mode
-* **[Passport.JS](http://passportjs.org/)**
+* [ ] [PostCSS](https://github.com/postcss/postcss) with precss and autoprefixer
+* [ ] [Toastr](https://github.com/CodeSeven/toastr)
+* [ ] Babel
+* [ ] [Passwordless](https://www.sitepoint.com/passwordless-authentication-works/) mode
+* [ ] **[Passport.JS](http://passportjs.org/)**
 	* Social signup/login with Facebook, Google, Twitter, Github
 	* API key authentication for REST API calls
 
