@@ -23,7 +23,7 @@
 
 
 	ul.posts
-		li(v-for="post of rows | orderBy orderPosts", track-by="code")
+		li(v-for="post of rows | orderBy orderPosts -1", transition="post", track-by="code")
 			.image
 				img(:src="post.author.gravatar")
 				.votes
@@ -172,11 +172,11 @@
 		},	
 
 		methods: {
-			orderPosts() {
+			orderPosts(a, b) {
 				switch(this.sort) {
-					case "hot": return "'votes' -1";
-					case "mostviewed": return "'views' -1";
-					case "new": return "'createdAt' -1";
+					case "hot": return a.votes - b.votes;
+					case "mostviewed": return a.views - b.views;
+					case "new": return a.createdAt - b.createdAt;
 				}
 			},
 
@@ -341,6 +341,22 @@
 		background-color: $color2;
 		margin: 0 4px;
 		border-radius: 4px;
+	}
+
+	.post-transition {
+		transition: opacity .5s ease;
+	}
+
+	.item-enter {
+		opacity: 0;
+	}
+	.item-leave {
+		opacity: 0;
+		position: absolute; /* important for removal move to work */
+	}
+
+	.post-move {
+		transition: transform .5s cubic-bezier(.55,0,.1,1);
 	}
 
 	ul.posts {
