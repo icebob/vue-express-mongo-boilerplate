@@ -4,6 +4,7 @@ let logger 			= require("../../../core/logger");
 let config 			= require("../../../config");
 
 let express			= require("express");
+let async 			= require("async");
 
 let auth			= require("../../../core/auth/helper");
 let response		= require("../../../core/response");
@@ -29,20 +30,40 @@ module.exports = function(app, db) {
 	 */
 	router.get("/upvote/:postID", (req, res) => {
 
-		Post.findByIdAndUpdate(req.post.id, { $inc: { votes: 1 } }, { 'new': true }, (err, doc) => {
+		async.waterfall([
+
+			function checkUserInIsUpVoters(done) {
+				if (req.post.upVoters.indexOf(req.user.id) !== -1) 
+					done("You have already voted this post!");
+				else
+					done();
+			},
+
+			function removeUserFromDownVoters(done) {
+				if (req.post.downVoters.indexOf(req.user.id) !== -1) 
+					Post.findByIdAndUpdate(req.post.id, { $pull: { downVoters: req.user.id } }, { 'new': true }, done);
+				else
+					done();
+			},
+
+			function addUserToUpVoters(doc, done) {
+				Post.findByIdAndUpdate(req.post.id, { $addToSet: { upVoters: req.user.id } }, { 'new': true }, done);
+			},
+
+			function populateAuthorOfPost(doc, done) {
+				doc.populate("author", "fullName code email gravatar", done);
+			}
+
+		], (err, doc) => {
 			if (err)
 				return response.json(res, null, response.BAD_REQUEST, err);
 
-			doc.populate("author", "fullName code email gravatar", (err) => {
+			let json = doc.toJSON();
 
-				let json = doc.toJSON();
+			if (io.namespaces[namespace])
+				io.namespaces[namespace].emit("update", json);
 
-				if (io.namespaces[namespace])
-					io.namespaces[namespace].emit("update", json);
-
-				return response.json(res, json);
-
-			});
+			return response.json(res, json);
 		});
 
 	});
@@ -51,19 +72,37 @@ module.exports = function(app, db) {
 	 * Downvote a post
 	 */
 	router.get("/downvote/:postID", (req, res) => {
+		Promise.resolve().then(() => {		
+			if (req.post.downVoters.indexOf(req.user.id) !== -1) 
+				throw new Error("You have already voted this post!");
 
-		Post.findByIdAndUpdate(req.post.id, { $inc: { votes: -1 } }, { 'new': true }, (err, doc) => {
-			if (err)
-				return response.json(res, null, response.BAD_REQUEST, err);
+		}).then(() => {
+			if (req.post.upVoters.indexOf(req.user.id) !== -1) 
+				return Post.findByIdAndUpdate(req.post.id, { $pull: { upVoters: req.user.id } }, { 'new': true });
 
-			doc.populate("author", "fullName code email gravatar", (err) => {
-				let json = doc.toJSON();
+		}).then(() => {
+			return Post.findByIdAndUpdate(req.post.id, { $addToSet: { downVoters: req.user.id } }, { 'new': true });
 
-				if (io.namespaces[namespace])
-					io.namespaces[namespace].emit("update", json);
-
-				return response.json(res, json);
+		}).then((doc) => {
+			return new Promise((resolve, reject) => {
+				doc.populate("author", "fullName code email gravatar", (err, doc) => {
+					if (err)
+						reject(err);
+					else
+						resolve(doc);
+				});
 			});
+
+		}).then((doc) => {
+			let json = doc.toJSON();
+
+			if (io.namespaces[namespace])
+				io.namespaces[namespace].emit("update", json);
+
+			response.json(res, json);
+
+		}).catch((err)=> {
+			response.json(res, null, response.BAD_REQUEST, err.message);
 		});
 
 	});	

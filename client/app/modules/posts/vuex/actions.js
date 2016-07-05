@@ -1,4 +1,5 @@
 import Vue from "vue";
+import toastr from "../../../core/toastr";
 import { LOAD, ADD, UPDATE, UPVOTE, DOWNVOTE, REMOVE } from "./types";
 
 const BASE_URL = "/posts";
@@ -50,6 +51,10 @@ export const upVote = ({ dispatch }, row) => {
 		let res = response.data;
 		if (res.data)
 			dispatch(UPDATE, res.data);
+		
+	}).catch((response) => {
+		if (response.data.error)
+			toastr.error(response.data.error.message);
 	});	
 };
 
@@ -58,6 +63,9 @@ export const downVote = ({ dispatch }, row) => {
 		let res = response.data;
 		if (res.data)
 			dispatch(UPDATE, res.data);
+	}).catch((response) => {
+		if (response.data.error)
+			toastr.error(response.data.error.message);
 	});	
 };
 

@@ -28,6 +28,8 @@ let MongoStore 		= require("connect-mongo")(session);
 let webpack			= require("webpack");
 let wpConfig		= require("../../webpack.dev.config");
 
+let serverFolder = path.join(config.rootPath, "server");
+
 function initLocalVariables(app) {
 	// Setting application local variables
 	app.locals.app = config.app;
@@ -65,11 +67,11 @@ function initMiddleware(app) {
 
 	// Setting up static folder
 	if (config.isProductionMode()) {
-		app.use(express["static"](path.join(config.rootPath, "server", "public")));
+		app.use(express["static"](path.join(serverFolder, "public")));
 	}
 
 	// Favicon
-	app.use(favicon(path.join(config.rootPath, "server", "public", "favicon.ico")));
+	app.use(favicon(path.join(serverFolder, "public", "favicon.ico")));
 
 	// Cookie parser should be above session
 	app.use(cookieParser());
@@ -96,7 +98,7 @@ function initMiddleware(app) {
 
 function initViewEngine(app) {
 	// Set view folder
-	app.set("views", path.join(config.rootPath, "server", "views"));
+	app.set("views", path.join(serverFolder, "views"));
 	app.set("view engine", "jade");
 
 	// Environment dependent middleware

@@ -37,9 +37,11 @@ let PostSchema = new Schema({
 		type: Number,
 		default: 0
 	},
-	votes: {
-		type: Number,
-		default: 0
+	upVoters: {
+		type: [Number]
+	},
+	downVoters: {
+		type: [Number]
 	},
 	metadata: {}
 
@@ -47,6 +49,18 @@ let PostSchema = new Schema({
 
 PostSchema.virtual("code").get(function() {
 	return hashids.encodeHex(this._id);
+});
+
+PostSchema.virtual("upVotes").get(function() {
+	return this.upVoters.length;
+});
+
+PostSchema.virtual("downVotes").get(function() {
+	return this.downVoters.length;
+});
+
+PostSchema.virtual("votes").get(function() {
+	return this.upVoters.length - this.downVoters.length;
 });
 
 PostSchema.plugin(autoIncrement.plugin, {
