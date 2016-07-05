@@ -14,7 +14,7 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 * [x] [Helmet](https://github.com/helmetjs/helmet)
 * [x] [Express-validator](https://github.com/ctavan/express-validator)
 * [x] [winston](https://github.com/winstonjs/winston)
-* [x] [GraphQL](http://graphql.org/) with [Apollo stack](http://www.apollostack.com/)
+* [x] **[GraphQL](http://graphql.org/)** with [Apollo stack](http://www.apollostack.com/)
 
 **Client-side**
 * [x] **[VueJS](https://github.com/vuejs/vue)**
@@ -23,15 +23,15 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 * [x] [Vue-resource](https://github.com/vuejs/vue-resource)
 * [x] **[socket.io](https://github.com/socketio/socket.io) connection with namespaces & authorization**
 * [x] [Jade](https://github.com/pugjs/pug)
-* [x] [Webpack](https://github.com/webpack/webpack)
-* SCSS
+* [x] **[Webpack](https://github.com/webpack/webpack)**
+* [x] [SCSS](http://sass-lang.com/)
 * [x] [PostCSS](https://github.com/postcss/postcss) with precss and autoprefixer
-* [x] [Toastr](https://github.com/CodeSeven/toastr)
-* [x] Babel
+* [x] [Babel](https://babeljs.io/)
 * [x] [Passwordless](https://www.sitepoint.com/passwordless-authentication-works/) mode
-* [x] **[Passport.JS](http://passportjs.org/)**
-	* Social signup/login with Facebook, Google, Twitter, Github
+* [x] [Passport.JS](http://passportjs.org/)
+	* Social signup/login with Facebook, Google, Twitter and Github
 	* API key authentication for REST API calls
+* [x] [Toastr](https://github.com/CodeSeven/toastr)
 
 ## Usage
 For development
@@ -47,8 +47,11 @@ $ npm run build
 
 For production
 ```bash
-$ NODE_ENV=production npm start
+$ npm start
 ```
+
+## Screenshots
+TODO
 
 ## Directory structure
 TODO
@@ -117,7 +120,6 @@ TODO
 ## TODO
 * [ ] create posts page with GraphQL with mutations
 * [ ] rewrite account.js response handlers
-* [ ] check ORM http://bookshelfjs.org/ or sequelize
 * [ ] check https://github.com/keystonejs/keystone
 * [ ] add test with nightmare & mocha, chai, sinon
 * [ ] add E2E test with https://github.com/MikaelSoderstrom/nightmarejs-demo
