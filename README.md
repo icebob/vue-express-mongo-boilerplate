@@ -7,29 +7,29 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 
 ## Features
 **Server-side**
-* [ ] **[Node.JS](https://nodejs.org)**
-* [ ] **[Express](https://github.com/expressjs/express)**
-* [ ] [MongoDB](https://www.mongodb.com/) with [Mongoose](https://github.com/Automattic/mongoose)
-* [ ] [NodeMailer](https://github.com/nodemailer/nodemailer) with SMTP, MailGun or SendGrid
-* [ ] [Helmet](https://github.com/helmetjs/helmet)
-* [ ] [Express-validator](https://github.com/ctavan/express-validator)
-* [ ] [winston](https://github.com/winstonjs/winston)
-* [ ] [GraphQL](http://graphql.org/) with [Apollo stack](http://www.apollostack.com/)
+* [x] **[Node.JS](https://nodejs.org)**
+* [x] **[Express](https://github.com/expressjs/express)**
+* [x] [MongoDB](https://www.mongodb.com/) with [Mongoose](https://github.com/Automattic/mongoose)
+* [x] [NodeMailer](https://github.com/nodemailer/nodemailer) with SMTP, MailGun or SendGrid
+* [x] [Helmet](https://github.com/helmetjs/helmet)
+* [x] [Express-validator](https://github.com/ctavan/express-validator)
+* [x] [winston](https://github.com/winstonjs/winston)
+* [x] [GraphQL](http://graphql.org/) with [Apollo stack](http://www.apollostack.com/)
 
 **Client-side**
-* [ ] **[VueJS](https://github.com/vuejs/vue)**
-* [ ] [Vuex](https://github.com/vuejs/vuex)
-* [ ] [Vue-router](https://github.com/vuejs/vue-router)
-* [ ] [Vue-resource](https://github.com/vuejs/vue-resource)
-* [ ] **[socket.io](https://github.com/socketio/socket.io) connection with namespaces & authorization**
-* [ ] [Jade](https://github.com/pugjs/pug)
-* [ ] [Webpack](https://github.com/webpack/webpack)
+* [x] **[VueJS](https://github.com/vuejs/vue)**
+* [x] [Vuex](https://github.com/vuejs/vuex)
+* [x] [Vue-router](https://github.com/vuejs/vue-router)
+* [x] [Vue-resource](https://github.com/vuejs/vue-resource)
+* [x] **[socket.io](https://github.com/socketio/socket.io) connection with namespaces & authorization**
+* [x] [Jade](https://github.com/pugjs/pug)
+* [x] [Webpack](https://github.com/webpack/webpack)
 * SCSS
-* [ ] [PostCSS](https://github.com/postcss/postcss) with precss and autoprefixer
-* [ ] [Toastr](https://github.com/CodeSeven/toastr)
-* [ ] Babel
-* [ ] [Passwordless](https://www.sitepoint.com/passwordless-authentication-works/) mode
-* [ ] **[Passport.JS](http://passportjs.org/)**
+* [x] [PostCSS](https://github.com/postcss/postcss) with precss and autoprefixer
+* [x] [Toastr](https://github.com/CodeSeven/toastr)
+* [x] Babel
+* [x] [Passwordless](https://www.sitepoint.com/passwordless-authentication-works/) mode
+* [x] **[Passport.JS](http://passportjs.org/)**
 	* Social signup/login with Facebook, Google, Twitter, Github
 	* API key authentication for REST API calls
 
