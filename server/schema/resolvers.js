@@ -11,6 +11,19 @@ let Post 			= require("../applogic/modules/posts/model.post");
 let User 			= require("../models/user");
 
 
+function applyLimitOffsetSort(query, args) {
+	if (args.limit)
+		query.limit(args.limit);
+
+	if (args.offset)
+		query.skip(args.offset);
+
+	if (args.sort)
+		query.sort(args.sort);
+
+	return query;
+}
+
 module.exports = {
 
 	Timestamp: {
@@ -34,7 +47,7 @@ module.exports = {
 			if (context.user.roles.indexOf("user") == -1) 
 				return null;
 
-			return Device.find({}).exec();
+			return applyLimitOffsetSort(Device.find({}), args).exec();
 		},
 
 		device(root, args, context) {
@@ -57,7 +70,7 @@ module.exports = {
 			if (context.user.roles.indexOf("admin") == -1) 
 				return null;
 
-			return User.find({}).exec();
+			return applyLimitOffsetSort(User.find({}), args).exec();
 		},
 
 		user(root, args, context) {
@@ -78,7 +91,7 @@ module.exports = {
 			if (context.user.roles.indexOf("user") == -1) 
 				return null;
 
-			return Post.find({}).exec();
+			return applyLimitOffsetSort(Post.find({}), args).exec();
 		},
 
 		post(root, args, context) {
@@ -103,7 +116,7 @@ module.exports = {
 			if (context.user.roles.indexOf("user") == -1)
 				return null;
 				
-			return Post.find({ author: author.id }).exec();
+			return applyLimitOffsetSort(Post.find({ author: author.id }), args).exec();
 		}
 	},
 
@@ -121,8 +134,7 @@ module.exports = {
 			if (context.user.roles.indexOf("user") == -1)
 				return null;
 
-			console.log(post.upVoters);
-			return User.find({ _id: { $in: post.upVoters} }).exec();
+			return applyLimitOffsetSort(User.find({ _id: { $in: post.upVoters} }), args).exec();
 		},
 
 		downVoters(post, args, context) {
@@ -130,8 +142,7 @@ module.exports = {
 			if (context.user.roles.indexOf("user") == -1)
 				return null;
 
-			console.log(post.downVoters);
-			return User.find({ _id: { $in: post.downVoters} }).exec();
+			return applyLimitOffsetSort(User.find({ _id: { $in: post.downVoters} }), args).exec();
 		}		
 	}
 };

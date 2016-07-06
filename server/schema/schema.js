@@ -5,15 +5,15 @@ const typeDefinitions = `
 scalar Timestamp
 
 type Query {
-	devices: [Device]
+	devices(limit: Int, offset: Int, sort: String): [Device]
 	device(id: Int!): Device
 	#deviceByCode(code: String!): Device
 
-	users: [User]
+	users(limit: Int, offset: Int, sort: String): [User]
 	user(id: Int!): User
 	#userByCode(code: String!): User
 
-	posts: [Post]
+	posts(limit: Int, offset: Int, sort: String): [Post]
 	post(id: Int!): Post
 	#postByCode(code: String!): Post
 
@@ -41,7 +41,7 @@ type User {
 	verified: Boolean
 	gravatar: String
 	lastLogin: Timestamp
-	posts: [Post]
+	posts(limit: Int, offset: Int, sort: String): [Post]
 }
 
 type Post {
