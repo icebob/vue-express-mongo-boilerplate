@@ -1,6 +1,6 @@
 "use strict";
 
-const typeDefinitions = `
+const schema = `
 
 scalar Timestamp
 
@@ -16,7 +16,6 @@ type Query {
 	posts(limit: Int, offset: Int, sort: String): [Post]
 	post(id: Int!): Post
 	#postByCode(code: String!): Post
-
 }
 
 type Device {
@@ -70,4 +69,5 @@ schema {
 }
 `;
 
-module.exports = [typeDefinitions];
+
+module.exports = [].concat(schema/*, require("../applogic/modules/posts/schema").schema*/);

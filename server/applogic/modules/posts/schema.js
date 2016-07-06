@@ -1,16 +1,19 @@
 "use strict";
 
-let logger 			= require("../core/logger");
-let config 			= require("../config");
+let logger 			= require("../../../core/logger");
+let config 			= require("../../../config");
 
 let _ 				= require("lodash");
 let async 			= require("async");
-let hashids 		= require("../libs/hashids");
-let C 				= require("../core/constants");
+let hashids 		= require("../../../libs/hashids");
+let C 				= require("../../../core/constants");
 
-let Device 			= require("../applogic/modules/devices/model.device");
-let Post 			= require("../applogic/modules/posts/model.post");
-let User 			= require("../models/user");
+let Post 			= require("./model.post");
+let User 			= require("../../../models/user");
+
+let io 				= require("../../../core/socket");
+
+let namespace = "/posts";
 
 function applyLimitOffsetSort(query, args) {
 	if (args.limit)
@@ -29,65 +32,39 @@ function hasRole(context, role) {
 	return context.user.roles.indexOf(role) != -1;
 }
 
-module.exports = _.merge({
+const schema = `
 
-	Timestamp: {
-		__parseValue(value) {
-			return new Date(value);
-		},
-		__serialize(value) {
-			return value.getTime();
-		},
-		__parseLiteral(ast) {
-			console.log(ast); // ???? when will be called it?
-			/*if (ast.kind === Kind.INT) {
-				return parseInt(ast.value, 10);
-			}*/
-		}
-	},
+type Query {
+	posts(limit: Int, offset: Int, sort: String): [Post]
+	post(id: Int!): Post
+	#postByCode(code: String!): Post
 
+}
+
+type Post {
+	id: Int!
+	code: String!
+	title: String
+	content: String
+	author: User!
+	views: Int
+	voters(limit: Int, offset: Int, sort: String): [User]
+	upVoters(limit: Int, offset: Int, sort: String): [User]
+	downVoters(limit: Int, offset: Int, sort: String): [User]
+	votes: Int,
+	createdAt: Timestamp
+	updatedAt: Timestamp
+}
+
+type Mutation {
+	upVote(postID: Int!): Post
+	downVote(postID: Int!): Post
+}
+
+`;
+
+const resolvers = {
 	Query: {
-		devices(root, args, context) {
-			if (!hasRole(context, C.ROLE_USER))
-				return null;
-
-			return applyLimitOffsetSort(Device.find({}), args).exec();
-		},
-
-		device(root, args, context) {
-			if (!hasRole(context, C.ROLE_USER))
-				return null;
-
-			let id = args.id;
-
-			if (args.code)
-				id = hashids.decodeHex(args.code);
-
-			if (id)
-				return Device.findById(id).exec();
-
-		},
-
-		users(root, args, context) {
-			if (!hasRole(context, C.ROLE_ADMIN)) 
-				return null;
-
-			return applyLimitOffsetSort(User.find({}), args).exec();
-		},
-
-		user(root, args, context) {
-			if (!hasRole(context, C.ROLE_ADMIN))
-				return null;
-
-			let id = args.id;
-
-			if (args.code)
-				id = hashids.decodeHex(args.code);
-
-			if (id)
-				return User.findById(id).exec();
-		}/*,
-
 		posts(root, args, context) {
 			if (!hasRole(context, C.ROLE_USER))  
 				return null;
@@ -106,19 +83,10 @@ module.exports = _.merge({
 
 			if (id)
 				return Post.findById(id).exec();
-		}*/
-
-	},
-
-	User: {
-		posts(author, args, context) {
-			if (!hasRole(context, C.ROLE_USER))
-				return null;
-				
-			return applyLimitOffsetSort(Post.find({ author: author.id }), args).exec();
 		}
+
 	},
-/*
+
 	Post: {
 		author(post, args, context) {
 			if (!hasRole(context, C.ROLE_USER))
@@ -148,10 +116,10 @@ module.exports = _.merge({
 			return applyLimitOffsetSort(User.find({ _id: { $in: post.upVoters.concat(post.downVoters) } }), args).exec();
 		}
 
-	},*/
+	},
 
 	Mutation: {
-		/*
+
 		upVote(root, args, context) {
 			let user = context.user;
 			let postID = args.postID;
@@ -243,6 +211,11 @@ module.exports = _.merge({
 
 			});
 
-		}*/
+		}
 	}
-}, require("../applogic/modules/posts/schema").resolvers);
+}
+
+module.exports = {
+	schema: [schema],
+	resolvers
+};
