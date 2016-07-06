@@ -28,10 +28,8 @@ export const saveRow = ({ dispatch }, model) => {
 	});	
 };
 
-export const addRow = ({ dispatch }, row, needSelect) => {
+export const addRow = ({ dispatch }, row) => {
 	dispatch(ADD, row);
-	if (needSelect)
-		dispatch(SELECT, row, false);
 };
 
 export const rowAdded = ({ dispatch }, row) => {

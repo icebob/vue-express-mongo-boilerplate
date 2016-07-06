@@ -174,9 +174,9 @@
 		methods: {
 			orderPosts(a, b) {
 				switch(this.sort) {
-					case "hot": return a.votes - b.votes;
-					case "mostviewed": return a.views - b.views;
-					case "new": return a.createdAt - b.createdAt;
+				case "hot": return a.votes - b.votes;
+				case "mostviewed": return a.views - b.views;
+				case "new": return a.createdAt - b.createdAt;
 				}
 			},
 

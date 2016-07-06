@@ -41,13 +41,13 @@ module.exports = function(app, db) {
 
 			function removeUserFromDownVoters(done) {
 				if (req.post.downVoters.indexOf(req.user.id) !== -1) 
-					Post.findByIdAndUpdate(req.post.id, { $pull: { downVoters: req.user.id }, $inc: { votes: 1 } }, { 'new': true }, done);
+					Post.findByIdAndUpdate(req.post.id, { $pull: { downVoters: req.user.id }, $inc: { votes: 1 } }, { "new": true }, done);
 				else
 					done(null, null);
 			},
 
 			function addUserToUpVoters(doc, done) {
-				Post.findByIdAndUpdate(req.post.id, { $addToSet: { upVoters: req.user.id }, $inc: { votes: 1 } }, { 'new': true }, done);
+				Post.findByIdAndUpdate(req.post.id, { $addToSet: { upVoters: req.user.id }, $inc: { votes: 1 } }, { "new": true }, done);
 			},
 
 			function populateAuthorOfPost(doc, done) {
@@ -80,15 +80,15 @@ module.exports = function(app, db) {
 		}).then(() => {
 			// Remove user from upVoters if it is on the list
 			if (req.post.upVoters.indexOf(req.user.id) !== -1) 
-				return Post.findByIdAndUpdate(req.post.id, { $pull: { upVoters: req.user.id }, $inc: { votes: -1 } }, { 'new': true });
+				return Post.findByIdAndUpdate(req.post.id, { $pull: { upVoters: req.user.id }, $inc: { votes: -1 } }, { "new": true });
 
 		}).then(() => {
 			// Add user to downVoters
-			return Post.findByIdAndUpdate(req.post.id, { $addToSet: { downVoters: req.user.id } , $inc: { votes: -1 }}, { 'new': true });
+			return Post.findByIdAndUpdate(req.post.id, { $addToSet: { downVoters: req.user.id } , $inc: { votes: -1 }}, { "new": true });
 
 		}).then((doc) => {
 			// Populate author
-			return Post.populate(doc, { path: 'author', select: 'fullName code email gravatar'});
+			return Post.populate(doc, { path: "author", select: "fullName code email gravatar"});
 
 		}).then((doc) => {
 			// Send back the response
@@ -119,9 +119,9 @@ module.exports = function(app, db) {
 		let query = Post.find(filter);
 
 		switch(req.params.sort) {
-			case "hot": query.sort({ votes: -1 }); break;
-			case "mostviewed": query.sort({ views: -1 }); break;
-			default: query.sort({ createdAt: -1 });
+		case "hot": query.sort({ votes: -1 }); break;
+		case "mostviewed": query.sort({ views: -1 }); break;
+		default: query.sort({ createdAt: -1 });
 		}
 
 		if (req.query.limit)

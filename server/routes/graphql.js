@@ -15,7 +15,7 @@ module.exports = function(app, db) {
 		if (query && query.length > 2000) {
 			// None of our app's queries are this long
 			// Probably indicates someone trying to send an overly expensive query
-			throw new Error('Query too large.');
+			throw new Error("Query too large.");
 		}		
 
 		return {

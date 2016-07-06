@@ -44,9 +44,9 @@ module.exports = {
 		},
 		__parseLiteral(ast) {
 			console.log(ast); // ???? when will be called it?
-			if (ast.kind === Kind.INT) {
+			/*if (ast.kind === Kind.INT) {
 				return parseInt(ast.value, 10);
-			}
+			}*/
 		}
 	},
 
@@ -178,13 +178,13 @@ module.exports = {
 
 					function removeUserFromDownVoters(post, done) {
 						if (post.downVoters.indexOf(user.id) !== -1) 
-							Post.findByIdAndUpdate(postID, { $pull: { downVoters: user.id }, $inc: { votes: 1 } }, { 'new': true }, done);
+							Post.findByIdAndUpdate(postID, { $pull: { downVoters: user.id }, $inc: { votes: 1 } }, { "new": true }, done);
 						else
 							done(null, null);
 					},
 
 					function addUserToUpVoters(doc, done) {
-						Post.findByIdAndUpdate(postID, { $addToSet: { upVoters: user.id }, $inc: { votes: 1 } }, { 'new': true }, done);
+						Post.findByIdAndUpdate(postID, { $addToSet: { upVoters: user.id }, $inc: { votes: 1 } }, { "new": true }, done);
 					},
 
 					function populateAuthorOfPost(doc, done) {
@@ -225,15 +225,15 @@ module.exports = {
 			}).then((post) => {
 				// Remove user from upVoters if it is on the list
 				if (post.upVoters.indexOf(user.id) !== -1) 
-					return Post.findByIdAndUpdate(post.id, { $pull: { upVoters: user.id }, $inc: { votes: -1 } }, { 'new': true });
+					return Post.findByIdAndUpdate(post.id, { $pull: { upVoters: user.id }, $inc: { votes: -1 } }, { "new": true });
 
 			}).then((post) => {
 				// Add user to downVoters
-				return Post.findByIdAndUpdate(post.id, { $addToSet: { downVoters: user.id } , $inc: { votes: -1 }}, { 'new': true });
+				return Post.findByIdAndUpdate(post.id, { $addToSet: { downVoters: user.id } , $inc: { votes: -1 }}, { "new": true });
 
 			}).then((doc) => {
 				// Populate author
-				return Post.populate(doc, { path: 'author', select: 'fullName code email gravatar'});
+				return Post.populate(doc, { path: "author", select: "fullName code email gravatar"});
 
 			}).then((doc) => {
 				// Send back the response

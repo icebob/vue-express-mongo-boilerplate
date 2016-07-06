@@ -10,8 +10,8 @@
 
 	import MixinsIO from "../../core/mixins/io";
 
-	import gql from 'graphql-tag';
-	window['gql'] = gql;
+	import gql from "graphql-tag";
+	window["gql"] = gql;
 
 	import ApolloClient, { createNetworkInterface } from "apollo-client";
 
@@ -105,7 +105,7 @@
 			this.downloadRows();
 
 
-			const networkInterface = createNetworkInterface('/graphql');
+			const networkInterface = createNetworkInterface("/graphql");
 
 			networkInterface.use([{
 				applyMiddleware(req, next) {
