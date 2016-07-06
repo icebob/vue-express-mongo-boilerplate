@@ -12,6 +12,11 @@ type Query {
 	users: [User]
 	user(id: Int!): User
 	#userByCode(code: String!): User
+
+	posts: [Post]
+	post(id: Int!): Post
+	#postByCode(code: String!): Post
+
 }
 
 type Device {
@@ -36,6 +41,21 @@ type User {
 	verified: Boolean
 	gravatar: String
 	lastLogin: Timestamp
+	posts: [Post]
+}
+
+type Post {
+	id: Int!
+	code: String!
+	title: String
+	content: String
+	author: User!
+	views: Int
+	upVoters: [User]
+	downVoters: [User]
+	votes: Int,
+	createdAt: Timestamp
+	updatedAt: Timestamp
 }
 
 schema {

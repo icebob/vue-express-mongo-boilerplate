@@ -7,6 +7,7 @@ let _ 				= require("lodash");
 let hashids 		= require("../libs/hashids");
 
 let Device 			= require("../applogic/modules/devices/model.device");
+let Post 			= require("../applogic/modules/posts/model.post");
 let User 			= require("../models/user");
 
 
@@ -71,43 +72,66 @@ module.exports = {
 
 			if (id)
 				return User.findById(id).exec();
-		}
-		/*,
+		},
+
+		posts(root, args, context) {
+			if (context.user.roles.indexOf("user") == -1) 
+				return null;
+
+			return Post.find({}).exec();
+		},
 
 		post(root, args, context) {
-			// Require 'admin' role
-			if (context.user.roles.indexOf("admin") !== -1)
-				return _.find(posts, (post) => post.id == args.id);
-		}*/
-	}/*,
+			// Require 'user' role
+			if (context.user.roles.indexOf("user") == -1)
+				return null;
 
-	Device: {
-		lastCommunication(device) {
-			return new Date(device.lastCommunication).valueOf();
+			let id = args.id;
+
+			if (args.code)
+				id = hashids.decodeHex(args.code);
+
+			if (id)
+				return Post.findById(id).exec();
 		}
+
 	},
 
 	User: {
-		lastLogin(device) {
-			return new Date(device.lastLogin).valueOf();
-		}
-	}*/
-	/*,
-
-	Author: {
 		posts(author, args, context) {
-			// Require 'admin' role
-			if (context.user.roles.indexOf("admin") !== -1)
-				return author.posts;
+			// Require 'user' role
+			if (context.user.roles.indexOf("user") == -1)
+				return null;
+				
+			return Post.find({ author: author.id }).exec();
 		}
 	},
 
 	Post: {
 		author(post, args, context) {
-			return post.author;
+			// Require 'user' role
+			if (context.user.roles.indexOf("user") == -1)
+				return null;
+
+			return User.findById(post.author).exec();
 		},
-		views(post, args, context) {
-			return fakerator.random.number(200);
-		}
-	}*/
+
+		upVoters(post, args, context) {
+			// Require 'user' role
+			if (context.user.roles.indexOf("user") == -1)
+				return null;
+
+			console.log(post.upVoters);
+			return User.find({ _id: { $in: post.upVoters} }).exec();
+		},
+
+		downVoters(post, args, context) {
+			// Require 'user' role
+			if (context.user.roles.indexOf("user") == -1)
+				return null;
+
+			console.log(post.downVoters);
+			return User.find({ _id: { $in: post.downVoters} }).exec();
+		}		
+	}
 };
