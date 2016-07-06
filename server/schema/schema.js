@@ -51,15 +51,22 @@ type Post {
 	content: String
 	author: User!
 	views: Int
-	upVoters: [User]
-	downVoters: [User]
+	voters(limit: Int, offset: Int, sort: String): [User]
+	upVoters(limit: Int, offset: Int, sort: String): [User]
+	downVoters(limit: Int, offset: Int, sort: String): [User]
 	votes: Int,
 	createdAt: Timestamp
 	updatedAt: Timestamp
 }
 
+type Mutation {
+	upVote(postID: Int!): Post
+	downVote(postID: Int!): Post
+}
+
 schema {
   query: Query
+  mutation: Mutation
 }
 `;
 

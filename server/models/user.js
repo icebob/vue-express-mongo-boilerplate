@@ -2,6 +2,7 @@
 
 let config    		= require("../config");
 let logger    		= require("../core/logger");
+let C 				= require("../core/constants");
 let fs 				= require("fs");
 let path 			= require("path");
 
@@ -83,10 +84,14 @@ let UserSchema = new Schema({
 		type: [
 			{
 				type: String,
-				"enum": ["admin", "user", "guest"]
+				"enum": [
+					C.ROLE_ADMIN,
+					C.ROLE_USER,
+					C.ROLE_GUEST
+				]
 			}
 		],
-		"default": ["user"]
+		"default": [C.ROLE_USER]
 	},
 	resetPasswordToken: String,
 	resetPasswordExpires: Date,
