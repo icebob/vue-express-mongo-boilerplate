@@ -122,9 +122,11 @@ module.exports = {
 				label: "Status",
 				model: "status",
 				multi: true,
-				default: true,
+				default: 1,
 				textOn: "Active",
-				textOff: "Inactive"
+				textOff: "Inactive",
+				valueOn: 1,
+				valueOff: 0
 			}
 		]
 	},

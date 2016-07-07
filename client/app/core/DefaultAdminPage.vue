@@ -25,6 +25,7 @@
 				button.btn.btn-warning.clone(@click="cloneModel", :disabled="!enabledClone") {{ schema.resources.cloneCaption || "Clone"}}
 				button.btn.btn-danger.delete(@click="deleteModel", :disabled="!enabledDelete") {{ schema.resources.deleteCaption || "Delete"}}
 
+			// pre {{{ model | prettyJSON }}}
 
 </template>
 

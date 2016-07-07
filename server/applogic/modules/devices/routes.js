@@ -64,7 +64,8 @@ module.exports = function(app, db) {
 				address: req.body.address,
 				type: req.body.type,
 				name: req.body.name,
-				description: req.body.description
+				description: req.body.description,
+				status: req.body.status
 			});
 
 			device.save((err) => {
