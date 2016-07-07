@@ -42,5 +42,7 @@
 	"ResetPasswordTitle": "New password",
 	"NewPassword": "New Password",
 	"ConfirmPassword": "Confirm Password",
-	"ChangePassword": "Change Password"
+	"ChangePassword": "Change Password",
+
+	"UnknowUsernameOrEmail": "Unknow username or e-mail"
 }

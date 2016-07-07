@@ -39,5 +39,8 @@
 	"ResetPasswordTitle": "Új jelszó",
 	"NewPassword": "Új jelszó",
 	"ConfirmPassword": "Ellenörző jelszó",
-	"ChangePassword": "Jelszóváltoztatás"
+	"ChangePassword": "Jelszóváltoztatás",
+
+	"UnknowUsernameOrEmail": "Ismeretlen felhasználónév vagy e-mail cím"
+
 }

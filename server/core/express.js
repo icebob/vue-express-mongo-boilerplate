@@ -112,6 +112,7 @@ function initI18N(app) {
 			defaultNS: "frontend",
 			load: "all",
 			saveMissing: true,
+			saveMissingTo: "all", // "fallback", "current", "all"
 
 			backend: {
 				// path where resources get loaded from

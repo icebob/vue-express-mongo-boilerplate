@@ -21,7 +21,7 @@ module.exports = function() {
 			
 			if (!user)
 				return done(null, false, {
-					message: "Unknow username"
+					message: req.t("UnknowUsernameOrEmail")
 				});
 
 			if (!user.verified)
