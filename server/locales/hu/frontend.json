@@ -22,13 +22,22 @@
 	"DontHaveAnAccount": "Még nincs fiókod?",
 
 	"NameSC": "Név:",
-	"EmailSC": "Email:",
+	"EmailSC": "E-mail:",
 	"UsernameSC": "Felhasználónév:",
 	"PasswordlessAccount": "Jelszómentes fiók?",
 	"SignUpFacebook": "Regisztráció Facebook fiókkal",
 	"SignupGoogle": "Regisztráció Google fiókkal",
 	"AlreadyHaveAnAccount": "Már van fiókod?",
 	"YourName": "Te neved",
-	"YourEmail": "Te email címed",
-	"YourUsername": "Te felhasználóneved (nem kötelező)"	
+	"YourEmail": "Te e-mail címed",
+	"YourUsername": "Te felhasználóneved (nem kötelező)",
+
+	"Forgot": "Elfelejtett",
+	"ForgotHint": "Add meg az e-mail címedet és küldünk egy üzenetet, hogy miként tudod megváltoztatni a jelszavadat.",
+	"ResetPassword": "Jelszó változtatás",
+	"Email": "E-mail",
+	"ResetPasswordTitle": "Új jelszó",
+	"NewPassword": "Új jelszó",
+	"ConfirmPassword": "Ellenörző jelszó",
+	"ChangePassword": "Jelszóváltoztatás"
 }

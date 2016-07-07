@@ -12,10 +12,10 @@
 	"homepage": "homepage",
 
 	"UsernameOrEmail": "Username or e-mail:",
-	"YourUsernameOrEmailAddress": "Your username or email address",
+	"YourUsernameOrEmailAddress": "Your username or e-mail address",
 	"Password": "Password",
 	"PasswordSC": "Password:",
-	"PasswordlessLoginHint": "If the password is empty, we will send an email with the magic link (passwordless login)",
+	"PasswordlessLoginHint": "If the password is empty, we will send an e-mail with the magic link (passwordless login)",
 	"ForgotYourPassword": "Forgot your password?",
 	"or": "or",
 	"LoginFacebook": "Login with Facebook",
@@ -25,13 +25,22 @@
 	"DontHaveAnAccount": "Don't have an account?",
 
 	"NameSC": "Name:",
-	"EmailSC": "Email:",
+	"EmailSC": "E-mail:",
 	"UsernameSC": "Username:",
 	"PasswordlessAccount": "Passwordless account?",
 	"SignUpFacebook": "Sign up with Facebook",
 	"SignupGoogle": "Sign up with Google",
 	"AlreadyHaveAnAccount": "Already have an account?",
 	"YourName": "Your Name",
-	"YourEmail": "Your email address",
-	"YourUsername": "Your username (optional)"
+	"YourEmail": "Your e-mail address",
+	"YourUsername": "Your username (optional)",
+
+	"Forgot": "Forgot",
+	"ForgotHint": "Enter your e-mail address below and we'll send you password reset instructions.",
+	"ResetPassword": "Reset Password",
+	"Email": "Email",
+	"ResetPasswordTitle": "New password",
+	"NewPassword": "New Password",
+	"ConfirmPassword": "Confirm Password",
+	"ChangePassword": "Change Password"
 }

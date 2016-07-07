@@ -13,14 +13,14 @@ block content
 				form(method='POST')
 					input(type='hidden', name='_csrf', value=_csrf)
 
-					header Reset
+					header= t("ResetPasswordTitle")
 						
 					.form-group
-						label(for='password') New Password
-						input.form-control(type='password', name='password', id='password', placeholder='New password', autofocus, required)
+						label(for='password')= t("NewPassword")
+						input.form-control(type='password', name='password', id='password', placeholder=t("NewPassword"), autofocus, required)
 					.form-group
-						label(for='confirm') Confirm Password
-						input.form-control(type='password', name='confirm', id='confirm', placeholder='Confirm password', required)
+						label(for='confirm')= t("ConfirmPassword")
+						input.form-control(type='password', name='confirm', id='confirm', placeholder=t("ConfirmPassword"), required)
 
 					.flash
 						if messages.info
@@ -32,7 +32,7 @@ block content
 								for error in messages.error
 									div= error.msg	
 					.form-group
-						button(type='submit') Change Password
+						button(type='submit')= t("ChangePassword")
 
 block scripts
 	script(src='/app/frontend.js')					

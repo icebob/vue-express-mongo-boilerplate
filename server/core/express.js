@@ -105,7 +105,7 @@ function initI18N(app) {
 		.use(i18nextFs)
 		.use(i18nextExpress.LanguageDetector)
 		.init({
-			debug: true,
+			//debug: true,
 			fallbackLng: "en",
 			whitelist: ["en", "hu"],
 			ns: ["app", "frontend"],
