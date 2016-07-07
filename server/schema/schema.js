@@ -70,4 +70,4 @@ schema {
 `;
 
 
-module.exports = [].concat(schema/*, require("../applogic/modules/posts/schema").schema*/);
+module.exports = [require("../applogic/modules/posts/schema").schema, schema];

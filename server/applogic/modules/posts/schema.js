@@ -216,6 +216,6 @@ const resolvers = {
 }
 
 module.exports = {
-	schema: [schema],
+	schema: schema,
 	resolvers
 };

@@ -24,7 +24,6 @@ module.exports = function(app, db) {
 			printErrors: config.isDevMode(),
 			schema: Schema,
 			resolvers: Resolvers,
-			logger: { log: (e) => console.error(e.stack) },
 			context: {
 				user: req.user,
 				session: req.session
