@@ -1,0 +1,37 @@
+{
+	"welcomeTo": "Welcome to {{app.title}}",
+
+	"Login": "Login",
+	"Signup": "Signup",
+	"SignUp": "Sign Up",
+
+	"PoweredBy": "Powered by",
+	"with": "with",
+
+	"GoBackTo": "Go back to",
+	"homepage": "homepage",
+
+	"UsernameOrEmail": "Username or e-mail:",
+	"YourUsernameOrEmailAddress": "Your username or email address",
+	"Password": "Password",
+	"PasswordSC": "Password:",
+	"PasswordlessLoginHint": "If the password is empty, we will send an email with the magic link (passwordless login)",
+	"ForgotYourPassword": "Forgot your password?",
+	"or": "or",
+	"LoginFacebook": "Login with Facebook",
+	"LoginGoogle": "Login with Google",
+	"LoginTwitter": "Login with Twitter",
+	"LoginGithub": "Login with Github",
+	"DontHaveAnAccount": "Don't have an account?",
+
+	"NameSC": "Name:",
+	"EmailSC": "Email:",
+	"UsernameSC": "Username:",
+	"PasswordlessAccount": "Passwordless account?",
+	"SignUpFacebook": "Sign up with Facebook",
+	"SignupGoogle": "Sign up with Google",
+	"AlreadyHaveAnAccount": "Already have an account?",
+	"YourName": "Your Name",
+	"YourEmail": "Your email address",
+	"YourUsername": "Your username (optional)"
+}

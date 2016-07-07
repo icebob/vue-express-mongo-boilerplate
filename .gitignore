@@ -32,6 +32,9 @@ npm-debug.log
 # SASS temp files
 .sass-cache
 
+# I18next missing files
+*.missing.json
+
 # Bower
 .bower-*/
 bower_components

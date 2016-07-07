@@ -15,6 +15,7 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 * [x] [Express-validator](https://github.com/ctavan/express-validator)
 * [x] [winston](https://github.com/winstonjs/winston)
 * [x] **[GraphQL](http://graphql.org/)** with [Apollo stack](http://www.apollostack.com/)
+* [x] [i18next](http://i18next.com/) as the internationalization ecosystem
 
 **Client-side**
 * [x] **[VueJS](https://github.com/vuejs/vue)**
@@ -124,7 +125,7 @@ TODO
 * [ ] check https://github.com/keystonejs/keystone
 * [ ] add test with nightmare & mocha, chai, sinon
 * [ ] add E2E test with https://github.com/MikaelSoderstrom/nightmarejs-demo
-* [ ] localization on client-side
+* [ ] localization on client-side too (i18next)
 
 
 ## License

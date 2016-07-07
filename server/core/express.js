@@ -25,6 +25,10 @@ let crossdomain 	= require("helmet-crossdomain");
 let mongoose 		= require("mongoose");
 let MongoStore 		= require("connect-mongo")(session);
 
+let i18next 		= require('i18next');
+let i18nextExpress 	= require('i18next-express-middleware');
+let i18nextFs 		= require('i18next-node-fs-backend');
+
 let webpack			= require("webpack");
 let wpConfig		= require("../../webpack.dev.config");
 
@@ -94,6 +98,50 @@ function initMiddleware(app) {
 			stream: lmStream
 		}));
 	}
+}
+
+function initI18N(app) {
+	i18next
+		.use(i18nextFs)
+		.use(i18nextExpress.LanguageDetector)
+		.init({
+			debug: true,
+			fallbackLng: "en",
+			whitelist: ["en", "hu"],
+			ns: ["app", "frontend"],
+			defaultNS: "frontend",
+			load: "all",
+			saveMissing: true,
+
+			backend: {
+				// path where resources get loaded from
+				loadPath: path.join(serverFolder, "locales", "{{lng}}", "{{ns}}.json"),
+
+				// path to post missing resources
+				addPath: path.join(serverFolder, "locales", "{{lng}}", "{{ns}}.missing.json"),
+
+				// jsonIndent to use when storing json files
+				jsonIndent: 4
+			}
+
+		}, function(err, t) {
+			if (err)
+				logger.warn(err);
+		});
+
+	/*i18next.on("languageChanged", function(lng) {
+		console.log("languageChanged", lng);
+	});
+
+	i18next.on("loaded", function(loaded) {
+		console.log("loaded", loaded);
+	});	*/
+
+	i18next.on("failedLoading", function(lng, ns, msg) {
+		console.log("failedLoading", lng, ns, msg);
+	});
+
+	app.use(i18nextExpress.handle(i18next));
 }
 
 function initViewEngine(app) {
@@ -200,6 +248,9 @@ module.exports = function(db) {
 
 	// Init Helmet security headers
 	initHelmetHeaders(app);
+
+	// Init internationalization module
+	initI18N(app);
 
 	// Init session handler
 	initSession(app, db);

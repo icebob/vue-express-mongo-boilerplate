@@ -4,5 +4,5 @@ block content
 	h1= error.message
 	h2= url
 	p 
-		| Go back to 
-		a(href="/") homepage
+		| {{ t("GoBackTo")
+		a(href="/")= t("homepage")

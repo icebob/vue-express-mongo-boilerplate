@@ -1,0 +1,34 @@
+{
+	"welcomeTo": "Üdvözöljük a {{title}} lapon!",
+
+	"PoweredBy": "Technológiák",
+	"with": "plusz",
+
+	"Login": "Bejelentkezés",
+	"Signup": "Regisztráció",
+	"SignUp": "Regisztráció",
+
+	"UsernameOrEmail": "Felhasználónév vagy e-mail:",
+	"YourUsernameOrEmailAddress": "A felhasználóneved vagy e-mail címed",
+	"Password": "Jelszó",
+	"PasswordSC": "Jelszó:",
+	"PasswordlessLoginHint": "Ha a jelszót üresen hagyod, akkor küldünk egy üzenetet az e-mail címedre egy egyszerhasználatos belépési linkkel (jelszómentes bejelentkezés)",
+	"ForgotYourPassword": "Elfelejtetted a jelszavadat?",
+	"or": "vagy",
+	"LoginFacebook": "Belépés Facebook-al",
+	"LoginGoogle": "Belépés Google-el",
+	"LoginTwitter": "Belépés Twitter-el",
+	"LoginGithub": "Belépés Github-al",
+	"DontHaveAnAccount": "Még nincs fiókod?",
+
+	"NameSC": "Név:",
+	"EmailSC": "Email:",
+	"UsernameSC": "Felhasználónév:",
+	"PasswordlessAccount": "Jelszómentes fiók?",
+	"SignUpFacebook": "Regisztráció Facebook fiókkal",
+	"SignupGoogle": "Regisztráció Google fiókkal",
+	"AlreadyHaveAnAccount": "Már van fiókod?",
+	"YourName": "Te neved",
+	"YourEmail": "Te email címed",
+	"YourUsername": "Te felhasználóneved (nem kötelező)"	
+}

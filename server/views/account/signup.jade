@@ -13,27 +13,27 @@ block content
 				form(action='/signup', method='POST')
 					input(type="hidden", name="_csrf" value=_csrf)
 
-					header Sign Up
+					header= t("SignUp")
 					.form-group
-						label(for='name') Name:
-						input(type='text', name='name', id='name', placeholder='Your Name', autofocus=true, required)
+						label(for='name')= t("NameSC")
+						input(type='text', name='name', id='name', placeholder=t("YourName"), autofocus=true, required)
 					.form-group
-						label(for='email') Email:
-						input(type='email', name='email', id='email', placeholder='Your email address', required)
+						label(for='email')= t("EmailSC")
+						input(type='email', name='email', id='email', placeholder=t("YourEmail"), required)
 						.hint
 					.form-group
-						label(for='username') Username:
-						input(type='text', name='username', id='username', placeholder='Your username (optional)')
+						label(for='username')= t("UsernameSC")
+						input(type='text', name='username', id='username', placeholder=t("YourUsername"))
 						.hint
 					.form-group.switch
-						div Passwordless account?
+						div= t("PasswordlessAccount")
 						input(type='checkbox', name='passwordless', id='passwordless')
 						label(for='passwordless')
 						.hint
 
 					.form-group
-						label(for='password') Password:
-						input(type='password', name='password', id='password', placeholder='Password')
+						label(for='password')= t("PasswordSC")
+						input(type='password', name='password', id='password', placeholder=t("Password"))
 
 					.flash
 						if messages.error
@@ -46,24 +46,24 @@ block content
 									div= info.msg
 
 					.form-group
-						button.signup(type='submit') Sign Up
+						button.signup(type='submit')= t("SignUp")
 
 					if socialAuth
 						.or
-							span or
+							span= t("or")
 
 						.socials
 							if socialAuth.facebook
-								a.group.facebook(href="/auth/facebook", title="Sign up with Facebook")
+								a.group.facebook(href="/auth/facebook", title=t("SignUpFacebook"))
 									i.fa.fa-facebook
 							if socialAuth.google
-								a.group.google(href="/auth/google", title="Sign up with Google")
+								a.group.google(href="/auth/google", title=t("SignupGoogle"))
 									i.fa.fa-google-plus
 
 					hr
 					.alreadyLink
-						span Already have an account?
-						a(href='/login') Login
+						span= t("AlreadyHaveAnAccount")
+						a(href='/login')= t("Login")
 
 block scripts
 	script(src='/app/frontend.js')
