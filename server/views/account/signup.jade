@@ -25,9 +25,10 @@ block content
 						label(for='username') Username:
 						input(type='text', name='username', id='username', placeholder='Your username (optional)')
 						.hint
-					.form-group
-						label(for='passwordless') Passwordless account?
+					.form-group.switch
+						div Passwordless account?
 						input(type='checkbox', name='passwordless', id='passwordless')
+						label(for='passwordless')
 						.hint
 
 					.form-group
@@ -66,3 +67,8 @@ block content
 
 block scripts
 	script(src='/app/frontend.js')
+
+	script.
+		document.querySelector("#passwordless").addEventListener('change', function() {
+			document.querySelector("#password").disabled = this.checked;
+		});

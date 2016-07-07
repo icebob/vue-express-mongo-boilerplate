@@ -17,14 +17,14 @@ html {
 }
 
 @mixin clearfix() {
-    &:before,
-    &:after {
-        content: "";
-        display: table;
-    }
-    &:after {
-        clear: both;
-    }
+		&:before,
+		&:after {
+				content: "";
+				display: table;
+		}
+		&:after {
+				clear: both;
+		}
 }
 
 body {
@@ -92,7 +92,6 @@ body {
 	overflow: hidden;
 	text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
 
-	margin: auto auto;  
 	padding: 20px;
 	
 	border-radius: 10px;
@@ -135,25 +134,115 @@ body {
 			text-align: center;
 			font-size: 0.9rem;
 		}
+
+		.form-group {
+			margin-bottom: 0.5rem;
 		
-		input {
-			width: 100%;
-			font-size: 1.0rem;
-			font-family: $fontFamily;
-			color: $textColor;
-			margin: 3px 0px 10px 0px;
-			border: none;
-			padding: 10px;
-			border-radius: 3px;			
-			background-color: rgba(255, 255, 255, 0.1);
+			input {
+				width: 100%;
+				font-size: 1.0rem;
+				font-family: $fontFamily;
+				color: $textColor;
+				margin: 3px 0px 10px 0px;
+				border: none;
+				padding: 10px;
+				border-radius: 3px;			
+				background-color: rgba(255, 255, 255, 0.1);
+				transition: opacity .3s ease;
 
-		} // input
+				&:disabled {
+					opacity: 0.6;
+				}
 
-		.hint {
-			font-size: 0.75em;
-			text-align: center;
-			color: rgba(255,255,255, 0.7);			
-		}
+			} // input
+
+			&.switch {
+				$sw-height: 25px;
+				$sw-width: 50px;
+
+				input {
+
+					opacity: 0; 
+					position:absolute; 
+					left: -9999px;
+
+					& + label {
+						user-select: none;
+						transition: .2s ease;
+						display: inline-block;
+						height: $sw-height;
+						width: $sw-width;
+						position:relative;
+						box-shadow: inset 0 0 0px 2px #e4e4e4;
+						border-radius: 60px;
+
+						&:before{
+							content: "";
+							position: absolute;
+							display: block;
+							height: $sw-height;
+							width: $sw-height;
+							top: 0;
+							left: 0;
+							border-radius: $sw-height/2;
+							background: rgba($buttonColor, 0);
+							transition: .2s cubic-bezier(.24,0,.5,1);
+						}
+						
+						/* White toggle */
+						&:after {
+							$h: $sw-height - 2px;
+							content: "";
+							position: absolute;
+							display: block;
+							height: $h;
+							width: $h;
+							top: 50%;
+							margin-top: $h / -2;
+							left: 1px;
+							border-radius: $h / 2;
+							background: #fff;
+							box-shadow: 0 0 0 1px hsla(0, 0%, 0%, 0.1), 0 4px 0px 0 hsla(0,0%,0%,.04), 0 4px 9px hsla(0,0%,0%,.13), 0 3px 3px hsla(0,0%,0%,.05);
+							transition: .35s cubic-bezier(.54,1.60,.5,1);
+						}
+
+						span {
+							white-space:nowrap;
+							height:$sw-height;
+							line-height:$sw-height;
+							margin-left: $sw-width;
+							padding-left:16px;
+						}
+					}
+
+					&:checked{
+
+						& + label:before {
+							width: $sw-width;
+							background: rgba($buttonColor, 1);
+							transition: width .2s cubic-bezier(0,0,0,.1) !important;
+						}
+						
+						& + label:after{
+							left: $sw-width - $sw-height + 1;
+						}
+						
+						& + label{
+							box-shadow: inset 0 0 0px 25px #e4e4e4;
+							transition: box-shadow 2.5s cubic-bezier(0,1.2,.94,.95)}
+					}				
+
+				} // input
+
+			} // .switch
+
+			.hint {
+				font-size: 0.75em;
+				text-align: center;
+				color: rgba(255,255,255, 0.7);			
+			}
+
+		} // .form-group
 		
 		.socials {
 			display: flex;
