@@ -216,7 +216,7 @@ module.exports = function(app, db) {
 				});
 			}
 			else
-				res.redirect("/signup");
+				res.redirect("/login");
 		});
 	});
 
