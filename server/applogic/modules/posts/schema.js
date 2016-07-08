@@ -36,8 +36,7 @@ const schema = `
 
 type Query {
 	posts(limit: Int, offset: Int, sort: String): [Post]
-	post(id: Int!): Post
-	#postByCode(code: String!): Post
+	post(id: Int, code: String): Post
 
 }
 

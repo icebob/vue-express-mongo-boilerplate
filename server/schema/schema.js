@@ -6,16 +6,13 @@ scalar Timestamp
 
 type Query {
 	devices(limit: Int, offset: Int, sort: String): [Device]
-	device(id: Int!): Device
-	#deviceByCode(code: String!): Device
+	device(id: Int, code: String): Device
 
 	users(limit: Int, offset: Int, sort: String): [User]
-	user(id: Int!): User
-	#userByCode(code: String!): User
+	user(id: Int, code: String): User
 
 	posts(limit: Int, offset: Int, sort: String): [Post]
-	post(id: Int!): Post
-	#postByCode(code: String!): Post
+	post(id: Int, code: String): Post
 }
 
 type Device {
