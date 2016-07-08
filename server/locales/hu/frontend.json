@@ -1,8 +1,8 @@
 {
-	"welcomeTo": "Üdvözöljük a {{title}} lapon!",
+	"welcomeTo": "Üdvözöljük a {{title}} oldalon!",
 
 	"PoweredBy": "Technológiák",
-	"with": "plusz",
+	"with": "és",
 
 	"Login": "Bejelentkezés",
 	"Signup": "Regisztráció",
