@@ -143,6 +143,10 @@ function initI18N(app) {
 	});
 
 	app.use(i18nextExpress.handle(i18next));
+
+	// multiload backend route
+	app.get('/locales/resources.json', i18nextExpress.getResourcesHandler(i18next));	
+	
 }
 
 function initViewEngine(app) {
