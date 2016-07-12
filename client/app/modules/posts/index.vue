@@ -356,22 +356,6 @@
 		border-radius: 4px;
 	}
 
-	.post-transition {
-		transition: opacity .5s ease;
-	}
-
-	.item-enter {
-		opacity: 0;
-	}
-	.item-leave {
-		opacity: 0;
-		position: absolute; /* important for removal move to work */
-	}
-
-	.post-move {
-		transition: transform .5s cubic-bezier(.55,0,.1,1);
-	}
-
 	ul.posts {
 		margin: 1rem 3rem;
 		padding: 0;
@@ -492,5 +476,27 @@
 
 		}
 	}
+
+
+	/* Transition styles */
+
+	.post-transition {
+		transition: opacity .5s ease;
+	}
+
+	.post-enter {
+		opacity: 0;
+	}
+
+	.post-leave {
+		opacity: 0;
+		position: absolute !important; /* important for removal move to work */
+	}
+
+	.post-move {
+		transition: transform .5s cubic-bezier(.55,0,.1,1);
+	}
+
+
 
 </style>
