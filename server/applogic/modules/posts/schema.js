@@ -135,7 +135,7 @@ const resolvers = {
 
 					function checkUserInIsUpVoters(post, done) {
 						if (post.upVoters.indexOf(user.id) !== -1) 
-							done("You have already voted this post!");
+							done(context.t("YouHaveAlreadyVotedThisPost"));
 						else
 							done(null, post);
 					},
@@ -174,15 +174,16 @@ const resolvers = {
 			let user = context.user;
 			let postID = args.postID;
 
-			if (!hasRole(context, C.ROLE_USER)) 
-				return Promise.reject("Must has 'user' role for this function!");
 
 			return Promise.resolve().then(() => {		
+				if (!hasRole(context, C.ROLE_USER)) 
+					throw new Error("Must has 'user' role for this function!");
+			}).then(() => {
 				return Post.findById(postID);
 			}).then((post) => {
 				// Check user is on downVoters
 				if (post.downVoters.indexOf(user.id) !== -1) 
-					throw new Error("You have already voted this post!");
+					throw new Error(context.t("YouHaveAlreadyVotedThisPost"));
 				else
 					return post;
 

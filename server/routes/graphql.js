@@ -16,7 +16,8 @@ module.exports = function(app, db) {
 			// None of our app's queries are this long
 			// Probably indicates someone trying to send an overly expensive query
 			throw new Error("Query too large.");
-		}		
+		}	
+		logger.debug("GraphQL query:", query);
 
 		return {
 			graphiql: config.isDevMode(),
@@ -25,6 +26,8 @@ module.exports = function(app, db) {
 			schema: Schema,
 			resolvers: Resolvers,
 			context: {
+				req: req,
+				t: req.t,
 				user: req.user,
 				session: req.session
 			}

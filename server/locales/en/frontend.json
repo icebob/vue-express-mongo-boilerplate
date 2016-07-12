@@ -81,6 +81,14 @@
 	"mailSubjectPasswordChanged": "✔ Your password has been changed on {{app.title}}",
 	"emailSentWithMagicLink": "An email has been sent to {{email}} with magic link. Please check your spam folder if it does not arrive.",
 	"emailSentVerifyLink": "Please check your email to verify your account. Thanks for signing up!",
-	"emailSentPasswordResetLink": "An email has been sent to {{email}} with further instructions."
+	"emailSentPasswordResetLink": "An email has been sent to {{email}} with further instructions.",
 
+	"PostTitleCannotBeEmpty": "Post title cannot be blank!",
+	"PostContentCannotBeEmpty": "Post content cannot be blank!",
+	"PostNotFound": "Post not found!",
+	"InvalidPostID": "Invalid Post ID!",
+
+	"YouHaveAlreadyVotedThisPost": "You have already voted this post!",
+	"OnlyAuthorEditPost": "Only the author can edit this post!",
+	"OnlyAuthorDeletePost": "Only the author can delete this post!"
 }

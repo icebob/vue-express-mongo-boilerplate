@@ -37,7 +37,7 @@
 				.content(v-html="post.content | marked")
 				.footer
 					.views.badge {{ _("ViewsCount", { count: post.views }) }}
-					.createdBy {{ _("CreatedAgoByName", { ago: post.createdAt, name: post.author.fullName } ) }}
+					.createdBy {{ ago(post) }}
 
 			.functions
 				.edit(:title="_('EditPost')", @click="editPost(post)")
@@ -180,8 +180,8 @@
 				}
 			},
 
-			ago(value) {
-				return Vue.filters.ago(value);
+			ago(post) {
+				return this._("CreatedAgoByName", { ago: Vue.filter("ago")(post.createdAt), name: post.author.fullName } );
 			},
 
 			getPosts() {

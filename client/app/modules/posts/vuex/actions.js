@@ -25,6 +25,9 @@ export const saveRow = ({ dispatch }, model) => {
 		// Websocket event will add this row
 		//if (res.data)
 		//	addRow({ dispatch }, res.data, true);
+	}).catch((response) => {
+		if (response.data.error)
+			toastr.error(response.data.error.message);
 	});	
 };
 
@@ -41,6 +44,9 @@ export const updateRow = ({ dispatch }, row) => {
 		let res = response.data;
 		if (res.data)
 			dispatch(UPDATE, res.data);
+	}).catch((response) => {
+		if (response.data.error)
+			toastr.error(response.data.error.message);
 	});	
 };
 
@@ -74,7 +80,10 @@ export const rowChanged = ({ dispatch }, row) => {
 export const removeRow = ({ dispatch }, row) => {
 	Vue.http.delete(BASE_URL + "/" + row.code).then((response) => {
 		dispatch(REMOVE, row);
-	});
+	}).catch((response) => {
+		if (response.data.error)
+			toastr.error(response.data.error.message);
+	});	
 };
 
 export const rowRemoved = ({ dispatch }, row) => {

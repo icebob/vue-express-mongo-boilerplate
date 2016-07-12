@@ -34,7 +34,7 @@ module.exports = function(app, db) {
 
 			function checkUserInIsUpVoters(done) {
 				if (req.post.upVoters.indexOf(req.user.id) !== -1) 
-					done("You have already voted this post!");
+					done(req.t("YouHaveAlreadyVotedThisPost"));
 				else
 					done();
 			},
@@ -75,7 +75,7 @@ module.exports = function(app, db) {
 		Promise.resolve().then(() => {		
 			// Check user is on downVoters
 			if (req.post.downVoters.indexOf(req.user.id) !== -1) 
-				throw new Error("You have already voted this post!");
+				throw new Error(req.t("YouHaveAlreadyVotedThisPost"));
 
 		}).then(() => {
 			// Remove user from upVoters if it is on the list
@@ -139,8 +139,8 @@ module.exports = function(app, db) {
 
 	router.post("/", (req, res) => {
 
-		req.assert("title", "Post title cannot be blank!").notEmpty();
-		req.assert("content", "Post content cannot be blank!").notEmpty();
+		req.assert("title", req.t("PostTitleCannotBeEmpty")).notEmpty();
+		req.assert("content", req.t("PostContentCannotBeEmpty")).notEmpty();
 
 		let errors = req.validationErrors();
 		if (errors)
@@ -176,14 +176,14 @@ module.exports = function(app, db) {
 	router.param("postID", function(req, res, next, postID) {
 		let id = hashids.decodeHex(postID);
 		if (id == null || id == "")
-			return response.json(res, null, response.BAD_REQUEST, "Invalid Post ID!");
+			return response.json(res, null, response.BAD_REQUEST, req.t("InvalidPostID"));
 
 		Post.findById(id, (err, doc) => {
 			if (err)
 				return response.json(res, null, response.BAD_REQUEST, err);
 			
 			if (!doc) 
-				return response.json(res, null, response.NOT_FOUND, "Post not found!");
+				return response.json(res, null, response.NOT_FOUND, req.t("PostNotFound"));
 
 			doc.populate("author", "fullName code email gravatar", (err) => {
 
@@ -219,15 +219,15 @@ module.exports = function(app, db) {
 		 * Modify a post
 		 */
 		.put((req, res) => {
-			req.assert("title", "Post title cannot be blank!").notEmpty();
-			req.assert("content", "Post content cannot be blank!").notEmpty();
+			req.assert("title", req.t("PostTitleCannotBeEmpty")).notEmpty();
+			req.assert("content", req.t("PostContentCannotBeEmpty")).notEmpty();
 
 			let errors = req.validationErrors();
 			if (errors)
 				return response.json(res, null, response.BAD_REQUEST, errors);
 
 			if (req.post.author.id != req.user.id) {
-				return response.json(res, null, response.BAD_REQUEST, "Only the author can edit this post!");
+				return response.json(res, null, response.BAD_REQUEST, req.t("OnlyAuthorEditPost"));
 			}
 
 			req.post.title = req.body.title;
@@ -252,7 +252,7 @@ module.exports = function(app, db) {
 		.delete((req, res) => {
 
 			if (req.post.author.id != req.user.id) {
-				return response.json(res, null, response.BAD_REQUEST, "Only the author can delete this post!");
+				return response.json(res, null, response.BAD_REQUEST, req.t("OnlyAuthorDeletePost"));
 			}
 
 			Post.remove({ _id: req.post.id }, (err) => {
