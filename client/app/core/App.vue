@@ -2,17 +2,17 @@
 	div
 		ul
 			li(v-link-active)
-				a(v-link="'/home'") Home
+				a(v-link="'/home'") {{ "Home" | i18n }}
 			li(v-link-active)
-				a(v-link="'/devices'") Devices
+				a(v-link="'/devices'") {{ "Devices" | i18n }}
 			li(v-link-active)
-				a(v-link="'/posts'") Posts
+				a(v-link="'/posts'") {{ "Posts" | i18n }}
 
 		router-view(keep-alive)
 
 		br
 		br
-		a(href="/logout") Logout
+		a(href="/logout", v-i18n="Logout")
 
 </template>
 
@@ -41,6 +41,13 @@
 			};
 		},
 
+		watch: {
+			$lng() {
+				console.log("Language updated");
+				this.update(this);
+			}
+		},
+
 		/**
 		 * Set the vuex store object
 		 */
@@ -64,6 +71,22 @@
 
 			disconnect() {
 				this.wsReconnecting = true;
+			}
+		},
+
+		methods: {
+			update: function(vm) {
+				if (vm == null)
+					return;
+				
+				let i = vm._watchers.length;
+				while (i--)
+					vm._watchers[i].update(true);
+				
+				let children = vm.$children;
+				i = children.length;
+				while (i--)
+					App.update.update(children[i]);
 			}
 		},
 

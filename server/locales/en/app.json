@@ -1,3 +1,8 @@
 {
-	
+	"Home": "Home",
+	"Devices": "Devices",
+	"Posts": "Posts",
+	"Increment": "Increment",
+	"Decrement": "Decrement",
+	"Logout": "Logout"
 }

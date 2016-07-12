@@ -52,7 +52,7 @@
 	"UsernameIsExists": "Ez a felhasználónév már regisztrálva van!",
 	"AccountVerificationExpired": "A fiók ellenörző link hibás vagy lejárt!",
 	"UnableModifyAccountDetails": "Nem lehet módosítani a fiók adatait!",
-	"PasswordlessTokenExpired": "A jelszómentes magic link hibás vagy lejárt!",
+	"PasswordlessTokenExpired": "A bejelentkezési link hibás vagy lejárt!",
 	"EmailNotAssociatedToAccount": "Ez az e-mail cím {{email}} nem tartozik egyik fiókhoz sem.",
 	"PasswordResetTokenExpired": "Ez a jelszó változtató link hibás vagy lejárt!",
 	"PasswordTooShort": "A jelszónak legalább 6 karakter hosszúnak kell lennie!",
@@ -60,6 +60,14 @@
 	"PasswordChanged": "A jelszó változtatás sikerült!",
 	"InvalidUser": "Hibás felhasználó!",
 	"UnableToSendEmail": "Nem lehet e-mail küldeni a következő címre: {{email}}",
+	"SocialIDLinkedToOtherAccount": "Már van egy fiókod. Jelentkezz be azzal és utána kapcsold össze ezzel a közösségi fiókkal.",
+	"AccountHasBeenLinked": "Fiók sikeresen összekapcsolva.",
+	"SocialMissingEmailAddress": "E-mail cím hiányzik. Kérlek regisztrálj be az oldalon!",
+	"SignUpDisabledPleaseLogin": "Regisztráció le van tiltva. Ha van fiókod, jelentkezz be!",
+	"UnknowAPIKey":"Ismeretlen API kulcs!",
+	"PleaseActivateAccount":"Kérlek aktiváld a fiókodat!",
+	"PasswordlessAccountLeaveEmpty":"Ez egy jelszómentes fiók. Hagyd üresen a jelszó mezőt.",
+	"InvalidPassword":"Hibás jelszó",
 
 	"UnknowUsernameOrEmail": "Ismeretlen felhasználónév vagy e-mail cím",
 

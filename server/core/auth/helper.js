@@ -80,7 +80,7 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 			if (existingUser) {
 				if (existingUser._id != req.user._id) {
 					// It's linked to an other account!
-					req.flash("error", { msg: "There is already an account that belongs to you. Sign in with that account or delete it, then link it with your current account."});
+					req.flash("error", { msg: req.t("SocialIDLinkedToOtherAccount") });
 					return done(err);
 				}
 				else
@@ -100,7 +100,7 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 					user.profile.location = user.profile.location || userData.location;
 
 					user.save(function(err) {
-						req.flash("info", { msg: "Account has been linked."});
+						req.flash("info", { msg: req.t("AccountHasBeenLinked") });
 						done(err, user);
 					});
 				});
@@ -120,7 +120,7 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 
 			if (!email) {
 				// Not provided email address
-				req.flash("error", { msg: "Missing email address. Please signup manually!"});
+				req.flash("error", { msg: req.t("SocialMissingEmailAddress")});
 				return done();				
 			}
 
@@ -138,7 +138,7 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 					user.profile.location = user.profile.location || userData.location;
 
 					user.save(function(err) {
-						req.flash("info", { msg: "Account has been linked."});
+						req.flash("info", { msg: req.t("AccountHasBeenLinked") });
 						done(err, user);
 					});
 
@@ -146,7 +146,7 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 				}
 
 				if (config.disableSignUp === true) {
-					req.flash("error", { msg: "Sign up is disabled. Please login first, if you have an account!"});
+					req.flash("error", { msg: req.t("SignUpDisabledPleaseLogin") });
 					return done();
 				}
 

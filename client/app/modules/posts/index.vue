@@ -1,5 +1,5 @@
 <template lang="jade">
-	h3 Posts
+	h3 {{ _('Posts') }}
 
 	.header
 		.sort
@@ -124,10 +124,13 @@
 		 */
 		route: {
 			activate() {
-
+				console.log("Activate: " + this._('Posts'));
 			},
 
 			data(transition) {
+				console.log("data: " + this._('Posts'));
+				console.log("lng: " + this.$lng);
+				console.log("i18n: ", this.$i18n);
 				
 			}
 		},

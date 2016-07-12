@@ -6,6 +6,7 @@ import VueRouter from "vue-router";
 import VueResource from "vue-resource";
 import VueAnimatedList from "vue-animated-list";
 import Filters from "./core/Filters";
+import VueI18Next from "./core/i18next.js";
 
 import App from "./core/App";
 
@@ -20,6 +21,12 @@ Vue.http.headers.common["Accept"] = "application/json";
 
 Vue.config.debug = true;
 
-let router = require("./core/router")();
 
-router.start(App, "#app");
+// Register i18next localization module
+Vue.use(VueI18Next, (i18next) => {
+
+	let router = require("./core/router")();
+
+	router.start(App, "#app");
+
+});

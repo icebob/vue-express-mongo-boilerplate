@@ -1,16 +1,16 @@
 <template lang="jade">
 	div
-		h2 Home page
+		h2 {{ "Home" | i18n }}
 
 		h3 {{ count }}
 		button(@click="inc") 
 			i.fa.fa-arrow-up 
-			| Increment
+			| {{ "Increment" | i18n }}
 		br
 		br
 		button(@click="dec") 
 			i.fa.fa-arrow-up 
-			| Decrement
+			| {{ "Decrement" | i18n }}
 
 </template>
 

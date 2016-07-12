@@ -26,12 +26,12 @@ module.exports = function() {
 
 			if (!user.verified)
 				return done(null, false, {
-					message: "Please activate your account!"
+					message: req.t("PleaseActivateAccount")
 				});
 
 			if (user.passwordLess)
 				return done(null, false, {
-					message: "This is a passwordless account! Please leave empty the password field."
+					message: req.t("PasswordlessAccountLeaveEmpty")
 				});
 
 			user.comparePassword(password, function(err, isMatch) {
@@ -40,7 +40,7 @@ module.exports = function() {
 
 				if (isMatch !== true)
 					return done(null, false, {
-						message: "Invalid password"
+						message: req.t("InvalidPassword")
 					});
 
 				else

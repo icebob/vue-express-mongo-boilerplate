@@ -63,7 +63,15 @@
 	"PasswordChanged": "Success! Your password has been changed.",
 	"InvalidUser": "Invalid user!",
 	"UnableToSendEmail": "Unable to send email to {{email}}",
-
+	"SocialIDLinkedToOtherAccount": "There is already an account that belongs to you. Sign in with that account or delete it, then link it with your current account.",
+	"AccountHasBeenLinked": "Account has been linked.",
+	"SocialMissingEmailAddress": "Missing email address. Please signup manually!",
+	"SignUpDisabledPleaseLogin": "Sign up is disabled. Please login first, if you have an account!",
+	"UnknowAPIKey":"Unknow API key!",
+	"PleaseActivateAccount":"Please activate your account!",
+	"PasswordlessAccountLeaveEmpty":"This is a passwordless account! Please leave empty the password field.",
+	"InvalidPassword":"Invalid password",
+	
 	"UnknowUsernameOrEmail": "Unknow username or e-mail",
 
 	"mailSubjectWelcome": "✔ Welcome to {{app.title}}!",

@@ -16,12 +16,12 @@ module.exports = function() {
 			
 			if (!user)
 				return done(null, false, {
-					message: "Unknow API key!"
+					message: req.t("UnknowAPIKey")
 				});
 
 			if (!user.verified)
 				return done(null, false, {
-					message: "Please activate your account!"
+					message: req.t("PleaseActivateAccount")
 				});
 
 			return done(null, user);		

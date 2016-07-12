@@ -32,6 +32,12 @@ let filters = {
 
 	ago(time) {
 		return moment(time).fromNow();
+	},
+
+	truncate(text, length) {
+		if (text && text.length > length)
+			return text.substr(0, length - 1) + '…';
+		return text;
 	}
 
 };
