@@ -273,6 +273,7 @@ module.exports = function(db) {
 
 	// Load socket.io server
 	let server = require("./socket").init(app, db);
+	server._app = app;
 
 	return server;
 };
