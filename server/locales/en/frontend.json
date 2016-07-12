@@ -44,5 +44,35 @@
 	"ConfirmPassword": "Confirm Password",
 	"ChangePassword": "Change Password",
 
-	"UnknowUsernameOrEmail": "Unknow username or e-mail"
+	"NameCannotBeEmpty": "Name cannot be empty!",
+	"EmailCannotBeEmpty": "Email cannot be empty!",
+	"EmailIsNotValid": "Email is not valid!",
+	"PasswordCannotBeEmpty": "Password cannot be empty!",
+	"UsernameCannotBeEmpty": "Username cannot be empty!",
+	"UsernameIsNotAssociated": "The username {{username}} is not associated with any account.",
+	"InvalidUsername": "Invalid username: {{username}}",
+	"EmailIsExists": "An account with that email address already exists!",
+	"UsernameIsExists": "An account with that username already exists!",
+	"AccountVerificationExpired": "Your account verification is invalid or expired.",
+	"UnableModifyAccountDetails": "Unable to modify account details!",
+	"PasswordlessTokenExpired": "Your passwordless token is invalid or expired.",
+	"EmailNotAssociatedToAccount": "The email address {{email}} is not associated with any account.",
+	"PasswordResetTokenExpired": "Password reset token is invalid or has expired.",
+	"PasswordTooShort": "Password must be at least 6 characters long!",
+	"PasswordNotMatched": "Passwords must match.",
+	"PasswordChanged": "Success! Your password has been changed.",
+	"InvalidUser": "Invalid user!",
+	"UnableToSendEmail": "Unable to send email to {{email}}",
+
+	"UnknowUsernameOrEmail": "Unknow username or e-mail",
+
+	"mailSubjectWelcome": "✔ Welcome to {{app.title}}!",
+	"mailSubjectActivate": "✔ Activate your new {{app.title}} account!",
+	"mailSubjectLogin": "✔ Login to your account on {{app.title}}",
+	"mailSubjectResetPassword": "✔ Reset your password on {{app.title}}",
+	"mailSubjectPasswordChanged": "✔ Your password has been changed on {{app.title}}",
+	"emailSentWithMagicLink": "An email has been sent to {{email}} with magic link. Please check your spam folder if it does not arrive.",
+	"emailSentVerifyLink": "Please check your email to verify your account. Thanks for signing up!",
+	"emailSentPasswordResetLink": "An email has been sent to {{email}} with further instructions."
+
 }

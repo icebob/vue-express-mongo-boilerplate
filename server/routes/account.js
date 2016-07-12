@@ -79,12 +79,12 @@ module.exports = function(app, db) {
 		if (config.disableSignUp === true)
 			return res.redirect("/");
 
-		req.assert("name", "Name cannot be empty!").notEmpty();
-		req.assert("email", "Email cannot be empty!").notEmpty();
-		req.assert("email", "Email is not valid!").isEmail();
+		req.assert("name", req.t("NameCannotBeEmpty")).notEmpty();
+		req.assert("email", req.t("EmailCannotBeEmpty")).notEmpty();
+		req.assert("email", req.t("EmailIsNotValid")).isEmail();
 		req.sanitize("email").normalizeEmail({ remove_dots: false });
 
-		//req.assert("username", "Username cannot be empty!").notEmpty();
+		//req.assert("username", req.t("UsernameCannotBeEmpty")).notEmpty();
 		
 		if (!req.body.username)
 			req.body.username = req.body.email;
@@ -92,7 +92,7 @@ module.exports = function(app, db) {
 		req.sanitize("passwordless").toBoolean();
 		let passwordless = req.body.passwordless === true;
 		if (!passwordless) {
-			req.assert("password", "Password cannot be empty!").notEmpty();
+			req.assert("password", req.t("PasswordCannotBeEmpty")).notEmpty();
 		}
 
 		let errors = req.validationErrors();
@@ -148,9 +148,9 @@ module.exports = function(app, db) {
 						field = field.split(" dup key")[0];
 						field = field.substring(0, field.lastIndexOf("_"));						
 						if (field == "email")
-							req.flash("error", { msg: "An account with that email address already exists!" });
+							req.flash("error", { msg: req.t("EmailIsExists") });
 						else 
-							req.flash("error", { msg: "An account with that username already exists!" });
+							req.flash("error", { msg: req.t("UsernameIsExists") });
 					}
 					done(err, user);
 				});
@@ -159,7 +159,7 @@ module.exports = function(app, db) {
 			function sendEmail(user, done) {
 				if (user.verified) {
 					// Send welcome email
-					let subject = "✔ Welcome to " + config.app.title + "!";
+					let subject = req.t("mailSubjectWelcome", config);
 
 					res.render("mail/welcome", {
 						name: user.fullName
@@ -168,10 +168,8 @@ module.exports = function(app, db) {
 							return done(err);
 
 						mailer.send(user.email, subject, html, function(err, info) {
-							if (err)
-								req.flash("error", { msg: "Unable to send email to " + user.email});
-							else
-								req.flash("info", { msg: "Please check your email to verify your account. Thanks for signing up!"});
+							//if (err)
+							//	req.flash("error", { msg: "Unable to send email to " + user.email});
 
 							done(null, user);
 						});
@@ -179,7 +177,7 @@ module.exports = function(app, db) {
 
 				} else {
 					// Send verification email
-					let subject = "✔ Activate your new " + config.app.title + " account";
+					let subject = req.t("mailSubjectActivate", config);
 
 					res.render("mail/accountVerify", {
 						name: user.fullName,
@@ -190,9 +188,9 @@ module.exports = function(app, db) {
 
 						mailer.send(user.email, subject, html, function(err, info) {
 							if (err)
-								req.flash("error", { msg: "Unable to send email to " + user.email});
+								req.flash("error", { msg: req.t("UnableToSendEmail", user) });
 							else
-								req.flash("info", { msg: "Please check your email to verify your account. Thanks for signing up!"});
+								req.flash("info", { msg: req.t("emailSentVerifyLink")});
 
 
 							done(err, user);
@@ -236,7 +234,7 @@ module.exports = function(app, db) {
 							return done(err);
 
 						if (!user) {
-							req.flash("error", { msg: "Your account verification is invalid or expired." });
+							req.flash("error", { msg: req.t("AccountVerificationExpired") });
 							return done("Verification is invalid!");
 						}
 
@@ -246,7 +244,7 @@ module.exports = function(app, db) {
 
 						user.save(function(err) {
 							if (err) {
-								req.flash("error", { msg: "Unable to modify your account!" });
+								req.flash("error", { msg: req.t("UnableModifyAccountDetails") });
 								return done(err);
 							}
 
@@ -256,7 +254,7 @@ module.exports = function(app, db) {
 			},
 
 			function sendWelcomeEmailToUser(user, done) {
-				let subject = "✔ Welcome to " + config.app.title + "!";
+				let subject = req.t("mailSubjectWelcome", config);
 
 				res.render("mail/welcome", {
 					name: user.fullName
@@ -265,10 +263,8 @@ module.exports = function(app, db) {
 						return done(err);
 
 					mailer.send(user.email, subject, html, function(err, info) {
-						if (err)
-							req.flash("error", { msg: "Unable to send email to " + user.email});
-						else
-							req.flash("info", { msg: "Please check your email to verify your account. Thanks for signing up!"});
+						//if (err)
+						//	req.flash("error", { msg: "Unable to send email to " + user.email});
 
 						done(null, user);
 					});
@@ -306,7 +302,7 @@ module.exports = function(app, db) {
 							return done(err);
 
 						if (!user) {
-							req.flash("error", { msg: "Your passwordless token is invalid or expired." });
+							req.flash("error", { msg: req.t("PasswordlessTokenExpired") });
 							return done("Token is invalid!");
 						}
 
@@ -319,7 +315,7 @@ module.exports = function(app, db) {
 
 						user.save(function(err) {
 							if (err) {
-								req.flash("error", { msg: "Unable to modify account details!" });
+								req.flash("error", { msg: req.t("UnableModifyAccountDetails") });
 								return done(err);
 							}
 
@@ -354,8 +350,8 @@ module.exports = function(app, db) {
 
 	// Forgot password
 	app.post("/forgot", function(req, res) {
-		req.assert("email", "Email is not valid!").isEmail();
-		req.assert("email", "Email cannot be blank!").notEmpty();
+		req.assert("email", req.t("EmailIsNotValid")).isEmail();
+		req.assert("email", req.t("EmailCannotBeEmpty")).notEmpty();
 		req.sanitize("email").normalizeEmail({ remove_dots: false });
 		
 		let errors = req.validationErrors();
@@ -375,7 +371,7 @@ module.exports = function(app, db) {
 			function getUserAndSaveToken(token, done) {
 				User.findOne({ email: req.body.email }, function(err, user) {
 					if (!user) {
-						req.flash("error", { msg: "The email address " + req.body.email + " is not associated with any account." });
+						req.flash("error", { msg: req.t("EmailNotAssociatedToAccount", req.body) });
 						return done("Email address " + req.body.email + " is not registered!");
 					}
 
@@ -388,7 +384,7 @@ module.exports = function(app, db) {
 			},
 
 			function sendResetEmailToUser(token, user, done) {
-				let subject = "✔ Reset your password on " + config.app.title;
+				let subject = req.t("mailSubjectResetPassword", config);
 
 				res.render("mail/passwordReset", {
 					name: user.fullName,
@@ -399,9 +395,9 @@ module.exports = function(app, db) {
 					
 					mailer.send(user.email, subject, html, function(err, info) {
 						if (err)
-							req.flash("error", { msg: "Unable to send email to " + user.email});
+							req.flash("error", { msg: req.t("UnableToSendEmail", user) });
 						else
-							req.flash("info", { msg: "An email has been sent to " + user.email + " with further instructions."});
+							req.flash("info", { msg: req.t("emailSentPasswordResetLink", user) });
 
 						done(err);
 					});
@@ -431,7 +427,7 @@ module.exports = function(app, db) {
 					return next(err);
 
 				if (!user) {
-					req.flash("error", { msg: "Password reset token is invalid or has expired." });
+					req.flash("error", { msg: req.t("PasswordResetTokenExpired") });
 					return res.redirect("/forgot");
 				}
 
@@ -441,8 +437,8 @@ module.exports = function(app, db) {
 
 	// Reset password
 	app.post("/reset/:token", function(req, res, next) {
-		req.assert("password", "Password must be at least 6 characters long.").len(6);
-		req.assert("confirm", "Passwords must match.").equals(req.body.password);
+		req.assert("password", req.t("PasswordTooShort")).len(6);
+		req.assert("confirm", req.t("PasswordNotMatched")).equals(req.body.password);
 
 		const errors = req.validationErrors();
 		if (errors) {
@@ -461,7 +457,7 @@ module.exports = function(app, db) {
 							return done(err);
 
 						if (!user) {
-							req.flash("error", { msg: "Password reset token is invalid or has expired." });
+							req.flash("error", { msg: req.t("PasswordResetTokenExpired") });
 							return done("Password reset token is invalid or has expired.");
 						}
 
@@ -486,7 +482,7 @@ module.exports = function(app, db) {
 			},
 
 			function sendPasswordChangeEmailToUser(user, done) {
-				let subject = "✔ Your password has been changed on " + config.app.title;
+				let subject = req.t("mailSubjectPasswordChanged", config);
 
 				res.render("mail/passwordChange", {
 					name: user.fullName
@@ -496,9 +492,9 @@ module.exports = function(app, db) {
 
 					mailer.send(user.email, subject, html, function(err, info) {
 						if (err)
-							req.flash("error", { msg: "Unable to send email to " + user.email});
+							req.flash("error", { msg: req.t("UnableToSendEmail", user) });
 						else
-							req.flash("info", { msg: "Success! Your password has been changed."});
+							req.flash("info", { msg: req.t("PasswordChanged")});
 
 						done(err);
 					});
@@ -527,7 +523,7 @@ module.exports = function(app, db) {
 					return response.json(res, null, response.SERVER_ERROR);
 
 				if (!user) {
-					return response.json(res, null, response.NOT_FOUND, "Invalid user!");
+					return response.json(res, null, response.NOT_FOUND, req.t("InvalidUser"));
 				}
 
 				user.apiKey = tokgen();

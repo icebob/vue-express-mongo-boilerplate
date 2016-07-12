@@ -8,7 +8,6 @@ module.exports = function(app, db) {
 
 	// Index page
 	app.get("/", function(req, res) {
-		console.log("Language: ", req.language);
 		if (req.user != null)
 			res.render("main", {
 				user: req.user

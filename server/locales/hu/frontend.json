@@ -41,6 +41,35 @@
 	"ConfirmPassword": "Ellenörző jelszó",
 	"ChangePassword": "Jelszóváltoztatás",
 
-	"UnknowUsernameOrEmail": "Ismeretlen felhasználónév vagy e-mail cím"
+	"NameCannotBeEmpty": "A név nem lehet üres!",
+	"EmailCannotBeEmpty": "Az e-mail cím nem lehet üres!",
+	"EmailIsNotValid": "Hibás e-mail cím!",
+	"PasswordCannotBeEmpty": "A jelszó nem lehet üres!",
+	"UsernameCannotBeEmpty": "A felhasználónév nem lehet üres!",
+	"UsernameIsNotAssociated": "A felhasználónév {{username}} nem tartozik egyik fiókhoz sem.",
+	"InvalidUsername": "Hibás felhasználónév: {{username}}",
+	"EmailIsExists": "Ez az e-mail cím már regisztrálva van!",
+	"UsernameIsExists": "Ez a felhasználónév már regisztrálva van!",
+	"AccountVerificationExpired": "A fiók ellenörző link hibás vagy lejárt!",
+	"UnableModifyAccountDetails": "Nem lehet módosítani a fiók adatait!",
+	"PasswordlessTokenExpired": "A jelszómentes magic link hibás vagy lejárt!",
+	"EmailNotAssociatedToAccount": "Ez az e-mail cím {{email}} nem tartozik egyik fiókhoz sem.",
+	"PasswordResetTokenExpired": "Ez a jelszó változtató link hibás vagy lejárt!",
+	"PasswordTooShort": "A jelszónak legalább 6 karakter hosszúnak kell lennie!",
+	"PasswordNotMatched": "A jelszók nem egyeznek!",
+	"PasswordChanged": "A jelszó változtatás sikerült!",
+	"InvalidUser": "Hibás felhasználó!",
+	"UnableToSendEmail": "Nem lehet e-mail küldeni a következő címre: {{email}}",
+
+	"UnknowUsernameOrEmail": "Ismeretlen felhasználónév vagy e-mail cím",
+
+	"mailSubjectWelcome": "✔ Üdvözöljük a {{app.title}} oldalon!",
+	"mailSubjectActivate": "✔ Aktiváld az új  {{app.title}} fiókodat!",
+	"mailSubjectLogin": "✔ Lépj be a fiókodba a {{app.title}} oldalon",
+	"mailSubjectResetPassword": "✔ Jelszóváltoztatás a {{app.title}} oldalon",
+	"mailSubjectPasswordChanged": "✔ Jelszavad megváltozott a {{app.title}} oldalon",
+	"emailSentWithMagicLink": "A levelet elküldtük a {{email}} címre egy bejelentkezési linkkel. Ha nem érkezne meg az üzenet, kérjük ellenőrizd a levélszemét mappát is.",
+	"emailSentVerifyLink": "Kérjük ellenőrizd e-mail fiókodat. Köszönjük, hogy regisztráltál az oldalunkra!",
+	"emailSentPasswordResetLink": "A levelet elküldtük a {{email}} címre a további teendőkkel."
 
 }

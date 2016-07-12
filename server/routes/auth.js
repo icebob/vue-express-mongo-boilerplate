@@ -1,20 +1,31 @@
 "use strict";
 
-let config 	= require("../config");
-let logger 	= require("../core/logger");
+let config 		= require("../config");
+let logger 		= require("../core/logger");
 
-let crypto = require("crypto");
-let async = require("async");
+let crypto 		= require("crypto");
+let async 		= require("async");
 
-let passport = require("passport");
-let express = require("express");
+let passport 	= require("passport");
+let express 	= require("express");
 
-let mailer = require("../libs/mailer");
+let mailer 		= require("../libs/mailer");
+let User 		= require("../models/user");
+let Response 	= require("../core/response");
 
-let User = require("../models/user");
-
-let Response = require("../core/response");
-
+/**
+ * Generate JSON or HTML response to client,
+ * If browser accept JSON and not HTML, we send
+ * JSON response. Else we redirect to an URL
+ * which defined in `redirect` parameter.
+ *
+ * If req.flash contains errors, we send back error messages too.
+ * 
+ * @param  {Object} req      request object
+ * @param  {Object} res      response object
+ * @param  {String} redirect redirect site URL.
+ * @param  {Object} err      Error object.
+ */
 function response(req, res, redirect, err) {
 	if (req.accepts("json") && !req.accepts("html")) {
 
@@ -43,13 +54,13 @@ module.exports = function(app, db) {
 
 	authRouter.post("/local", function(req, res, next) {
 
-		req.assert("username", "Username cannot be blank!").notEmpty();
-		//req.assert('email', 'Email is not valid!').isEmail();
-		//req.assert('email', 'Email cannot be blank!').notEmpty();
+		req.assert("username", req.t("UsernameCannotBeEmpty")).notEmpty();
+		//req.assert('email', req.t("EmailIsNotValid")).isEmail();
+		//req.assert('email', req.t("EmailCannotBeEmpty")).notEmpty();
 		//req.sanitize('email').normalizeEmail({ remove_dots: false });
 
 		// Passwordless miatt
-		//req.assert('password', 'Password cannot be blank!').notEmpty();
+		//req.assert('password', req.t("PasswordCannotBeEmpty")).notEmpty();
 
 		let errors = req.validationErrors();
 		if (errors) {
@@ -98,7 +109,7 @@ module.exports = function(app, db) {
 					let username = req.body.username;
 					User.findOne({ username: username }, function(err, user) {
 						if (!user) {
-							req.flash("error", { msg: "The username " + username + " is not associated with any account." });
+							req.flash("error", { msg: req.t("UsernameIsNotAssociated", { username: username}) });
 							return done("Invalid username " + username);
 						}
 
@@ -111,7 +122,7 @@ module.exports = function(app, db) {
 				},
 
 				function sendResetEmailToUser(token, user, done) {
-					let subject = "✔ Login to your account on " + config.app.title;
+					let subject = req.t("mailSubjectLogin", config);
 
 					res.render("mail/passwordLessLogin", {
 						name: user.fullName,
@@ -122,9 +133,9 @@ module.exports = function(app, db) {
 
 						mailer.send(user.email, subject, html, function(err, info) {
 							if (err)
-								req.flash("error", { msg: "Unable to send email to " + user.email});
+								req.flash("error", { msg: req.t("UnableToSendEmail", user) });
 							else
-								req.flash("info", { msg: "An email has been sent to " + user.email + " with magic link. Please check your spam folder if it does not arrive."});
+								req.flash("info", { msg: req.t("emailSentWithMagicLink", user) });
 
 							done(err);
 						});
@@ -142,7 +153,11 @@ module.exports = function(app, db) {
 
 	});
 
-	// Available scopes: https://developers.google.com/+/web/api/rest/oauth#authorization-scopes
+	/**
+	 * Google authentication routes
+	 *
+	 * Available scopes: https://developers.google.com/+/web/api/rest/oauth#authorization-scopes
+	 */
 	authRouter.get("/google", passport.authenticate("google", {
 		scope: "profile email"
 		/*scope: [
@@ -157,6 +172,9 @@ module.exports = function(app, db) {
 		res.redirect("/");
 	});
 
+	/**
+	 * Facebook authentication routes
+	 */
 	authRouter.get("/facebook", passport.authenticate("facebook", {
 		scope: ["email", "user_location"]
 	}));
@@ -167,6 +185,9 @@ module.exports = function(app, db) {
 		res.redirect("/");
 	});	
 
+	/**
+	 * Twitter authentication routes
+	 */
 	authRouter.get("/twitter", passport.authenticate("twitter"));
 
 	authRouter.get("/twitter/callback", passport.authenticate("twitter", {
@@ -175,6 +196,9 @@ module.exports = function(app, db) {
 		res.redirect("/");
 	});	
 
+	/**
+	 * Github authentication routes
+	 */
 	authRouter.get("/github", passport.authenticate("github", {
 		scope: "user:email"
 	}));
@@ -185,5 +209,6 @@ module.exports = function(app, db) {
 		res.redirect("/");
 	});	
 
+	// Add router to app
 	app.use("/auth", authRouter);
 };

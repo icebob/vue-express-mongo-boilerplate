@@ -125,6 +125,8 @@ TODO
 * [ ] create posts page with GraphQL with mutations
 * [ ] concat gql schemas (waiting for sample from apollo-stack)
 * [ ] rewrite account.js response handlers
+* [ ] localized emails
+* [ ] localize auth error messages
 * [ ] check https://github.com/keystonejs/keystone
 * [ ] add test with nightmare & mocha, chai, sinon
 * [ ] add E2E test with https://github.com/MikaelSoderstrom/nightmarejs-demo
