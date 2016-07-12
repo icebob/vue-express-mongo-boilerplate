@@ -86,7 +86,7 @@
 				let children = vm.$children;
 				i = children.length;
 				while (i--)
-					App.update.update(children[i]);
+					this.update(children[i]);
 			}
 		},
 

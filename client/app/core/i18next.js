@@ -38,7 +38,7 @@ function install(Vue, callback, options = {}) {
 			},
 
 			detection: {
-				order: ['querystring', 'htmlTag', 'navigator']
+				order: ["querystring", "htmlTag", "navigator"]
 			}
 
 		}), (err, t) => {
@@ -56,12 +56,12 @@ function install(Vue, callback, options = {}) {
 		});
 
 	// Register as a filter
-	Vue.filter('i18n', function(value, options) {
+	Vue.filter("i18n", function(value, options) {
 		return i18next.t(value, options);
 	});
 
 	// Register as a directive
-	Vue.directive('i18n', {
+	Vue.directive("i18n", {
 		bind: function() {
 			this.el.innerHTML = i18next.t(this.expression);
 		}
@@ -75,4 +75,4 @@ function install(Vue, callback, options = {}) {
 
 module.exports = {
 	install
-}
+};

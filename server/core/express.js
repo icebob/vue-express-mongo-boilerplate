@@ -25,9 +25,9 @@ let crossdomain 	= require("helmet-crossdomain");
 let mongoose 		= require("mongoose");
 let MongoStore 		= require("connect-mongo")(session);
 
-let i18next 		= require('i18next');
-let i18nextExpress 	= require('i18next-express-middleware');
-let i18nextFs 		= require('i18next-node-fs-backend');
+let i18next 		= require("i18next");
+let i18nextExpress 	= require("i18next-express-middleware");
+let i18nextFs 		= require("i18next-node-fs-backend");
 
 let webpack			= require("webpack");
 let wpConfig		= require("../../webpack.dev.config");
@@ -145,10 +145,10 @@ function initI18N(app) {
 	app.use(i18nextExpress.handle(i18next));
 
 	// multiload backend route
-	app.get('/locales/resources.json', i18nextExpress.getResourcesHandler(i18next));	
+	app.get("/locales/resources.json", i18nextExpress.getResourcesHandler(i18next));	
 
 	// missing keys
-	app.post('/locales/add/:lng/:ns', i18nextExpress.missingKeyHandler(i18next));		
+	app.post("/locales/add/:lng/:ns", i18nextExpress.missingKeyHandler(i18next));		
 }
 
 function initViewEngine(app) {
