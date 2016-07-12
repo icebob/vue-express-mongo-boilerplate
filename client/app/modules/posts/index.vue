@@ -204,24 +204,31 @@
 				this.showForm = true;
 				this.isNewPost = true;
 
-				this.$nextTick(() => {
-					let el = document.querySelector(".postForm input:nth-child(1):not([readonly]):not(:disabled)");
-					if (el)
-						el.focus();
-				});				
+				this.focusFirstInput();
 			},
 
 			editPost(post) {
 				this.model = cloneDeep(post);
 				this.showForm = true;
 				this.isNewPost = false;
+				this.focusFirstInput();
+			},
 
+			focusFirstInput() {
 				this.$nextTick(() => {
-					let el = document.querySelector(".postForm input:nth-child(1):not([readonly]):not(:disabled)");
+					let el = document.querySelector(".postForm .form-control:nth-child(1):not([readonly]):not(:disabled)");
 					if (el)
 						el.focus();
 				});
 			},
+
+			focusFirstErrorInput() {
+				this.$nextTick(() => {
+					let el = document.querySelector(".postForm .form-group.error .form-control");
+					if (el)
+						el.focus();
+				});
+			},			
 
 			savePost() {
 				if (this.$refs.form.validate()) {
@@ -231,6 +238,8 @@
 						this.updateRow(this.model);
 
 					this.cancelPost();
+				} else {
+					this.focusFirstErrorInput();
 				}
 			},
 
