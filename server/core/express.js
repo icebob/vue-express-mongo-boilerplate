@@ -146,7 +146,9 @@ function initI18N(app) {
 
 	// multiload backend route
 	app.get('/locales/resources.json', i18nextExpress.getResourcesHandler(i18next));	
-	
+
+	// missing keys
+	app.post('/locales/add/:lng/:ns', i18nextExpress.missingKeyHandler(i18next));		
 }
 
 function initViewEngine(app) {

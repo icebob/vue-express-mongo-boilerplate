@@ -26,10 +26,10 @@ function install(Vue, callback, options = {}) {
 				loadPath: "/locales/resources.json?lng={{lng}}&ns={{ns}}",
 
 				// path to post missing resources
-				addPath: "/locales/add?lng={{lng}}&ns={{ns}}",
+				addPath: "/locales/add/{{lng}}/{{ns}}",
 
 				// server supports multiloading
-					// /locales/resources.json?lng=de+en&ns=ns1+ns2
+				// /locales/resources.json?lng=de+en&ns=ns1+ns2
 				allowMultiLoading: true,
 
 				// allow cross domain requests
@@ -50,8 +50,6 @@ function install(Vue, callback, options = {}) {
 			moment.locale(i18next.language);
 
 			console.log("I18Next initialized! Language: " + i18next.language);
-			console.log(i18next);
-			console.log(t("Home"));
 
 			if (isFunction(callback))
 				callback(i18next, t);

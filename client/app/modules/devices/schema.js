@@ -1,19 +1,22 @@
+import Vue from "vue";
 import moment from "moment";
 import { deviceTypes } from "./types";
 import { validators } from "vue-form-generator";
 
 import { find } from "lodash";
 
+let _ = Vue.prototype._;
+
 module.exports = {
 
 	id: "devices",
-	title: "Devices",
+	title: _("Devices"),
 
 	table: {
 		multiSelect: true,
 		columns: [
 			{
-				title: "ID",
+				title: _("ID"),
 				field: "id",
 				align: "left",
 				formatter(value, model) {
@@ -21,7 +24,7 @@ module.exports = {
 				}
 			},
 			{
-				title: "Type",
+				title: _("Type"),
 				field: "type",
 				formatter(value) {
 					let type = find(deviceTypes, (type) => type.id == value);
@@ -29,15 +32,15 @@ module.exports = {
 				}
 			},
 			{
-				title: "Address",
+				title: _("Address"),
 				field: "address"
 			},
 			{
-				title: "Name",
+				title: _("Name"),
 				field: "name"
 			},
 			{
-				title: "Status",
+				title: _("Status"),
 				field: "status",
 				formatter(value, model, col) {
 					return value ? "<i class='fa fa-check'/>" : "<i class='fa fa-ban'/>";
@@ -45,7 +48,7 @@ module.exports = {
 				align: "center"
 			},
 			{
-				title: "Last communication",
+				title: _("LastCommunication"),
 				field: "lastCommunication",
 				formatter(value) {
 					return moment(value).fromNow();
@@ -65,7 +68,7 @@ module.exports = {
 		fields: [
 			{
 				type: "text",
-				label: "ID",
+				label: _("ID"),
 				model: "id",
 				readonly: true,
 				disabled: true,
@@ -74,12 +77,12 @@ module.exports = {
 					if (model.id)
 						return model ? `${model.id} - ${model.code}` : "";
 					else
-						return "<will be generated>";
+						return _("willBeGenerated");
 				}
 			},
 			{
 				type: "select",
-				label: "Type",
+				label: _("Type"),
 				model: "type",
 				required: true,
 				values: deviceTypes,
@@ -89,16 +92,16 @@ module.exports = {
 			},	
 			{
 				type: "text",
-				label: "Name",
+				label: _("Name"),
 				model: "name",
 				featured: true,
 				required: true,
-				placeholder: "Device name",
+				placeholder: _("DeviceName"),
 				validator: validators.string
 			},
 			{
 				type: "text",
-				label: "Description",
+				label: _("Description"),
 				model: "description",
 				featured: false,
 				required: false,
@@ -106,25 +109,25 @@ module.exports = {
 			},	
 			{
 				type: "text",
-				label: "Address",
+				label: _("Address"),
 				model: "address",
-				placeholder: "Address of device",
+				placeholder: _("AddressOfDevice"),
 				validator: validators.string
 			},
 			{
 				type: "label",
-				label: "Last communication",
+				label: _("LastCommunication"),
 				model: "lastCommunication",
 				get(model) { return model && model.lastCommunication ? moment(model.lastCommunication).fromNow() : "-"; }
 			},
 			{
 				type: "switch",
-				label: "Status",
+				label: _("Status"),
 				model: "status",
 				multi: true,
 				default: 1,
-				textOn: "Active",
-				textOff: "Inactive",
+				textOn: _("Active"),
+				textOff: _("Inactive"),
 				valueOn: 1,
 				valueOff: 0
 			}
@@ -159,10 +162,10 @@ module.exports = {
 	},
 
 	resources: {
-		addCaption: "Add new device",
-		saveCaption: "Save",
-		cloneCaption: "Clone",
-		deleteCaption: "Delete"
+		addCaption: _("AddNewDevice"),
+		saveCaption: _("Save"),
+		cloneCaption: _("Clone"),
+		deleteCaption: _("Delete")
 	}
 
 };

@@ -5,11 +5,11 @@
 		.headerbar
 			.newItem(v-if="enabledNew")
 				button.btn.btn-primary.new(@click="newModel") {{ schema.resources.addCaption || "Add"}}
-			.info Selected {{ selected.length }} of {{ rows.length }}
+			.info {{ _("SelectedOfAll", { selected: selected.length, all: rows.length } ) }}
 			.searchBar.input-group(v-if="options.searchable")
 				span.input-group-addon
 					i.fa.fa-search
-				input.form-control(type="search", placeholder="Search...", v-model="search")
+				input.form-control(type="search", :placeholder="_('Search3dots')", v-model="search")
 
 		data-table(:schema="schema.table", :rows="rows", :order="order", :search="search", :selected="selected", :select="select", :select-all="selectAll")
 
@@ -21,9 +21,9 @@
 					strong {{ item.error }}
 
 			.buttons.text-center
-				button.btn.btn-primary.save(@click="saveModel", :disabled="!enabledSave") {{ schema.resources.saveCaption || "Save"}}
-				button.btn.btn-warning.clone(@click="cloneModel", :disabled="!enabledClone") {{ schema.resources.cloneCaption || "Clone"}}
-				button.btn.btn-danger.delete(@click="deleteModel", :disabled="!enabledDelete") {{ schema.resources.deleteCaption || "Delete"}}
+				button.btn.btn-primary.save(@click="saveModel", :disabled="!enabledSave") {{ schema.resources.saveCaption || _("Save") }}
+				button.btn.btn-warning.clone(@click="cloneModel", :disabled="!enabledClone") {{ schema.resources.cloneCaption || _("Clone") }}
+				button.btn.btn-danger.delete(@click="deleteModel", :disabled="!enabledDelete") {{ schema.resources.deleteCaption || _("Delete") }}
 
 			// pre {{{ model | prettyJSON }}}
 

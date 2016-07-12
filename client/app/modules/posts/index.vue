@@ -3,23 +3,23 @@
 
 	.header
 		.sort
-			a(@click="setSort('hot')", :class="{ active: sort == 'hot' }") Hot
-			a(@click="setSort('mostviewed')", :class="{ active: sort == 'mostviewed' }") Most viewed
-			a(@click="setSort('new')", :class="{ active: sort == 'new' }") New
+			a(@click="setSort('hot')", :class="{ active: sort == 'hot' }") {{ _("Hot") }}
+			a(@click="setSort('mostviewed')", :class="{ active: sort == 'mostviewed' }") {{ _("MostViewed") }}
+			a(@click="setSort('new')", :class="{ active: sort == 'new' }") {{ _("New") }}
 
 		.add
-			button(@click="newPost") New post
+			button(@click="newPost") {{ _("NewPost") }}
 
 		.filter 
-			a(@click="setViewMode('all')", :class="{ active: viewMode == 'all' }") All posts
-			a(@click="setViewMode('my')", :class="{ active: viewMode == 'my' }") My posts
+			a(@click="setViewMode('all')", :class="{ active: viewMode == 'all' }") {{ _("AllPosts") }}
+			a(@click="setViewMode('my')", :class="{ active: viewMode == 'my' }") {{ _("MyPosts") }}
 
 	.postForm(v-if="showForm")
 		vue-form-generator(:schema='schema', :model='model', :options='{}', :multiple="false", v-ref:form, :is-new-model="isNewPost")
 
 		.buttons
-			button.save(@click="savePost") Save
-			button.cancel(@click="cancelPost") Cancel
+			button.save(@click="savePost") {{ _("Save") }}
+			button.cancel(@click="cancelPost") {{ _("Cancel") }}
 
 
 	ul.posts
@@ -36,13 +36,13 @@
 				.title {{ post.title }}
 				.content(v-html="post.content | marked")
 				.footer
-					.views.badge Views: {{ post.views }}
-					.createdBy Created {{ post.createdAt | ago }} by {{ post.author.fullName }}
+					.views.badge {{ _("ViewsCount", { count: post.views }) }}
+					.createdBy {{ _("CreatedAgoByName", { ago: post.createdAt, name: post.author.fullName } ) }}
 
 			.functions
-				.edit(title="Edit post", @click="editPost(post)")
+				.edit(:title="_('EditPost')", @click="editPost(post)")
 					i.fa.fa-pencil
-				.delete(title="Delete post", @click="deletePost(post)")
+				.delete(:title="_('DeletePost')", @click="deletePost(post)")
 					i.fa.fa-trash
 
 </template>
@@ -89,21 +89,21 @@
 					fields: [
 						{
 							type: "text",
-							label: "Title",
+							label: _("Title"),
 							model: "title",
 							featured: true,
 							required: true,
-							placeholder: "Title of post",
+							placeholder: _("TitleOfPost"),
 							validator: validators.string
 						},				
 						{
 							type: "textArea",
-							label: "Content",
+							label: _("Content"),
 							model: "content",
 							featured: true,
 							required: true,
 							rows: 10,
-							placeholder: "Content of post",
+							placeholder: _("ContentOfPost"),
 							validator: validators.string
 						}
 					]
@@ -124,13 +124,10 @@
 		 */
 		route: {
 			activate() {
-				console.log("Activate: " + this._('Posts'));
+
 			},
 
 			data(transition) {
-				console.log("data: " + this._('Posts'));
-				console.log("lng: " + this.$lng);
-				console.log("i18n: ", this.$i18n);
 				
 			}
 		},
@@ -148,7 +145,7 @@
 				console.log("New post: ", row);
 				this.rowAdded(row);
 
-				toast.success(`Post '${row.title}' added!`, "Post added");
+				toast.success(_("PostNameAdded", row), _("PostAdded"));
 			},
 
 			/**
@@ -159,7 +156,7 @@
 				console.log("Update post: ", row);
 				this.rowChanged(row);
 
-				toast.success(`Post '${row.title}' updated!`, "Post updated");
+				toast.success(_("PostNameUpdated", row), _("PostUpdated"));
 			},
 
 			/**
@@ -170,7 +167,7 @@
 				console.log("Remove post: ", row);
 				this.rowRemoved(row);	
 
-				toast.success(`Post '${row.title}' deleted!`, "Post deleted");
+				toast.success(_("PostNameDeleted", row), _("PostDeleted"));
 			}
 		},	
 
@@ -181,6 +178,10 @@
 				case "mostviewed": return a.views - b.views;
 				case "new": return a.createdAt - b.createdAt;
 				}
+			},
+
+			ago(value) {
+				return Vue.filters.ago(value);
 			},
 
 			getPosts() {

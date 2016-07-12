@@ -4,5 +4,57 @@
 	"Posts": "Posts",
 	"Increment": "Increment",
 	"Decrement": "Decrement",
-	"Logout": "Logout"
+	"Logout": "Logout",
+
+	"Save": "Save",
+	"Cancel": "Cancel",
+	"Clone": "Clone",
+	"Delete": "Delete",
+
+	"DeviceAdded": "Device added",
+	"DeviceUpdated": "Device updated",
+	"DeviceDeleted": "Device deleted",
+
+	"DeviceNameAdded": "Device '{{name}}' added!",
+	"DeviceNameUpdated": "Device '{{name}}' updated!",
+	"DeviceNameDeleted": "Device '{{name}}' deleted!",
+
+	"ID": "ID",
+	"Type": "Type",
+	"Address": "Address",
+	"Name": "Name",
+	"Status": "Status",
+	"LastCommunication": "Last communication",
+	"willBeGenerated": "<will be generated>",
+	"DeviceName": "Device name",
+	"Description": "Description",
+	"AddressOfDevice": "Address of device",
+	"Active": "Active",
+	"Inactive": "Inactive",
+	"AddNewDevice": "Add new device",
+
+	"SelectedOfAll": "Selected {{ selected }} of {{ all }}",
+	"Search3dots": "Search...",
+	
+	"Hot": "Hot",	
+	"MostViewed": "Most viewed",	
+	"New": "New",	
+	"NewPost": "New post",	
+	"AllPosts": "All posts",	
+	"MyPosts": "My posts",	
+	"ViewsCount": " Views: {{count}}",	
+	"CreatedAgoByName": "Created {{ago}} by {{name}}",	
+	"EditPost": "Edit post",	
+	"DeletePost": "Delete post",	
+	"TitleOfPost": "Title of post",	
+	"Content": "Content",	
+	"ContentOfPost": "Content of post",	
+
+	"PostAdded": "Post added",
+	"PostUpdated": "Post updated",
+	"PostDeleted": "Post deleted",
+
+	"PostNameAdded": "Post '{{title}}' added!",
+	"PostNameUpdated": "Post '{{title}}' updated!",
+	"PostNameDeleted": "Post '{{title}}' deleted!"
 }

@@ -1,8 +1,61 @@
 {
 	"Home": "Kezdőlap",
 	"Devices": "Eszközök",
-	"Posts": "Hozzászólások",
+	"Posts": "Bejegyzések",
 	"Increment": "Növelés",
 	"Decrement": "Csökkentés",
-	"Logout": "Kijelentkezés"
+	"Logout": "Kijelentkezés",
+
+	"Save": "Mentés",
+	"Cancel": "Mégsem",
+	"Clone": "Klónozás",
+	"Delete": "Törlés",
+
+	"DeviceAdded": "Eszköz hozzáadva",
+	"DeviceUpdated": "Eszköz módosítva",
+	"DeviceDeleted": "Eszköz törölve",
+
+	"DeviceNameAdded": "Eszköz '{{name}}' hozzáadva!",
+	"DeviceNameUpdated": "Eszköz '{{name}}' módosítva!",
+	"DeviceNameDeleted": "Eszköz '{{name}}' törölve!",
+
+	"ID": "ID",
+	"Type": "Típus",
+	"Address": "Cím",
+	"Name": "Név",
+	"Status": "Státusz",
+	"LastCommunication": "Utolsó kommunikáció",
+	"willBeGenerated": "<generálva lesz>",
+	"DeviceName": "Eszköz neve",
+	"Description": "Leírás",
+	"AddressOfDevice": "Az eszköz címe",
+	"Active": "Aktív",
+	"Inactive": "Inaktív",
+	"AddNewDevice": "Új eszköz",
+
+	"SelectedOfAll": "{{ selected }} kijelölve a {{ all }}-ból",
+	"Search3dots": "Keresés...",
+
+	"Hot": "Legjobb",	
+	"MostViewed": "Legtöbbet nézett",	
+	"New": "Új",	
+	"NewPost": "Új bejegyzés",	
+	"AllPosts": "Minden bejegyzés",	
+	"MyPosts": "Saját bejegyzések",	
+	"ViewsCount": " Megtekintések: {{count}}",	
+	"CreatedAgoByName": "Létrehozta {{name}} {{ago}}",	
+	"EditPost": "Bejegyzés szerkesztése",	
+	"DeletePost": "Bejegyzés törlése",	
+	"TitleOfPost": "Bejegyzés címe",	
+	"Content": "Tartalom",	
+	"ContentOfPost": "Bejegyzés tartalma",	
+
+	"PostAdded": "Bejegyzés hozzáadva",
+	"PostUpdated": "Bejegyzés módosítva",
+	"PostDeleted": "Bejegyzés törölve",
+
+	"PostNameAdded": "Bejegyzés '{{title}}' hozzáadva!",
+	"PostNameUpdated": "Bejegyzés '{{title}}' módosítva!",
+	"PostNameDeleted": "Bejegyzés '{{title}}' törölve!"
+
 }

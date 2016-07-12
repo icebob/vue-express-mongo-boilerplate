@@ -71,7 +71,7 @@
 				console.log("New device: ", row);
 				this.rowAdded(row);
 
-				toast.success(`Device '${row.name}' added!`, "Device added");
+				toast.success(this._("DeviceNameAdded", row), this._("DeviceAdded"));
 			},
 
 			/**
@@ -82,7 +82,7 @@
 				console.log("Update device: ", row);
 				this.rowChanged(row);
 
-				toast.success(`Device '${row.name}' updated!`, "Device updated");
+				toast.success(this._("DeviceNameUpdated", row), this._("DeviceUpdated"));
 			},
 
 			/**
@@ -93,7 +93,7 @@
 				console.log("Remove device: ", row);
 				this.rowRemoved(row);	
 
-				toast.success(`Device '${row.name}' deleted!`, "Device deleted");
+				toast.success(this._("DeviceNameDeleted", row), this._("DeviceDeleted"));
 			}
 		},		
 
