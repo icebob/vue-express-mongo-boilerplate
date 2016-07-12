@@ -1,5 +1,11 @@
 # vue-express-mongo-boilerplate #
 
+<img src="http://vuejs.org/images/logo.png" width="50">
+<img src="https://coligo.io/images/express.svg" width="100">
+<img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/45/MongoDB-Logo.svg/527px-MongoDB-Logo.svg.png" width="100">
+<img src="https://worldvectorlogo.com/logos/nodejs-icon.svg" width="50">
+<img src="https://camo.githubusercontent.com/66747a6e05a799aec9c6e04a3e721ca567748e8b/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313336353838312f313931383337332f32653035373166612d376462632d313165332d383436352d3839356632393164343366652e706e67" width="100">
+
 **This project is under heavy development!!!**
 
 This is a VueJS webapp boilerplate project with ExpressJS + Mongo server.
