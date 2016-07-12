@@ -46,6 +46,7 @@
 	"CreatedAgoByName": "Létrehozta {{name}} {{ago}}",	
 	"EditPost": "Bejegyzés szerkesztése",	
 	"DeletePost": "Bejegyzés törlése",	
+	"Title": "Cím",	
 	"TitleOfPost": "Bejegyzés címe",	
 	"Content": "Tartalom",	
 	"ContentOfPost": "Bejegyzés tartalma",	

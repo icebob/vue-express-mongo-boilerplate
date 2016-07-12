@@ -46,6 +46,7 @@
 	"CreatedAgoByName": "Created {{ago}} by {{name}}",	
 	"EditPost": "Edit post",	
 	"DeletePost": "Delete post",	
+	"Title": "Title",	
 	"TitleOfPost": "Title of post",	
 	"Content": "Content",	
 	"ContentOfPost": "Content of post",	

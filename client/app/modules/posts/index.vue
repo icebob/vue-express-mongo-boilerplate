@@ -89,21 +89,21 @@
 					fields: [
 						{
 							type: "text",
-							label: _("Title"),
+							label: this._("Title"),
 							model: "title",
 							featured: true,
 							required: true,
-							placeholder: _("TitleOfPost"),
+							placeholder: this._("TitleOfPost"),
 							validator: validators.string
 						},				
 						{
 							type: "textArea",
-							label: _("Content"),
+							label: this._("Content"),
 							model: "content",
 							featured: true,
 							required: true,
 							rows: 10,
-							placeholder: _("ContentOfPost"),
+							placeholder: this._("ContentOfPost"),
 							validator: validators.string
 						}
 					]
@@ -145,7 +145,7 @@
 				console.log("New post: ", row);
 				this.rowAdded(row);
 
-				toast.success(_("PostNameAdded", row), _("PostAdded"));
+				toast.success(this._("PostNameAdded", row), this._("PostAdded"));
 			},
 
 			/**
@@ -156,7 +156,7 @@
 				console.log("Update post: ", row);
 				this.rowChanged(row);
 
-				toast.success(_("PostNameUpdated", row), _("PostUpdated"));
+				toast.success(this._("PostNameUpdated", row), this._("PostUpdated"));
 			},
 
 			/**
@@ -167,7 +167,7 @@
 				console.log("Remove post: ", row);
 				this.rowRemoved(row);	
 
-				toast.success(_("PostNameDeleted", row), _("PostDeleted"));
+				toast.success(this._("PostNameDeleted", row), this._("PostDeleted"));
 			}
 		},	
 
