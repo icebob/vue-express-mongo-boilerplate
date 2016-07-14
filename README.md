@@ -128,15 +128,14 @@ TODO
 - Copy and paste *Consumer Key* and *Consumer Secret* keys into `secrets.json` file
 
 ## TODO
+* [ ] add Bulma SASS framework (https://github.com/fundon/vue-admin)
 * [ ] create posts page with GraphQL with mutations
 * [ ] concat gql schemas (waiting for sample from apollo-stack)
 * [ ] rewrite account.js response handlers
 * [ ] localized emails
-* [x] localize auth error messages
 * [ ] check https://github.com/keystonejs/keystone
-* [ ] add test with nightmare & mocha, chai, sinon
+* [ ] add test with nightwatch & mocha, chai, sinon
 * [ ] add E2E test with https://github.com/MikaelSoderstrom/nightmarejs-demo
-* [x] localization on client-side too (i18next)
 
 
 ## License
