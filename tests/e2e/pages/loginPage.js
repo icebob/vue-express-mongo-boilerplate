@@ -4,16 +4,16 @@ let commands = {
 	login(username, password) {
 		return this
 			.waitForElementVisible('@usernameField', 10000)
-			.setValue("@usernameField", "test")
-			.setValue("@passwordField", "test1234")
-			.makeScreenshot("login.png")
+			.setValue("@usernameField", username)
+			.setValue("@passwordField", password)
+			.makeScreenshot()
 			.click("@submitButton");
 	}
 };
 
 module.exports = {
 	url() {
-		return "http://localhost:" + this.client.options.appPort+ "/login";
+		return "http://localhost:" + this.client.options.appPort + "/login";
 	},
 
 	commands: [commands],

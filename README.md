@@ -134,8 +134,8 @@ TODO
 * [ ] rewrite account.js response handlers
 * [ ] localized emails
 * [ ] check https://github.com/keystonejs/keystone
-* [ ] add test with nightwatch & mocha, chai, sinon
-* [ ] add E2E test with https://github.com/MikaelSoderstrom/nightmarejs-demo
+* [ ] add unit tests with mocha, chai, sinon
+* [ ] add E2E test with nightwatch
 
 
 ## License
