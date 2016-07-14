@@ -1,5 +1,7 @@
 "use strict";
 
+let path = require("path");
+
 // 1. start the server
 process.env.NODE_ENV = 'test';
 
@@ -15,7 +17,7 @@ process.env.APP_PORT = app._app.get("port").trim();
 // For more information on Nightwatch's config file, see
 // http://nightwatchjs.org/guide#settings-file
 
-var opts = process.argv.slice(2);
+let opts = process.argv.slice(2);
 if (opts.indexOf('--config') === -1) {
 	opts = opts.concat(['--config', 'tests/e2e/nightwatch.conf.js']);
 }
@@ -23,8 +25,12 @@ if (opts.indexOf('--env') === -1) {
 	opts = opts.concat(['--env', 'chrome']);
 }
 
-var spawn = require('cross-spawn');
-var runner = spawn('./node_modules/.bin/nightwatch', opts, { stdio: 'inherit' });
+// Clear reports folder
+let del = require("del");
+del.sync(path.join(__dirname, "reports", "**"));
+
+let spawn = require('cross-spawn');
+let runner = spawn('./node_modules/.bin/nightwatch', opts, { stdio: 'inherit' });
 
 runner.on('exit', function (code) {
 	app.close();

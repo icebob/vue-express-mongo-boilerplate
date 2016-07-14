@@ -5,7 +5,10 @@ describe("Test login page", () => {
 	let loginPage;
 	let homePage;
 
+	let appPort;
+
 	before((browser, done) => {
+		appPort = browser.globals.test_settings.appPort;
 		loginPage = browser.page.loginPage();
 		homePage = browser.page.homePage();
 		done();
@@ -39,7 +42,7 @@ describe("Test login page", () => {
 
 		homePage
 			.waitForElementVisible("@title")
-			.assert.urlEquals('http://localhost:' + browser.globals.test_settings.appPort + "/#!/")
+			.assert.urlEquals('http://localhost:' + appPort + "/#!/")
 			.assert.containsText("@title", "Kezdőlap")
 			.makeScreenshot();
 	});
