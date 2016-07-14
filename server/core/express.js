@@ -101,31 +101,38 @@ function initMiddleware(app) {
 }
 
 function initI18N(app) {
+
+	let conf = {
+		//debug: true,
+		fallbackLng: "en",
+		whitelist: ["en", "hu"],
+		ns: ["app", "frontend"],
+		defaultNS: "frontend",
+		load: "all",
+		saveMissing: true,
+		saveMissingTo: "all", // "fallback", "current", "all"
+
+		backend: {
+			// path where resources get loaded from
+			loadPath: path.join(serverFolder, "locales", "{{lng}}", "{{ns}}.json"),
+
+			// path to post missing resources
+			addPath: path.join(serverFolder, "locales", "{{lng}}", "{{ns}}.missing.json"),
+
+			// jsonIndent to use when storing json files
+			jsonIndent: 4
+		}
+	};
+
+	// In test mode only English enabled!
+	if (config.isTestMode()) {
+		conf.whitelist = ["en"];
+	}
+
 	i18next
 		.use(i18nextFs)
 		.use(i18nextExpress.LanguageDetector)
-		.init({
-			//debug: true,
-			fallbackLng: "en",
-			whitelist: ["en", "hu"],
-			ns: ["app", "frontend"],
-			defaultNS: "frontend",
-			load: "all",
-			saveMissing: true,
-			saveMissingTo: "all", // "fallback", "current", "all"
-
-			backend: {
-				// path where resources get loaded from
-				loadPath: path.join(serverFolder, "locales", "{{lng}}", "{{ns}}.json"),
-
-				// path to post missing resources
-				addPath: path.join(serverFolder, "locales", "{{lng}}", "{{ns}}.missing.json"),
-
-				// jsonIndent to use when storing json files
-				jsonIndent: 4
-			}
-
-		}, function(err, t) {
+		.init(conf, function(err, t) {
 			if (err)
 				logger.warn(err);
 		});
