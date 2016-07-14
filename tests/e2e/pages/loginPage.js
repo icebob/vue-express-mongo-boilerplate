@@ -1,14 +1,12 @@
 "use strict";
 
-let path = require("path");
-
 let commands = {
 	login(username, password) {
 		return this
 			.waitForElementVisible('@usernameField', 10000)
 			.setValue("@usernameField", "test")
 			.setValue("@passwordField", "test1234")
-			//.saveScreenshot(path.join(this.api.screenshotsPath, "login.png"))
+			.makeScreenshot("login.png")
 			.click("@submitButton");
 	}
 };

@@ -12,6 +12,7 @@ module.exports = {
 	"output_folder": "tests/e2e/reports",
 	"globals_path": "tests/e2e/globals.js",
 	"custom_assertions_path": ["tests/e2e/custom-assertions"],
+	"custom_commands_path": [ "tests/e2e/custom-commands" ],
 	"page_objects_path": "tests/e2e/pages",
 	"test_runner": {
 		"type" : "mocha",

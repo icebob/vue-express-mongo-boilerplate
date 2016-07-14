@@ -34,10 +34,8 @@ describe("Test login page", () => {
 			homePage
 				.waitForElementVisible("@title")
 				.assert.urlEquals('http://localhost:' + port + "/#!/")
-				.assert.containsText("@title", "Kezdőlap");
-				
-			browser
-				.saveScreenshot(path.join(screenshotFolder, "main.png"));
+				.assert.containsText("@title", "Kezdőlap")
+				.makeScreenshot("main.png");
 	});
 
 });
