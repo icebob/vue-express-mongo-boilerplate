@@ -1,14 +1,14 @@
 "use strict";
 
 let commands = {
-	login(username, password) {
+	submit(password, confirm) {
 		return this
-			.waitForElementVisible('@usernameField', 10000)
-			.assert.containsText("@title", "LOGIN")
-			.assert.elementPresent("@usernameField")
+			.waitForElementVisible('@passwordField', 10000)
+			.assert.containsText("@title", "NEW PASSWORD")
 			.assert.elementPresent("@passwordField")
-			.setValue("@usernameField", username)
+			.assert.elementPresent("@confirmField")
 			.setValue("@passwordField", password)
+			.setValue("@confirmField", confirm)
 			.makeScreenshot()
 			.click("@submitButton");
 	}
@@ -16,15 +16,15 @@ let commands = {
 
 module.exports = {
 	url() {
-		return "http://localhost:" + this.client.options.appPort + "/login";
+		return "http://localhost:" + this.client.options.appPort + "/reset";
 	},
 
 	commands: [commands],
 
 	elements: {
 		title: "form header",
-		usernameField: "form #username",
 		passwordField: "form #password",
+		confirmField: "form #confirm",
 		submitButton: "form [type=submit]",
 
 		flashError: ".flash .alert-danger div",

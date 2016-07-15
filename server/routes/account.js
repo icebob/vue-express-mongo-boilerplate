@@ -93,6 +93,7 @@ module.exports = function(app, db) {
 		let passwordless = req.body.passwordless === true;
 		if (!passwordless) {
 			req.assert("password", req.t("PasswordCannotBeEmpty")).notEmpty();
+			req.assert("password", req.t("PasswordTooShort")).len(6);
 		}
 
 		let errors = req.validationErrors();

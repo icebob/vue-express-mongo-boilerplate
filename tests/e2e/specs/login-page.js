@@ -1,14 +1,18 @@
 "use strict";
 
-describe("Test login page", () => {
+let mailtrap = require("../../util/mailtrap");
+
+let pauseTime = 100;
+
+describe("Test login page with username and password", () => {
 
 	let loginPage;
 	let homePage;
 
-	let appPort;
+	let baseURL;
 
 	before((browser, done) => {
-		appPort = browser.globals.test_settings.appPort;
+		baseURL = 'http://localhost:' + browser.globals.test_settings.appPort;
 		loginPage = browser.page.loginPage();
 		homePage = browser.page.homePage();
 		done();
@@ -24,9 +28,9 @@ describe("Test login page", () => {
 		loginPage.navigate()
 			.login("johnnn", "johnny")
 			.waitForElementPresent(".flash")
-			.assert.elementPresent(".flash .alert-danger")
-			.assert.containsText(".flash .alert-danger div", "Unknow username or e-mail")
-			.api.pause(1000)
+			.assert.elementPresent("@flashError")
+			.assert.containsText("@flashError", "Unknow username or e-mail")
+			.api.pause(pauseTime)
 			.makeScreenshot();
 	});
 
@@ -34,9 +38,9 @@ describe("Test login page", () => {
 		loginPage.navigate()
 			.login("test", "1234567")
 			.waitForElementPresent(".flash")
-			.assert.elementPresent(".flash .alert-danger")
-			.assert.containsText(".flash .alert-danger div", "Invalid password")
-			.api.pause(1000)
+			.assert.elementPresent("@flashError")
+			.assert.containsText("@flashError", "Invalid password")
+			.api.pause(pauseTime)
 			.makeScreenshot();
 	});
 
@@ -46,9 +50,83 @@ describe("Test login page", () => {
 
 		homePage
 			.waitForElementVisible("@title")
-			.assert.urlEquals('http://localhost:' + appPort + "/#!/")
+			.assert.urlEquals(homePage.url)
 			.assert.containsText("@title", "Home")
 			.makeScreenshot();
 	});
+
+	it("should jump to index, after logout", (browser) => {
+		// Logout
+		browser.url(baseURL + "/logout")
+			.waitForElementVisible(".page h1")
+			.assert.urlEquals(baseURL + "/")
+			.assert.elementPresent(".page h1")
+			.pause(pauseTime)
+			.makeScreenshot();
+	});
+
+});
+
+describe("Test login page with passwordless", () => {
+
+	let loginPage;
+	let homePage;
+
+	let baseURL;
+
+	before((browser, done) => {
+		baseURL = 'http://localhost:' + browser.globals.test_settings.appPort;
+		loginPage = browser.page.loginPage();
+		homePage = browser.page.homePage();
+		done();
+	});
+
+	after((browser, done) => {
+		browser.end(() => {
+			//mailtrap.cleanInbox();
+
+			done();
+		});
+	});
+
+	it("should give passwordless info, if password is empty", (browser) => {
+		loginPage.navigate()
+			.login("test", "")
+			.waitForElementPresent("@flashInfo")
+			.assert.elementPresent("@flashInfo")
+			.api.pause(pauseTime)
+			.assert.urlEquals(loginPage.url)
+			.makeScreenshot();
+
+		browser
+			.pause(1000) // Wait for email received
+			.perform(function(browser, done) {
+				console.log("Check mailbox...");
+
+				let re = /passwordless\/(\w+)/g;			
+				mailtrap.getTokenFromMessage("test@boilerplate-app.com", re, function(err, token, message) {
+					if (err) 
+						throw new Error(err);
+
+					// Delete message
+					mailtrap.deleteMessage(null, message.id);
+
+					console.log("Open magic link: " + baseURL + "/passwordless/" + token);
+					browser.url(baseURL + "/passwordless/" + token);
+
+					return done();
+				});
+
+				return this;
+			})
+			.pause(pauseTime);
+
+		homePage
+			.waitForElementVisible("@title")
+			.assert.urlEquals(homePage.url)
+			.assert.containsText("@title", "Home")
+			.makeScreenshot();
+
+	});	
 
 });

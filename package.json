@@ -120,6 +120,7 @@
     "nightwatch": "0.9.5",
     "postcss-loader": "0.9.1",
     "precss": "1.4.0",
+    "request": "2.73.0",
     "selenium-server": "2.53.1",
     "sinon": "1.17.4",
     "sinon-chai": "2.8.0",
