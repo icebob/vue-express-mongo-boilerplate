@@ -53,7 +53,7 @@ describe("Test signup page with password", () => {
 		browser
 			.pause(1000) // Wait for email received
 			.perform(function(browser, done) {
-				console.log("Check mailbox...");
+				//console.log("Check mailbox...");
 
 				let re = /verify\/(\w+)/g;			
 				mailtrap.getTokenFromMessage(user.email, re, function(err, token, message) {
@@ -73,6 +73,7 @@ describe("Test signup page with password", () => {
 			})
 			.pause(pauseTime);
 
+		// Check the user redirected to main app
 		homePage
 			.waitForElementVisible("@title")
 			.assert.urlEquals(homePage.url)
