@@ -16,7 +16,7 @@ let commands = {
 
 module.exports = {
 	url() {
-		return "http://localhost:" + this.client.options.appPort + "/login";
+		return this.client.api.options.baseURL + "/login";
 	},
 
 	commands: [commands],

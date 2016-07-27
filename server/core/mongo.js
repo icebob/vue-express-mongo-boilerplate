@@ -21,7 +21,7 @@ module.exports = function() {
 				logger.error("Could not connect to MongoDB!");
 				return logger.error(err);
 			}
-
+		
 			mongoose.set("debug", config.isDevMode());
 		});
 
@@ -36,8 +36,15 @@ module.exports = function() {
 			logger.info(chalk.yellow.bold("Mongo DB connected."));
 			logger.info();
 
+			if (config.isTestMode()) {
+				logger.warn("Drop test database...");
+				mongoose.connection.db.dropDatabase();
+				autoIncrement.initialize(db);		
+			}
+
+
 			if (!config.isProduction) {
-				require("./seed")();
+				require("./seed-db")();
 			}
 		});
 

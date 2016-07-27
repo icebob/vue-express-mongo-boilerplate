@@ -18,6 +18,7 @@ describe("Test signup page with password", () => {
 
 	before((browser, done) => {
 		baseURL = 'http://localhost:' + browser.globals.test_settings.appPort;
+		browser.options.baseURL = baseURL;
 		signupPage = browser.page.signupPage();
 		loginPage = browser.page.loginPage();
 		homePage = browser.page.homePage();
@@ -63,7 +64,7 @@ describe("Test signup page with password", () => {
 					// Delete message
 					mailtrap.deleteMessage(null, message.id);
 
-					console.log("Open verify link: " + baseURL + "/verify/" + token);
+					//console.log("Open verify link: " + baseURL + "/verify/" + token);
 					browser.url(baseURL + "/verify/" + token);
 
 					return done();

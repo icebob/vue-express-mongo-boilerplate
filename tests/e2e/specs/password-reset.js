@@ -4,7 +4,7 @@ let mailtrap = require("../../util/mailtrap");
 
 let pauseTime = 100;
 
-describe.only("Test forgot page", () => {
+describe("Test forgot page", () => {
 
 	let forgotPage;
 	let resetPage;
@@ -15,6 +15,8 @@ describe.only("Test forgot page", () => {
 
 	before((browser, done) => {
 		baseURL = 'http://localhost:' + browser.globals.test_settings.appPort;
+		browser.options.baseURL = baseURL;
+
 		forgotPage = browser.page.forgotPage();
 		resetPage = browser.page.resetPage();
 		homePage = browser.page.homePage();

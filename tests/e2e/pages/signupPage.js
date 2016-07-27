@@ -22,7 +22,7 @@ let commands = {
 
 module.exports = {
 	url() {
-		return "http://localhost:" + this.client.options.appPort + "/signup";
+		return this.client.api.options.baseURL + "/signup";
 	},
 
 	commands: [commands],

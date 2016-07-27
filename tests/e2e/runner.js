@@ -7,7 +7,7 @@ process.env.NODE_ENV = 'test';
 
 // Pass the port of server via environment
 var app = require("../load-server");
-process.env.APP_PORT = app._app.get("port").trim();
+process.env.APP_PORT = app._app.settings.port;
 
 // 2. run the nightwatch test suite against it
 // to run in additional browsers:

@@ -112,17 +112,10 @@ let UserSchema = new Schema({
 		sparse: true
 	},
 
-	/* Mongoose add createdAt and updatedAt fields automatically
-	updated: {
-		type: Date
-	},
-	created: {
-		type: Date,
-		"default": Date.now
-	},*/
 	lastLogin: {
 		type: Date
 	},
+	
 	metadata: {}
 
 }, schemaOptions);

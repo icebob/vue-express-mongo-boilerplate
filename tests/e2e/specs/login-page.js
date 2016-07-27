@@ -4,7 +4,7 @@ let mailtrap = require("../../util/mailtrap");
 
 let pauseTime = 100;
 
-describe("Test login page with username and password", () => {
+describe.only("Test login page with username and password", () => {
 
 	let loginPage;
 	let homePage;
@@ -13,6 +13,7 @@ describe("Test login page with username and password", () => {
 
 	before((browser, done) => {
 		baseURL = 'http://localhost:' + browser.globals.test_settings.appPort;
+		browser.options.baseURL = baseURL;
 		loginPage = browser.page.loginPage();
 		homePage = browser.page.homePage();
 		done();
@@ -46,7 +47,9 @@ describe("Test login page with username and password", () => {
 
 	it("should jump to main, if credentials correct", (browser) => {
 		loginPage.navigate()
-			.login("test", "test1234");
+			.login("test", "test1234")
+			.api.pause(pauseTime)
+			.makeScreenshot();
 
 		homePage
 			.waitForElementVisible("@title")
@@ -111,7 +114,7 @@ describe("Test login page with passwordless", () => {
 					// Delete message
 					mailtrap.deleteMessage(null, message.id);
 
-					console.log("Open magic link: " + baseURL + "/passwordless/" + token);
+					//console.log("Open magic link: " + baseURL + "/passwordless/" + token);
 					browser.url(baseURL + "/passwordless/" + token);
 
 					return done();
