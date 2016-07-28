@@ -47,6 +47,7 @@ module.exports = _.merge({
 	},
 
 	Query: {
+
 		devices(root, args, context) {
 			if (!hasRole(context, C.ROLE_USER))
 				return null;

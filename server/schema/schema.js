@@ -1,18 +1,22 @@
 "use strict";
 
+let logger 			= require("../core/logger");
+let config 			= require("../config");
+let graphqlTools 	= require("graphql-tools");
+
 const schema = `
 
 scalar Timestamp
 
 type Query {
-	devices(limit: Int, offset: Int, sort: String): [Device]
-	device(id: Int, code: String): Device
-
 	users(limit: Int, offset: Int, sort: String): [User]
 	user(id: Int, code: String): User
 
 	posts(limit: Int, offset: Int, sort: String): [Post]
 	post(id: Int, code: String): Post
+
+	devices(limit: Int, offset: Int, sort: String): [Device]
+	device(id: Int, code: String): Device
 }
 
 type Device {
@@ -66,5 +70,5 @@ schema {
 }
 `;
 
+module.exports = [/*require("../applogic/modules/posts/schema").schema, */schema];
 
-module.exports = [require("../applogic/modules/posts/schema").schema, schema];
