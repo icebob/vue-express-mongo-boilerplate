@@ -8,7 +8,7 @@ let async 			= require("async");
 
 let auth			= require("../../../core/auth/helper");
 let response		= require("../../../core/response");
-let Post 			= require("./model.post");
+let Post 			= require("./models/post");
 let hashids			= require("../../../libs/hashids");
 
 let io 				= require("../../../core/socket");

@@ -7,7 +7,7 @@ let express			= require("express");
 
 let auth			= require("../../../core/auth/helper");
 let response		= require("../../../core/response");
-let Device 			= require("./model.device");
+let Device 			= require("./models/device");
 let hashids			= require("../../../libs/hashids");
 
 let io 				= require("../../../core/socket");

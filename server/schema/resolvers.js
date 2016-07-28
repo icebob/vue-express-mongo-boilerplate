@@ -8,8 +8,8 @@ let async 			= require("async");
 let hashids 		= require("../libs/hashids");
 let C 				= require("../core/constants");
 
-let Device 			= require("../applogic/modules/devices/model.device");
-let Post 			= require("../applogic/modules/posts/model.post");
+let Device 			= require("../applogic/modules/devices/models/device");
+let Post 			= require("../applogic/modules/posts/models/post");
 let User 			= require("../models/user");
 
 function applyLimitOffsetSort(query, args) {
