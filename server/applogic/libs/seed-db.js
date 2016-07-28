@@ -8,7 +8,9 @@ let _ 				= require("lodash");
 let tokgen 			= require(ROOT + "libs/tokgen");
 let fakerator		= require("fakerator")();
 
-let Device 			= require("../modules/devices/model.device");
+let User 			= require(ROOT + "./models/user");
+let Device 			= require("../modules/devices/models/device");
+let Post 			= require("../modules/posts/models/post");
 
 module.exports = function() {
 	Device.find({}).exec(function(err, docs) {
@@ -31,6 +33,34 @@ module.exports = function() {
 						return logger.warn("Unable to create default devices!", err);
 				});
 			});
+		}
+	});
+
+	Post.find({}).exec(function(err, docs) {
+		if (docs.length === 0) {
+			logger.warn("Load default Posts to DB...");
+
+			User.find({}).lean().select("_id").exec((err, users) => {
+				console.log(users);
+
+				_.times(10, () => {
+
+					let fakePost = fakerator.entity.post();
+
+					let post = new Post({
+						title: fakePost.title,
+						content: fakePost.content,
+						author: fakerator.random.arrayElement(users)._id
+					});
+
+					post.save(function(err) {
+						if (err) 
+							return logger.warn("Unable to create default posts!", err);
+					});
+				});
+
+			});
+
 		}
 	});
 
