@@ -3,6 +3,8 @@
 let logger 			= require("../../../core/logger");
 let config 			= require("../../../config");
 
+let moduleConfig	= require("./module.json");
+
 let _ 				= require("lodash");
 let async 			= require("async");
 let hashids 		= require("../../../libs/hashids");
@@ -12,8 +14,6 @@ let Post 			= require("./models/post");
 let User 			= require("../../../models/user");
 
 let io 				= require("../../../core/socket");
-
-let namespace = "/posts";
 
 function applyLimitOffsetSort(query, args) {
 	if (args.limit)
@@ -204,8 +204,8 @@ const resolvers = {
 				// Send back the response
 				let json = doc.toJSON();
 
-				if (io.namespaces[namespace])
-					io.namespaces[namespace].emit("update", json);
+				if (io.namespaces[moduleConfig.namespace])
+					io.namespaces[moduleConfig.namespace].emit("update", json);
 
 				return doc;
 

@@ -2,10 +2,11 @@
 
 let logger 			= require("../../../core/logger");
 let config 			= require("../../../config");
+let moduleConfig	= require("./module.json");
 
 module.exports = {
 
-	namespace: "/posts",
+	namespace: moduleConfig.namespace,
 	//role: "admin",
 
 	init(io) {

@@ -3,6 +3,8 @@
 let logger 			= require("../../../core/logger");
 let config 			= require("../../../config");
 
+let moduleConfig	= require("./module.json");
+
 let express			= require("express");
 let async 			= require("async");
 
@@ -12,8 +14,6 @@ let Post 			= require("./models/post");
 let hashids			= require("../../../libs/hashids");
 
 let io 				= require("../../../core/socket");
-
-let namespace = "/posts";
 
 module.exports = function(app, db) {
 
@@ -60,8 +60,8 @@ module.exports = function(app, db) {
 
 			let json = doc.toJSON();
 
-			if (io.namespaces[namespace])
-				io.namespaces[namespace].emit("update", json);
+			if (io.namespaces[moduleConfig.namespace])
+				io.namespaces[moduleConfig.namespace].emit("update", json);
 
 			return response.json(res, json);
 		});
@@ -94,8 +94,8 @@ module.exports = function(app, db) {
 			// Send back the response
 			let json = doc.toJSON();
 
-			if (io.namespaces[namespace])
-				io.namespaces[namespace].emit("update", json);
+			if (io.namespaces[moduleConfig.namespace])
+				io.namespaces[moduleConfig.namespace].emit("update", json);
 
 			response.json(res, json);
 
@@ -161,8 +161,8 @@ module.exports = function(app, db) {
 
 				let json = post.toJSON();
 
-				if (io.namespaces[namespace])
-					io.namespaces[namespace].emit("new", json);
+				if (io.namespaces[moduleConfig.namespace])
+					io.namespaces[moduleConfig.namespace].emit("new", json);
 
 				return response.json(res, json);
 			});
@@ -239,8 +239,8 @@ module.exports = function(app, db) {
 
 				let json = req.post.toJSON();
 
-				if (io.namespaces[namespace])
-					io.namespaces[namespace].emit("update", json);
+				if (io.namespaces[moduleConfig.namespace])
+					io.namespaces[moduleConfig.namespace].emit("update", json);
 
 				return response.json(res, json);
 			});
@@ -259,8 +259,8 @@ module.exports = function(app, db) {
 				if (err)
 					return response.json(res, null, response.BAD_REQUEST, err);
 
-				if (io.namespaces[namespace])
-					io.namespaces[namespace].emit("remove", req.post.toJSON());
+				if (io.namespaces[moduleConfig.namespace])
+					io.namespaces[moduleConfig.namespace].emit("remove", req.post.toJSON());
 
 				return response.json(res);
 			});
