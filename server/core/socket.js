@@ -146,6 +146,13 @@ let self = {
 		});
 
 		self.namespaces[ns] = io;
+	},
+
+	nsEmit(namespace, command, data) {
+		if (self.namespaces[namespace]) {
+			self.namespaces[namespace].emit(command, data);
+			return true;
+		}
 	}
 
 };

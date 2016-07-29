@@ -12,24 +12,9 @@ let C 				= require(ROOT + "core/constants");
 let Post 			= require(ROOT + "applogic/modules/posts/models/post");
 let User 			= require(ROOT + "models/user");
 
+let helper			= require(ROOT + "libs/schema-helper");
+
 let io 				= require(ROOT + "core/socket");
-
-function applyLimitOffsetSort(query, args) {
-	if (args.limit)
-		query.limit(args.limit);
-
-	if (args.offset)
-		query.skip(args.offset);
-
-	if (args.sort)
-		query.sort(args.sort);
-
-	return query;
-}
-
-function hasRole(context, role) {
-	return context.user.roles.indexOf(role) != -1;
-}
 
 const query = `
 	users(limit: Int, offset: Int, sort: String): [User]
@@ -59,14 +44,14 @@ const resolvers = {
 	Query: {
 
 		users(root, args, context) {
-			if (!hasRole(context, C.ROLE_ADMIN)) 
+			if (!helper.hasRole(context, C.ROLE_ADMIN)) 
 				return null;
 
-			return applyLimitOffsetSort(User.find({}), args).exec();
+			return helper.applyLimitOffsetSort(User.find({}), args).exec();
 		},
 
 		user(root, args, context) {
-			if (!hasRole(context, C.ROLE_ADMIN))
+			if (!helper.hasRole(context, C.ROLE_ADMIN))
 				return null;
 
 			let id = args.id;
@@ -82,10 +67,10 @@ const resolvers = {
 
 	User: {
 		posts(author, args, context) {
-			if (!hasRole(context, C.ROLE_USER))
+			if (!helper.hasRole(context, C.ROLE_USER))
 				return null;
 				
-			return applyLimitOffsetSort(Post.find({ author: author.id }), args).exec();
+			return helper.applyLimitOffsetSort(Post.find({ author: author.id }), args).exec();
 		}
 	},
 

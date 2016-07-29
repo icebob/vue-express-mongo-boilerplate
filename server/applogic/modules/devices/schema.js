@@ -14,22 +14,8 @@ let C 				= require(ROOT + "core/constants");
 
 let Device 			= require("./models/device");
 
-function applyLimitOffsetSort(query, args) {
-	if (args.limit)
-		query.limit(args.limit);
+let helper			= require(ROOT + "libs/schema-helper");
 
-	if (args.offset)
-		query.skip(args.offset);
-
-	if (args.sort)
-		query.sort(args.sort);
-
-	return query;
-}
-
-function hasRole(context, role) {
-	return context.user.roles.indexOf(role) != -1;
-}
 
 const query = `
 	devices(limit: Int, offset: Int, sort: String): [Device]
@@ -54,14 +40,14 @@ const mutation = ``;
 const resolvers = {
 	Query: {
 		devices(root, args, context) {
-			if (!hasRole(context, C.ROLE_USER))
+			if (!helper.hasRole(context, C.ROLE_USER))
 				return null;
 
-			return applyLimitOffsetSort(Device.find({}), args).exec();
+			return helper.applyLimitOffsetSort(Device.find({}), args).exec();
 		},
 
 		device(root, args, context) {
-			if (!hasRole(context, C.ROLE_USER))
+			if (!helper.hasRole(context, C.ROLE_USER))
 				return null;
 
 			let id = args.id;

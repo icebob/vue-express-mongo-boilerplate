@@ -17,22 +17,7 @@ let User 			= require(ROOT + "models/user");
 
 let io 				= require(ROOT + "core/socket");
 
-function applyLimitOffsetSort(query, args) {
-	if (args.limit)
-		query.limit(args.limit);
-
-	if (args.offset)
-		query.skip(args.offset);
-
-	if (args.sort)
-		query.sort(args.sort);
-
-	return query;
-}
-
-function hasRole(context, role) {
-	return context.user.roles.indexOf(role) != -1;
-}
+let helper			= require(ROOT + "libs/schema-helper");
 
 const query = `
 	posts(limit: Int, offset: Int, sort: String): [Post]
@@ -64,14 +49,14 @@ const mutation = `
 const resolvers = {
 	Query: {
 		posts(root, args, context) {
-			if (!hasRole(context, C.ROLE_USER))  
+			if (!helper.hasRole(context, C.ROLE_USER))  
 				return null;
 
-			return applyLimitOffsetSort(Post.find({}), args).exec();
+			return helper.applyLimitOffsetSort(Post.find({}), args).exec();
 		},
 
 		post(root, args, context) {
-			if (!hasRole(context, C.ROLE_USER))
+			if (!helper.hasRole(context, C.ROLE_USER))
 				return null;
 
 			let id = args.id;
@@ -87,31 +72,31 @@ const resolvers = {
 
 	Post: {
 		author(post, args, context) {
-			if (!hasRole(context, C.ROLE_USER))
+			if (!helper.hasRole(context, C.ROLE_USER))
 				return null;
 
 			return User.findById(post.author).exec();
 		},
 
 		upVoters(post, args, context) {
-			if (!hasRole(context, C.ROLE_USER))
+			if (!helper.hasRole(context, C.ROLE_USER))
 				return null;
 
-			return applyLimitOffsetSort(User.find({ _id: { $in: post.upVoters} }), args).exec();
+			return helper.applyLimitOffsetSort(User.find({ _id: { $in: post.upVoters} }), args).exec();
 		},
 
 		downVoters(post, args, context) {
-			if (!hasRole(context, C.ROLE_USER))
+			if (!helper.hasRole(context, C.ROLE_USER))
 				return null;
 
-			return applyLimitOffsetSort(User.find({ _id: { $in: post.downVoters} }), args).exec();
+			return helper.applyLimitOffsetSort(User.find({ _id: { $in: post.downVoters} }), args).exec();
 		},
 
 		voters(post, args, context) {
-			if (!hasRole(context, C.ROLE_USER))
+			if (!helper.hasRole(context, C.ROLE_USER))
 				return null;
 
-			return applyLimitOffsetSort(User.find({ _id: { $in: post.upVoters.concat(post.downVoters) } }), args).exec();
+			return helper.applyLimitOffsetSort(User.find({ _id: { $in: post.upVoters.concat(post.downVoters) } }), args).exec();
 		}
 
 	},
@@ -122,7 +107,7 @@ const resolvers = {
 			let user = context.user;
 			let postID = args.postID;
 
-			if (!hasRole(context, C.ROLE_USER)) 
+			if (!helper.hasRole(context, C.ROLE_USER)) 
 				return Promise.reject("Must has 'user' role for this function!");
 
 			return new Promise( (resolve, reject) => {
@@ -160,8 +145,7 @@ const resolvers = {
 
 					let json = doc.toJSON();
 
-					if (io.namespaces[namespace])
-						io.namespaces[namespace].emit("update", json);
+					io.nsemit("update", json);
 
 					resolve(doc);
 				});
@@ -175,7 +159,7 @@ const resolvers = {
 
 
 			return Promise.resolve().then(() => {		
-				if (!hasRole(context, C.ROLE_USER)) 
+				if (!helper.hasRole(context, C.ROLE_USER)) 
 					throw new Error("Must has 'user' role for this function!");
 			}).then(() => {
 				return Post.findById(postID);
@@ -203,8 +187,7 @@ const resolvers = {
 				// Send back the response
 				let json = doc.toJSON();
 
-				if (io.namespaces[moduleConfig.namespace])
-					io.namespaces[moduleConfig.namespace].emit("update", json);
+				io.nsemit("update", json);
 
 				return doc;
 
