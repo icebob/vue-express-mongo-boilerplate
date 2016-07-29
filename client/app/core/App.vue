@@ -12,7 +12,13 @@
 
 			.nav-right
 				.nav-item
-					Welcome Administrator
+					.media
+						.media-left
+							figure.image.is-32x32
+								img(src="https://s3.amazonaws.com/uifaces/faces/twitter/peterme/128.jpg")
+
+						.media-content
+							span Welcome Administrator
 
 	aside.menu
 		.menu-label General
