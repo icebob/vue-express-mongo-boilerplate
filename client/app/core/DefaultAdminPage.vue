@@ -1,5 +1,5 @@
 <template lang="jade">
-	div
+	.container
 		h3.title {{ schema.title }}
 
 		.level
@@ -240,9 +240,6 @@
 	}
 
 	.form {
-		background-color: #EEE;
-		color: Black;
-
 		margin: 1rem;
 
 		.buttons {
