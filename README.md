@@ -130,13 +130,12 @@ TODO
 ## TODO
 * [ ] add Bulma SASS framework (https://github.com/fundon/vue-admin)
 * [ ] create posts page with GraphQL with mutations
-* [ ] concat gql schemas (waiting for sample from apollo-stack)
+* [x] concat gql schemas
 * [ ] rewrite account.js response handlers
 * [ ] localized emails
 * [ ] check https://github.com/keystonejs/keystone
 * [ ] add unit tests with mocha, chai, sinon
 * [ ] add E2E test with nightwatch
-* [ ] try uWS: https://github.com/uWebSockets/uWebSockets#socketio
 
 
 ## License

@@ -1,49 +1,61 @@
 <template lang="jade">
-	h3 {{ _('Posts') }}
+	.container
+		h2.title {{ _('Posts') }}
 
-	.header
-		.sort
-			a(@click="setSort('hot')", :class="{ active: sort == 'hot' }") {{ _("Hot") }}
-			a(@click="setSort('mostviewed')", :class="{ active: sort == 'mostviewed' }") {{ _("MostViewed") }}
-			a(@click="setSort('new')", :class="{ active: sort == 'new' }") {{ _("New") }}
+		.level
+			.level-left.control.has-addons
+				a.button.is-link(@click="setSort('hot')", :class="{ active: sort == 'hot' }") {{ _("Hot") }}
+				a.button.is-link(@click="setSort('mostviewed')", :class="{ active: sort == 'mostviewed' }") {{ _("MostViewed") }}
+				a.button.is-link(@click="setSort('new')", :class="{ active: sort == 'new' }") {{ _("New") }}
 
-		.add
-			button(@click="newPost") {{ _("NewPost") }}
+				button.button.is-primary(@click="newPost")
+					span.icon
+						i.fa.fa-plus
+					span {{ _("NewPost") }}
 
-		.filter 
-			a(@click="setViewMode('all')", :class="{ active: viewMode == 'all' }") {{ _("AllPosts") }}
-			a(@click="setViewMode('my')", :class="{ active: viewMode == 'my' }") {{ _("MyPosts") }}
+			.level-right.control.has-addons
+				a.button.is-link(@click="setViewMode('all')", :class="{ active: viewMode == 'all' }") {{ _("AllPosts") }}
+				a.button.is-link(@click="setViewMode('my')", :class="{ active: viewMode == 'my' }") {{ _("MyPosts") }}
 
-	.postForm(v-if="showForm")
-		vue-form-generator(:schema='schema', :model='model', :options='{}', :multiple="false", v-ref:form, :is-new-model="isNewPost")
+		.postForm(v-if="showForm")
+			vue-form-generator(:schema='schema', :model='model', :options='{}', :multiple="false", v-ref:form, :is-new-model="isNewPost")
 
-		.buttons
-			button.save(@click="savePost") {{ _("Save") }}
-			button.cancel(@click="cancelPost") {{ _("Cancel") }}
+			.control.is-grouped
+				button.control.button.is-primary(@click="savePost") {{ _("Save") }}
+				button.control.button(@click="cancelPost") {{ _("Cancel") }}
 
 
-	ul.posts
-		li(v-for="post of rows | orderBy orderPosts -1", transition="post", track-by="code")
-			.image
-				img(:src="post.author.gravatar")
-				.votes
-					.count {{ post.votes }}
-					.thumb.up(@click="upVote(post)")
-						i.fa.fa-thumbs-o-up
-					.thumb.down(@click="downVote(post)")
-						i.fa.fa-thumbs-o-down
-			.container
-				.title {{ post.title }}
-				.content(v-html="post.content | marked")
-				.footer
-					.views.badge {{ _("ViewsCount", { count: post.views }) }}
-					.createdBy {{ ago(post) }}
+		ul.posts
+			li(v-for="post of rows | orderBy orderPosts -1", transition="post", track-by="code")
+				.box
+					article.media
+						.media-left
+							figure.image.is-64x64
+								img(:src="post.author.gravatar")
 
-			.functions
-				.edit(:title="_('EditPost')", @click="editPost(post)")
-					i.fa.fa-pencil
-				.delete(:title="_('DeletePost')", @click="deletePost(post)")
-					i.fa.fa-trash
+							.votes
+								.count.has-text-centered {{ post.votes }}
+								.thumb.up(@click="upVote(post)")
+									i.fa.fa-thumbs-o-up
+								.thumb.down(@click="downVote(post)")
+									i.fa.fa-thumbs-o-down
+						.media-content
+							.content
+								.title 
+									span {{ post.title }}
+
+								p.content(v-html="post.content | marked")
+							nav.level
+								.level-left
+									a.level-item(:title="_('EditPost')", @click="editPost(post)")
+										span.icon.is-small
+											i.fa.fa-pencil
+									a.level-item(:title="_('DeletePost')", @click="deletePost(post)")
+										span.icon.is-small
+											i.fa.fa-trash
+								.level-right
+									.level-item
+										small {{ ago(post) }}
 
 </template>
 
@@ -372,107 +384,26 @@
 				border-radius: 8px;				
 			}
 
-			display: flex;
+			.votes {
 
-			.image {
-				width: 64px;
-				margin-right: 1rem;
-				margin-top: 0.5rem;
-
-				img {
-					border-radius: 20%;
-				}
-
-				.votes {
-
-					.count {
-						font-size: 3.0em;
-						text-align: center;
-						font-family: $fontFamilyHeader;
-						font-weight: 300;
-					}
-
-					.thumb {
-						display: inline-block;
-						cursor: pointer;
-						margin: 0 8px;
-						font-size: 1.2em;
-
-						&:hover {
-							color: $headerTextColor;
-						}
-
-					}
-
-				} // .votes
-
-			} // .image
-			
-			.container {
-				flex: 1;
-
-				.title {
-					color: $headerTextColor;
-					font-family: $fontFamilyHeader;
+				.count {
 					font-weight: 300;
-					font-size: 1.8em;
-					margin-bottom: 0.5rem;
+					font-size: 3.0rem;
 				}
 
-				.content {
-					text-align: justify;
-
-					p {
-						text-align: justify;
-					}
-				}
-
-				.footer {
-					margin-top: 1.0em;
-					font-size: 0.7em;
-
-					.createdBy {
-						float: right;
-						color: $color3;
-					}
-
-					.votes {
-						float: left;
-					}
-
-					.views {
-						float: left;
-					}
-
-					@include clearfix;
-				}
-
-			}
-
-			.functions {
-				position: absolute;
-				top: 0;
-				right: 0;
-				padding: 0.5rem;
-				display: none;
-
-				> div {
-					font-size: 1.3rem;
+				.thumb {
 					display: inline-block;
-					margin: 0 0.5rem;
-					color: $textColor;
+					cursor: pointer;
+					margin: 0 8px;
+					font-size: 1.2em;
 
 					&:hover {
 						color: $headerTextColor;
 					}
-				}
-			}
 
-			&:hover {
-				.functions {
-					display: block;
 				}
-			}
+
+			} // .votes
 
 		}
 	}

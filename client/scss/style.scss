@@ -1,10 +1,12 @@
 @import "variables";
 
+@import "../../node_modules/bulma/bulma.sass";
+
 // Common style
 * {
 	box-sizing: border-box;  
 }
-
+/*
 html {
 	background-color: $color1;
 	color: $textColor;
@@ -56,3 +58,5 @@ button {
 		background-color: darken($buttonColor, 10%);
 	}	
 } // button
+
+*/

@@ -1,16 +1,18 @@
 <template lang="jade">
-	div
-		h2 {{ "Home" | i18n }}
+	.container
+		h2.title {{ "Home" | i18n }}
 
 		h3 {{ count }}
-		button(@click="inc") 
-			i.fa.fa-arrow-up 
-			| {{ "Increment" | i18n }}
+		button.button.is-success(@click="inc") 
+			span.icon
+				i.fa.fa-arrow-up 
+			span {{ "Increment" | i18n }}
 		br
 		br
-		button(@click="dec") 
-			i.fa.fa-arrow-up 
-			| {{ "Decrement" | i18n }}
+		button.button.is-warning(@click="dec") 
+			span
+				i.fa.fa-arrow-up 
+			span {{ "Decrement" | i18n }}
 
 </template>
 

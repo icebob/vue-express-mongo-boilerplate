@@ -1,5 +1,5 @@
 <template lang="jade">
-	table
+	table.table
 		thead
 			tr
 				th.selector(v-if="schema.multiSelect", width="20px" @click="selectAll") 
@@ -155,11 +155,16 @@
 		border: 0px;
 		border-collapse: collapse;
 
+		.selector {
+			i {
+				font-size: 1.2em;
+				margin-top: 3px;
+			}
+		}
+
 		thead tr {
 
 			th {
-				font-size: 1.2em;
-				padding: 3px 5px;
 				text-transform: uppercase;
 				text-align: center;
 				cursor: default;
@@ -170,13 +175,13 @@
 						float: right;
 						font-family: fontawesome;
 						font-size: 0.9em;
-						color: rgba(100,100,100,1);
+						color: rgba(#000,0.4);
 					}
 
 					&.sorted {
 						&:after {
 							content: "\f0dd";
-							color: rgba(250,250,250,1);
+							color: rgba(#000,1);
 						}
 
 						&.desc:after {

@@ -1,15 +1,15 @@
 <template lang="jade">
 	div
-		h3 {{ schema.title }}
+		h3.title {{ schema.title }}
 
-		.headerbar
-			.newItem(v-if="enabledNew")
-				button.btn.btn-primary.new(@click="newModel") {{ schema.resources.addCaption || "Add"}}
-			.info {{ _("SelectedOfAll", { selected: selected.length, all: rows.length } ) }}
-			.searchBar.input-group(v-if="options.searchable")
-				span.input-group-addon
+		.level
+			.level-left(v-if="enabledNew")
+				button.button.is-primary(@click="newModel") {{ schema.resources.addCaption || "Add"}}
+			.level-center {{ _("SelectedOfAll", { selected: selected.length, all: rows.length } ) }}
+			.level-right(v-if="options.searchable")
+				.control.has-icon
+					input.input(type="search", :placeholder="_('Search3dots')", v-model="search")
 					i.fa.fa-search
-				input.form-control(type="search", :placeholder="_('Search3dots')", v-model="search")
 
 		data-table(:schema="schema.table", :rows="rows", :order="order", :search="search", :selected="selected", :select="select", :select-all="selectAll")
 
@@ -20,10 +20,10 @@
 				div.alert.alert-danger(v-for="item in validationErrors", track-by="$index") {{ item.field.label}}: 
 					strong {{ item.error }}
 
-			.buttons.text-center
-				button.btn.btn-primary.save(@click="saveModel", :disabled="!enabledSave") {{ schema.resources.saveCaption || _("Save") }}
-				button.btn.btn-warning.clone(@click="cloneModel", :disabled="!enabledClone") {{ schema.resources.cloneCaption || _("Clone") }}
-				button.btn.btn-danger.delete(@click="deleteModel", :disabled="!enabledDelete") {{ schema.resources.deleteCaption || _("Delete") }}
+			.control.is-grouped.is-grouped-centered
+				button.control.button.is-primary(@click="saveModel", :disabled="!enabledSave") {{ schema.resources.saveCaption || _("Save") }}
+				button.control.button.is-outlined(@click="cloneModel", :disabled="!enabledClone") {{ schema.resources.cloneCaption || _("Clone") }}
+				button.control.button.is-danger(@click="deleteModel", :disabled="!enabledDelete") {{ schema.resources.deleteCaption || _("Delete") }}
 
 			// pre {{{ model | prettyJSON }}}
 

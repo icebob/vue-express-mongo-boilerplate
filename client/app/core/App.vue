@@ -1,18 +1,40 @@
 <template lang="jade">
-	div
-		ul
-			li(v-link-active)
+	section.app-header
+		nav.nav
+			.nav-left
+				a.nav-item(href="#")
+					h3 Vue-Express-Mongo boilerplate App
+
+			span.nav-toggle
+				span
+				span
+				span
+
+			.nav-right
+				.nav-item
+					Welcome Administrator
+
+	aside.menu
+		.menu-label General
+		ul.menu-list
+			li
 				a(v-link="'/home'") {{ "Home" | i18n }}
-			li(v-link-active)
+			li
 				a(v-link="'/devices'") {{ "Devices" | i18n }}
-			li(v-link-active)
+			li
 				a(v-link="'/posts'") {{ "Posts" | i18n }}
 
-		router-view(keep-alive)
+		.menu-label Session
+		ul.menu-list
+			li
+				a.button(href="/logout")
+					span.icon
+						i.fa.fa-sign-out
+					span {{ "Logout" | i18n }}
 
-		br
-		br
-		a(href="/logout", v-i18n="Logout")
+
+	section.app-main
+		router-view(keep-alive)
 
 </template>
 
@@ -112,5 +134,35 @@
 			font-weight: 600;
 			color: $color5;
 		}
+	}
+
+	.app-header {
+		position: fixed;
+		min-width: 100%;
+		height: 50px;
+		z-index: 1024;
+		box-shadow: 0 2px 3px hsla(0,0%,7%,.1),0 0 0 1px hsla(0,0%,7%,.1);
+	}
+
+	aside {
+		position: fixed;
+		top: 50px;
+		left: 0;
+		bottom: 0;
+		padding: 20px 0 50px;
+		width: 180px;
+		min-width: 45px;
+		max-height: 100vh;
+		height: 100%;
+		z-index: 1023;
+		background: #fff;
+		box-shadow: 0 2px 3px hsla(0,0%,7%,.1),0 0 0 1px hsla(0,0%,7%,.1);
+		overflow-y: auto;
+		overflow-x: hidden;		
+	}
+
+	.app-main {
+		padding-top: 50px;
+		margin-left: 180px;		
 	}
 </style>
