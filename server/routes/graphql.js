@@ -5,8 +5,8 @@ let logger 			= require("../core/logger");
 let auth 			= require("../core/auth/helper");
 let ApolloServer 	= require("apollo-server").apolloServer;
 let graphqlTools 	= require("graphql-tools");
-let Schema 			= require("../schema/schema");
-let Resolvers 		= require("../schema/resolvers");
+let Schema 			= require("../schema").schema;
+let Resolvers 		= require("../schema").resolvers;
 
 module.exports = function(app, db) {
 

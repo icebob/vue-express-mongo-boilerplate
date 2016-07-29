@@ -1,19 +1,21 @@
 "use strict";
 
-let logger 			= require("../../../core/logger");
-let config 			= require("../../../config");
+let ROOT 			= "../../../";
+
+let logger 			= require(ROOT + "core/logger");
+let config 			= require(ROOT + "config");
 
 let moduleConfig	= require("./module.json");
 
 let _ 				= require("lodash");
 let async 			= require("async");
-let hashids 		= require("../../../libs/hashids");
-let C 				= require("../../../core/constants");
+let hashids 		= require(ROOT + "libs/hashids");
+let C 				= require(ROOT + "core/constants");
 
 let Post 			= require("./models/post");
-let User 			= require("../../../models/user");
+let User 			= require(ROOT + "models/user");
 
-let io 				= require("../../../core/socket");
+let io 				= require(ROOT + "core/socket");
 
 function applyLimitOffsetSort(query, args) {
 	if (args.limit)
@@ -32,14 +34,12 @@ function hasRole(context, role) {
 	return context.user.roles.indexOf(role) != -1;
 }
 
-const schema = `
-
-type Query {
+const query = `
 	posts(limit: Int, offset: Int, sort: String): [Post]
 	post(id: Int, code: String): Post
+`;
 
-}
-
+const typeDefinitions = `
 type Post {
 	id: Int!
 	code: String!
@@ -54,12 +54,11 @@ type Post {
 	createdAt: Timestamp
 	updatedAt: Timestamp
 }
+`;
 
-type Mutation {
+const mutation = `
 	upVote(postID: Int!): Post
 	downVote(postID: Int!): Post
-}
-
 `;
 
 const resolvers = {
@@ -216,6 +215,10 @@ const resolvers = {
 };
 
 module.exports = {
-	schema: schema,
+	schema: {
+		query,
+		typeDefinitions,
+		mutation
+	},
 	resolvers
 };
