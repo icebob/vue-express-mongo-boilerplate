@@ -35,30 +35,30 @@
 		.menu-label General
 		ul.menu-list
 			li(v-link-active)
-				a(v-link="'/home'")
+				a(v-link="'/home'", :title="_('Home')")
 					span.icon
 						i.fa.fa-home
-					| {{ "Home" | i18n }}
+					span.label {{ "Home" | i18n }}
 
 			li(v-link-active)
-				a(v-link="'/devices'")
+				a(v-link="'/devices'", :title="_('Devices')")
 					span.icon
 						i.fa.fa-tablet
-					| {{ "Devices" | i18n }}
+					span.label {{ "Devices" | i18n }}
 
 			li(v-link-active)
-				a(v-link="'/posts'")
+				a(v-link="'/posts'", :title="_('Posts')")
 					span.icon
 						i.fa.fa-comments
-					| {{ "Posts" | i18n }}
+					span.label {{ "Posts" | i18n }}
 
 		.menu-label Session
 		ul.menu-list
 			li
-				a.button(href="/logout")
+				a(href="/logout", :title="_('Logout')")
 					span.icon
 						i.fa.fa-sign-out
-					span {{ "Logout" | i18n }}
+					span.label {{ "Logout" | i18n }}
 
 
 	section.app-main
@@ -151,14 +151,4 @@
 </script>
 
 <style lang="sass">
-	@import "../../scss/variables";
-
-	h2 {
-	  color: $masterColor;
-	}
-
-	.app-main {
-		padding-top: 50px;
-		margin-left: 180px;		
-	}
 </style>

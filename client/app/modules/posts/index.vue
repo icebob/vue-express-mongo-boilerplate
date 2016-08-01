@@ -4,18 +4,18 @@
 
 		.level
 			.level-left.control.has-addons
-				a.button.is-link(@click="setSort('hot')", :class="{ active: sort == 'hot' }") {{ _("Hot") }}
-				a.button.is-link(@click="setSort('mostviewed')", :class="{ active: sort == 'mostviewed' }") {{ _("MostViewed") }}
-				a.button.is-link(@click="setSort('new')", :class="{ active: sort == 'new' }") {{ _("New") }}
+				a(@click="setSort('hot')", :class="{ active: sort == 'hot' }") {{ _("Hot") }}
+				a(@click="setSort('mostviewed')", :class="{ active: sort == 'mostviewed' }") {{ _("MostViewed") }}
+				a(@click="setSort('new')", :class="{ active: sort == 'new' }") {{ _("New") }}
 
-				button.button.is-primary(@click="newPost")
+				button.button.primary(@click="newPost")
 					span.icon
 						i.fa.fa-plus
 					span {{ _("NewPost") }}
 
 			.level-right.control.has-addons
-				a.button.is-link(@click="setViewMode('all')", :class="{ active: viewMode == 'all' }") {{ _("AllPosts") }}
-				a.button.is-link(@click="setViewMode('my')", :class="{ active: viewMode == 'my' }") {{ _("MyPosts") }}
+				a(@click="setViewMode('all')", :class="{ active: viewMode == 'all' }") {{ _("AllPosts") }}
+				a(@click="setViewMode('my')", :class="{ active: viewMode == 'my' }") {{ _("MyPosts") }}
 
 		.postForm(v-if="showForm")
 			vue-form-generator(:schema='schema', :model='model', :options='{}', :multiple="false", v-ref:form, :is-new-model="isNewPost")

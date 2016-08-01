@@ -1,6 +1,7 @@
 @import "variables";
 @import "mixins";
 @import "base";
+@import "buttons";
 
 //@import "../../node_modules/bulma/bulma.sass";
 
@@ -23,7 +24,7 @@ body {
 	padding: 0;
 	margin: 0;
 
-	font: 14px/16px $fontFamily;
+	font: 16px/18px $fontFamily;
 	font-weight: 400;
 	font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;	
@@ -50,7 +51,7 @@ body {
 	height: $headerHeight;
 
 
-	background-color: $headerBgColor;
+	background-color: rgba($headerBgColor, 0.9);
 	color: $headerTextColor;
 
 	box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.5);
@@ -58,7 +59,7 @@ body {
 
 	.logo {
 		width: $menuWidth;
-		font-size: 2.4em;
+		font-size: 2.0em;
 		line-height: $headerHeight;
 		padding-left: 1.2rem;
 		vertical-align: middle;
@@ -67,6 +68,13 @@ body {
 			color: $headerTextColor;
 			text-decoration: none;
 			outline: none !important;
+
+			transition: color .2s ease;
+
+			&:hover {
+				color: $titleTextColor;
+
+			}
 		}
 
 		strong {
@@ -77,7 +85,7 @@ body {
 
 	.menu-toggle {
 		cursor: pointer;
-		font-size: 2.0rem;
+		font-size: 1.8rem;
 
 		padding: 0 0.5rem;
 		line-height: $headerHeight;
@@ -135,7 +143,7 @@ body {
 				float: left;
 				margin: 0 1.0em;
 				padding-top: 0.9em;
-				font-size: 1.2em;
+				font-size: 1.1em;
 				font-weight: $fontLight;
 
 			} // .username
@@ -171,7 +179,7 @@ body {
 				$activeColor: lighten($secondColor, 5%);
 
 				i {
-					font-size: 1.4em;
+					font-size: 1.3em;
 					opacity: 0.4;
 					transition: opacity .2s ease;
 
@@ -254,8 +262,8 @@ body {
 	left: 0;
 	bottom: 0;
 
-	background-color: $headerBgColor;
-	color: $headerTextColor;
+	background-color: rgba($menuBgColor, 0.9);
+	color: $menuTextColor;
 
 	box-shadow: 2px 0px 3px rgba(0, 0, 0, 0.5);
 
@@ -272,8 +280,9 @@ body {
 	.menu-label {
 		padding-left: 0.7em;
 		text-transform: uppercase;
-		font-size: 1.2em;
-		line-height: 1.5em;
+		font-size: 1.1em;
+		line-height: 1.4em;
+		margin-bottom: 0.5em;
 		color: $titleTextColor;
 		&:not(:first-child) {
 			margin-top: 1.8rem;
@@ -284,7 +293,7 @@ body {
 		list-style: none;
 		padding: 0;
 		margin: 0;
-		font-size: 1.1em;
+		font-size: 1.0rem;
 
 		li {
 			border-left: 2px solid transparent;
@@ -293,13 +302,14 @@ body {
 
 			a {
 				display: block;
-				padding: 0.8em 0 0.8em 1.6em;
+				padding: 0.8em 0 0.8em 1.0em;
 				transition: color .2s ease;
 
 				.icon {
 					display: inline-block;
-					width: 1.5em;
+					width: 1.8em;
 					font-size: 1.2em;
+					text-align: center;
 				}
 			}
 
@@ -324,10 +334,52 @@ body {
 
 	} // .menu-list
 
+	&.mini {
+		width: $menuMiniWidth;
+
+		.menu-label {
+			height: 10px;
+			text-indent: -99999px;
+			border-bottom: 1px solid rgba($secondColor, 0.6);
+			margin: 0 5px;
+		}
+
+		li {
+
+			a {
+
+				padding-left: 0.3em;
+
+				span.label {
+					display: none;
+				}
+			}
+		}
+
+	} // .menu.mini
+
 } // .menu
 
 
 
+.app-main {
+	padding-top: $headerHeight;
+	margin-left: $menuWidth;
+
+	padding-left: 10px;
+
+	a {
+		color: $textColor;
+		border-bottom: 1px solid $secondColor;
+		text-decoration: none;
+		cursor: pointer;
+		
+		&:hover {
+			border-bottom: 2px solid $secondColor;
+		}	
+	}
+
+} // .app-main
 
 
 

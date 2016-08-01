@@ -185,7 +185,7 @@ body {
 							top: 0;
 							left: 0;
 							border-radius: $sw-height/2;
-							background: rgba($buttonColor, 0);
+							background: rgba($buttonPrimaryColor, 0);
 							transition: .2s cubic-bezier(.24,0,.5,1);
 						}
 						
@@ -219,7 +219,7 @@ body {
 
 						& + label:before {
 							width: $sw-width;
-							background: rgba($buttonColor, 1);
+							background: rgba($buttonPrimaryColor, 1);
 							transition: width .2s cubic-bezier(0,0,0,.1) !important;
 						}
 						
@@ -366,7 +366,7 @@ body {
 		} // .flash
 	
 		button {
-			background-color: $buttonColor;
+			background-color: $buttonPrimaryColor;
 			color: $buttonTextColor;
 			border: 0;
 			margin: 10px 0;
@@ -380,7 +380,7 @@ body {
 			cursor: pointer;
 			
 			&:hover {
-				background-color: lighten($buttonColor, 10%);
+				background-color: lighten($buttonPrimaryColor, 10%);
 			}
 		} // button
 		
@@ -463,7 +463,7 @@ body {
 	}
 
 	.button {
-		background-color: $buttonColor;
+		background-color: $buttonPrimaryColor;
 		color: $buttonTextColor;
 		border: 0;
 		border-radius: 20px;
@@ -478,7 +478,7 @@ body {
 		font-weight: 300;
 		
 		&:hover {
-			background-color: lighten($buttonColor, 10%);
+			background-color: lighten($buttonPrimaryColor, 10%);
 		}
 	}
 } // .page

@@ -57,23 +57,27 @@
 	background: rgba(0, 0, 0, $opacity);
 }
 
-@mixin placeholderStyle($color, $opacity) {
+@mixin placeholderStyle($color, $fontFamily, $opacity) {
 	&::-webkit-input-placeholder {
 		color: $color;
+		font-family: $fontFamily;
 		opacity: $opacity;
 	}
 	&:-moz-placeholder {
 		/* Firefox 18- */
 		color: $color;
+		font-family: $fontFamily;
 		opacity: $opacity;
 	}
 	&::-moz-placeholder {
 		/* Firefox 19+ */
 		color: $color;
+		font-family: $fontFamily;
 		opacity: $opacity;
 	}
 	&:-ms-input-placeholder {
 		color: $color;
+		font-family: $fontFamily;
 		opacity: $opacity;
 	}
 }
