@@ -57,6 +57,8 @@
 
 	"PostNameAdded": "Bejegyzés '{{title}}' hozzáadva!",
 	"PostNameUpdated": "Bejegyzés '{{title}}' módosítva!",
-	"PostNameDeleted": "Bejegyzés '{{title}}' törölve!"
+	"PostNameDeleted": "Bejegyzés '{{title}}' törölve!",
+
+	"Demo": "Demó"
 
 }

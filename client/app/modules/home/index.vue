@@ -1,22 +1,6 @@
 <template lang="jade">
 	.container
-		h2.title {{ "Home" | i18n }}
-
-		h3 {{ count }}
-		button.button.is-success(@click="inc") 
-			span.icon
-				i.fa.fa-arrow-up 
-			span {{ "Increment" | i18n }}
-		br
-		br
-		button.button.is-warning(@click="dec") 
-			span
-				i.fa.fa-arrow-up 
-			span {{ "Decrement" | i18n }}
-
-		br
-		br
-		h2 Style guide
+		h1 Style guide
 
 		.guide
 			section
@@ -72,7 +56,7 @@
 							| , spanning 
 							br
 							| multiple lines so you can see the line-height.
-						p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius ipsum tortor, eget convallis ante sagittis ac. Nulla eget bibendum dolor. Praesent at ipsum bibendum, malesuada quam tincidunt, lobortis purus. Donec vel mi mollis, sagittis libero non, ultrices elit. Nulla non mauris in sapien mattis scelerisque. Vivamus maximus tincidunt mi, interdum pellentesque urna feugiat sed. Suspendisse vulputate metus leo, nec hendrerit sapien tincidunt ac. Vivamus non libero luctus, suscipit libero ut, elementum enim. 
+						p.text-justify Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius ipsum tortor, eget convallis ante sagittis ac. Nulla eget bibendum dolor. Praesent at ipsum bibendum, malesuada quam tincidunt, lobortis purus. Donec vel mi mollis, sagittis libero non, ultrices elit. Nulla non mauris in sapien mattis scelerisque. Vivamus maximus tincidunt mi, interdum pellentesque urna feugiat sed. Suspendisse vulputate metus leo, nec hendrerit sapien tincidunt ac. Vivamus non libero luctus, suscipit libero ut, elementum enim. 
 							a(href="#") Read more
 
 						p Fusce aliquam sem lorem, in porttitor orci dignissim at. Sed non dolor at orci dignissim bibendum a non nibh. Duis nec vestibulum dui, sit amet lobortis ligula. Sed aliquam mauris nunc, eu sodales est faucibus vitae. Ut sed accumsan lectus. Interdum et 
@@ -117,7 +101,7 @@
 								input.form-control#text3(type='text', name='name', placeholder='Placeholder')
 
 						fieldset
-							legend Radio Labels
+							legend Radio buttons
 							.option-container
 								input#radio1(type="radio", name="radio")
 								label(for="radio1") Option one
@@ -126,7 +110,7 @@
 								label(for="radio2") Option two
 								
 						fieldset
-							legend Checkbox Labels
+							legend Checkboxes
 							.option-container
 								input#check1(type="checkbox")
 								label(for="check1") Option one
@@ -139,13 +123,13 @@
 					span.number 5.
 					span.text Alerts
 				.content.alerts
-					p.alert
+					.alert
 						| This is a neutral alert.
 						a.alert-close(href="x") &times;
-					p.alert.alert-success
+					.alert.alert-success
 						| This is a success alert.
 						a.alert-close(href="x") &times;
-					p.alert.alert-error
+					.alert.alert-error
 						| This is an error alert.
 						a.alert-close(href="x") &times;				
 			section
@@ -153,7 +137,7 @@
 					span.number 6.
 					span.text Tables
 				.content.tables
-					table
+					table.table.stripped.bordered
 						thead
 							tr
 								th #
@@ -170,8 +154,8 @@
 								td (740) 841-7566
 								td.align-right $2,400.00
 								td.align-right
-									button.btn.btn-secondary Edit
-									button.btn.btn-secondary Disable
+									button.button Edit
+									button.button.danger Disable
 							tr
 								td 2
 								td Johnny Avlony
@@ -179,17 +163,17 @@
 								td (740) 841-7566
 								td.align-right $2,400.00
 								td.align-right
-									button.btn.btn-secondary Edit
-									button.btn.btn-secondary Disable
-							tr
+									button.button Edit
+									button.button.danger Disable
+							tr.selected
 								td 3
 								td Johnny Avlony
 								td info@johnnyavlony.com
 								td (740) 841-7566
 								td.align-right $2,400.00
 								td.align-right
-									button.btn.btn-secondary Edit
-									button.btn.btn-secondary Disable
+									button.button Edit
+									button.button.danger Disable
 							tr
 								td 4
 								td Johnny Avlony
@@ -197,8 +181,8 @@
 								td (740) 841-7566
 								td.align-right $2,400.00
 								td.align-right
-									button.btn.btn-secondary Edit
-									button.btn.btn-secondary Disable
+									button.button Edit
+									button.button.danger Disable
 						tfoot
 							tr
 								td 4
@@ -213,46 +197,9 @@
 <script>
 	// http://codepen.io/icebob/pen/GJqxNN
 
-	import MixinsIO from "../../core/mixins/io";
-
-	import * as actions from "./vuex/actions";
-	import * as getters from "./vuex/getters";
-
 	export default {
-		/**
-		 * Create websocket connection to '/counter' namespace
-		 */
-		mixins: [ MixinsIO("/counter") ],
 
-		/**
-		 * Set Vuex actions & getters
-		 */
-		vuex: {
-			getters,
-			actions
-		},	
-
-		/**
-		 * Page methods
-		 */
 		methods: {
-
-			/**
-			 * Increment counter
-			 */
-			inc() {
-				this.increment();
-				this.$socket.emit("changed", this.count);
-			},
-
-			/**
-			 * Decrement counter
-			 */
-			dec() {
-				this.decrement();
-				this.$socket.emit("changed", this.count);
-			},
-
 			getTypographyInfo(elType) {
 				let element = this.$el.querySelector(elType);
 				if (element) {
@@ -260,29 +207,17 @@
 					return style.fontFamily.split(",")[0] + ' ' + style.fontWeight + ', ' + style.fontSize;
 				}
 			}
-
-		},
-
-		/**
-		 * Socket handlers. Every property is an event handler
-		 */
-		sockets: {
-
-			/**
-			 * Counter value is changed
-			 * @param  {Number} msg Value of counter
-			 */
-			changed(msg) {
-				console.log("New counter value: " + msg);
-				this.changeValue(msg);
-			}
 		}
 	};
 
 </script>
 
 <style lang="sass" scoped>
-	@import "../../../scss/variables";
+	@import "../../../scss/themes/blurred/variables";
+
+	.container {
+		padding: 1rem;
+	}
 
 	section {
 		margin-bottom: 40px;

@@ -320,8 +320,8 @@
 
 <style lang="sass" scoped>
 
-	@import "../../../scss/variables";
-	@import "../../../scss/mixins";
+	@import "../../../scss/themes/blurred/variables";
+	@import "../../../scss/common/mixins";
 
 	.header {
 

@@ -209,7 +209,6 @@
 </script>
 
 <style lang="sass" scoped>
-	@import "../../scss/variables";
 
 	.headerbar {
 		display: flex;

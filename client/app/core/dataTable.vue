@@ -148,7 +148,7 @@
 </script>
 
 <style lang="sass" scoped>
-	@import "../../scss/variables";
+	@import "../../scss/themes/blurred/variables";
 
 	table {
 		width: 100%;

@@ -1,0 +1,101 @@
+
+table.table {
+
+	width: 100%;
+	border-collapse: collapse;
+
+	thead {
+
+		tr {
+
+			th {
+				text-align: center;
+				font-weight: $fontBold;
+
+				background-color: rgba($color1, 0.7);
+				padding: 0.7em 0;
+
+				&:first-child {
+					border-radius: 8px 0 0 0;
+				}
+
+				&:last-child {
+					border-radius: 0 8px 0 0;
+				}
+
+			} // th
+
+
+		} // tr
+
+	} // thead
+
+	tbody {
+
+		tr {
+			transition: background-color .2s ease;
+			td {
+				text-align: center;
+				padding: 0.5em 0.2em;
+			} // td
+
+		} // tr
+
+	} // tbody
+
+	tfoot {
+
+		tr {
+
+			td {
+				text-align: center;
+				font-weight: $fontBold;
+
+				background-color: rgba($color1, 0.7);
+				padding: 0.7em 0;
+
+				&:first-child {
+					border-radius: 0 0 0 8px;
+				}
+
+				&:last-child {
+					border-radius: 0 0 8px 0;
+				}
+
+			} // td
+
+		} // tr
+
+	} // tfoot
+
+
+	&.bordered {
+		tbody tr td {
+			border-bottom: 1px solid rgba(#FFF, 0.1);
+		}
+	}
+
+	&.stripped {
+		tbody tr:nth-child(even) {
+			background-color: rgba(#FFF, 0.05);
+		}
+	}
+
+	// Hover & Selected styles
+	tbody tr:nth-child(even), tbody tr:nth-child(odd) {
+		&:hover {
+			background-color: rgba($secondColor, 0.2);
+		}
+
+		&.selected {
+			background-color: rgba($secondColor, 0.6);	
+		}
+	}
+
+	.button {
+		font-size: 0.9em;
+		padding: 2px 10px;
+		margin: 0 0.3em;
+	}
+
+} // table.table
