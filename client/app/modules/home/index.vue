@@ -142,8 +142,12 @@
 							tr
 								th #
 								th Name
-								th Mail
-								th Phone
+								th 
+									i.fa.fa-envelope
+									| Mail
+								th 
+									i.fa.fa-phone
+									| Phone
 								th.align-right Outstanding
 								th Functions
 						tbody
@@ -174,7 +178,7 @@
 								td.align-right
 									button.button Edit
 									button.button.danger Disable
-							tr
+							tr.inactive
 								td 4
 								td Johnny Avlony
 								td info@johnnyavlony.com
@@ -226,7 +230,7 @@
 			margin-bottom: 20px;
 			padding: 8px 10px;
 			
-			background-color: darken($backgroundColor, 5%);
+			background-color: rgba(darken($backgroundColor, 10%), 0.6);
 			border: 1px solid darken($backgroundColor, 8%);
 			border-radius: 8px;
 			

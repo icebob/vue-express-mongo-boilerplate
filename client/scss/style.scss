@@ -70,17 +70,22 @@ body {
 			text-decoration: none;
 			outline: none !important;
 
-			transition: color .2s ease;
+			transition: color .5s ease;
+
+			strong {
+				color: $titleTextColor;
+				transition: color .5s ease;
+			}
 
 			&:hover {
 				color: $titleTextColor;
 
+				strong {
+					color: $headerTextColor;
+				}
 			}
 		}
 
-		strong {
-			color: $titleTextColor;
-		}
 	} // .logo
 
 
@@ -323,7 +328,7 @@ body {
 			}
 
 			&.active {
-				background-color: $secondColor;
+				background-color: rgba($secondColor, 0.8);
 				color: $textColor;
 
 				a {
