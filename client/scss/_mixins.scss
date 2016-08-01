@@ -10,3 +10,70 @@
 		clear: both;
 	}
 }
+
+@mixin absolute($w: 100%, $h: 100%) {
+	position: absolute;
+	left: 0; right: 0; bottom: 0; top: 0;
+	width: $w;
+	height: $h;
+	margin: auto auto;
+}
+
+@mixin ellipsis() {
+	white-space: nowrap;
+	text-overflow: ellipsis;	
+}
+
+
+@mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, white, 50%)) {
+	::-webkit-scrollbar {
+		width: $size;
+		height: $size;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: $foreground-color;
+		cursor: pointer;
+	}
+
+	::-webkit-scrollbar-track {
+		background: $background-color;
+	}
+
+	// For Internet Explorer
+	body {
+		scrollbar-face-color: $foreground-color;
+		scrollbar-track-color: $background-color;
+	}
+	
+}
+
+@mixin bgCover($relativeUrl) {
+	background: url($mainBgUrl) no-repeat center center;
+	background-size: cover;
+}
+
+@mixin bgTranslucentDark($opacity) {
+	background: rgba(0, 0, 0, $opacity);
+}
+
+@mixin placeholderStyle($color, $opacity) {
+	&::-webkit-input-placeholder {
+		color: $color;
+		opacity: $opacity;
+	}
+	&:-moz-placeholder {
+		/* Firefox 18- */
+		color: $color;
+		opacity: $opacity;
+	}
+	&::-moz-placeholder {
+		/* Firefox 19+ */
+		color: $color;
+		opacity: $opacity;
+	}
+	&:-ms-input-placeholder {
+		color: $color;
+		opacity: $opacity;
+	}
+}

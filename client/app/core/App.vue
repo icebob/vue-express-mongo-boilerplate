@@ -1,24 +1,35 @@
 <template lang="jade">
-	section.app-header
-		nav.nav
-			.nav-left
-				a.nav-item(href="#")
-					h3 Vue-Express-Mongo boilerplate App
+	section.page-header
+		.logo.left
+			a.nav-item(href="#")
+				span 
+					strong VEM
+					| App
 
-			span.nav-toggle
-				span
-				span
-				span
+		.menu-toggle.left
+			i.fa.fa-bars
 
-			.nav-right
-				.nav-item
-					.media
-						.media-left
-							figure.image.is-32x32
-								img(src="https://s3.amazonaws.com/uifaces/faces/twitter/peterme/128.jpg")
+		.search-box.left
+			i.fa.fa-search
+			input#page-search(type="search", placeholder="Search...")
 
-						.media-content
-							span Welcome Administrator
+		.user-box.right
+			.user-info.right
+				img.avatar(src='https://s3.amazonaws.com/uifaces/faces/twitter/kolage/73.jpg')
+				.username John Doe 
+				i.fa.fa-chevron-down
+
+		.notification-box.right
+			ul.icons
+				li.active
+					i.fa.fa-bell-o
+					span 5
+					.ring
+
+				li.active
+					i.fa.fa-envelope-o
+					span 20
+					.ring
 
 	aside.menu
 		.menu-label General
@@ -142,17 +153,9 @@
 		}
 	}
 
-	.app-header {
-		position: fixed;
-		min-width: 100%;
-		height: 50px;
-		z-index: 1024;
-		box-shadow: 0 2px 3px hsla(0,0%,7%,.1),0 0 0 1px hsla(0,0%,7%,.1);
-	}
-
 	aside {
 		position: fixed;
-		top: 50px;
+		top: 70px;
 		left: 0;
 		bottom: 0;
 		padding: 20px 0 50px;
