@@ -26,7 +26,7 @@
 					span 5
 					.ring
 
-				li.active
+				li
 					i.fa.fa-envelope-o
 					span 20
 					.ring
@@ -34,12 +34,23 @@
 	aside.menu
 		.menu-label General
 		ul.menu-list
-			li
-				a(v-link="'/home'") {{ "Home" | i18n }}
-			li
-				a(v-link="'/devices'") {{ "Devices" | i18n }}
-			li
-				a(v-link="'/posts'") {{ "Posts" | i18n }}
+			li(v-link-active)
+				a(v-link="'/home'")
+					span.icon
+						i.fa.fa-home
+					| {{ "Home" | i18n }}
+
+			li(v-link-active)
+				a(v-link="'/devices'")
+					span.icon
+						i.fa.fa-tablet
+					| {{ "Devices" | i18n }}
+
+			li(v-link-active)
+				a(v-link="'/posts'")
+					span.icon
+						i.fa.fa-comments
+					| {{ "Posts" | i18n }}
 
 		.menu-label Session
 		ul.menu-list
@@ -144,30 +155,6 @@
 
 	h2 {
 	  color: $masterColor;
-	}
-
-	li.active {
-		a {
-			font-weight: 600;
-			color: $color5;
-		}
-	}
-
-	aside {
-		position: fixed;
-		top: 70px;
-		left: 0;
-		bottom: 0;
-		padding: 20px 0 50px;
-		width: 180px;
-		min-width: 45px;
-		max-height: 100vh;
-		height: 100%;
-		z-index: 1023;
-		background: #fff;
-		box-shadow: 0 2px 3px hsla(0,0%,7%,.1),0 0 0 1px hsla(0,0%,7%,.1);
-		overflow-y: auto;
-		overflow-x: hidden;		
 	}
 
 	.app-main {

@@ -53,7 +53,7 @@ body {
 	background-color: $headerBgColor;
 	color: $headerTextColor;
 
-	box-shadow: 2px 0px 3px rgba(0, 0, 0, 0.5);
+	box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.5);
 	z-index: 1024;
 
 	.logo {
@@ -163,14 +163,19 @@ body {
 			list-style: none;
 
 			li {
+				cursor: pointer;
 				display: inline-block;
 				margin: 0 1.0rem;
 				position: relative;
 
+				$activeColor: lighten($secondColor, 5%);
+
 				i {
 					font-size: 1.4em;
-					opacity: 0.5;
+					opacity: 0.4;
 					transition: opacity .2s ease;
+
+					//text-shadow: 0px 1px 0px #666, 0px -1px 0px #000;
 
 					&:hover {
 						opacity: 0.8;
@@ -185,9 +190,9 @@ body {
 					white-space: nowrap;
 					text-align: center;
 					border-radius: 100%;
-					text-shadow: none;
 					line-height: 11px;
-					background-color: Red;
+					background-color: $activeColor;
+					color: Black;
 					position: absolute;
 					top: -5px;
 					right: -14px;
@@ -196,7 +201,7 @@ body {
 
 				.ring {
 					display: none;
-					border: 1px solid Red;
+					border: 1px solid $activeColor;
 					border-radius: 100px;
 					height: 40px;
 					width: 40px;
@@ -210,13 +215,17 @@ body {
 				&.active {
 					i {
 						opacity: 1;
+
+						color: $activeColor;
+						text-shadow: 0px 0px 4px lighten($activeColor, 10%);
 					}
 
 					span {
 						display: inline-block;
+						box-shadow: 0px 0px 8px lighten($activeColor, 10%);
 					}
 
-					ring {
+					.ring {
 						display: block;
 					}
 				}
@@ -232,7 +241,90 @@ body {
 } // .page-header
 
 
+.menu {
 
+	position: fixed;
+	width: $menuWidth;
+	min-height: 100%;
+	height: 100%;
+
+	z-index: 1023;
+
+	top: $headerHeight;
+	left: 0;
+	bottom: 0;
+
+	background-color: $headerBgColor;
+	color: $headerTextColor;
+
+	box-shadow: 2px 0px 3px rgba(0, 0, 0, 0.5);
+
+	overflow-y: auto;
+	overflow-x: hidden;		
+
+	padding-top: 1.2rem;
+
+	a {
+		text-decoration: none;
+		color: $textColor;
+	}
+
+	.menu-label {
+		padding-left: 0.7em;
+		text-transform: uppercase;
+		font-size: 1.2em;
+		line-height: 1.5em;
+		color: $titleTextColor;
+		&:not(:first-child) {
+			margin-top: 1.8rem;
+		}
+	} // .menu-label
+
+	.menu-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		font-size: 1.1em;
+
+		li {
+			border-left: 2px solid transparent;
+
+			transition: border-left .2s ease, background-color .2s ease;
+
+			a {
+				display: block;
+				padding: 0.8em 0 0.8em 1.6em;
+				transition: color .2s ease;
+
+				.icon {
+					display: inline-block;
+					width: 1.5em;
+					font-size: 1.2em;
+				}
+			}
+
+			&:hover {
+				border-left: 2px solid $secondColor;
+
+				a {
+					color: $secondColor;
+				}
+			}
+
+			&.active {
+				background-color: $secondColor;
+				color: $textColor;
+
+				a {
+					color: $textColor;
+				}
+			}
+
+		} // li
+
+	} // .menu-list
+
+} // .menu
 
 
 
