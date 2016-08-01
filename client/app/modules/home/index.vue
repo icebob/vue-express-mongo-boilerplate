@@ -103,18 +103,21 @@
 					span.text Form elements
 				.content.forms
 					form(action='#')
-						.input-container
-							label(for='text1') Label
-							input#text1(type='text', name='name', placeholder='Placeholder')
-						.input-container.input-container-valid
-							label(for='text2') Label for valid input
-							input#text2(type='text', name='name', placeholder='Placeholder')
-						.input-container.input-container-error
-							label(for='text3') Label for invalid input
-							input#text3(type='text', name='name', placeholder='Placeholder')
+						fieldset
+							legend Input fields
+
+							.form-group
+								label(for='text1') Label
+								input.form-control#text1(type='text', name='name', placeholder='Placeholder')
+							.form-group.valid
+								label(for='text2') Label for valid input
+								input.form-control#text2(type='text', name='name', placeholder='Placeholder')
+							.form-group.error
+								label(for='text3') Label for invalid input
+								input.form-control#text3(type='text', name='name', placeholder='Placeholder')
 
 						fieldset
-							legend Radio Label
+							legend Radio Labels
 							.option-container
 								input#radio1(type="radio", name="radio")
 								label(for="radio1") Option one
@@ -123,7 +126,7 @@
 								label(for="radio2") Option two
 								
 						fieldset
-							legend Checkbox Label
+							legend Checkbox Labels
 							.option-container
 								input#check1(type="checkbox")
 								label(for="check1") Option one

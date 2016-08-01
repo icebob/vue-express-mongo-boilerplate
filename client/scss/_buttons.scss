@@ -57,15 +57,16 @@
 	}
 
 	&.success {
-		@include buttonColorize(#20983b, $buttonTextColor);	
+		@include buttonColorize($successColor, $buttonTextColor);	
 	}
 
 	&.danger {
-		@include buttonColorize(#ab1b1b, $buttonTextColor);	
+		@include buttonColorize($dangerColor, $buttonTextColor);	
 	}
 
 	&[disabled] {
 		opacity: 0.5;
+		cursor: default;
 	}
 
 } // .button
