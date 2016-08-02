@@ -102,19 +102,19 @@
 
 						fieldset
 							legend Radio buttons
-							.option-container
+							.form-option
 								input#radio1(type="radio", name="radio")
 								label(for="radio1") Option one
-							.option-container
+							.form-option
 								input#radio2(type="radio", name="radio")
 								label(for="radio2") Option two
 								
 						fieldset
 							legend Checkboxes
-							.option-container
+							.form-option
 								input#check1(type="checkbox")
 								label(for="check1") Option one
-							.option-container
+							.form-option
 								input#check2(type="checkbox")
 								label(for="check2") Option two
 								
@@ -123,9 +123,7 @@
 					span.number 5.
 					span.text Alerts
 				.content.alerts
-					.alert
-						| This is a neutral alert.
-						a.alert-close(href="x") &times;
+					.alert This is a neutral alert.
 					.alert.alert-success
 						| This is a success alert.
 						a.alert-close(href="x") &times;

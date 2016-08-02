@@ -34,10 +34,16 @@
 	::-webkit-scrollbar-thumb {
 		background: $foreground-color;
 		cursor: pointer;
+		-webkit-border-radius: 1ex;
+		border: none;
 	}
 
 	::-webkit-scrollbar-track {
 		background: $background-color;
+	}
+
+	::-webkit-scrollbar-corner {
+		background: $backgroundColor;
 	}
 
 	// For Internet Explorer
@@ -83,5 +89,11 @@
 		color: $color;
 		font-family: $fontFamily;
 		opacity: $opacity;
+	}
+}
+
+@mixin setFocusHighLight($color) {
+	&:focus {
+		box-shadow: 0 0 8px rgba($color, 0.6);
 	}
 }

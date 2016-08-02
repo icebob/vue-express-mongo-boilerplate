@@ -18,17 +18,17 @@
 
 
 @keyframes pulsate {
-  30% {
-    transform: scale(0.1, 0.1);
-    opacity: 0.0;
-  }
-  35% {
-    opacity: 1.0;
-  }
-  40% {
-    transform: scale(1.2, 1.2);
-    opacity: 0.0;
-  }
+	30% {
+		transform: scale(0.1, 0.1);
+		opacity: 0.0;
+	}
+	35% {
+		opacity: 1.0;
+	}
+	40% {
+		transform: scale(1.2, 1.2);
+		opacity: 0.0;
+	}
 }
 
 
@@ -48,11 +48,11 @@ h4 { font-size: 1.8rem; }
 h5 { font-size: 1.6rem; }
 
 strong {
-  font-weight: 700;
+	font-weight: 700;
 }
 
 em {
-  font-style: italic;
+	font-style: italic;
 }
 
 p {
@@ -63,3 +63,4 @@ p {
 @import "buttons";
 @import "forms";
 @import "tables";
+@import "alerts";

@@ -222,18 +222,26 @@
 			padding: 0.5em;
 		}
 
-		.form-group.field-switch {
-			.field-wrap {
-				label {
-					padding: 0 !important;
-					background: none;
+	}
+</style>
 
-					.handle {
-						top: 1px;
-						left: 1px;
-					}
+<style lang="sass">
+	.field-switch {
+		.field-wrap {
+			label {
+				padding: 0 !important;
+				background: none;
+
+				.handle {
+					top: 1px;
+					left: 1px;
 				}
 			}
+
+			input:checked ~ .handle {
+				left: 91px;
+			} 
 		}
 	}
+
 </style>

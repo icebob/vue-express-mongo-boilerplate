@@ -65,9 +65,12 @@
 	}
 
 	&[disabled] {
-		opacity: 0.5;
-		cursor: default;
+		opacity: 0.6;
+		cursor: not-allowed;
+		box-shadow: none;
 	}
+
+	@include setFocusHighLight($secondColor);
 
 } // .button
 
