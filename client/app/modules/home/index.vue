@@ -67,19 +67,31 @@
 				h2
 					span.number 3.
 					span.text Buttons
-				.content.flex.align-center.justify-space-around.buttons
-					button.button Normal
-					button.button.primary Primary
-					button.button.success Success
-					button.button.danger Danger
-					button.button.outline Outline
+				fieldset
+					legend Normal buttons
+					.content.flex.align-center.justify-space-around.buttons
+						button.button Normal
+						button.button.primary Primary
+						button.button.success Success
+						button.button.danger Danger
+						button.button.outline Outline
 
-				.content.flex.align-center.justify-space-around.buttons
-					button.button(disabled="disabled") Normal disabled
-					button.button.primary(disabled="disabled") Primary disabled
-					button.button.success(disabled="disabled") Success disabled
-					button.button.danger(disabled="disabled") Danger disabled
-					button.button.outline(disabled="disabled") Outline disabled
+				fieldset
+					legend Disabled buttons
+					.content.flex.align-center.justify-space-around.buttons
+						button.button(disabled="disabled") Normal disabled
+						button.button.primary(disabled="disabled") Primary disabled
+						button.button.success(disabled="disabled") Success disabled
+						button.button.danger(disabled="disabled") Danger disabled
+						button.button.outline(disabled="disabled") Outline disabled
+
+				fieldset
+					legend Button group
+					.content.flex.align-center.justify-space-around.buttons
+						.button-group
+							button.button Left
+							button.button Middle
+							button.button Right
 				
 			section
 				h2
@@ -139,23 +151,23 @@
 						thead
 							tr
 								th #
-								th Name
-								th 
+								th.sortable Name
+								th.sortable 
 									i.fa.fa-envelope
 									| Mail
-								th 
+								th.sortable 
 									i.fa.fa-phone
 									| Phone
-								th.align-right Outstanding
-								th Functions
+								th.sortable.text-right Outstanding
+								th.text-right Functions
 						tbody
 							tr
 								td 1
 								td Johnny Avlony
 								td info@johnnyavlony.com
 								td (740) 841-7566
-								td.align-right $2,400.00
-								td.align-right
+								td.text-right $2,400.00
+								td.text-right
 									button.button Edit
 									button.button.danger Disable
 							tr
@@ -163,8 +175,8 @@
 								td Johnny Avlony
 								td info@johnnyavlony.com
 								td (740) 841-7566
-								td.align-right $2,400.00
-								td.align-right
+								td.text-right $2,400.00
+								td.text-right
 									button.button Edit
 									button.button.danger Disable
 							tr.selected
@@ -172,8 +184,8 @@
 								td Johnny Avlony
 								td info@johnnyavlony.com
 								td (740) 841-7566
-								td.align-right $2,400.00
-								td.align-right
+								td.text-right $2,400.00
+								td.text-right
 									button.button Edit
 									button.button.danger Disable
 							tr.inactive
@@ -181,8 +193,8 @@
 								td Johnny Avlony
 								td info@johnnyavlony.com
 								td (740) 841-7566
-								td.align-right $2,400.00
-								td.align-right
+								td.text-right $2,400.00
+								td.text-right
 									button.button Edit
 									button.button.danger Disable
 						tfoot
@@ -191,8 +203,8 @@
 								td 
 								td 
 								td 
-								td.align-right $15,500.00
-								td.align-right 
+								td.text-right $15,500.00
+								td.text-right 
 
 </template>
 

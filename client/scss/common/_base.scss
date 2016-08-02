@@ -2,14 +2,20 @@
 	box-sizing: border-box;  
 }
 
+@import "groups";
+@import "buttons";
+@import "forms";
+@import "tables";
+@import "alerts";
+
 .left {		float: left; }
 .right {	float: right; }
 .clear {	clear: both; }
 
-.text-left {	text-align: left; }
-.text-center {	text-align: center; }
-.text-right {	text-align: right; }
-.text-justify {	text-align: justify; }
+.text-left {	text-align: left !important; }
+.text-center {	text-align: center !important; }
+.text-right {	text-align: right !important; }
+.text-justify {	text-align: justify !important; }
 
 .disable-text-selection {
 	-webkit-touch-callout: none;
@@ -58,9 +64,3 @@ em {
 p {
 	
 }
-
-@import "groups";
-@import "buttons";
-@import "forms";
-@import "tables";
-@import "alerts";

@@ -5,7 +5,7 @@ table.table {
 	border-collapse: collapse;
 
 	th, td {
-		padding: 0.5em 0.2em;
+		padding: 0.5em 0.6em;
 		text-align: center;
 		cursor: default;
 	}
@@ -18,7 +18,7 @@ table.table {
 				text-transform: uppercase;
 				font-weight: $fontBold;
 
-				background-color: rgba($color1, 0.7);
+				background-color: rgba($color2-dark, 0.7);
 
 				i.fa {
 					margin-right: 0.4em;
@@ -36,6 +36,7 @@ table.table {
 					&:after {
 						content: "\f0dc";
 						float: right;
+						margin-left: 0.3em;
 						font-family: fontawesome;
 						font-size: 0.9em;
 						color: rgba($textColor, 0.4);
@@ -66,6 +67,7 @@ table.table {
 
 		tr {
 			transition: background-color .2s ease;
+
 			td {
 
 			} // td
@@ -82,8 +84,7 @@ table.table {
 				text-align: center;
 				font-weight: $fontBold;
 
-				background-color: rgba($color1, 0.7);
-				padding: 0.7em 0;
+				background-color: rgba($color2-dark, 0.7);
 
 				&:first-child {
 					border-radius: 0 0 0 8px;

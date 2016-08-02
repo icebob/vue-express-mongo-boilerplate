@@ -74,14 +74,22 @@
 
 } // .button
 
-input, select, textarea {
-	font-family: fontFamily;
-	font-size: 1.0rem;
-	padding: 3px 6px;
-	border: 1px solid $color2-light;
-	background: $color2-dark;
-	color: $textColor;
+.button-group {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;	
 
-	border-radius: 4px;
-	@include placeholderStyle($textColor, $fontFamily, 0.3);
+	.button:first-child:not(:last-child) {
+		border-top-right-radius: 0px;
+		border-bottom-right-radius: 0px;
+	}
+
+	.button:last-child:not(:first-child) {
+		border-top-left-radius: 0px;
+		border-bottom-left-radius: 0px;
+	}
+
+	.button:not(:first-child):not(:last-child) {
+		border-radius: 0px;
+	}
 }
