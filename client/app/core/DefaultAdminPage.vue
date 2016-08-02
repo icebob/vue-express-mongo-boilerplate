@@ -2,14 +2,10 @@
 	.container
 		h3.title {{ schema.title }}
 
-		.level
-			.level-left(v-if="enabledNew")
+		.flex.align-center.justify-space-around
+			.left(v-if="enabledNew")
 				button.button.is-primary(@click="newModel") {{ schema.resources.addCaption || "Add"}}
-			.level-center {{ _("SelectedOfAll", { selected: selected.length, all: rows.length } ) }}
-			.level-right(v-if="options.searchable")
-				.control.has-icon
-					input.input(type="search", :placeholder="_('Search3dots')", v-model="search")
-					i.fa.fa-search
+			.right {{ _("SelectedOfAll", { selected: selected.length, all: rows.length } ) }}
 
 		data-table(:schema="schema.table", :rows="rows", :order="order", :search="search", :selected="selected", :select="select", :select-all="selectAll")
 
@@ -20,10 +16,10 @@
 				div.alert.alert-danger(v-for="item in validationErrors", track-by="$index") {{ item.field.label}}: 
 					strong {{ item.error }}
 
-			.control.is-grouped.is-grouped-centered
-				button.control.button.is-primary(@click="saveModel", :disabled="!enabledSave") {{ schema.resources.saveCaption || _("Save") }}
-				button.control.button.is-outlined(@click="cloneModel", :disabled="!enabledClone") {{ schema.resources.cloneCaption || _("Clone") }}
-				button.control.button.is-danger(@click="deleteModel", :disabled="!enabledDelete") {{ schema.resources.deleteCaption || _("Delete") }}
+			.buttons.flex.justify-space-around
+				button.button.primary(@click="saveModel", :disabled="!enabledSave") {{ schema.resources.saveCaption || _("Save") }}
+				button.button.outline(@click="cloneModel", :disabled="!enabledClone") {{ schema.resources.cloneCaption || _("Clone") }}
+				button.button.danger(@click="deleteModel", :disabled="!enabledDelete") {{ schema.resources.deleteCaption || _("Delete") }}
 
 			// pre {{{ model | prettyJSON }}}
 
@@ -209,47 +205,34 @@
 </script>
 
 <style lang="sass" scoped>
+	@import "../../scss/common/mixins";
 
-	.headerbar {
-		display: flex;
-		justify-content: space-between;
-		align-self: middle;
-		margin-bottom: 0.5em;
-
-		.info {
-			margin: auto;
-		}
-		
-		.searchBar {
-			width: 300px;
-
-			.input-group-addon {
-				background-color: inherit;
-				padding: 6px 6px;
-			}
-
-			input {
-				font-family: "Open Sans";
-				border-left: 0;
-				padding-left: 6px;
-			}
-		}
-
-
+	.container {
+		padding: 1rem;
 	}
 
 	.form {
-		margin: 1rem;
+		margin: 1rem 0;
+
+		@include bgTranslucentBright(0.2);
+		border-radius: 8px;
 
 		.buttons {
-			margin: 10px 0;
-			text-align: center;
-			button {
-				margin: 0 10px;
-				padding: 6px 20px;
+			max-width: 400px;
+			padding: 0.5em;
+		}
 
-				border-radius: 4px;
-				border: 1px solid #666;
+		.form-group.field-switch {
+			.field-wrap {
+				label {
+					padding: 0 !important;
+					background: none;
+
+					.handle {
+						top: 1px;
+						left: 1px;
+					}
+				}
 			}
 		}
 	}

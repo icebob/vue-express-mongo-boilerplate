@@ -4,16 +4,21 @@ table.table {
 	width: 100%;
 	border-collapse: collapse;
 
+	th, td {
+		padding: 0.5em 0.2em;
+		text-align: center;
+		cursor: default;
+	}
+
 	thead {
 
 		tr {
 
 			th {
-				text-align: center;
+				text-transform: uppercase;
 				font-weight: $fontBold;
 
 				background-color: rgba($color1, 0.7);
-				padding: 0.7em 0;
 
 				i.fa {
 					margin-right: 0.4em;
@@ -27,6 +32,29 @@ table.table {
 					border-radius: 0 8px 0 0;
 				}
 
+				&.sortable {
+					&:after {
+						content: "\f0dc";
+						float: right;
+						font-family: fontawesome;
+						font-size: 0.9em;
+						color: rgba($textColor, 0.4);
+					}
+
+					&.sorted {
+						&:after {
+							content: "\f0dd";
+							color: $textColor;
+						}
+
+						&.desc:after {
+							content: "\f0de";
+						}
+
+					}
+
+				} // .sortable
+
 			} // th
 
 
@@ -39,8 +67,7 @@ table.table {
 		tr {
 			transition: background-color .2s ease;
 			td {
-				text-align: center;
-				padding: 0.5em 0.2em;
+
 			} // td
 
 		} // tr
@@ -72,6 +99,16 @@ table.table {
 
 	} // tfoot
 
+	.selector {
+		i {
+			font-size: 1.2em;
+			margin-top: 3px;
+		}
+	}	
+
+	thead tr th.selector i {
+		margin-right: 0;
+	}
 
 	&.bordered {
 		tbody tr td {
@@ -87,20 +124,33 @@ table.table {
 
 	// Hover & Selected styles
 	tbody tr:nth-child(even), tbody tr:nth-child(odd) {
+
+		&.inactive {
+			td {
+				font-style: italic;
+				color: darken($textColor, 40%);
+			}
+		}
+
 		&:hover {
 			background-color: rgba($secondColor, 0.2);
 		}
 
 		&.selected {
 			background-color: rgba($secondColor, 0.6);	
-		}
 
-		&.inactive {
-			td {
-				font-style: italic;
-				color: darken($textColor, 50%);
+			td.selector i:before {
+				content: "\f046";
+			}			
+
+			&.inactive {
+
+				td {
+					color: darken($textColor, 20%);
+				}
 			}
 		}
+
 	}
 
 	.button {

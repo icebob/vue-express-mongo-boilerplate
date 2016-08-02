@@ -57,6 +57,10 @@
 	background: rgba(0, 0, 0, $opacity);
 }
 
+@mixin bgTranslucentBright($opacity) {
+	background: rgba(255, 255, 255, $opacity);
+}
+
 @mixin placeholderStyle($color, $fontFamily, $opacity) {
 	&::-webkit-input-placeholder {
 		color: $color;

@@ -7,7 +7,7 @@
 				h2
 					span.number 1.
 					span.text Color palette
-				.content.flex.colors
+				.content.flex.align-center.justify-space-around.colors
 					.box.box1
 						.main
 						.light
@@ -67,14 +67,14 @@
 				h2
 					span.number 3.
 					span.text Buttons
-				.content.flex.buttons
+				.content.flex.align-center.justify-space-around.buttons
 					button.button Normal
 					button.button.primary Primary
 					button.button.success Success
 					button.button.danger Danger
 					button.button.outline Outline
 
-				.content.flex.buttons
+				.content.flex.align-center.justify-space-around.buttons
 					button.button(disabled="disabled") Normal disabled
 					button.button.primary(disabled="disabled") Primary disabled
 					button.button.success(disabled="disabled") Success disabled
@@ -249,12 +249,6 @@
 		} // .title
 
 	} //. section	
-
-	.flex {
-		display: flex;
-		align-items: center;
-    	justify-content: space-around;
-	}
 
 	.buttons {
 		margin-bottom: 20px;
