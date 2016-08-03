@@ -118,7 +118,8 @@
 							button.button
 								i.icon.fa.fa-align-right
 								| Right
-				
+				hr
+
 			section
 				h2
 					span.number 4.

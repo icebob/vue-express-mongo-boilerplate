@@ -23,6 +23,18 @@
 	user-select: none;
 }
 
+.disabled {
+	pointer-events: none;
+}
+
+.overlay {
+
+}
+
+.fullscreen {
+
+}
+
 
 // Headings
 // --------
@@ -49,4 +61,11 @@ em {
 
 p {
 	
+}
+
+hr {
+	border: 0;
+	border-top: 1px solid $color2-light;
+	margin: 20px 10%;
+	width: 80%
 }

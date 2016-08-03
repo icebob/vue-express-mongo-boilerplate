@@ -5,7 +5,7 @@
 
 //@import "../../node_modules/bulma/bulma.sass";
 
-@include scrollbars(.5em, $color2, rgba(0,0,0,0.8));
+@include scrollbars(.5em, $color2-light, rgba(0,0,0,0.8));
 
 html {
 	position: relative;
@@ -29,18 +29,21 @@ body {
 	font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;	
 
-	&::before {
-		content: '';
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
-		background: url('https://raw.githubusercontent.com/akveo/blur-admin/master/src/assets/img/blur-bg.jpg') no-repeat center center;
-		//background: url($images-root + 'blur-bg.jpg') no-repeat center center;
-		background-size: cover;
-		will-change: transform;
-		z-index: -1;
+	@if $backgroundImage != none {
+		&::before {
+			content: '';
+			position: fixed;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			background-image: $backgroundImage;
+			background: $backgroundImage no-repeat center center;
+			//background: url($images-root + 'blur-bg.jpg') no-repeat center center;
+			background-size: cover;
+			will-change: transform;
+			z-index: -1;
+		}
 	}
 
 }
@@ -369,7 +372,11 @@ body {
 
 
 .app-main {
-	background-color: rgba($color1, 0.4);
+	background-color: $backgroundColor;
+
+	@if $backgroundImage != none {
+		background-color: rgba($backgroundColor, 0.5);
+	}
 
 	padding-top: $headerHeight;
 	margin-left: $menuWidth;

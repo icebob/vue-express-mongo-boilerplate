@@ -25,15 +25,18 @@ $masterColor: $color2;
 $secondColor: $color3;
 //$secondColor: $color5;
 
-$backgroundColor: $color2;
-$overlayColor: lighten(desaturate($color3, 30%), 10%);
+$backgroundColor: $color2-dark;
+$backgroundImage: url('https://raw.githubusercontent.com/akveo/blur-admin/master/src/assets/img/blur-bg.jpg');
+//$backgroundImage: none;
+
+//$overlayColor: lighten(desaturate($color3, 30%), 10%);
 $overlayColor: $color2;
 
 $textColor: $color4;
 $altTextColor: $color1;
 $titleTextColor: $secondColor;
 
-$buttonColor: lighten($color2, 5%);
+$buttonColor: $color2-light;
 $buttonPrimaryColor: $secondColor;
 $buttonTextColor: $textColor;
 

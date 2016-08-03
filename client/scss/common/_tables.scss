@@ -1,7 +1,7 @@
 
 table.table {
 
-	$headerColor: rgba($color2-dark, 0.7);
+	$headerColor: rgba($color2-light, 0.7);
 
 	width: 100%;
 	border-collapse: collapse;
@@ -146,7 +146,7 @@ table.table {
 		}
 
 		&:hover {
-			background-color: rgba($secondColor, 0.2);
+			background-color: rgba($secondColor, 0.15);
 		}
 
 		&.selected {
