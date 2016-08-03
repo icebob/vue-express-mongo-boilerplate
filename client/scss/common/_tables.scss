@@ -1,6 +1,8 @@
 
 table.table {
 
+	$headerColor: rgba($color2-dark, 0.7);
+
 	width: 100%;
 	border-collapse: collapse;
 
@@ -18,7 +20,7 @@ table.table {
 				text-transform: uppercase;
 				font-weight: $fontBold;
 
-				background-color: rgba($color2-dark, 0.7);
+				background-color: $headerColor;
 
 				i.fa {
 					margin-right: 0.4em;
@@ -70,6 +72,16 @@ table.table {
 
 			td {
 
+
+				// Table borders
+				&:first-child {
+					border-left: 1px solid $headerColor;
+				}
+
+				&:last-child {
+					border-right: 1px solid $headerColor;
+				}
+
 			} // td
 
 		} // tr
@@ -84,7 +96,7 @@ table.table {
 				text-align: center;
 				font-weight: $fontBold;
 
-				background-color: rgba($color2-dark, 0.7);
+				background-color: $headerColor;
 
 				&:first-child {
 					border-radius: 0 0 0 8px;
@@ -112,7 +124,7 @@ table.table {
 	}
 
 	&.bordered {
-		tbody tr td {
+		tbody tr:not(:last-child) td {
 			border-bottom: 1px solid rgba(#FFF, 0.1);
 		}
 	}
@@ -155,9 +167,9 @@ table.table {
 	}
 
 	.button {
-		font-size: 0.9em;
-		padding: 2px 10px;
-		margin: 0 0.3em;
+		&:not(:last-child) {
+			margin-right: 0.3em;
+		}
 	}
 
 } // table.table

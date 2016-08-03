@@ -14,9 +14,17 @@
 		background-color: $successColor;
 	}
 	
+	&.alert-warning {
+		background-color: $warningColor;
+	}
+
 	&.alert-error {
 		background-color: $dangerColor;
 	}
+
+	.icon {
+		margin-right: 0.8em;
+	}	
 	
 	.alert-close {
 		border: 0;

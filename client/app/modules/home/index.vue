@@ -72,7 +72,10 @@
 					.content.flex.align-center.justify-space-around.buttons
 						button.button Normal
 						button.button.primary Primary
-						button.button.success Success
+						button.button.success 
+							i.icon.fa.fa-check
+							| Success
+						button.button.warning Warning
 						button.button.danger Danger
 						button.button.outline Outline
 
@@ -81,17 +84,38 @@
 					.content.flex.align-center.justify-space-around.buttons
 						button.button(disabled="disabled") Normal disabled
 						button.button.primary(disabled="disabled") Primary disabled
-						button.button.success(disabled="disabled") Success disabled
+						button.button.success(disabled="disabled")
+							i.icon.fa.fa-check
+							| Success disabled
+						button.button.warning(disabled="disabled") Warning disabled
 						button.button.danger(disabled="disabled") Danger disabled
 						button.button.outline(disabled="disabled") Outline disabled
+
+				fieldset
+					legend Mini buttons
+					.content.flex.align-center.justify-space-around.buttons
+						button.button.mini Normal
+						button.button.mini.primary Primary
+						button.button.mini.success
+							i.icon.fa.fa-check
+							| Success
+						button.button.mini.warning Warning
+						button.button.mini.danger Danger
+						button.button.mini.outline Outline
 
 				fieldset
 					legend Button group
 					.content.flex.align-center.justify-space-around.buttons
 						.button-group
-							button.button Left
-							button.button Middle
-							button.button Right
+							button.button 
+								i.icon.fa.fa-align-left
+								| Left
+							button.button
+								i.icon.fa.fa-align-center
+								| Middle
+							button.button
+								i.icon.fa.fa-align-right
+								| Right
 				
 			section
 				h2
@@ -135,11 +159,19 @@
 					span.number 5.
 					span.text Alerts
 				.content.alerts
-					.alert This is a neutral alert.
+					.alert 
+						i.icon.fa.fa-info-circle
+						| This is a neutral alert.						
 					.alert.alert-success
+						i.icon.fa.fa-check
 						| This is a success alert.
 						a.alert-close(href="x") &times;
+					.alert.alert-warning
+						i.icon.fa.fa-exclamation-triangle
+						| This is a warning alert.
+						a.alert-close(href="x") &times;				
 					.alert.alert-error
+						i.icon.fa.fa-times-circle
 						| This is an error alert.
 						a.alert-close(href="x") &times;				
 			section
@@ -168,8 +200,10 @@
 								td (740) 841-7566
 								td.text-right $2,400.00
 								td.text-right
-									button.button Edit
-									button.button.danger Disable
+									button.button.mini Edit
+									button.button.mini.danger 
+										i.icon.fa.fa-trash
+										| Delete
 							tr
 								td 2
 								td Johnny Avlony
@@ -177,8 +211,10 @@
 								td (740) 841-7566
 								td.text-right $2,400.00
 								td.text-right
-									button.button Edit
-									button.button.danger Disable
+									button.button.mini Edit
+									button.button.mini.danger 
+										i.icon.fa.fa-trash
+										| Delete
 							tr.selected
 								td 3
 								td Johnny Avlony
@@ -186,8 +222,10 @@
 								td (740) 841-7566
 								td.text-right $2,400.00
 								td.text-right
-									button.button Edit
-									button.button.danger Disable
+									button.button.mini Edit
+									button.button.mini.danger 
+										i.icon.fa.fa-trash
+										| Delete
 							tr.inactive
 								td 4
 								td Johnny Avlony
@@ -195,8 +233,10 @@
 								td (740) 841-7566
 								td.text-right $2,400.00
 								td.text-right
-									button.button Edit
-									button.button.danger Disable
+									button.button.mini Edit
+									button.button.mini.danger 
+										i.icon.fa.fa-trash
+										| Delete
 						tfoot
 							tr
 								td 4

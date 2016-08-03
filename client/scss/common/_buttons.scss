@@ -45,6 +45,11 @@
 		margin-right: 5px;
 	}
 
+	&.mini {
+		font-size: 0.9em;
+		padding: 2px 10px;
+	}
+
 	@include buttonColorize(lighten($color2, 5%), $buttonTextColor);
 
 	&.primary {
@@ -58,6 +63,10 @@
 
 	&.success {
 		@include buttonColorize($successColor, $buttonTextColor);	
+	}
+
+	&.warning {
+		@include buttonColorize($warningColor, $buttonTextColor);	
 	}
 
 	&.danger {
