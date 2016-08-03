@@ -385,12 +385,13 @@ body {
 
 	a {
 		color: $textColor;
-		border-bottom: 1px solid $secondColor;
+		color: $secondColor;
+		border-bottom: 0px;
 		text-decoration: none;
 		cursor: pointer;
 		
 		&:hover {
-			border-bottom: 2px solid $secondColor;
+			border-bottom: 1px solid $secondColor;
 		}	
 	}
 

@@ -84,7 +84,7 @@
 			position: absolute;
 
 			@include loading(16px);
-			@include center(16px);
+			@include center(20px); // 16px + 2 * 2px border
 		}
 	}
 
@@ -95,7 +95,7 @@
 		&.loading {
 			&:after {
 				@include loading(10px);
-				@include center(10px);
+				@include center(14px);
 			}
 		}
 	}

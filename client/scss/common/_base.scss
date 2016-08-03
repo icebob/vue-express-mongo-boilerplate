@@ -28,7 +28,7 @@
 }
 
 .overlay {
-
+	@include overlay;
 }
 
 .fullscreen {
@@ -61,6 +61,10 @@ em {
 
 p {
 	
+}
+
+a {
+	cursor: pointer;
 }
 
 hr {

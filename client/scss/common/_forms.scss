@@ -1,5 +1,5 @@
 .form-group {
-
+	position: relative;
 	margin-bottom: 1.0em;
 
 	label {
@@ -9,6 +9,8 @@
 
 		color: $textColor;
 		font-weight: $fontNormal;
+
+		text-shadow: 0 0 2px rgba(#000, 0.6);
 
 	} // label
 
@@ -30,10 +32,56 @@
 		box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
 		transition: border-color ease-in-out .2s, box-shadow ease-in-out .2s;
 
-		@include placeholderStyle($textColor, $fontFamily, 0.4);
+		@include placeholderStyle {
+			color: $textColor;
+			font-family: $fontFamily;
+			opacity: 0.4;
+		}
 
 		@include setFocusHighLight($secondColor);
 	} // .form-control
+
+	&.has-icon {
+		.form-control {
+			padding-right: 2.0em;
+		}
+
+		.icon {
+			position: absolute;
+			right: 0.4em;
+			top: 1.6em;
+			display: block;
+			font-size: 1.2em;
+		}
+
+	}
+
+	.hint {
+		font-style: italic;
+		font-size: 0.8em;	
+		color: rgba($textColor, 0.8);
+	}
+
+	.errors {
+		color: lighten($dangerColor, 20%);
+		font-size: 0.80em;
+		text-shadow: 0 0 2px rgba(#000, 0.6);
+
+		span {
+			&:before {
+				// exclamation-triangle icon
+				content: "\f071";
+				font-family: FontAwesome;
+				padding-right: 0.5em;
+			}
+
+			display: block;
+			background-image: null !important;
+			margin-top: 0.2em;
+			margin-left: 0.3em;
+			font-weight: 600;
+		}
+	}
 
 	&.valid {
 		$c: lighten($successColor, 10%);
@@ -43,6 +91,7 @@
 
 		.form-control {
 			border: 1px solid $c;
+			background-color: rgba($successColor, 0.10);
 		}
 
 	} // .valid
@@ -55,6 +104,7 @@
 
 		.form-control {
 			border: 1px solid $c;
+			background-color: rgba(red, 0.15);
 		}
 
 	} // .error

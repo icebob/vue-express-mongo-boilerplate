@@ -83,14 +83,30 @@
 				fieldset
 					legend Disabled buttons
 					.content.flex.align-center.justify-space-around.buttons
-						button.button(disabled="disabled") Normal disabled
-						button.button.primary(disabled="disabled") Primary disabled
+						button.button(disabled="disabled") Normal
+						button.button.primary(disabled="disabled") Primary
 						button.button.success(disabled="disabled")
 							i.icon.fa.fa-check
-							| Success disabled
-						button.button.warning(disabled="disabled") Warning disabled
-						button.button.danger(disabled="disabled") Danger disabled
-						button.button.outline(disabled="disabled") Outline disabled
+							| Success
+						button.button.warning(disabled="disabled") Warning
+						button.button.danger(disabled="disabled") Danger
+						button.button.outline(disabled="disabled") Outline
+
+				fieldset
+					legend Icon buttons
+					.content.flex.align-center.justify-space-around.buttons
+						button.button
+							i.fa.fa-home
+						button.button.primary
+							i.fa.fa-tasks
+						button.button.success 
+							i.fa.fa-cogs
+						button.button.warning
+							i.fa.fa-comments
+						button.button.danger
+							i.fa.fa-trash
+						button.button.outline
+							i.fa.fa-pencil
 
 				fieldset
 					legend Mini buttons
@@ -132,12 +148,22 @@
 							.form-group
 								label(for='text1') Label
 								input.form-control#text1(type='text', name='name', placeholder='Placeholder')
-							.form-group.valid
+
+							.form-group
+								label(for='text1') Label with hint
+								input.form-control#text1(type='text', name='name', placeholder='Placeholder')
+								.hint Maxium 100 characters
+							.form-group.has-icon.valid
 								label(for='text2') Label for valid input
 								input.form-control#text2(type='text', name='name', placeholder='Placeholder')
-							.form-group.error
-								label(for='text3') Label for invalid input
+								i.icon.fa.fa-check
+							.form-group.has-icon.error
+								label(for='text3') Label for invalid input with error messages
 								input.form-control#text3(type='text', name='name', placeholder='Placeholder')
+								i.icon.fa.fa-exclamation-triangle
+								.errors
+									span Too short!
+									span Invalid text content!
 
 						fieldset
 							legend Radio buttons

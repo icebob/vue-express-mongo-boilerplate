@@ -1,5 +1,4 @@
 
-
 @mixin clearfix() {
 	&:before,
 	&:after {
@@ -19,10 +18,68 @@
 	margin: auto auto;
 }
 
+@mixin overlay($offset: 0) {
+	position: absolute;
+
+	bottom: $offset;
+	left: $offset;
+	right: $offset;
+	top: $offset;
+}
+
 @mixin ellipsis() {
 	white-space: nowrap;
 	text-overflow: ellipsis;	
 }
+
+@mixin bgCover($relativeUrl) {
+	background: url($mainBgUrl) no-repeat center center;
+	background-size: cover;
+}
+
+@mixin bgTranslucentDark($opacity) {
+	background: rgba(0, 0, 0, $opacity);
+}
+
+@mixin bgTranslucentBright($opacity) {
+	background: rgba(255, 255, 255, $opacity);
+}
+
+@mixin placeholderStyle {
+	$placeholders: ':-moz' ':-webkit-input' '-moz' '-ms-input';
+	@each $placeholder in $placeholders {
+		&:#{$placeholder}-placeholder {
+			@content
+		}
+	}
+}
+
+@mixin setFocusHighLight($color) {
+	&:focus {
+		box-shadow: 0 0 8px rgba($color, 0.6);
+	}
+}
+
+@mixin loading($size: 16px, $color: $textColor) {
+	animation: spin-around .8s infinite linear;
+	border: 2px solid $color;
+	border-radius: 100%;
+	border-right-color: transparent;
+	border-top-color: transparent;
+	content: "";
+	display: block;
+	height: $size;
+	width: $size;
+}
+
+@mixin center($size) {
+	left: 50%;
+	margin-left: -($size / 2);
+	margin-top: -($size / 2);
+	position: absolute;
+	top: 50%;
+}
+
 
 
 @mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, white, 50%)) {
@@ -52,68 +109,4 @@
 		scrollbar-track-color: $background-color;
 	}
 	
-}
-
-@mixin bgCover($relativeUrl) {
-	background: url($mainBgUrl) no-repeat center center;
-	background-size: cover;
-}
-
-@mixin bgTranslucentDark($opacity) {
-	background: rgba(0, 0, 0, $opacity);
-}
-
-@mixin bgTranslucentBright($opacity) {
-	background: rgba(255, 255, 255, $opacity);
-}
-
-@mixin placeholderStyle($color, $fontFamily, $opacity) {
-	&::-webkit-input-placeholder {
-		color: $color;
-		font-family: $fontFamily;
-		opacity: $opacity;
-	}
-	&:-moz-placeholder {
-		/* Firefox 18- */
-		color: $color;
-		font-family: $fontFamily;
-		opacity: $opacity;
-	}
-	&::-moz-placeholder {
-		/* Firefox 19+ */
-		color: $color;
-		font-family: $fontFamily;
-		opacity: $opacity;
-	}
-	&:-ms-input-placeholder {
-		color: $color;
-		font-family: $fontFamily;
-		opacity: $opacity;
-	}
-}
-
-@mixin setFocusHighLight($color) {
-	&:focus {
-		box-shadow: 0 0 8px rgba($color, 0.6);
-	}
-}
-
-@mixin loading($size: 16px, $color: $textColor) {
-	animation: spin-around .8s infinite linear;
-	border: 2px solid $color;
-	border-radius: 100%;
-	border-right-color: transparent;
-	border-top-color: transparent;
-	content: "";
-	display: block;
-	height: $size;
-	width: $size;
-}
-
-@mixin center($size) {
-	left: 50%;
-	margin-left: -($size / 2);
-	margin-top: -($size / 2);
-	position: absolute;
-	top: 50%;
 }
