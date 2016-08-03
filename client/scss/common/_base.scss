@@ -7,6 +7,7 @@
 @import "forms";
 @import "tables";
 @import "alerts";
+@import "animations";
 
 .left {		float: left; }
 .right {	float: right; }
@@ -20,21 +21,6 @@
 .disable-text-selection {
 	-webkit-touch-callout: none;
 	user-select: none;
-}
-
-
-@keyframes pulsate {
-	30% {
-		transform: scale(0.1, 0.1);
-		opacity: 0.0;
-	}
-	35% {
-		opacity: 1.0;
-	}
-	40% {
-		transform: scale(1.2, 1.2);
-		opacity: 0.0;
-	}
 }
 
 

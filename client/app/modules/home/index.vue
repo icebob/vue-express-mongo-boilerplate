@@ -78,6 +78,7 @@
 						button.button.warning Warning
 						button.button.danger Danger
 						button.button.outline Outline
+						button.button.loading Loading
 
 				fieldset
 					legend Disabled buttons
@@ -102,6 +103,7 @@
 						button.button.mini.warning Warning
 						button.button.mini.danger Danger
 						button.button.mini.outline Outline
+						button.button.mini.loading Loading
 
 				fieldset
 					legend Button group

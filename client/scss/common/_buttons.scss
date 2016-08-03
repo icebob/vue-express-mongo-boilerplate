@@ -45,11 +45,6 @@
 		margin-right: 5px;
 	}
 
-	&.mini {
-		font-size: 0.9em;
-		padding: 2px 10px;
-	}
-
 	@include buttonColorize(lighten($color2, 5%), $buttonTextColor);
 
 	&.primary {
@@ -77,6 +72,31 @@
 		opacity: 0.6;
 		cursor: not-allowed;
 		box-shadow: none;
+	}
+
+	&.loading {
+		color: transparent !important;
+		pointer-events: none;
+		position: relative;
+
+		&:after {
+			position: absolute;
+
+			@include loading(16px);
+			@include center(16px);
+		}
+	}
+
+	&.mini {
+		font-size: 0.9em;
+		padding: 2px 10px;
+
+		&.loading {
+			&:after {
+				@include loading(10px);
+				@include center(10px);
+			}
+		}
 	}
 
 	@include setFocusHighLight($secondColor);

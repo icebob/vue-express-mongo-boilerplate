@@ -97,3 +97,23 @@
 		box-shadow: 0 0 8px rgba($color, 0.6);
 	}
 }
+
+@mixin loading($size: 16px, $color: $textColor) {
+	animation: spin-around .8s infinite linear;
+	border: 2px solid $color;
+	border-radius: 100%;
+	border-right-color: transparent;
+	border-top-color: transparent;
+	content: "";
+	display: block;
+	height: $size;
+	width: $size;
+}
+
+@mixin center($size) {
+	left: 50%;
+	margin-left: -($size / 2);
+	margin-top: -($size / 2);
+	position: absolute;
+	top: 50%;
+}
