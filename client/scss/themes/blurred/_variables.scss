@@ -1,11 +1,11 @@
 /* Coolors Exported Palette - coolors.co/00171f-007ea7-00a8e8-ffffff-ef7f0a */
 /* Complementer color - http://colorschemedesigner.com/csd-3.5/#3o21Ttqx7w0w0 */
 
-$color1: #00171f; //rgba(0, 23, 31, 100)
-$color2: #14536D; //#007ea7; //rgba(0, 126, 167, 100)
-$color3: #00a8e8; //rgba(0, 168, 232, 100)
-$color4: #ffffff; //rgba(255, 255, 255, 100)
-$color5: #df691a; //rgba(239, 127, 10, 100)
+$color1: #00171f; //rgba(0, 23, 31, 255)
+$color2: #104357; //rgba(16, 67, 87, 255)
+$color3: #00a8e8; //rgba(0, 168, 232, 255)
+$color4: #ffffff; //rgba(255, 255, 255, 255)
+$color5: #df691a; //rgba(239, 127, 10, 255)
 
 $colorAlt: 5%;
 
@@ -25,9 +25,9 @@ $masterColor: $color2;
 $secondColor: $color3;
 //$secondColor: $color5;
 
-$backgroundColor: $color2-dark;
-$backgroundImage: url('https://raw.githubusercontent.com/akveo/blur-admin/master/src/assets/img/blur-bg.jpg');
-//$backgroundImage: none;
+$backgroundColor: $color2;
+//$backgroundImage: url('https://raw.githubusercontent.com/akveo/blur-admin/master/src/assets/img/blur-bg.jpg');
+$backgroundImage: none;
 
 //$overlayColor: lighten(desaturate($color3, 30%), 10%);
 $overlayColor: $color2;

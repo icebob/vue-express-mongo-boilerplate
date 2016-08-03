@@ -45,7 +45,7 @@
 		margin-right: 5px;
 	}
 
-	@include buttonColorize(lighten($color2, 5%), $buttonTextColor);
+	@include buttonColorize($buttonColor, $buttonTextColor);
 
 	&.primary {
 		@include buttonColorize($buttonPrimaryColor, $buttonTextColor);
