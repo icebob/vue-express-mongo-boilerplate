@@ -136,7 +136,7 @@ TODO
 * [ ] check https://github.com/keystonejs/keystone
 * [ ] add unit tests with mocha, chai, sinon
 * [ ] add E2E test with nightwatch
-* [ ] design styles: progressbar, dropdown, FAB, badges, tabs, panels
+* [ ] design styles: progressbar, dropdown, badges, tabs, panels
 
 
 ## License

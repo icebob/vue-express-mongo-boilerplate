@@ -81,6 +81,32 @@
 						button.button.loading Loading
 
 				fieldset
+					legend Large buttons
+					.content.flex.align-center.justify-space-around.buttons
+						button.button.large Normal
+						button.button.large.primary Primary
+						button.button.large.success 
+							i.icon.fa.fa-check
+							| Success
+						button.button.large.warning Warning
+						button.button.large.danger Danger
+						button.button.large.outline Outline
+						button.button.large.loading Loading
+
+				fieldset
+					legend Small buttons
+					.content.flex.align-center.justify-space-around.buttons
+						button.button.small Normal
+						button.button.small.primary Primary
+						button.button.small.success
+							i.icon.fa.fa-check
+							| Success
+						button.button.small.warning Warning
+						button.button.small.danger Danger
+						button.button.small.outline Outline
+						button.button.small.loading Loading
+
+				fieldset
 					legend Disabled buttons
 					.content.flex.align-center.justify-space-around.buttons
 						button.button(disabled="disabled") Normal
@@ -109,17 +135,26 @@
 							i.fa.fa-pencil
 
 				fieldset
-					legend Mini buttons
+					legend Floating buttons
 					.content.flex.align-center.justify-space-around.buttons
-						button.button.mini Normal
-						button.button.mini.primary Primary
-						button.button.mini.success
+						button.button.fab
+							i.icon.fa.fa-plus
+							| Normal
+						button.button.fab.large.primary 
+							i.icon.fa.fa-plus
+							| Primary
+						button.button.fab.success
 							i.icon.fa.fa-check
 							| Success
-						button.button.mini.warning Warning
-						button.button.mini.danger Danger
-						button.button.mini.outline Outline
-						button.button.mini.loading Loading
+						button.button.fab.warning(disabled="disabled")
+							i.icon.fa.fa-comments
+							| Warning
+						button.button.fab.danger
+							i.icon.fa.fa-trash
+							| Danger
+						button.button.fab.outline
+							i.icon.fa.fa-bars
+							| Outline				
 
 				fieldset
 					legend Button group
@@ -229,8 +264,8 @@
 								td (740) 841-7566
 								td.text-right $2,400.00
 								td.text-right
-									button.button.mini Edit
-									button.button.mini.danger 
+									button.button.small Edit
+									button.button.small.danger 
 										i.icon.fa.fa-trash
 										| Delete
 							tr
@@ -240,8 +275,8 @@
 								td (740) 841-7566
 								td.text-right $2,400.00
 								td.text-right
-									button.button.mini Edit
-									button.button.mini.danger 
+									button.button.small Edit
+									button.button.small.danger 
 										i.icon.fa.fa-trash
 										| Delete
 							tr.selected
@@ -251,8 +286,8 @@
 								td (740) 841-7566
 								td.text-right $2,400.00
 								td.text-right
-									button.button.mini Edit
-									button.button.mini.danger 
+									button.button.small Edit
+									button.button.small.danger 
 										i.icon.fa.fa-trash
 										| Delete
 							tr.inactive
@@ -262,8 +297,8 @@
 								td (740) 841-7566
 								td.text-right $2,400.00
 								td.text-right
-									button.button.mini Edit
-									button.button.mini.danger 
+									button.button.small Edit
+									button.button.small.danger 
 										i.icon.fa.fa-trash
 										| Delete
 						tfoot
@@ -275,6 +310,31 @@
 								td.text-right $15,500.00
 								td.text-right 
 
+			section
+				h2
+					span.number 7.
+					span.text Tags / badges
+				fieldset
+					legend Tags
+
+					.content.flex.align-center.justify-space-around.buttons
+						.tag Normal
+						.tag.primary Primary
+						.tag.success Success
+						.tag.warning Warning
+						.tag.danger Danger
+						.tag.outline Outline
+
+				fieldset
+					legend Number tags
+					
+					.content.flex.align-center.justify-space-around.buttons
+						.tag.number 15
+						.tag.number.primary 5
+						.tag.number.success 100+
+						.tag.number.warning 45
+						.tag.number.danger 0
+						.tag.number.outline 8
 </template>
 
 <script>

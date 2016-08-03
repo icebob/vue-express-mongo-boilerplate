@@ -25,6 +25,8 @@
 	margin-bottom: 0;
 	font-size: 1.0rem;
 	font-weight: 400;
+	text-shadow: 1px 1px 2px rgba(#000, 0.4);
+
 	line-height: 1.42857143;
 	white-space: nowrap;
 	vertical-align: middle;
@@ -77,6 +79,7 @@
 
 	&.loading {
 		color: transparent !important;
+		text-shadow: none;
 		pointer-events: none;
 		position: relative;
 
@@ -88,9 +91,22 @@
 		}
 	}
 
-	&.mini {
+	&.large {
+		font-size: 1.2em;
+		line-height: 2.0em;
+		padding: 2px 1.8em;
+
+		&.loading {
+			&:after {
+				@include loading(20px);
+				@include center(24px);
+			}
+		}
+	}
+
+	&.small {
 		font-size: 0.9em;
-		padding: 2px 10px;
+		padding: 2px 1.0em;
 
 		&.loading {
 			&:after {
@@ -121,5 +137,40 @@
 
 	.button:not(:first-child):not(:last-child) {
 		border-radius: 0px;
+	}
+}
+
+// --- FLOATING ACTION BUTTONS ---
+
+.button.fab { 
+	$size: 2.3em;
+
+	width: $size;
+	height: $size;
+	line-height: $size;
+
+	display: inline-block;
+	overflow: hidden;
+	z-index: 1;
+	padding: 0;
+
+	white-space: initial;
+	vertical-align: middle;
+	border-radius: 50%;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,.35);
+
+	touch-action: manipulation;
+	user-select: none;
+
+	.icon {
+		margin-right: 0;
+	}
+
+	&:hover {
+		box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);		
+	}
+
+	&.large {
+		font-size: 1.5em;
 	}
 }

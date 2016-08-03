@@ -384,9 +384,8 @@ body {
 	padding-left: 10px;
 
 	a {
-		color: $textColor;
 		color: $secondColor;
-		border-bottom: 0px;
+		border-bottom: 1px solid $color2-light;
 		text-decoration: none;
 		cursor: pointer;
 		
