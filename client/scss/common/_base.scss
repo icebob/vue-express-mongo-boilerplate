@@ -9,6 +9,9 @@
 @import "alerts";
 @import "tags";
 @import "progressbars";
+@import "panels";
+@import "cards";
+@import "ribbon";
 @import "animations";
 
 .left {		float: left; }
@@ -65,7 +68,9 @@ em {
 }
 
 p {
-	
+	margin-top: 0;
+	margin-bottom: 1rem;
+	line-height: 1.4;
 }
 
 a {

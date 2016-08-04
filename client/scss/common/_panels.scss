@@ -1,0 +1,81 @@
+
+.panel {
+	$radius: 5px;
+	//background-color: $backgroundColor;
+	@include bgTranslucentDark(0.2);
+
+	border: 1px solid $color2-light;
+	border-radius: $radius;
+	position: relative;
+	margin-bottom: 1.5em;
+	box-shadow: 0 5px 5px 0 rgba(0,0,0,.25);
+
+	.header {
+		border-radius: $radius;
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+
+		background-color: $buttonColor;
+		padding: 0.6em 1.1em;
+		font-family: $fontFamilyHeader;
+		font-weight: $fontLight;
+		font-size: 1.2em;
+
+		color: $textColor;
+
+		box-shadow: 0 3px 3px 0 rgba(0,0,0,.25);
+
+	}
+
+	.body {
+		border-radius: $radius;
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+
+		padding: 0.8em 1.3em;
+
+		height: calc(100% - 2.6em); // header size 2.4em
+		overflow: auto;
+
+		p:first-child {
+			margin-top: 0;
+		}
+
+		p:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	&.primary {
+		.header {
+			background-color: $secondColor;
+		}
+	}
+
+	&.success {
+		.header {
+			background-color: $successColor;
+		}
+	}
+
+	&.warning {
+		.header {
+			background-color: $warningColor;
+		}
+	}
+
+	&.danger {
+		.header {
+			background-color: $dangerColor;
+		}
+	}
+
+	&.outline {
+		background-color: transparent;
+		.header {
+			border-bottom: 1px solid $color2-light;
+			background-color: transparent;
+		}
+	}	
+
+} // .panel

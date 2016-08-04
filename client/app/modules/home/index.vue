@@ -423,6 +423,80 @@
 						.progressbar.large.warning.stripped.animate
 							.progress(style="width: 60%;") 60%
 					
+
+			section
+				h2
+					span.number 9.
+					span.text Panels & Cards
+				fieldset
+					legend Normal Panels
+
+					.content.flex.align-center.justify-space-around.panels
+						.panel
+							.header Panel normal
+							.body 
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
+						
+						.panel.primary
+							.header Panel primary
+							.body 
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
+						
+						.panel.success
+							.header Panel success
+							.body 
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
+
+					.content.flex.align-center.justify-space-around.panels
+						.panel.warning(style="height: 158px")
+							.header Panel warning with scroll
+							.body 
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
+						
+						.panel.danger
+							.header Panel danger
+							.body 
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
+						
+						.panel.outline
+							.header Panel outline
+							.body 
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
+
+
+				fieldset
+					legend Normal cards
+					.content.flex.align-center.justify-space-around.panels
+						.card
+							img.img(src="http://placehold.it/350x150")
+							.block 
+								.title Card Title
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
+							.block
+								button.button.primary Checkout
+
+						.card
+							.ribbon.right.blue 
+								span -20%
+							img.img(src="http://placehold.it/350x150")
+							.block 
+								.title Card Title
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
+							.block
+								button.button.success Start process
+
+						.card
+							.ribbon.left.primary 
+								span Brand new
+							img.img(src="http://placehold.it/350x150")
+							.block 
+								.title Card Title wih ribbon
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
+							.block.text-right
+								button.button.danger DELETE
+								button.button.outline Close
+						
 </template>
 
 <script>
@@ -479,6 +553,16 @@
 
 	.buttons {
 		margin-bottom: 20px;
+	}
+
+	.panels {
+		.panel, .card {
+			margin: 20px;
+		}
+
+		.card {
+			width: 350px;
+		}
 	}
 
 	.colors {
