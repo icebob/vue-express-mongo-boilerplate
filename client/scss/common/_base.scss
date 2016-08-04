@@ -8,6 +8,7 @@
 @import "tables";
 @import "alerts";
 @import "tags";
+@import "progressbars";
 @import "animations";
 
 .left {		float: left; }
@@ -18,6 +19,9 @@
 .text-center {	text-align: center !important; }
 .text-right {	text-align: right !important; }
 .text-justify {	text-align: justify !important; }
+
+.text-nowrap {		white-space: nowrap!important; }
+.text-uppercase { 	text-transform: uppercase!important; }
 
 .disable-text-selection {
 	-webkit-touch-callout: none;

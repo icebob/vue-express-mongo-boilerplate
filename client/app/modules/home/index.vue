@@ -182,23 +182,37 @@
 
 							.form-group
 								label(for='text1') Label
-								input.form-control#text1(type='text', name='name', placeholder='Placeholder')
+								input.form-control#text1(type='text', placeholder='Placeholder')
 
 							.form-group
-								label(for='text1') Label with hint
-								input.form-control#text1(type='text', name='name', placeholder='Placeholder')
+								label(for='text2') Label with hint
+								input.form-control#text2(type='text', placeholder='Placeholder')
 								.hint Maxium 100 characters
 							.form-group.has-icon.valid
-								label(for='text2') Label for valid input
-								input.form-control#text2(type='text', name='name', placeholder='Placeholder')
+								label(for='text3') Label for valid input
+								input.form-control#text3(type='text', placeholder='Placeholder')
 								i.icon.fa.fa-check
 							.form-group.has-icon.error
-								label(for='text3') Label for invalid input with error messages
-								input.form-control#text3(type='text', name='name', placeholder='Placeholder')
+								label(for='text4') Label for invalid input with error messages
+								input.form-control#text4(type='text', placeholder='Placeholder')
 								i.icon.fa.fa-exclamation-triangle
 								.errors
 									span Too short!
 									span Invalid text content!
+
+							.form-group
+								label(for='text5') Label for textarea
+								textarea.form-control#text5(type='text', placeholder='Placeholder', rows=5)
+
+						fieldset
+							legend Selections
+							.form-group
+								label(for='select1') Label for select
+								select.form-control#select1
+									option Option 1
+									option Option 2
+									option Option 3 
+									option Option 4
 
 						fieldset
 							legend Radio buttons
@@ -236,8 +250,13 @@
 						a.alert-close(href="x") &times;				
 					.alert.alert-error
 						i.icon.fa.fa-times-circle
+						strong Error!
 						| This is an error alert.
-						a.alert-close(href="x") &times;				
+						a.alert-close(href="x") &times;		
+
+					.alert.alert-success
+						h4 Well done!
+						p Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.
 			section
 				h2
 					span.number 6.
@@ -329,12 +348,54 @@
 					legend Number tags
 					
 					.content.flex.align-center.justify-space-around.buttons
-						.tag.number 15
-						.tag.number.primary 5
-						.tag.number.success 100+
-						.tag.number.warning 45
-						.tag.number.danger 0
-						.tag.number.outline 8
+						.tag.pill 15
+						.tag.pill.primary 5
+						.tag.pill.success 100+
+						.tag.pill.warning 45
+						.tag.pill.danger 0
+						.tag.pill.outline 8
+
+
+			section
+				h2
+					span.number 8.
+					span.text Progress bars
+				fieldset
+					legend Normal
+
+					.content.buttons
+						.progressbar
+							.progress(style="width: 15%;")
+						br
+						.progressbar.success
+							.progress(style="width: 40%;") 40% complete...
+						br
+						.progressbar.warning
+							.progress(style="width: 60%;") 60%
+						br
+						.progressbar.danger
+							.progress(style="width: 70%;")
+
+				fieldset
+					legend Stripped
+
+					.content.buttons
+						.progressbar.stripped.success
+							.progress(style="width: 40%;") 40% complete...
+						br
+						.progressbar.stripped.danger
+							.progress(style="width: 70%;")
+				
+				fieldset
+					legend Animated
+
+					.content.buttons
+						.progressbar.stripped.animate.success
+							.progress(style="width: 80%;") 80% complete...
+						br
+						.progressbar.stripped.animate.warning
+							.progress(style="width: 34%;")
+					
 </template>
 
 <script>

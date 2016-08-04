@@ -39,7 +39,17 @@
 		}
 
 		@include setFocusHighLight($secondColor);
+
 	} // .form-control
+
+	select {
+		//appearance: none;
+
+		option {
+			background: $color2;
+		}
+		
+	}
 
 	&.has-icon {
 		.form-control {

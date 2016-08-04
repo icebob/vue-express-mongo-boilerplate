@@ -30,6 +30,7 @@
 @mixin ellipsis() {
 	white-space: nowrap;
 	text-overflow: ellipsis;	
+	overflow: hidden;
 }
 
 @mixin bgCover($relativeUrl) {
