@@ -44,7 +44,20 @@
 		border-radius: $radius;
 		border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;
+
+		box-shadow: 0 3px 3px 0 rgba(0,0,0,.25);
+
 	}
 
 
 } // .card
+
+.card-columns {
+	column-count: 3;
+	column-gap: 1.25em;
+
+	.card {
+		display: inline-block;
+		width: 100%; // Don't let them exceed the column width
+	}
+}

@@ -469,22 +469,21 @@
 					legend Normal cards
 					.content.flex.align-center.justify-space-around.panels
 						.card
-							img.img(src="http://placehold.it/350x150")
 							.block 
-								.title Card Title
+								.title Simple Card
 								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
 							.block
-								button.button.primary Checkout
+								small.text-muted Last updated 5 mins ago
 
 						.card
 							.ribbon.right.blue 
 								span -20%
-							img.img(src="http://placehold.it/350x150")
+							img.img(src="http://lorempixel.com/350/150/city")
 							.block 
-								.title Card Title
+								.title Card with image
 								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
 							.block
-								button.button.success Start process
+								button.button.success Checkout
 
 						.card
 							.ribbon.left.primary 
@@ -497,6 +496,15 @@
 								button.button.danger DELETE
 								button.button.outline Close
 						
+					.content.flex.align-center.justify-space-around.panels
+						.card
+							.block 
+								.title Small Card
+								p 
+									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa 
+									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
+							.block
+								small.text-muted 08:45 PM - 14 Jun 2016						
 </template>
 
 <script>
