@@ -395,6 +395,33 @@
 						br
 						.progressbar.stripped.animate.warning
 							.progress(style="width: 34%;")
+
+				fieldset
+					legend Small
+
+					.content.buttons
+						.progressbar.small
+							.progress(style="width: 15%;")
+						br
+						.progressbar.small.success.stripped
+							.progress(style="width: 40%;") 40% complete...
+						br
+						.progressbar.small.warning.stripped.animate
+							.progress(style="width: 60%;") 60%
+
+
+				fieldset
+					legend Large
+
+					.content.buttons
+						.progressbar.large
+							.progress(style="width: 15%;")
+						br
+						.progressbar.large.success.stripped
+							.progress(style="width: 40%;") 40% complete...
+						br
+						.progressbar.large.warning.stripped.animate
+							.progress(style="width: 60%;") 60%
 					
 </template>
 
