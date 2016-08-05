@@ -161,12 +161,31 @@ body {
 				width: $avatarSize;
 				height: $avatarSize;
 				float: left;
-				border-radius: 15%;
+				border-radius: $avatarRadius;
 			} // .avatar
 
 			@include clearfix;
 
 		} // .user-info
+
+		.user-menu {
+			
+			visibility: hidden;
+			opacity: 0;
+			top: $headerHeight /2;
+			transition: all .2s ease;
+
+			position: absolute;
+			right: 0.5em;
+			min-width: 190px;
+
+			&.visible {
+				visibility: visible;
+				top: $headerHeight;
+				opacity: 1;
+			}
+
+		} // .dropdown-menu
 
 	} // .user-box
 
@@ -251,6 +270,32 @@ body {
 
 		} // ul.icons
 
+
+		.notification-dropdown {
+
+			visibility: hidden;
+			opacity: 0;
+			top: $headerHeight /2;
+			transition: all .2s ease;
+
+			position: absolute;
+			right: 200px;
+			min-width: 190px;
+			width: 400px;
+
+			&.visible {
+				visibility: visible;
+				top: $headerHeight;
+				opacity: 1;
+			}
+			
+			font-size: 0.8em;
+
+			background-color: $backgroundColor;
+			border-radius: $defaultRadius;
+
+		} // .notification-dropdown
+
 	} // .notification-box
 
 	@include clearfix;
@@ -283,7 +328,7 @@ body {
 
 	a {
 		text-decoration: none;
-		color: $textColor;
+		color: $menuTextColor;
 	}
 
 	.menu-label {
@@ -332,10 +377,10 @@ body {
 
 			&.active {
 				background-color: rgba($secondColor, 0.8);
-				color: $textColor;
+				color: $menuTextColor;
 
 				a {
-					color: $textColor;
+					color: $menuTextColor;
 				}
 			}
 
@@ -382,17 +427,6 @@ body {
 	margin-left: $menuWidth;
 
 	padding-left: 10px;
-
-	a {
-		color: $secondColor;
-		border-bottom: 1px solid $color2-light;
-		text-decoration: none;
-		cursor: pointer;
-		
-		&:hover {
-			border-bottom: 1px solid $secondColor;
-		}	
-	}
 
 } // .app-main
 

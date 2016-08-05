@@ -1,17 +1,20 @@
 
 .panel {
-	$radius: 5px;
 	//background-color: $backgroundColor;
 	@include bgTranslucentDark(0.2);
 
 	border: 1px solid $color2-light;
-	border-radius: $radius;
+	border-radius: $defaultRadius;
 	position: relative;
-	margin-bottom: 1.5em;
 	box-shadow: 0 5px 5px 0 rgba(0,0,0,.25);
 
-	.header {
-		border-radius: $radius;
+	display: flex;
+	flex-direction: column;
+
+	> .header, >.footer {
+		min-height: 2.4em;
+
+		border-radius: $defaultRadius;
 		border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;
 
@@ -25,16 +28,28 @@
 
 		box-shadow: 0 3px 3px 0 rgba(0,0,0,.25);
 
+		a {
+			color: lighten($secondColor, 20%);
+		}
+
+		@include clearfix;
 	}
 
-	.body {
-		border-radius: $radius;
+	> .footer {
+		border-radius: $defaultRadius;
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+	}
+
+	> .body {
+		border-radius: $defaultRadius;
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;
 
 		padding: 0.8em 1.3em;
 
-		height: calc(100% - 2.6em); // header size 2.4em
+		//height: calc(100% - 2.6em); // header size 2.4em
+
 		overflow: auto;
 
 		p:first-child {
@@ -46,33 +61,38 @@
 		}
 	}
 
+	// .footer ~ .body {
+	// 	height: calc(100% - 5.2em);
+	// }
+	
+
 	&.primary {
-		.header {
+		> .header, > .footer {
 			background-color: $secondColor;
 		}
 	}
 
 	&.success {
-		.header {
+		> .header, > .footer {
 			background-color: $successColor;
 		}
 	}
 
 	&.warning {
-		.header {
+		> .header, > .footer {
 			background-color: $warningColor;
 		}
 	}
 
 	&.danger {
-		.header {
+		> .header, > .footer {
 			background-color: $dangerColor;
 		}
 	}
 
 	&.outline {
 		background-color: transparent;
-		.header {
+		> .header, > .footer {
 			border-bottom: 1px solid $color2-light;
 			background-color: transparent;
 		}

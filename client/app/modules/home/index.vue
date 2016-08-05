@@ -442,22 +442,65 @@
 							.body 
 								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
 						
-						.panel.success
-							.header Panel success
+						.panel.success(style="height: 332px")
+							.header Panel success with list
 							.body 
-								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
+								.list
+									.item
+										img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/73.jpg")
+										.body
+											strong Message title 
+												small.text-muted John Doe
+											p.text-justify Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis eligendi mollitia ratione fugiat earum qui sit vero nisi pariatur eaque quasi reprehenderit possimus consequatur commodi cum quod, amet sed cupiditate?
+										.footer.text-right
+											small.text-muted 1 min ago
+									.item
+										img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/73.jpg")
+										.body
+											strong Message title 
+												small.text-muted John Doe
+											p.text-justify Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis eligendi mollitia ratione fugiat earum qui sit vero nisi pariatur eaque quasi reprehenderit possimus consequatur commodi cum quod, amet sed cupiditate? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum perferendis sapiente non atque qui quis pariatur impedit ea cupiditate culpa repellat voluptate, ipsam id illo incidunt nam commodi optio? Quasi.
+										.footer.text-right
+											small.text-muted 3 min ago
+									.item
+										img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/73.jpg")
+										.body
+											strong Message title 
+												small.text-muted John Doe
+											p.text-justify Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis eligendi mollitia ratione fugiat earum qui sit vero nisi.
+										.footer.text-right
+											small.text-muted 15 min ago
+									.item
+										img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/73.jpg")
+										.body
+											strong Message title 
+												small.text-muted John Doe
+											p.text-justify Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis eligendi mollitia ratione fugiat earum qui sit vero nisi pariatur eaque quasi reprehenderit possimus consequatur commodi cum quod, amet sed cupiditate?
+										.footer.text-right
+											small.text-muted 3 hours ago
+									.item
+										img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/73.jpg")
+										.body
+											strong Message title 
+												small.text-muted John Doe
+											p.text-justify Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis eligendi mollitia ratione fugiat earum qui sit vero nisi pariatur eaque quasi reprehenderit possimus consequatur commodi cum quod, amet sed cupiditate? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo officia, nulla ad quae. Possimus, necessitatibus excepturi ad vel aspernatur ipsam molestiae. Blanditiis assumenda, doloribus tenetur inventore, earum fugiat! Ducimus, recusandae.
+										.footer.text-right
+											small.text-muted 1 day ago
+
 
 					.content.flex.align-center.justify-space-around.panels
-						.panel.warning(style="height: 158px")
+						.panel.warning(style="height: 280px")
 							.header Panel warning with scroll
 							.body 
 								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
 								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
+							.footer Panel footer
 						
 						.panel.danger
 							.header Panel danger
 							.body 
-								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque.
+							.footer Panel footer
 						
 						.panel.outline
 							.header Panel outline
@@ -628,12 +671,13 @@
 	}
 
 	.panels {
+		align-items: flex-start;
 		.panel, .card {
 			margin: 20px;
 		}
 
 		.card {
-			width: 350px;
+			max-width: 350px;
 		}
 	}
 

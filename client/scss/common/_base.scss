@@ -1,3 +1,5 @@
+@import "normalize";
+
 * {
 	box-sizing: border-box;  
 }
@@ -5,7 +7,9 @@
 @import "groups";
 @import "buttons";
 @import "forms";
+@import "dropdown";
 @import "tables";
+@import "lists";
 @import "alerts";
 @import "tags";
 @import "progressbars";
@@ -80,7 +84,15 @@ small {
 }
 
 a {
+	color: $secondColor;
+	border-bottom: 1px solid $color2-light;
+	text-decoration: none;
 	cursor: pointer;
+	
+	&:hover {
+		border-bottom: 1px solid $secondColor;
+	}	
+	
 }
 
 hr {

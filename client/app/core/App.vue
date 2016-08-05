@@ -1,8 +1,6 @@
 <template lang="jade">
 	section.page-header
 		.logo.left
-			.ribbon.left.orange 
-				span Brand new!
 			a.nav-item(href="#")
 				span 
 					strong VEM
@@ -15,23 +13,96 @@
 			i.fa.fa-search
 			input#page-search(type="search", placeholder="Search...")
 
-		.user-box.right
+		.user-box.right(@click="toggleUserMenu()")
 			.user-info.right
 				img.avatar(src='https://s3.amazonaws.com/uifaces/faces/twitter/kolage/73.jpg')
 				.username John Doe 
 				i.fa.fa-chevron-down
 
+			ul.dropdown-menu.user-menu(:class="{ 'visible': expandedUserMenu }")
+				li
+					a(href='#')
+						.icon
+							i.fa.fa-user
+						| Profile
+				li
+					a(href='#')
+						.icon
+							i.fa.fa-cog
+						| Settings
+				
+				li.separator
+
+				li
+					a(href='#')
+						.icon
+							i.fa.fa-power-off
+						| Sign out			
+
 		.notification-box.right
 			ul.icons
-				li.active
+				li.active(@click="toggleNotifications()")
 					i.fa.fa-bell-o
 					span 5
 					.ring
 
-				li
+				li(@click="toggleMessages()")
 					i.fa.fa-envelope-o
 					span 20
 					.ring
+			
+			.notification-dropdown.visible(:class="{ 'visible': expandedNotifications }")
+				.panel(style="height: 300px;")
+					.header 
+						.left Notifications
+						.right
+							a(href="#") 
+								small Mark All as Read
+					.body 
+						.list
+							.item
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/dustin/73.jpg")
+								.body
+									p.text-justify 
+										strong Thomas 
+										| posted a new article
+								.footer.text-right
+									small.text-muted 1 min ago
+							.item
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/connor_gaunt/73.jpg")
+								.body
+									p.text-justify 
+										strong Adam 
+										| changed his contact information
+								.footer.text-right
+									small.text-muted 3 min ago
+							.item
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/adellecharles/73.jpg")
+								.body
+									p.text-justify 
+										strong Samantha 
+										| replied to your comment
+								.footer.text-right
+									small.text-muted 15 min ago
+							.item
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/ritu/73.jpg")
+								.body
+									p.text-justify 
+										strong Bill 
+										| bought a new TV
+								.footer.text-right
+									small.text-muted 3 hours ago
+							.item
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/sauro/73.jpg")
+								.body
+									p.text-justify 
+										strong Chris 
+										| posted a new blog post
+								.footer.text-right
+									small.text-muted 1 day ago
+					.footer.text-center
+						a(href="#") See all notifications
+
 
 	aside.menu
 		.menu-label General
@@ -95,7 +166,10 @@
 		 */
 		data() {
 			return {
-				wsReconnecting: false
+				wsReconnecting: false,
+				expandedUserMenu: false,
+				expandedNotifications: false,
+				expandedMessages: false
 			};
 		},
 
@@ -145,6 +219,18 @@
 				i = children.length;
 				while (i--)
 					this.update(children[i]);
+			},
+
+			toggleUserMenu() {
+				this.expandedUserMenu = !this.expandedUserMenu;
+			},
+
+			toggleMessages() {
+				this.expandedMessages = !this.expandedMessages;
+			},
+
+			toggleNotifications() {
+				this.expandedNotifications = !this.expandedNotifications;
 			}
 		},
 

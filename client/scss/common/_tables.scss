@@ -1,7 +1,7 @@
 
 table.table {
 
-	$headerColor: rgba($color2-light, 0.7);
+	$headerColor: rgba(black, 0.3);
 
 	width: 100%;
 	border-collapse: collapse;
@@ -54,12 +54,11 @@ table.table {
 							content: "\f0de";
 						}
 
-					}
+					} // .sorted
 
 				} // .sortable
 
 			} // th
-
 
 		} // tr
 

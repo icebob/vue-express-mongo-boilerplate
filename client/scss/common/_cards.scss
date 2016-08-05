@@ -1,14 +1,12 @@
 
 .card {
-	$radius: 5px;
-
 	@include bgTranslucentDark(0.2);
 
 	position: relative;
 	display: block;
 
 	border: 1px solid $color2-light;
-	border-radius: $radius;
+	border-radius: $defaultRadius;
 	margin-bottom: 1.5em;
 	box-shadow: 0 5px 5px 0 rgba(0,0,0,.25);
 
@@ -42,7 +40,7 @@
 
 	.img {
 		width: 100%;
-		border-radius: $radius;
+		border-radius: $defaultRadius;
 		border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;
 

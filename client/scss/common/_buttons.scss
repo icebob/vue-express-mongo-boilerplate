@@ -38,7 +38,7 @@
 	user-select: none;
 
 	border: 1px solid transparent;
-	border-radius: 4px;
+	border-radius: $defaultRadius;
 
 	transition: all .1s ease;
 	box-shadow: 0 2px 5px 0 rgba(0,0,0,.35);
