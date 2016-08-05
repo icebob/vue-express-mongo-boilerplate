@@ -491,11 +491,11 @@
 
 
 					.content.flex.align-center.justify-space-around.panels
-						.panel.warning(style="height: 280px")
+						.panel.warning(style="max-height: 280px; max-width: 600px")
 							.header Panel warning with scroll
 							.body 
-								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
-								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
+								p Duis ex nulla eu ex quis consectetur amet voluptate qui ipsum aliqua nisi commodo cupidatat. Reprehenderit aliqua sint magna ad eiusmod magna non esse. Ex tempor ex duis dolore commodo labore aliquip ad dolor nulla est. Ex eiusmod labore deserunt velit ad consequat elit. Quis elit cupidatat culpa pariatur excepteur. Elit nulla nisi ut nulla cupidatat ipsum officia sint consectetur in laboris.
+								p Voluptate anim in et esse. Voluptate ad est irure eiusmod sit enim pariatur adipisicing. Dolore officia nulla reprehenderit ipsum do aliquip incididunt eiusmod cupidatat exercitation consectetur incididunt.
 							.footer Panel footer
 						
 						.panel.danger
@@ -572,7 +572,7 @@
 								small.text-muted 08:45 PM - 14 Jun 2016
 														
 						.card
-							img.img(src="http://placehold.it/350x150")
+							img.img(src="http://lorempixel.com/600/300/city")
 							.block 
 								.title Small Card 4
 								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa

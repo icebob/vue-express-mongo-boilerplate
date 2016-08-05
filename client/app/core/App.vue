@@ -34,10 +34,10 @@
 				li.separator
 
 				li
-					a(href='#')
+					a(href='/logout')
 						.icon
 							i.fa.fa-power-off
-						| Sign out			
+						| {{ "Logout" | i18n }}			
 
 		.notification-box.right
 			ul.icons
