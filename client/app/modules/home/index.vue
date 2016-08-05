@@ -496,7 +496,63 @@
 								button.button.danger DELETE
 								button.button.outline Close
 						
-					.content.flex.align-center.justify-space-around.panels
+				fieldset
+					legend Cards in columns
+					.content.card-columns
+						.card
+							.block 
+								.title Small Card
+								p 
+									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos repellendus architecto molestiae iure enim labore dolores similique, quia consequatur culpa, at cumque ad tenetur nemo vitae dolorem ipsum repellat optio! 
+									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
+							.block
+								small.text-muted 08:45 PM - 14 Jun 2016
+														
+						.card
+							.block 
+								.title Small Card
+								p 
+									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro voluptate, neque voluptatibus mollitia aliquid, harum in laborum non amet cupiditate ea nisi necessitatibus quis! Earum architecto corporis molestiae nihil molestias? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, voluptate. Eaque nisi alias consectetur ipsum eveniet qui esse repellat voluptas mollitia, obcaecati corporis a modi officia, architecto commodi eius sint! 
+									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
+							.block
+								small.text-muted 08:45 PM - 14 Jun 2016
+														
+						.card
+							.block 
+								.title Small Card
+								p 
+									| Lorem ipsum dolor sit amet, consectetur adipisicing elit.  
+									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
+							.block
+								small.text-muted 08:45 PM - 14 Jun 2016
+														
+						.card
+							img.img(src="http://placehold.it/350x150")
+							.block 
+								.title Small Card
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa
+							.block
+								small.text-muted 08:45 PM - 14 Jun 2016
+														
+						.card
+							.block 
+								.title Small Card
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa 
+									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
+							.block
+								small.text-muted 08:45 PM - 14 Jun 2016
+							.block
+								button.button.success Checkout
+														
+						.card
+							.block 
+								.title Small Card
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa 
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt voluptatum quos autem magnam doloribus sunt. Atque quas accusamus repellat, odio dolore sapiente voluptatibus nemo numquam eum odit tempore, similique natus! 
+									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
+							.block
+								small.text-muted 08:45 PM - 14 Jun 2016
+														
 						.card
 							.block 
 								.title Small Card
@@ -504,12 +560,20 @@
 									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa 
 									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
 							.block
-								small.text-muted 08:45 PM - 14 Jun 2016						
+								small.text-muted 08:45 PM - 14 Jun 2016
+														
+						.card
+							.block 
+								.title Small Card
+								p 
+									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa 
+									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
+							.block
+								small.text-muted 08:45 PM - 14 Jun 2016
+														
 </template>
 
 <script>
-	// http://codepen.io/icebob/pen/GJqxNN
-
 	export default {
 
 		methods: {

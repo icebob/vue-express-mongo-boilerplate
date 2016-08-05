@@ -1,6 +1,8 @@
 <template lang="jade">
 	section.page-header
 		.logo.left
+			.ribbon.left.orange 
+				span Brand new!
 			a.nav-item(href="#")
 				span 
 					strong VEM

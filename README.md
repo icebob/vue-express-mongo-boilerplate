@@ -136,7 +136,7 @@ TODO
 * [ ] check https://github.com/keystonejs/keystone
 * [ ] add unit tests with mocha, chai, sinon
 * [ ] add E2E test with nightwatch
-* [ ] design styles: dropdown, tabs, card ( http://v4-alpha.getbootstrap.com/components/card/ )
+* [ ] design styles: dropdown ( https://jsfiddle.net/Cerebrl/uhykY/ ), tabs ( http://v4-alpha.getbootstrap.com/components/card/ )
 
 
 ## License
