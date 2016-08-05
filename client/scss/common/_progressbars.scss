@@ -1,0 +1,78 @@
+// https://github.com/twbs/bootstrap/blob/v4-dev/scss/_progress.scss
+
+@mixin progressbar($size: 16px) {
+	position: relative;
+	border: none;
+	border-radius: $size;
+	display: block;
+	height: $size;
+	overflow: hidden;
+	padding: 0;
+	width: 100%;
+
+	background: $color2-dark;
+	box-shadow: rgba(0, 0, 0, 0.14902) 0px -1px 0px inset;
+
+	.progress {
+		float: left;
+		height: $size;
+		text-align: center;
+
+		font-size: $size * 0.75;
+		text-align: center;
+		line-height: $size;
+		text-shadow: 1px 1px 2px rgba(#000, 0.3);
+
+		@include ellipsis();
+
+		background: $secondColor;
+		border-radius: $size;
+
+		transition: width 0.6s ease;        
+	}
+
+	&.success {
+		.progress {
+			background: $successColor;
+		}
+	}
+
+	&.warning {
+		.progress {
+			background: $warningColor;
+		}
+	}
+
+	&.danger {
+		.progress {
+			background: $dangerColor;
+		}
+	}
+
+	&.stripped {
+		.progress {
+			background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+			background-size: 40px 40px;
+		}
+	}
+
+	&.animate {
+		.progress {
+			animation: progress-bar-stripes 1s linear infinite;
+		}
+	}
+}
+
+
+.progressbar {
+	@include progressbar();
+
+	&.small {
+		@include progressbar(12px); 
+	}
+
+
+	&.large {
+		@include progressbar(24px); 
+	}
+}

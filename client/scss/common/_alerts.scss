@@ -1,0 +1,63 @@
+.alert {
+	$c: lighten($color2, 5%);
+
+	border-radius: 4px;
+	background-color: $c;
+	color: $textColor;
+	padding: 0.4rem .9rem 0.4rem;
+	position: relative;
+	max-width: 100%;
+
+	margin: 0.4em 0;
+	
+	&.alert-success {
+		background-color: $successColor;
+	}
+	
+	&.alert-warning {
+		background-color: $warningColor;
+	}
+
+	&.alert-error {
+		background-color: $dangerColor;
+	}
+
+	.icon {
+		margin-right: 0.8em;
+	}	
+
+	strong {
+		margin-right: 0.4em;
+		font-weight: 700;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		margin: 0.4em 0;
+	}
+	
+	.alert-close {
+		border: 0;
+		border-left: 2px solid rgba(0, 0, 0, .12);
+		color: $textColor;
+		font-family: $fontFamily;
+		font-size: 1.8em;
+		font-weight: 800;
+		position: absolute;
+		right: 0px;
+		top: 0px;
+		bottom: 0px;
+		padding: 0 .625em;
+		line-height: 1.0em;
+
+		opacity: 0.7;
+		transition: opacity .2s ease;
+
+		&:hover {
+			color: $textColor;
+			opacity: 1.0;
+			text-decoration: none;
+			border-bottom: 0;
+		}
+	}
+
+} // .alert

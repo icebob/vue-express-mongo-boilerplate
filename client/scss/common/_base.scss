@@ -1,0 +1,103 @@
+@import "normalize";
+
+* {
+	box-sizing: border-box;  
+}
+
+@import "groups";
+@import "buttons";
+@import "forms";
+@import "dropdown";
+@import "tables";
+@import "lists";
+@import "alerts";
+@import "tags";
+@import "progressbars";
+@import "panels";
+@import "cards";
+@import "ribbons";
+@import "animations";
+
+.left {		float: left; }
+.right {	float: right; }
+.clear {	clear: both; }
+
+.text-left {	text-align: left !important; }
+.text-center {	text-align: center !important; }
+.text-right {	text-align: right !important; }
+.text-justify {	text-align: justify !important; }
+
+.text-muted { color: mix($textColor, $backgroundColor, 40%) !important; }
+.text-nowrap {		white-space: nowrap!important; }
+.text-uppercase { 	text-transform: uppercase!important; }
+
+.disable-text-selection {
+	-webkit-touch-callout: none;
+	user-select: none;
+}
+
+.disabled {
+	pointer-events: none;
+}
+
+.overlay {
+	@include overlay;
+}
+
+.fullscreen {
+
+}
+
+
+// Headings
+// --------
+h1, h2, h3, h4, h5 {
+
+	font-family: $fontFamilyHeader;
+	font-weight: 300;
+	//margin: 10px 0px 0px 0px;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2.2rem; }
+h3 { font-size: 2.0rem; }
+h4 { font-size: 1.8rem; }
+h5 { font-size: 1.6rem; }
+
+strong {
+	font-weight: 700;
+}
+
+em {
+	font-style: italic;
+}
+
+p {
+	margin-top: 0;
+	margin-bottom: 1rem;
+	line-height: 1.4;
+}
+
+small {
+	font-size: 80%;
+	font-weight: 400;
+}
+
+a.link {
+	color: $secondColor;
+	border-bottom: 1px solid $color2-light;
+	text-decoration: none;
+	cursor: pointer;
+	
+	&:hover {
+		border-bottom: 1px solid $secondColor;
+	}	
+	
+}
+
+hr {
+	border: 0;
+	border-top: 1px solid $color2-light;
+	margin: 20px 10%;
+	width: 80%
+}

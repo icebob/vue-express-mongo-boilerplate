@@ -1,0 +1,174 @@
+
+table.table {
+
+	$headerColor: rgba(black, 0.3);
+
+	width: 100%;
+	border-collapse: collapse;
+
+	th, td {
+		padding: 0.5em 0.6em;
+		text-align: center;
+		cursor: default;
+	}
+
+	thead {
+
+		tr {
+
+			th {
+				text-transform: uppercase;
+				font-weight: $fontBold;
+
+				background-color: $headerColor;
+
+				i.fa {
+					margin-right: 0.4em;
+				}
+
+				&:first-child {
+					border-radius: 8px 0 0 0;
+				}
+
+				&:last-child {
+					border-radius: 0 8px 0 0;
+				}
+
+				&.sortable {
+					&:after {
+						content: "\f0dc";
+						float: right;
+						margin-left: 0.3em;
+						font-family: fontawesome;
+						font-size: 0.9em;
+						color: rgba($textColor, 0.4);
+					}
+
+					&.sorted {
+						&:after {
+							content: "\f0dd";
+							color: $textColor;
+						}
+
+						&.desc:after {
+							content: "\f0de";
+						}
+
+					} // .sorted
+
+				} // .sortable
+
+			} // th
+
+		} // tr
+
+	} // thead
+
+	tbody {
+
+		tr {
+			transition: background-color .2s ease;
+
+			td {
+
+
+				// Table borders
+				&:first-child {
+					border-left: 1px solid $headerColor;
+				}
+
+				&:last-child {
+					border-right: 1px solid $headerColor;
+				}
+
+			} // td
+
+		} // tr
+
+	} // tbody
+
+	tfoot {
+
+		tr {
+
+			td {
+				text-align: center;
+				font-weight: $fontBold;
+
+				background-color: $headerColor;
+
+				&:first-child {
+					border-radius: 0 0 0 8px;
+				}
+
+				&:last-child {
+					border-radius: 0 0 8px 0;
+				}
+
+			} // td
+
+		} // tr
+
+	} // tfoot
+
+	.selector {
+		i {
+			font-size: 1.2em;
+			margin-top: 3px;
+		}
+	}	
+
+	thead tr th.selector i {
+		margin-right: 0;
+	}
+
+	&.bordered {
+		tbody tr:not(:last-child) td {
+			border-bottom: 1px solid rgba(#FFF, 0.1);
+		}
+	}
+
+	&.stripped {
+		tbody tr:nth-child(even) {
+			background-color: rgba(#FFF, 0.05);
+		}
+	}
+
+	// Hover & Selected styles
+	tbody tr:nth-child(even), tbody tr:nth-child(odd) {
+
+		&.inactive {
+			td {
+				font-style: italic;
+				color: darken($textColor, 40%);
+			}
+		}
+
+		&:hover {
+			background-color: rgba($secondColor, 0.15);
+		}
+
+		&.selected {
+			background-color: rgba($secondColor, 0.6);	
+
+			td.selector i:before {
+				content: "\f046";
+			}			
+
+			&.inactive {
+
+				td {
+					color: darken($textColor, 20%);
+				}
+			}
+		}
+
+	}
+
+	.button {
+		&:not(:last-child) {
+			margin-right: 0.3em;
+		}
+	}
+
+} // table.table

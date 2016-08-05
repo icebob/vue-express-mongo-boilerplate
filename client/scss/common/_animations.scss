@@ -1,0 +1,29 @@
+
+@keyframes pulsate {
+	30% {
+		transform: scale(0.1, 0.1);
+		opacity: 0.0;
+	}
+	35% {
+		opacity: 1.0;
+	}
+	40% {
+		transform: scale(1.2, 1.2);
+		opacity: 0.0;
+	}
+}
+
+@keyframes spin-around {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(359deg);
+	}
+}
+
+@keyframes progress-bar-stripes {
+	from  { background-position: 40px 0; }
+	to    { background-position: 0 0; }
+}

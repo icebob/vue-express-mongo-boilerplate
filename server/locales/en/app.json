@@ -57,5 +57,7 @@
 
 	"PostNameAdded": "Post '{{title}}' added!",
 	"PostNameUpdated": "Post '{{title}}' updated!",
-	"PostNameDeleted": "Post '{{title}}' deleted!"
+	"PostNameDeleted": "Post '{{title}}' deleted!",
+
+	"Demo": "Demo"
 }

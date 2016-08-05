@@ -1,0 +1,62 @@
+
+.card {
+	@include bgTranslucentDark(0.2);
+
+	position: relative;
+	display: block;
+
+	border: 1px solid $color2-light;
+	border-radius: $defaultRadius;
+	margin-bottom: 1.5em;
+	box-shadow: 0 5px 5px 0 rgba(0,0,0,.25);
+
+	.block {
+		@include clearfix;
+		padding: 1.25rem 1.25rem 0 1.25rem;
+
+		&:last-child {
+			padding-bottom: 1.25rem;
+		}
+
+		.title {
+			margin-bottom: .75rem;
+			font-size: 1.5rem;
+			font-family: $fontFamilyHeader;
+			font-weight: $fontLight;
+		}
+
+		button {
+			margin: 0 0.5em;
+
+			&:first-child {
+				margin-left: 0;
+			}
+
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+
+	.img {
+		width: 100%;
+		border-radius: $defaultRadius;
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+
+		box-shadow: 0 3px 3px 0 rgba(0,0,0,.25);
+
+	}
+
+
+} // .card
+
+.card-columns {
+	column-count: 3;
+	column-gap: 1.25em;
+
+	.card {
+		display: inline-block;
+		width: 100%; // Don't let them exceed the column width
+	}
+}

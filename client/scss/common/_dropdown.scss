@@ -1,0 +1,62 @@
+$dropDownBgColor: $menuBgColor;
+$dropDownTextColor: $headerTextColor;
+
+.dropdown-menu {
+	// Default collapsed (hidden)
+	visibility: hidden;
+	opacity: 0;
+	transition: all .2s ease;
+
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	position: absolute;
+
+	background-color: rgba($dropDownBgColor, 0.7);
+	color: $dropDownTextColor;
+	border-radius: 0 0 5px 5px;
+	box-shadow: 0 6px 12px rgba(0,0,0,.175);
+
+	li {
+		border-left: 2px solid transparent;
+		transition: border-left .2s ease, background-color .2s ease;
+
+		a {
+			display: block;
+			color: $dropDownTextColor;
+			text-decoration: none;
+			white-space: nowrap;
+			padding: 0.6em 1.0em;
+			transition: color .2s ease;
+
+			.icon {
+				display: inline-block;
+				width: 1.8em;
+				font-size: 1.2em;
+				text-align: center;
+
+			}
+		}
+
+		&:hover {
+			border-left: 2px solid $secondColor;
+
+			a {
+				color: $secondColor;
+			}
+		}				
+
+		&.separator {
+			border-bottom: 1px solid $color2-dark;
+			margin: 0.1em 0;
+		}
+
+	} // li
+
+	&.visible {
+		visibility: visible;
+		opacity: 1;
+	}
+
+} // .dropdown-menu

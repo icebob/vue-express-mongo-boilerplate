@@ -1,0 +1,29 @@
+
+.list {
+
+	> .item {
+		padding: 0.6em 0.75em;
+		display: block;
+
+		min-height: 60px;
+
+		&:not(:last-child) {
+			border-bottom: 1px solid $color2-light;
+		}
+
+		.avatar {
+			float: left;
+			width: 48px;
+			height: 48px;
+			margin-right: 1em;
+			border-radius: $avatarRadius;
+		}
+
+		.body {
+
+
+		}
+
+	}
+
+} // .list

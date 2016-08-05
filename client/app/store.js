@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 import devices from "./modules/devices/vuex";
 import posts from "./modules/posts/vuex";
-import counter from "./modules/home/vuex";
+import counter from "./modules/demo/vuex";
 
 Vue.use(Vuex);
 

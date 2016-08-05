@@ -1,0 +1,176 @@
+@mixin buttonColorize($bg, $text) {
+	$border: lighten($bg, 5%);
+	background: $bg;
+	border: 1px solid $border;
+	color: $text;	
+
+	.icon {
+		margin-right: 5px;
+	}
+
+	&:not([disabled]):hover {
+		background: lighten($bg, 5%);
+	}
+
+	&:active {
+		background: darken($bg, 5%);
+		box-shadow: inset 0 1px 2px rgba(#000, 0.2);
+	}
+
+}
+
+.button {
+	display: inline-block;
+	padding: 6px 20px;
+	margin-bottom: 0;
+	font-size: 1.0rem;
+	font-weight: 400;
+	text-shadow: 1px 1px 2px rgba(#000, 0.4);
+
+	line-height: 1.42857143;
+	white-space: nowrap;
+	vertical-align: middle;
+	outline: 0;
+
+	touch-action: manipulation;
+	cursor: pointer;
+
+	user-select: none;
+
+	border: 1px solid transparent;
+	border-radius: $defaultRadius;
+
+	transition: all .1s ease;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,.35);
+
+	.icon {
+		margin-right: 5px;
+	}
+
+	@include buttonColorize($buttonColor, $buttonTextColor);
+
+	&.primary {
+		@include buttonColorize($buttonPrimaryColor, $buttonTextColor);
+	}
+
+	&.outline {
+		@include buttonColorize(transparent, $buttonTextColor);
+		border: 1px solid lighten($color2, 10%);
+	}
+
+	&.success {
+		@include buttonColorize($successColor, $buttonTextColor);	
+	}
+
+	&.warning {
+		@include buttonColorize($warningColor, $buttonTextColor);	
+	}
+
+	&.danger {
+		@include buttonColorize($dangerColor, $buttonTextColor);	
+	}
+
+	&[disabled] {
+		opacity: 0.6;
+		cursor: not-allowed;
+		pointer-events: none;
+		box-shadow: none;
+	}
+
+	&.loading {
+		color: transparent !important;
+		text-shadow: none;
+		pointer-events: none;
+		position: relative;
+
+		&:after {
+			position: absolute;
+
+			@include loading(16px);
+			@include center(20px); // 16px + 2 * 2px border
+		}
+	}
+
+	&.large {
+		font-size: 1.25em;
+		line-height: 2.0em;
+		padding: 2px 1.8em;
+
+		&.loading {
+			&:after {
+				@include loading(20px);
+				@include center(24px);
+			}
+		}
+	}
+
+	&.small {
+		font-size: 0.9em;
+		padding: 2px 1.0em;
+
+		&.loading {
+			&:after {
+				@include loading(10px);
+				@include center(14px);
+			}
+		}
+	}
+
+	@include setFocusHighLight($secondColor);
+
+} // .button
+
+.button-group {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;	
+
+	.button:first-child:not(:last-child) {
+		border-top-right-radius: 0px;
+		border-bottom-right-radius: 0px;
+	}
+
+	.button:last-child:not(:first-child) {
+		border-top-left-radius: 0px;
+		border-bottom-left-radius: 0px;
+	}
+
+	.button:not(:first-child):not(:last-child) {
+		border-radius: 0px;
+	}
+}
+
+// --- FLOATING ACTION BUTTONS ---
+
+.button.fab { 
+	$size: 2.3em;
+
+	width: $size;
+	height: $size;
+	line-height: $size;
+
+	display: inline-block;
+	overflow: hidden;
+	z-index: 1;
+	padding: 0;
+
+	white-space: initial;
+	vertical-align: middle;
+	border-radius: 50%;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,.35);
+
+	touch-action: manipulation;
+	user-select: none;
+
+	.icon {
+		margin-right: 0;
+	}
+
+	&:hover {
+		box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);		
+	}
+
+	&.large {
+		font-size: 1.5em;
+	}
+}

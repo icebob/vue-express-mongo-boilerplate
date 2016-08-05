@@ -1,45 +1,174 @@
 <template lang="jade">
-	section.app-header
-		nav.nav
-			.nav-left
-				a.nav-item(href="#")
-					h3 Vue-Express-Mongo boilerplate App
+	section.page-header
+		.logo.left
+			a.nav-item(href="#")
+				span 
+					strong VEM
+					| App
 
-			span.nav-toggle
-				span
-				span
-				span
+		.menu-toggle.left(@click="toggleMenu()")
+			i.fa.fa-bars
 
-			.nav-right
-				.nav-item
-					.media
-						.media-left
-							figure.image.is-32x32
-								img(src="https://s3.amazonaws.com/uifaces/faces/twitter/peterme/128.jpg")
+		.search-box.left
+			i.fa.fa-search
+			input#page-search(type="search", placeholder="Search...")
 
-						.media-content
-							span Welcome Administrator
+		.user-box.right(@click="toggleUserMenu()")
+			.user-info.right
+				img.avatar(src='https://s3.amazonaws.com/uifaces/faces/twitter/kolage/73.jpg')
+				.username John Doe 
+				i.fa.fa-chevron-down
 
-	aside.menu
+			ul.dropdown-menu.user-menu(:class="{ 'visible': expandedUserMenu }")
+				li
+					a(href='#')
+						.icon
+							i.fa.fa-user
+						| Profile
+				li
+					a(href='#')
+						.icon
+							i.fa.fa-cog
+						| Settings
+				
+				li.separator
+
+				li
+					a(href='/logout')
+						.icon
+							i.fa.fa-power-off
+						| {{ "Logout" | i18n }}			
+
+		.notification-box.right
+			ul.icons
+				li.active(@click="toggleNotifications()")
+					i.fa.fa-bell-o
+					span 5
+					.ring
+
+				li.active(@click="toggleMessages()")
+					i.fa.fa-envelope-o
+					span 2
+					.ring
+			
+			.notification-dropdown(:class="{ 'visible': expandedNotifications }")
+				.panel
+					.header 
+						.left Notifications
+						.right
+							a.link(href="#") 
+								small Mark All as Read
+					.body 
+						.list
+							.item
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/dustin/73.jpg")
+								.body
+									p.text-justify 
+										strong Thomas 
+										| posted a new article
+								.footer.text-right
+									small.text-muted 1 min ago
+							.item
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/connor_gaunt/73.jpg")
+								.body
+									p.text-justify 
+										strong Adam 
+										| changed his contact information
+								.footer.text-right
+									small.text-muted 3 min ago
+							.item
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/adellecharles/73.jpg")
+								.body
+									p.text-justify 
+										strong Samantha 
+										| replied to your comment
+								.footer.text-right
+									small.text-muted 15 min ago
+							.item
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/ritu/73.jpg")
+								.body
+									p.text-justify 
+										strong Bill 
+										| bought a new TV
+								.footer.text-right
+									small.text-muted 3 hours ago
+							.item
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/sauro/73.jpg")
+								.body
+									p.text-justify 
+										strong Chris 
+										| posted a new blog post
+								.footer.text-right
+									small.text-muted 1 day ago
+					.footer.text-center
+						a.link(href="#") See all notifications
+
+			.messages-dropdown(:class="{ 'visible': expandedMessages }")
+				.panel
+					.header 
+						.left Messages
+						.right
+							a.link(href="#") 
+								small Mark All as Read
+					.body 
+						.list
+							.item
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/dustin/73.jpg")
+								.body
+									strong Message title 
+										small.text-muted John Doe
+									p.text-justify Cupidatat eiusmod commodo excepteur velit magna. Aliqua eu tempor officia officia et ipsum magna sint cillum Lorem reprehenderit.
+								.footer.text-right
+									small.text-muted 1 min ago
+							.item
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/connor_gaunt/73.jpg")
+								.body
+									strong Message title 
+										small.text-muted John Doe
+									p.text-justify Laborum laboris nulla nisi labore.
+								.footer.text-right
+									small.text-muted 3 min ago
+
+					.footer.text-center
+						a.link(href="#") See all messages
+
+	aside.menu(:class="{ mini: miniMenu }")
 		.menu-label General
 		ul.menu-list
-			li
-				a(v-link="'/home'") {{ "Home" | i18n }}
-			li
-				a(v-link="'/devices'") {{ "Devices" | i18n }}
-			li
-				a(v-link="'/posts'") {{ "Posts" | i18n }}
+			li(v-link-active)
+				a(v-link="'/home'", :title="_('Home')")
+					span.icon
+						i.fa.fa-home
+					span.label {{ "Home" | i18n }}
+
+			li(v-link-active)
+				a(v-link="'/demo'", :title="_('Demo')")
+					span.icon
+						i.fa.fa-tasks
+					span.label {{ "Demo" | i18n }}
+
+			li(v-link-active)
+				a(v-link="'/devices'", :title="_('Devices')")
+					span.icon
+						i.fa.fa-tablet
+					span.label {{ "Devices" | i18n }}
+
+			li(v-link-active)
+				a(v-link="'/posts'", :title="_('Posts')")
+					span.icon
+						i.fa.fa-comments
+					span.label {{ "Posts" | i18n }}
 
 		.menu-label Session
 		ul.menu-list
 			li
-				a.button(href="/logout")
+				a(href="/logout", :title="_('Logout')")
 					span.icon
 						i.fa.fa-sign-out
-					span {{ "Logout" | i18n }}
+					span.label {{ "Logout" | i18n }}
 
 
-	section.app-main
+	section.app-main(:class="{ miniMenu: miniMenu }")
 		router-view(keep-alive)
 
 </template>
@@ -65,7 +194,12 @@
 		 */
 		data() {
 			return {
-				wsReconnecting: false
+				wsReconnecting: false,
+
+				miniMenu: false,
+				expandedUserMenu: false,
+				expandedNotifications: false,
+				expandedMessages: false
 			};
 		},
 
@@ -115,6 +249,34 @@
 				i = children.length;
 				while (i--)
 					this.update(children[i]);
+			},
+
+			toggleUserMenu() {
+				this.expandedUserMenu = !this.expandedUserMenu;
+				if (this.expandedUserMenu) {
+					this.expandedMessages = false;
+					this.expandedNotifications = false;
+				}
+			},
+
+			toggleMessages() {
+				this.expandedMessages = !this.expandedMessages;
+				if (this.expandedMessages) {
+					this.expandedUserMenu = false;
+					this.expandedNotifications = false;
+				}
+			},
+
+			toggleNotifications() {
+				this.expandedNotifications = !this.expandedNotifications;
+				if (this.expandedNotifications) {
+					this.expandedMessages = false;
+					this.expandedUserMenu = false;
+				}
+			},
+
+			toggleMenu() {
+				this.miniMenu = !this.miniMenu;
 			}
 		},
 
@@ -129,46 +291,4 @@
 </script>
 
 <style lang="sass">
-	@import "../../scss/variables";
-
-	h2 {
-	  color: $masterColor;
-	}
-
-	li.active {
-		a {
-			font-weight: 600;
-			color: $color5;
-		}
-	}
-
-	.app-header {
-		position: fixed;
-		min-width: 100%;
-		height: 50px;
-		z-index: 1024;
-		box-shadow: 0 2px 3px hsla(0,0%,7%,.1),0 0 0 1px hsla(0,0%,7%,.1);
-	}
-
-	aside {
-		position: fixed;
-		top: 50px;
-		left: 0;
-		bottom: 0;
-		padding: 20px 0 50px;
-		width: 180px;
-		min-width: 45px;
-		max-height: 100vh;
-		height: 100%;
-		z-index: 1023;
-		background: #fff;
-		box-shadow: 0 2px 3px hsla(0,0%,7%,.1),0 0 0 1px hsla(0,0%,7%,.1);
-		overflow-y: auto;
-		overflow-x: hidden;		
-	}
-
-	.app-main {
-		padding-top: 50px;
-		margin-left: 180px;		
-	}
 </style>
