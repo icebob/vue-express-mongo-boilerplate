@@ -29,7 +29,6 @@ $dropDownTextColor: $headerTextColor;
 			white-space: nowrap;
 			padding: 0.6em 1.0em;
 			transition: color .2s ease;
-			border: 0 !important;
 
 			.icon {
 				display: inline-block;
@@ -45,7 +44,6 @@ $dropDownTextColor: $headerTextColor;
 
 			a {
 				color: $secondColor;
-				border: 0 !important;
 			}
 		}				
 

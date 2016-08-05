@@ -6,7 +6,7 @@
 					strong VEM
 					| App
 
-		.menu-toggle.left
+		.menu-toggle.left(@click="toggleMenu()")
 			i.fa.fa-bars
 
 		.search-box.left
@@ -46,17 +46,17 @@
 					span 5
 					.ring
 
-				li(@click="toggleMessages()")
+				li.active(@click="toggleMessages()")
 					i.fa.fa-envelope-o
-					span 20
+					span 2
 					.ring
 			
-			.notification-dropdown.visible(:class="{ 'visible': expandedNotifications }")
-				.panel(style="height: 300px;")
+			.notification-dropdown(:class="{ 'visible': expandedNotifications }")
+				.panel
 					.header 
 						.left Notifications
 						.right
-							a(href="#") 
+							a.link(href="#") 
 								small Mark All as Read
 					.body 
 						.list
@@ -101,10 +101,38 @@
 								.footer.text-right
 									small.text-muted 1 day ago
 					.footer.text-center
-						a(href="#") See all notifications
+						a.link(href="#") See all notifications
 
+			.messages-dropdown(:class="{ 'visible': expandedMessages }")
+				.panel
+					.header 
+						.left Messages
+						.right
+							a.link(href="#") 
+								small Mark All as Read
+					.body 
+						.list
+							.item
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/dustin/73.jpg")
+								.body
+									strong Message title 
+										small.text-muted John Doe
+									p.text-justify Cupidatat eiusmod commodo excepteur velit magna. Aliqua eu tempor officia officia et ipsum magna sint cillum Lorem reprehenderit.
+								.footer.text-right
+									small.text-muted 1 min ago
+							.item
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/connor_gaunt/73.jpg")
+								.body
+									strong Message title 
+										small.text-muted John Doe
+									p.text-justify Laborum laboris nulla nisi labore.
+								.footer.text-right
+									small.text-muted 3 min ago
 
-	aside.menu
+					.footer.text-center
+						a.link(href="#") See all messages
+
+	aside.menu(:class="{ mini: miniMenu }")
 		.menu-label General
 		ul.menu-list
 			li(v-link-active)
@@ -140,7 +168,7 @@
 					span.label {{ "Logout" | i18n }}
 
 
-	section.app-main
+	section.app-main(:class="{ miniMenu: miniMenu }")
 		router-view(keep-alive)
 
 </template>
@@ -167,6 +195,8 @@
 		data() {
 			return {
 				wsReconnecting: false,
+
+				miniMenu: false,
 				expandedUserMenu: false,
 				expandedNotifications: false,
 				expandedMessages: false
@@ -223,14 +253,30 @@
 
 			toggleUserMenu() {
 				this.expandedUserMenu = !this.expandedUserMenu;
+				if (this.expandedUserMenu) {
+					this.expandedMessages = false;
+					this.expandedNotifications = false;
+				}
 			},
 
 			toggleMessages() {
 				this.expandedMessages = !this.expandedMessages;
+				if (this.expandedMessages) {
+					this.expandedUserMenu = false;
+					this.expandedNotifications = false;
+				}
 			},
 
 			toggleNotifications() {
 				this.expandedNotifications = !this.expandedNotifications;
+				if (this.expandedNotifications) {
+					this.expandedMessages = false;
+					this.expandedUserMenu = false;
+				}
+			},
+
+			toggleMenu() {
+				this.miniMenu = !this.miniMenu;
 			}
 		},
 

@@ -133,7 +133,7 @@ body {
 
 		padding: 0 0.5rem;
 
-		transition: color .2s ease;
+		transition: color .4s ease;
 
 		&:hover {
 			color: $secondColor;
@@ -271,12 +271,12 @@ body {
 		} // ul.icons
 
 
-		.notification-dropdown {
+		.messages-dropdown, .notification-dropdown {
 
 			visibility: hidden;
 			opacity: 0;
 			top: $headerHeight /2;
-			transition: all .2s ease;
+			transition: all .4s ease;
 
 			position: absolute;
 			right: 200px;
@@ -288,13 +288,21 @@ body {
 				top: $headerHeight;
 				opacity: 1;
 			}
+
+			.panel {
+				max-height: 300px;
+			}
 			
 			font-size: 0.8em;
 
 			background-color: $backgroundColor;
 			border-radius: $defaultRadius;
 
-		} // .notification-dropdown
+		} // .messages-dropdown, .notification-dropdown
+
+		.notification-dropdown {
+			right: 300px;
+		}
 
 	} // .notification-box
 
@@ -390,6 +398,7 @@ body {
 
 	&.mini {
 		width: $menuMiniWidth;
+		transition: width .5s ease;
 
 		.menu-label {
 			height: 10px;
@@ -425,8 +434,17 @@ body {
 
 	padding-top: $headerHeight;
 	margin-left: $menuWidth;
+	transition: margin-left .5s ease;
 
 	padding-left: 10px;
+
+	a {
+		@extend a.link;
+	}
+
+	&.miniMenu {
+		margin-left: $menuMiniWidth;
+	}
 
 } // .app-main
 

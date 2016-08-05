@@ -438,6 +438,8 @@
 								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
 						
 						.panel.primary
+							.ribbon.right.red 
+								span Primary
 							.header Panel primary
 							.body 
 								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis.
@@ -519,7 +521,7 @@
 								small.text-muted Last updated 5 mins ago
 
 						.card
-							.ribbon.right.blue 
+							.ribbon.right.orange 
 								span -20%
 							img.img(src="http://lorempixel.com/350/150/city")
 							.block 
@@ -544,7 +546,7 @@
 					.content.card-columns
 						.card
 							.block 
-								.title Small Card
+								.title Small Card 1
 								p 
 									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos repellendus architecto molestiae iure enim labore dolores similique, quia consequatur culpa, at cumque ad tenetur nemo vitae dolorem ipsum repellat optio! 
 									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
@@ -553,7 +555,7 @@
 														
 						.card
 							.block 
-								.title Small Card
+								.title Small Card 2
 								p 
 									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro voluptate, neque voluptatibus mollitia aliquid, harum in laborum non amet cupiditate ea nisi necessitatibus quis! Earum architecto corporis molestiae nihil molestias? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, voluptate. Eaque nisi alias consectetur ipsum eveniet qui esse repellat voluptas mollitia, obcaecati corporis a modi officia, architecto commodi eius sint! 
 									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
@@ -562,7 +564,7 @@
 														
 						.card
 							.block 
-								.title Small Card
+								.title Small Card 3
 								p 
 									| Lorem ipsum dolor sit amet, consectetur adipisicing elit.  
 									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
@@ -572,14 +574,14 @@
 						.card
 							img.img(src="http://placehold.it/350x150")
 							.block 
-								.title Small Card
+								.title Small Card 4
 								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa
 							.block
 								small.text-muted 08:45 PM - 14 Jun 2016
 														
 						.card
 							.block 
-								.title Small Card
+								.title Small Card 5
 								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa 
 									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
 							.block
@@ -589,7 +591,7 @@
 														
 						.card
 							.block 
-								.title Small Card
+								.title Small Card 6
 								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa 
 								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt voluptatum quos autem magnam doloribus sunt. Atque quas accusamus repellat, odio dolore sapiente voluptatibus nemo numquam eum odit tempore, similique natus! 
 									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
@@ -598,7 +600,7 @@
 														
 						.card
 							.block 
-								.title Small Card
+								.title Small Card 7
 								p 
 									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa 
 									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
@@ -607,7 +609,7 @@
 														
 						.card
 							.block 
-								.title Small Card
+								.title Small Card 8
 								p 
 									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa 
 									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
