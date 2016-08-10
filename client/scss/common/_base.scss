@@ -16,6 +16,7 @@
 @import "panels";
 @import "cards";
 @import "ribbons";
+@import "medias";
 @import "animations";
 
 .left {		float: left; }
@@ -83,11 +84,15 @@ small {
 	font-weight: 400;
 }
 
+a {
+	color: $textColor;
+	cursor: pointer;
+}
+
 a.link {
 	color: $secondColor;
 	border-bottom: 1px solid $color2-light;
 	text-decoration: none;
-	cursor: pointer;
 	
 	&:hover {
 		border-bottom: 1px solid $secondColor;

@@ -29,7 +29,7 @@
 			li(v-for="post of rows | orderBy orderPosts -1", transition="post", track-by="code")
 				.box
 					article.media
-						.media-left
+						.left
 							figure.image.is-64x64
 								img(:src="post.author.gravatar")
 

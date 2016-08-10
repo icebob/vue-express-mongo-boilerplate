@@ -57,10 +57,10 @@
 							br
 							| multiple lines so you can see the line-height.
 						p.text-justify Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius ipsum tortor, eget convallis ante sagittis ac. Nulla eget bibendum dolor. Praesent at ipsum bibendum, malesuada quam tincidunt, lobortis purus. Donec vel mi mollis, sagittis libero non, ultrices elit. Nulla non mauris in sapien mattis scelerisque. Vivamus maximus tincidunt mi, interdum pellentesque urna feugiat sed. Suspendisse vulputate metus leo, nec hendrerit sapien tincidunt ac. Vivamus non libero luctus, suscipit libero ut, elementum enim. 
-							a(href="#") Read more
+							a.link(href="#") Read more
 
 						p Fusce aliquam sem lorem, in porttitor orci dignissim at. Sed non dolor at orci dignissim bibendum a non nibh. Duis nec vestibulum dui, sit amet lobortis ligula. Sed aliquam mauris nunc, eu sodales est faucibus vitae. Ut sed accumsan lectus. Interdum et 
-							a(href="#") malesuada
+							a.link(href="#") malesuada
 							|  fames ac ante ipsum primis in faucibus. Aenean dignissim odio vehicula ligula varius, ac ullamcorper tortor molestie. Phasellus dolor dui, egestas id ornare in, suscipit et dolor.
 
 			section
@@ -549,7 +549,7 @@
 								.title Small Card 1
 								p 
 									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos repellendus architecto molestiae iure enim labore dolores similique, quia consequatur culpa, at cumque ad tenetur nemo vitae dolorem ipsum repellat optio! 
-									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
+									a.link(href="https://twitter.com/Icebobcsi") @Icebobcsi
 							.block
 								small.text-muted 08:45 PM - 14 Jun 2016
 														
@@ -558,7 +558,7 @@
 								.title Small Card 2
 								p 
 									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro voluptate, neque voluptatibus mollitia aliquid, harum in laborum non amet cupiditate ea nisi necessitatibus quis! Earum architecto corporis molestiae nihil molestias? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, voluptate. Eaque nisi alias consectetur ipsum eveniet qui esse repellat voluptas mollitia, obcaecati corporis a modi officia, architecto commodi eius sint! 
-									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
+									a.link(href="https://twitter.com/Icebobcsi") @Icebobcsi
 							.block
 								small.text-muted 08:45 PM - 14 Jun 2016
 														
@@ -567,7 +567,7 @@
 								.title Small Card 3
 								p 
 									| Lorem ipsum dolor sit amet, consectetur adipisicing elit.  
-									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
+									a.link(href="https://twitter.com/Icebobcsi") @Icebobcsi
 							.block
 								small.text-muted 08:45 PM - 14 Jun 2016
 														
@@ -583,7 +583,7 @@
 							.block 
 								.title Small Card 5
 								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa 
-									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
+									a.link(href="https://twitter.com/Icebobcsi") @Icebobcsi
 							.block
 								small.text-muted 08:45 PM - 14 Jun 2016
 							.block
@@ -594,7 +594,7 @@
 								.title Small Card 6
 								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa 
 								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt voluptatum quos autem magnam doloribus sunt. Atque quas accusamus repellat, odio dolore sapiente voluptatibus nemo numquam eum odit tempore, similique natus! 
-									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
+									a.link(href="https://twitter.com/Icebobcsi") @Icebobcsi
 							.block
 								small.text-muted 08:45 PM - 14 Jun 2016
 														
@@ -603,7 +603,7 @@
 								.title Small Card 7
 								p 
 									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa 
-									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
+									a.link(href="https://twitter.com/Icebobcsi") @Icebobcsi
 							.block
 								small.text-muted 08:45 PM - 14 Jun 2016
 														
@@ -612,9 +612,127 @@
 								.title Small Card 8
 								p 
 									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa 
-									a(href="https://twitter.com/Icebobcsi") @Icebobcsi
+									a.link(href="https://twitter.com/Icebobcsi") @Icebobcsi
 							.block
 								small.text-muted 08:45 PM - 14 Jun 2016
+
+
+			section
+				h2
+					span.number 10.
+					span.text Media
+				fieldset
+					legend Normal media
+
+					.content.list
+						.media
+							.media-left
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/73.jpg")
+							.media-content
+								strong John Doe
+								small.text-muted @johndoe - 31m ago
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis. 
+								p Elit ex id excepteur aliqua sint et culpa nisi laborum. Cupidatat anim aliqua nisi tempor nisi sint mollit non elit laboris consequat. Ut sint mollit voluptate quis sunt magna voluptate incididunt amet voluptate aute occaecat nulla. Nostrud ut eiusmod duis consequat sunt proident in aute esse adipisicing cupidatat commodo consequat dolor. Irure minim consectetur est duis nulla aliqua fugiat culpa proident cupidatat elit magna. Dolor esse magna pariatur sint adipisicing cupidatat veniam excepteur aliquip. Qui fugiat non eiusmod do sunt excepteur enim aliquip reprehenderit ullamco.
+									a.link(href="#")  Read more...
+								.functions
+									a(href="#")
+										i.fa.fa-reply									
+									a(href="#")
+										i.fa.fa-heart									
+									a(href="#")
+										i.fa.fa-trash								
+							.media-right
+								a.close(href="#", title="Close")
+														
+						.media.primary
+							.media-left
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/73.jpg")
+							.media-content
+								strong John Doe
+								small.text-muted @johndoe - 31m ago
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis. 
+									a.link(href="#") Read more...
+								.functions
+									a(href="#")
+										i.fa.fa-reply									
+									a(href="#")
+										i.fa.fa-heart									
+									a(href="#")
+										i.fa.fa-trash								
+							.media-right
+								a.close(href="#", title="Close")
+														
+						.media.success
+							.media-left
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/73.jpg")
+							.media-content
+								strong John Doe
+								small.text-muted @johndoe - 31m ago
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis. 
+									a.link(href="#") Read more...
+								.functions
+									a(href="#")
+										i.fa.fa-reply									
+									a(href="#")
+										i.fa.fa-heart									
+									a(href="#")
+										i.fa.fa-trash								
+							.media-right
+								a.close(href="#", title="Close")
+														
+						.media.warning
+							.media-left
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/73.jpg")
+							.media-content
+								strong John Doe
+								small.text-muted @johndoe - 31m ago
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis. 
+									a.link(href="#") Read more...
+								.functions
+									a(href="#")
+										i.fa.fa-reply									
+									a(href="#")
+										i.fa.fa-heart									
+									a(href="#")
+										i.fa.fa-trash								
+							.media-right
+								a.close(href="#", title="Close")
+														
+						.media.danger
+							.media-left
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/73.jpg")
+							.media-content
+								strong John Doe
+								small.text-muted @johndoe - 31m ago
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis. 
+									a.link(href="#") Read more...
+								.functions
+									a(href="#")
+										i.fa.fa-reply									
+									a(href="#")
+										i.fa.fa-heart									
+									a(href="#")
+										i.fa.fa-trash								
+							.media-right
+								a.close(href="#", title="Close")
+														
+						.media.outline
+							.media-left
+								img.avatar(src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/73.jpg")
+							.media-content
+								strong John Doe
+								small.text-muted @johndoe - 31m ago
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta cumque assumenda culpa maiores omnis totam obcaecati voluptas eligendi sapiente enim debitis, illo dolore facilis, in, nihil perspiciatis, et perferendis. 
+									a.link(href="#") Read more...
+								.functions
+									a(href="#")
+										i.fa.fa-reply									
+									a(href="#")
+										i.fa.fa-heart									
+									a(href="#")
+										i.fa.fa-trash								
+							.media-right
+								a.close(href="#", title="Close")
 														
 </template>
 
@@ -670,6 +788,12 @@
 
 	.buttons {
 		margin-bottom: 20px;
+	}
+
+	.list {
+		> * {
+			margin-bottom: 20px;
+		}
 	}
 
 	.panels {

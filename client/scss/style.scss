@@ -426,10 +426,6 @@ body {
 
 	padding-left: 10px;
 
-	a {
-		@extend a.link;
-	}
-
 	&.miniMenu {
 		margin-left: $menuMiniWidth;
 	}
