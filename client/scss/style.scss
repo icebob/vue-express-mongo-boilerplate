@@ -129,15 +129,15 @@ body {
 
 		padding: 0 0.5rem;
 
-		transition: color .4s ease;
-
-		&:hover {
-			color: $secondColor;
-		}
-
 		.user-info {
 			$padSize: ($headerHeight - $avatarSize) / 2;
 			padding: $padSize 0.8rem;
+
+			transition: color .4s ease;
+
+			&:hover {
+				color: $secondColor;
+			}
 
 			i {
 				line-height: $headerHeight - $padSize * 2;
@@ -427,8 +427,8 @@ body {
 
 	padding-left: 10px;
 
-	&.miniMenu {
+	&.miniSidebar {
 		margin-left: $menuMiniWidth;
-	}
+	} // .miniSidebar
 
 } // .app-main
