@@ -2,9 +2,6 @@
 @import "common/mixins";
 @import "common/base";
 
-
-//@import "../../node_modules/bulma/bulma.sass";
-
 @include scrollbars(.5em, $color3-dark, $backgroundColor);
 
 html {
@@ -54,7 +51,6 @@ body {
 	min-width: $minWidth;
 	height: $headerHeight;
 
-
 	background-color: rgba($headerBgColor, 0.8);
 	color: $headerTextColor;
 
@@ -91,7 +87,6 @@ body {
 
 	} // .logo
 
-
 	.menu-toggle {
 		cursor: pointer;
 		font-size: 1.8rem;
@@ -107,7 +102,6 @@ body {
 	} // .menu-toggle
 
 	.search-box {
-
 		padding: 0 1.0rem;
 		line-height: $headerHeight;
 
@@ -168,8 +162,7 @@ body {
 
 		} // .user-info
 
-		.user-menu {
-			
+		.user-menu {			
 			visibility: hidden;
 			opacity: 0;
 			top: $headerHeight /2;
@@ -251,7 +244,6 @@ body {
 				&.active {
 					i {
 						opacity: 1;
-
 						color: $activeColor;
 						text-shadow: 0px 0px 4px lighten($activeColor, 10%);
 					}
@@ -270,9 +262,7 @@ body {
 
 		} // ul.icons
 
-
 		.messages-dropdown, .notification-dropdown {
-
 			visibility: hidden;
 			opacity: 0;
 			top: $headerHeight /2;
@@ -282,6 +272,11 @@ body {
 			right: 200px;
 			min-width: 190px;
 			width: 400px;
+
+			font-size: 0.8em;
+
+			background-color: $backgroundColor;
+			border-radius: $defaultRadius;
 
 			&.visible {
 				visibility: visible;
@@ -293,11 +288,6 @@ body {
 				max-height: 300px;
 			}
 			
-			font-size: 0.8em;
-
-			background-color: $backgroundColor;
-			border-radius: $defaultRadius;
-
 		} // .messages-dropdown, .notification-dropdown
 
 		.notification-dropdown {
@@ -310,14 +300,11 @@ body {
 
 } // .page-header
 
-
 .menu {
-
 	position: fixed;
 	width: $menuWidth;
 	min-height: 100%;
 	height: 100%;
-
 	z-index: 1023;
 
 	top: $headerHeight;
@@ -417,13 +404,12 @@ body {
 					display: none;
 				}
 			}
-		}
+
+		} // li
 
 	} // .menu.mini
 
 } // .menu
-
-
 
 .app-main {
 	background-color: $backgroundColor;
@@ -447,67 +433,3 @@ body {
 	}
 
 } // .app-main
-
-
-
-
-
-
-
-
-
-
-/*
-html {
-	background-color: $color1;
-	color: $textColor;
-	font-size: 14px;
-	font-family: $fontFamily;
-	font-weight: 400;
-	font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;	
-}
-
-body {
-	padding: 0;
-	margin: 0;
-}
-
-a {
-	color: $textColor;
-	border-bottom: 1px solid $masterColor;
-	text-decoration: none;
-	
-	&:hover {
-		border-bottom: 1px solid $color5;
-	}
-
-	&.active, &:active {
-		color: $color5;	
-		font-weight: 600;
-		border-bottom: 1px solid $color5;
-	}
-}
-
-button {
-	background-color: $buttonColor;
-	color: $buttonTextColor;
-	border: 0;
-	margin: 0px 0.5em;
-	font-size: 1.0rem;
-	padding: 0.5em 1em;
-	font-family: $fontFamily;
-	font-weight: 400;
-	border-radius: 8px;
-	cursor: pointer;
-	
-	&:hover {
-		background-color: lighten($buttonColor, 10%);
-	}
-
-	&:active {
-		background-color: darken($buttonColor, 10%);
-	}	
-} // button
-
-*/
