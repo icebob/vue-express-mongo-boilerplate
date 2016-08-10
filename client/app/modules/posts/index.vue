@@ -352,9 +352,11 @@
 			padding: 0.5rem 0.5rem;
 			font-size: 1.1rem;
 
-			&:hover {
-				.media {
-					background-color: $color2;
+			.media {
+				background-color: rgba($color1, 0.5);
+				transition: background-color .2s ease;
+				&:hover {
+					background-color: rgba($color1, 0.8);
 				}
 			}
 
