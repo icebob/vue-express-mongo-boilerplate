@@ -1,10 +1,16 @@
 
 table.table {
 
-	$headerColor: rgba(black, 0.3);
+	$headerColor: $color2-dark;
+	@if $glassTheme {
+		$headerColor: rgba(black, 0.3);
+	}		
 
 	width: 100%;
-	border-collapse: collapse;
+	
+	border-spacing: 0;
+	border: 1px solid $headerColor;
+	border-radius: 8px;
 
 	th, td {
 		padding: 0.5em 0.6em;
@@ -65,25 +71,29 @@ table.table {
 	} // thead
 
 	tbody {
-
 		tr {
 			transition: background-color .2s ease;
-
+	
 			td {
-
-
-				// Table borders
-				&:first-child {
-					border-left: 1px solid $headerColor;
-				}
-
-				&:last-child {
-					border-right: 1px solid $headerColor;
-				}
 
 			} // td
 
 		} // tr
+
+		// If there is no tfoot add radius
+		&:last-child {
+			tr:last-child {
+				td {
+					&:first-child {
+						border-radius: 0 0 0 8px;
+					}
+
+					&:last-child {
+						border-radius: 0 0 8px 0;
+					}
+				}
+			}
+		}
 
 	} // tbody
 

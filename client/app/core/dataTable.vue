@@ -1,5 +1,5 @@
 <template lang="jade">
-	table.table
+	table.table.stripped
 		thead
 			tr
 				th.selector(v-if="schema.multiSelect", width="20px" @click="selectAll") 
