@@ -95,6 +95,7 @@ a.link {
 	text-decoration: none;
 	
 	&:hover {
+		color: $textColor;
 		border-bottom: 1px solid $secondColor;
 	}	
 	
@@ -104,5 +105,10 @@ hr {
 	border: 0;
 	border-top: 1px solid $color2-light;
 	margin: 20px 10%;
-	width: 80%
+	width: 80%;
+
+	&.full {
+		margin: 20px 0;
+		width: 100%;
+	}
 }

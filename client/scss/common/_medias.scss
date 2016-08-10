@@ -15,7 +15,6 @@
 	padding: 1.0em;
 
 	.avatar {
-		float: left;
 		width: 64px;
 		height: 64px;
 		border-radius: $avatarRadius;
@@ -47,6 +46,8 @@
 	}
 
 	.media-content {
+		flex-grow: 1;
+
 		strong + small {
 			margin-left: 0.5em;
 		}
