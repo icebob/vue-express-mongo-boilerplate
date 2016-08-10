@@ -170,8 +170,8 @@ module.exports = function(app, db) {
 
 
 	// API versioning
-	app.use("/v1/devices", router);
+	app.use("/v1" + namespace, router);
 
 	// v1 is the default route
-	app.use("/devices", router);
+	app.use(namespace, router);
 };

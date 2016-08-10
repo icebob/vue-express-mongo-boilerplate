@@ -132,6 +132,7 @@ body {
 		.user-info {
 			$padSize: ($headerHeight - $avatarSize) / 2;
 			padding: $padSize 0.8rem;
+			user-select: none;
 
 			transition: color .4s ease;
 

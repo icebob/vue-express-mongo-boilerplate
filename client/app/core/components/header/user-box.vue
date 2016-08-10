@@ -1,23 +1,23 @@
 <template lang="jade">
-	div.user-box.right
+	div.user-box.right(v-if="me")
 	
 		.user-info.right(@click="toggleUserMenu()")
-			img.avatar(src='https://s3.amazonaws.com/uifaces/faces/twitter/kolage/73.jpg')
-			.username John Doe 
+			img.avatar(:src='me.gravatar')
+			.username {{ me.fullName }}
 			i.fa.fa-chevron-down
 
 		user-dropdown(:visible="expandedUserMenu")
 
 		.notification-box.right
 			ul.icons
-				li.active(@click="toggleNotifications()")
+				li(@click="toggleNotifications()", :class=" { active: notifications.length > 0 }")
 					i.fa.fa-bell-o
-					span 5
+					span {{ notifications.length }}
 					.ring
 
-				li.active(@click="toggleMessages()")
+				li(@click="toggleMessages()", :class=" { active: messages.length > 0 }")
 					i.fa.fa-envelope-o
-					span 2
+					span {{ messages.length }}
 					.ring
 			
 			notifications-dropdown(:visible="expandedNotifications")
@@ -30,6 +30,10 @@
 	import UserDropdown from "./dropdowns/user";
 	import NotificationsDropdown from "./dropdowns/notifications";
 	import MessagesDropdown from "./dropdowns/messages";
+
+	import * as actions from "../../../modules/session/vuex/actions";
+	import * as getters from "../../../modules/session/vuex/getters";
+
 
 	export default {
 		components: {
@@ -45,6 +49,14 @@
 				expandedMessages: false
 			};
 		},
+
+		/**
+		 * Set Vuex actions & getters
+		 */
+		vuex: {
+			getters,
+			actions
+		},	
 
 		methods: {
 

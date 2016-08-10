@@ -18,6 +18,9 @@
 	import PageHeader from "./components/header/index";
 	import Sidebar from "./components/sidebar/index";
 
+	import * as actions from "../modules/session/vuex/actions";
+	import * as getters from "../modules/session/vuex/getters";
+
 	// Register vue-form-generator
 	Vue.use(VueFormGenerator);
 
@@ -46,6 +49,14 @@
 				miniSidebar: false
 			};
 		},
+
+		/**
+		 * Set Vuex actions & getters
+		 */
+		vuex: {
+			getters,
+			actions
+		},		
 
 		watch: {
 			$lng() {
@@ -107,6 +118,8 @@
 		created() {
 			console.log("App started!");
 			window.app = this;
+
+			this.getSessionUser();
 		}
 	};
 </script>

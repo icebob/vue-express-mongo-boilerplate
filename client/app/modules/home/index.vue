@@ -647,11 +647,11 @@
 									a.link(href="#")  Read more...
 								.functions
 									a(href="#")
-										i.fa.fa-reply									
+										i.fa.fa-reply
 									a(href="#")
-										i.fa.fa-heart									
+										i.fa.fa-heart
 									a(href="#")
-										i.fa.fa-trash								
+										i.fa.fa-trash
 							.media-right
 								a.close(href="#", title="Close")
 														
@@ -665,11 +665,11 @@
 									a.link(href="#") Read more...
 								.functions
 									a(href="#")
-										i.fa.fa-reply									
+										i.fa.fa-reply
 									a(href="#")
-										i.fa.fa-heart									
+										i.fa.fa-heart
 									a(href="#")
-										i.fa.fa-trash								
+										i.fa.fa-trash
 							.media-right
 								a.close(href="#", title="Close")
 														
@@ -683,11 +683,11 @@
 									a.link(href="#") Read more...
 								.functions
 									a(href="#")
-										i.fa.fa-reply									
+										i.fa.fa-reply
 									a(href="#")
-										i.fa.fa-heart									
+										i.fa.fa-heart
 									a(href="#")
-										i.fa.fa-trash								
+										i.fa.fa-trash
 							.media-right
 								a.close(href="#", title="Close")
 														
@@ -701,11 +701,11 @@
 									a.link(href="#") Read more...
 								.functions
 									a(href="#")
-										i.fa.fa-reply									
+										i.fa.fa-reply
 									a(href="#")
-										i.fa.fa-heart									
+										i.fa.fa-heart
 									a(href="#")
-										i.fa.fa-trash								
+										i.fa.fa-trash
 							.media-right
 								a.close(href="#", title="Close")
 														
@@ -719,11 +719,11 @@
 									a.link(href="#") Read more...
 								.functions
 									a(href="#")
-										i.fa.fa-reply									
+										i.fa.fa-reply
 									a(href="#")
-										i.fa.fa-heart									
+										i.fa.fa-heart
 									a(href="#")
-										i.fa.fa-trash								
+										i.fa.fa-trash
 							.media-right
 								a.close(href="#", title="Close")
 														
@@ -737,11 +737,11 @@
 									a.link(href="#") Read more...
 								.functions
 									a(href="#")
-										i.fa.fa-reply									
+										i.fa.fa-reply
 									a(href="#")
-										i.fa.fa-heart									
+										i.fa.fa-heart
 									a(href="#")
-										i.fa.fa-trash								
+										i.fa.fa-trash
 							.media-right
 								a.close(href="#", title="Close")
 														

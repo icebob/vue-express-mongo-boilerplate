@@ -1,6 +1,8 @@
-export const LOAD 			= "LOAD_DEVICES";
-export const ADD 			= "ADD_DEVICE";
-export const SELECT			= "SELECT_DEVICE";
-export const CLEAR_SELECT	= "CLEAR_SELECT";
-export const UPDATE			= "UPDATE_DEVICE";
-export const REMOVE			= "REMOVE_DEVICE";
+const MODULE = "DEVICES_";
+
+export const LOAD 			= MODULE + "LOAD";
+export const ADD 			= MODULE + "ADD";
+export const SELECT			= MODULE + "SELECT";
+export const CLEAR_SELECT	= MODULE + "CLEAR_SELECT";
+export const UPDATE			= MODULE + "UPDATE";
+export const REMOVE			= MODULE + "REMOVE";
