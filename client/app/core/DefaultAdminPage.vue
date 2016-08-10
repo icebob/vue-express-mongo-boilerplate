@@ -4,7 +4,9 @@
 
 		.flex.align-center.justify-space-around
 			.left(v-if="enabledNew")
-				button.button.is-primary(@click="newModel") {{ schema.resources.addCaption || "Add"}}
+				button.button.is-primary(@click="newModel")
+					i.icon.fa.fa-plus 
+					| {{ schema.resources.addCaption || "Add"}}
 			.right {{ _("SelectedOfAll", { selected: selected.length, all: rows.length } ) }}
 
 		data-table(:schema="schema.table", :rows="rows", :order="order", :search="search", :selected="selected", :select="select", :select-all="selectAll")
@@ -17,9 +19,15 @@
 					strong {{ item.error }}
 
 			.buttons.flex.justify-space-around
-				button.button.primary(@click="saveModel", :disabled="!enabledSave") {{ schema.resources.saveCaption || _("Save") }}
-				button.button.outline(@click="cloneModel", :disabled="!enabledClone") {{ schema.resources.cloneCaption || _("Clone") }}
-				button.button.danger(@click="deleteModel", :disabled="!enabledDelete") {{ schema.resources.deleteCaption || _("Delete") }}
+				button.button.primary(@click="saveModel", :disabled="!enabledSave")
+					i.icon.fa.fa-save 
+					| {{ schema.resources.saveCaption || _("Save") }}
+				button.button.outline(@click="cloneModel", :disabled="!enabledClone")
+					i.icon.fa.fa-copy 
+					| {{ schema.resources.cloneCaption || _("Clone") }}
+				button.button.danger(@click="deleteModel", :disabled="!enabledDelete")
+					i.icon.fa.fa-trash 
+					| {{ schema.resources.deleteCaption || _("Delete") }}
 
 			// pre {{{ model | prettyJSON }}}
 
@@ -214,7 +222,7 @@
 	.form {
 		margin: 1rem 0;
 
-		@include bgTranslucentBright(0.2);
+		@include bgTranslucentDark(0.2);
 		border-radius: 8px;
 
 		.buttons {
@@ -223,25 +231,4 @@
 		}
 
 	}
-</style>
-
-<style lang="sass">
-	.field-switch {
-		.field-wrap {
-			label {
-				padding: 0 !important;
-				background: none;
-
-				.handle {
-					top: 1px;
-					left: 1px;
-				}
-			}
-
-			input:checked ~ .handle {
-				left: 91px;
-			} 
-		}
-	}
-
 </style>

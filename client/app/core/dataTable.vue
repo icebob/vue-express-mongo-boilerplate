@@ -14,7 +14,10 @@
 					| {{{ getCellValue(this, row, col) | tableFormatter }}}
 					span.labels(v-if="col.labels != null")
 						.label(v-for="label in col.labels(row)", :class="'label-' + label.type") {{ label.caption }}
-
+		tfoot
+			tr
+				td
+				td(v-for="col in schema.columns") &nbsp; 
 
 </template>
 

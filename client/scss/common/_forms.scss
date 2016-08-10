@@ -38,6 +38,10 @@
 			opacity: 0.4;
 		}
 
+		&[disabled] {
+			cursor: not-allowed;	
+		}
+
 		@include setFocusHighLight($secondColor);
 
 	} // .form-control
@@ -73,7 +77,7 @@
 	}
 
 	.errors {
-		color: lighten($dangerColor, 20%);
+		color: lighten($dangerColor, 35%);
 		font-size: 0.80em;
 		text-shadow: 0 0 2px rgba(#000, 0.6);
 
@@ -94,7 +98,7 @@
 	}
 
 	&.valid {
-		$c: lighten($successColor, 10%);
+		$c: lighten($successColor, 15%);
 		label {
 			color: $c;
 		}
@@ -107,7 +111,7 @@
 	} // .valid
 
 	&.error {
-		$c: lighten($dangerColor, 20%);
+		$c: lighten($dangerColor, 35%);
 		label {
 			color: $c;
 		}
