@@ -128,9 +128,8 @@ TODO
 - Copy and paste *Consumer Key* and *Consumer Secret* keys into `secrets.json` file
 
 ## TODO
-* [ ] add Bulma SASS framework (https://github.com/fundon/vue-admin)
+* [ ] extract modules from App.vue header
 * [ ] create posts page with GraphQL with mutations
-* [x] concat gql schemas
 * [ ] rewrite account.js response handlers
 * [ ] localized emails
 * [ ] check https://github.com/keystonejs/keystone
