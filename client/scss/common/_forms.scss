@@ -23,7 +23,11 @@
 		border: 1px solid $color2-light;
 		border-radius: 5px;
 		outline: 0;
-		background-color: rgba(0,0,0,.15);		
+
+		background-color: $color2-dark;		
+		@if $glassTheme {
+			background-color: rgba(0,0,0,.15);		
+		}		
 
 		font-size: 1.0em;
 		font-family: $fontFamily;

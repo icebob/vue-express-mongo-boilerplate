@@ -28,7 +28,7 @@ body {
 	font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;	
 
-	@if $backgroundImage != none {
+	@if $glassTheme {
 		&::before {
 			content: '';
 			position: fixed;
@@ -414,9 +414,10 @@ body {
 } // .menu
 
 .app-main {
+	min-height: 100vh;
 	background-color: $backgroundColor;
 
-	@if $backgroundImage != none {
+	@if $glassTheme {
 		background-color: rgba($backgroundColor, 0.5);
 	}
 

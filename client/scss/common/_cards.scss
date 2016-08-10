@@ -1,6 +1,9 @@
 
 .card {
-	@include bgTranslucentDark(0.2);
+	background-color: $color2-dark;
+	@if $glassTheme {
+		@include bgTranslucentDark(0.2);
+	}
 
 	position: relative;
 	display: block;

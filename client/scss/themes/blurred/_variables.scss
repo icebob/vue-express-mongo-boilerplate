@@ -9,6 +9,7 @@ $color5: #df691a; //rgba(239, 127, 10, 255)
 
 $images-root: "~images/";
 
+$glassTheme: false;
 $colorAlt: 5%;
 
 $color1-light: lighten($color1, $colorAlt);
@@ -27,11 +28,14 @@ $masterColor: $color2;
 $secondColor: $color3;
 //$secondColor: $color5;
 
+$backgroundImage: none;
 $backgroundColor: $color2;
-//$backgroundImage: url('https://raw.githubusercontent.com/akveo/blur-admin/master/src/assets/img/blur-bg.jpg');
-$backgroundImage: url('http://akveo.com/blur-admin/assets/img/blur-bg.jpg');
-$backgroundImage: url($images-root + 'bg/blue-paper2.jpg');
-//$backgroundImage: none;
+
+@if $glassTheme {
+	//$backgroundImage: url('https://raw.githubusercontent.com/akveo/blur-admin/master/src/assets/img/blur-bg.jpg');
+	$backgroundImage: url('http://akveo.com/blur-admin/assets/img/blur-bg.jpg');
+	//$backgroundImage: url($images-root + 'bg/blue-paper2.jpg');
+}
 
 //$overlayColor: lighten(desaturate($color3, 30%), 10%);
 $overlayColor: $color2;

@@ -1,7 +1,9 @@
 
 .media {
-	//background-color: $backgroundColor;
-	@include bgTranslucentDark(0.2);
+	background-color: $color2-dark;
+	@if $glassTheme {
+		@include bgTranslucentDark(0.2);
+	}
 
 	border: 1px solid $color2-light;
 	border-radius: $defaultRadius;
@@ -77,7 +79,11 @@
 	}
 
 	&.primary {
-		background-color: rgba($secondColor, 0.8);
+		$c: darken($secondColor, 10%);
+		background-color: $c;
+		@if $glassTheme {
+			background-color: rgba($c, 0.8);
+		}		
 
 		a, .functions > a {
 			color: $color2;
@@ -85,15 +91,27 @@
 	}
 
 	&.success {
-		background-color: rgba($successColor, 0.8);
+		$c: darken($successColor, 10%);
+		background-color: $c;
+		@if $glassTheme {
+			background-color: rgba($c, 0.8);
+		}		
 	}
 
 	&.warning {
-		background-color: rgba($warningColor, 0.8);
+		$c: darken($warningColor, 10%);
+		background-color: $c;
+		@if $glassTheme {
+			background-color: rgba($c, 0.8);
+		}		
 	}
 
 	&.danger {
-		background-color: rgba($dangerColor, 0.8);
+		$c: darken($dangerColor, 10%);
+		background-color: $c;
+		@if $glassTheme {
+			background-color: rgba($c, 0.8);
+		}		
 	}
 
 	&.outline {

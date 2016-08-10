@@ -43,3 +43,11 @@
 		margin: 0 auto;
 	}
 }
+
+.group {
+	> * {
+		&:not(:last-child) {
+			margin-right: 1em;
+		}
+	}
+}

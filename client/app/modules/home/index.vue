@@ -9,26 +9,31 @@
 					span.text Color palette
 				.content.flex.align-center.justify-space-around.colors
 					.box.box1
+						.caption Color #1
 						.main
 						.light
 						.dark
 						.code
 					.box.box2
+						.caption Color #2
 						.main
 						.light
 						.dark
 						.code
 					.box.box3
+						.caption Color #3
 						.main
 						.light
 						.dark
 						.code
 					.box.box4
+						.caption Color #4
 						.main
 						.light
 						.dark
 						.code
 					.box.box5
+						.caption Color #5
 						.main
 						.light
 						.dark
@@ -41,11 +46,17 @@
 				.content.typo
 					.headers
 						h1 Heading #1 - {{ getTypographyInfo("h1") }}
+						br
 						h2 Heading #2 -  {{ getTypographyInfo("h2") }}
+						br
 						h3 Heading #3 -  {{ getTypographyInfo("h3") }}
+						br
 						h4 Heading #4 -  {{ getTypographyInfo("h4") }}
+						br
 						h5 Heading #5 -  {{ getTypographyInfo("h5") }}
-						
+						br
+						h5 ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 éáűőúöüóí ÉÁŰŐÚÖÜÓÍ 
+					hr
 					.paragraph
 						p Paragraph - {{ getTypographyInfo("p") }}
 						p ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 éáűőúöüóí ÉÁŰŐÚÖÜÓÍ
@@ -812,7 +823,7 @@
 
 		.box {
 			width: $boxSize;
-			height: $boxSize;
+			height: $boxSize + 20px;
 
 			border: 1px solid darken($backgroundColor, 10%);
 			border-radius: 6px;
@@ -820,6 +831,12 @@
 			margin: 5px 20px;
 			padding: 2px;
 			
+			.caption {
+				float: left;
+				width: 100%;
+				text-align: center;
+			}
+
 			.main {
 				float: left;
 				width: 100%;

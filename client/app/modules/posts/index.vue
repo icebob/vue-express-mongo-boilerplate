@@ -2,8 +2,8 @@
 	.container
 		h2.title {{ _('Posts') }}
 
-		.flex.row.justify-space-between
-			div.sort
+		.header.flex.row.justify-space-between
+			.group.sort
 				a.link(@click="setSort('hot')", :class="{ active: sort == 'hot' }") {{ _("Hot") }}
 				a.link(@click="setSort('mostviewed')", :class="{ active: sort == 'mostviewed' }") {{ _("MostViewed") }}
 				a.link(@click="setSort('new')", :class="{ active: sort == 'new' }") {{ _("New") }}
@@ -13,14 +13,14 @@
 					i.fa.fa-plus
 				span {{ _("NewPost") }}
 
-			div.filter
+			.group.filter
 				a.link(@click="setViewMode('all')", :class="{ active: viewMode == 'all' }") {{ _("AllPosts") }}
 				a.link(@click="setViewMode('my')", :class="{ active: viewMode == 'my' }") {{ _("MyPosts") }}
 
 		.postForm(v-if="showForm")
 			vue-form-generator(:schema='schema', :model='model', :options='{}', :multiple="false", v-ref:form, :is-new-model="isNewPost")
 
-			.buttons
+			.group.buttons
 				button.button.primary(@click="savePost") {{ _("Save") }}
 				button.button(@click="cancelPost") {{ _("Cancel") }}
 
@@ -317,12 +317,8 @@
 	@import "../../../scss/themes/blurred/variables";
 	@import "../../../scss/common/mixins";
 
-	.sort, .filter {
-		> * {
-			cursor: pointer;
-			display: inline-block;
-			margin: 0.3rem 1rem;
-		}		
+	.header {
+		margin: 1rem;
 	}
 
 	.postForm {
@@ -333,10 +329,6 @@
 
 		.buttons {
 			padding: 0.5em;
-
-			> .button {
-				margin-right: 1em;
-			}
 		}
 
 	} // .postForm
