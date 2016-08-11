@@ -11,7 +11,6 @@ let async 			= require("async");
 let auth			= require("../../../core/auth/helper");
 let response		= require("../../../core/response");
 let Post 			= require("./models/post");
-let hashids			= require("../../../libs/hashids");
 
 let io 				= require("../../../core/socket");
 
@@ -174,7 +173,7 @@ module.exports = function(app, db) {
 	 * and search post by ID in database
 	 */
 	router.param("postID", function(req, res, next, postID) {
-		let id = hashids.decodeHex(postID);
+		let id = Post.schema.methods.decodeID(postID);
 		if (id == null || id == "")
 			return response.json(res, null, response.BAD_REQUEST, req.t("InvalidPostID"));
 
