@@ -6,12 +6,10 @@
 
 		section.app-main(:class="{ miniSidebar: miniSidebar }")
 			router-view(keep-alive)
-
 </template>
 
 <script>
 	import Vue from "vue";
-	import VueFormGenerator from "vue-form-generator";
 	import MixinsIO from "./mixins/io";
 	import store from "../store";
 
@@ -20,9 +18,6 @@
 
 	import * as actions from "../modules/session/vuex/actions";
 	import * as getters from "../modules/session/vuex/getters";
-
-	// Register vue-form-generator
-	Vue.use(VueFormGenerator);
 
 	export default {
 
@@ -45,7 +40,6 @@
 		data() {
 			return {
 				wsReconnecting: false,
-
 				miniSidebar: false
 			};
 		},
@@ -109,6 +103,12 @@
 
 			toggleSidebar() {
 				this.miniSidebar = !this.miniSidebar;
+			}
+		},
+
+		events: {
+			"search"(text) {
+				console.log("Search: ", text);
 			}
 		},
 

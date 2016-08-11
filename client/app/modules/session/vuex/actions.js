@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { ADD_MESSAGE, ADD_NOTIFICATION, SET_USER } from "./types";
+import { ADD_MESSAGE, ADD_NOTIFICATION, SET_USER, SEARCH } from "./types";
 
 const BASE_URL = "/session";
 
@@ -22,4 +22,8 @@ export const addMessage = ({ dispatch }, item) => {
 
 export const addNotification = ({ dispatch }, item) => {
 	dispatch(ADD_NOTIFICATION, item);
+};
+
+export const searching = ({ dispatch }, text) => {
+	dispatch(SEARCH, text);
 };

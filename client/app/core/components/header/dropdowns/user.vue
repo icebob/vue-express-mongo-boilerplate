@@ -4,12 +4,12 @@
 			a(href='#')
 				.icon
 					i.fa.fa-user
-				| Profile
+				| {{ "MyAccount" | i18n }}
 		li
 			a(href='#')
 				.icon
 					i.fa.fa-cog
-				| Settings
+				| {{ "Settings" | i18n }}
 		
 		li.separator
 

@@ -2,10 +2,10 @@
 	.notification-dropdown(:class="{ 'visible': visible }")
 		.panel
 			.header 
-				.left Notifications
+				.left {{ "Notifications" | i18n }}
 				.right
 					a.link(href="#") 
-						small Mark All as Read
+						small {{ "MarkAllAsRead" | i18n }}
 			.body 
 				.list
 					.item
@@ -49,7 +49,7 @@
 						.footer.text-right
 							small.text-muted 1 day ago
 			.footer.text-center
-				a.link(href="#") See all notifications
+				a.link(href="#") {{ "SeeAllNotifications" | i18n }}
 
 
 

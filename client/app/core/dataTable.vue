@@ -17,7 +17,7 @@
 		tfoot
 			tr
 				td
-				td(v-for="col in schema.columns") &nbsp; 
+				td(v-for="col in schema.columns") &nbsp;
 
 </template>
 

@@ -59,6 +59,15 @@
 	"PostNameUpdated": "Bejegyzés '{{title}}' módosítva!",
 	"PostNameDeleted": "Bejegyzés '{{title}}' törölve!",
 
-	"Demo": "Demó"
+	"Demo": "Demó",
 
+	"General": "Általános",
+	"Profile": "Profil",
+	"MyAccount": "Fiókom",
+	"Settings": "Beállítások",
+	"Notifications": "Értesítések",
+	"Messages": "Üzenetek",
+	"MarkAllAsRead": "Mind elolvasva",
+	"SeeAllNotifications": "Összes értesítés",
+	"SeeAllMessages": "Összes üzenet"	
 }

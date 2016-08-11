@@ -1,14 +1,14 @@
 <template lang="jade">
 	section.page-header
 
-		logo
+		logo.left
 
 		.menu-toggle.left(@click="toggleSidebar()")
 			i.fa.fa-bars
 
-		search-box
+		search-box.left(:model.sync="search")
 
-		user-box(:toggle="toggleUserMenu", :expanded="expandedUserMenu")
+		user-box.right(:toggle="toggleUserMenu", :expanded="expandedUserMenu")
 
 </template>
 
@@ -25,6 +25,7 @@
 		},
 
 		props: [
+			"search",
 			"toggleSidebar"
 		]
 

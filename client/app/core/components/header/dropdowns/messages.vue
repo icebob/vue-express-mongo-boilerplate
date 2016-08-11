@@ -2,10 +2,10 @@
 	.messages-dropdown(:class="{ 'visible': visible }")
 		.panel
 			.header 
-				.left Messages
+				.left {{ "Messages" | i18n }}
 				.right
 					a.link(href="#") 
-						small Mark All as Read
+						small {{ "MarkAllAsRead" | i18n }}
 			.body 
 				.list
 					.item
@@ -26,7 +26,7 @@
 							small.text-muted 3 min ago
 
 			.footer.text-center
-				a.link(href="#") See all messages
+				a.link(href="#") {{ "SeeAllMessages" | i18n }}
 </template>
 
 <script>

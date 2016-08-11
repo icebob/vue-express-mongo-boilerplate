@@ -1,5 +1,5 @@
 <template lang="jade">
-	div.user-box.right(v-if="me")
+	.user-box(v-if="me")
 	
 		.user-info.right(@click="toggleUserMenu()")
 			img.avatar(:src='me.gravatar')

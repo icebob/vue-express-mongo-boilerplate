@@ -9,3 +9,7 @@ export function notifications(state) {
 export function messages(state) {
 	return state.session.messages;
 }
+
+export function searchText(state) {
+	return state.session.searchText;
+}

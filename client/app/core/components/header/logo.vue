@@ -1,5 +1,5 @@
 <template lang="jade">
-	.logo.left
+	.logo
 		a.nav-item(href="#")
 			span 
 				strong VEM

@@ -1,6 +1,6 @@
 <template lang="jade">
 	aside.menu(:class="{ mini: minimized }")
-		.menu-label General
+		.menu-label {{ "General" | i18n }}
 		ul.menu-list
 			li(v-link-active)
 				a(v-link="'/home'", :title="_('Home')")
@@ -26,7 +26,7 @@
 						i.fa.fa-comments
 					span.label {{ "Posts" | i18n }}
 
-		.menu-label Session
+		.menu-label {{ "Profile" | i18n }}
 		ul.menu-list
 			li
 				a(href="/logout", :title="_('Logout')")

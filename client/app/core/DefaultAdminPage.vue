@@ -38,6 +38,8 @@
 	import { schema as schemaUtils } from "vue-form-generator";
 	import DataTable from "./DataTable.vue";
 
+	import { searchText } from "../modules/session/vuex/getters";
+
 	import { each, find, cloneDeep, isFunction } from "lodash";
 
 	export default {
@@ -54,7 +56,6 @@
 
 		data() {
 			return {
-				search: "",
 				order: {
 					field: "id",
 					direction: 1
@@ -63,6 +64,12 @@
 				model: null,
 				isNewModel: false
 			};
+		},
+
+		vuex: {
+			getters: {
+				search: searchText
+			}
 		},
 
 		computed: {

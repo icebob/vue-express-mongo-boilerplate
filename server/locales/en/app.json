@@ -59,5 +59,15 @@
 	"PostNameUpdated": "Post '{{title}}' updated!",
 	"PostNameDeleted": "Post '{{title}}' deleted!",
 
-	"Demo": "Demo"
+	"Demo": "Demo",
+
+	"General": "General",
+	"Profile": "Profile",
+	"MyAccount": "My account",
+	"Settings": "Settings",
+	"Notifications": "Notifications",
+	"Messages": "Messages",
+	"MarkAllAsRead": "Mark All as Read",
+	"SeeAllNotifications": "See all notifications",
+	"SeeAllMessages": "See all messages"
 }
