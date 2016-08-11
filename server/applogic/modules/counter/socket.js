@@ -1,7 +1,9 @@
 "use strict";
 
-let logger 			= require("../../../core/logger");
-let config 			= require("../../../config");
+let ROOT 			= "../../../";
+
+let logger 			= require(ROOT + "core/logger");
+let config 			= require(ROOT + "config");
 
 let store 			= require("./memstore");
 

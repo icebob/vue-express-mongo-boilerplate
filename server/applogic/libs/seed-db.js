@@ -41,7 +41,6 @@ module.exports = function() {
 			logger.warn("Load default Posts to DB...");
 
 			User.find({}).lean().select("_id").exec((err, users) => {
-				console.log(users);
 
 				_.times(10, () => {
 

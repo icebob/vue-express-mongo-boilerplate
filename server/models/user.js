@@ -6,6 +6,7 @@ let C 				= require("../core/constants");
 let fs 				= require("fs");
 let path 			= require("path");
 
+let _ 				= require("lodash");
 let crypto 			= require("crypto");
 let bcrypt 			= require("bcrypt-nodejs");
 
@@ -162,6 +163,18 @@ UserSchema.methods.encodeID = function() {
 
 UserSchema.methods.decodeID = function(code) {
 	return hashids.decodeHex(code);
+}
+
+UserSchema.methods.pick = function(props, model) {
+	return _.pick(model || this.toJSON(), props || [
+		"code",
+		"fullName",
+		"email",
+		"username",
+		"roles",
+		"lastLogin",
+		"gravatar"
+	]);	
 }
 
 /*

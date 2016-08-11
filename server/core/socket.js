@@ -25,6 +25,12 @@ let self = {
 	 */
 	namespaces: {},
 
+	/** 
+	 * List of logged in online users
+	 * @type {Array}
+	 */
+	onlineUsers: [],
+
 	/**
 	 * Init Socket.IO module and load socket handlers 
 	 * from applogic
@@ -138,9 +144,11 @@ let self = {
 
 		// Add an event listener to the 'connection' event
 		io.on("connection", function (socket) {
+			self.addOnlineUser(socket.request.user);
 			logger.debug("WS client connected to namespace " + (io.name || "root") + "! User: " + socket.request.user.username);
 
 			socket.on("disconnect", function() {
+				self.removeOnlineUser(socket.request.user);
 				logger.debug("WS client disconnected from namespace " + (io.name || "root") + "!");
 			});
 		});
@@ -153,6 +161,15 @@ let self = {
 			self.namespaces[namespace].emit(command, data);
 			return true;
 		}
+	},
+
+	addOnlineUser(user) {
+		self.removeOnlineUser(user);
+		self.onlineUsers.push(user);
+	},
+
+	removeOnlineUser(user) {
+		_.remove(self.onlineUsers, function(u) { return u._id == user._id; });
 	}
 
 };
