@@ -8,7 +8,6 @@ let express			= require("express");
 let auth			= require("../../../core/auth/helper");
 let response		= require("../../../core/response");
 let Device 			= require("./models/device");
-let hashids			= require("../../../libs/hashids");
 
 let io 				= require("../../../core/socket");
 
@@ -86,7 +85,7 @@ module.exports = function(app, db) {
 	 * and search device by ID in database
 	 */
 	router.param("deviceID", function(req, res, next, deviceID) {
-		let id = hashids.decodeHex(deviceID);
+		let id = Device.schema.methods.decodeID(deviceID);
 		if (id == null || id == "")
 			return response.json(res, null, response.BAD_REQUEST, "Invalid Device ID!");
 

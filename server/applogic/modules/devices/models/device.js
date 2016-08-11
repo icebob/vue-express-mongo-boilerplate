@@ -7,7 +7,7 @@ let logger    		= require(ROOT + "core/logger");
 let db	    		= require(ROOT + "core/mongo");
 let mongoose 		= require("mongoose");
 let Schema 			= mongoose.Schema;
-let hashids 		= require(ROOT + "libs/hashids");
+let hashids 		= require(ROOT + "libs/hashids")("devices");
 let autoIncrement 	= require("mongoose-auto-increment");
 
 let schemaOptions = {
@@ -51,13 +51,21 @@ let DeviceSchema = new Schema({
 }, schemaOptions);
 
 DeviceSchema.virtual("code").get(function() {
-	return hashids.encodeHex(this._id);
+	return this.encodeID();
 });
 
 DeviceSchema.plugin(autoIncrement.plugin, {
 	model: "Device",
 	startAt: 1
 });
+
+DeviceSchema.methods.encodeID = function() {
+	return hashids.encodeHex(this._id);
+}
+
+DeviceSchema.methods.decodeID = function(code) {
+	return hashids.decodeHex(code);
+}
 
 let Device = mongoose.model("Device", DeviceSchema);
 

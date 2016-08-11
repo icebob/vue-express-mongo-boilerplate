@@ -3,13 +3,13 @@
 		h2.title {{ "Demo" | i18n }}
 
 		h3 {{ count }}
-		button.button.is-success(@click="inc") 
+		button.button.success(@click="inc") 
 			span.icon
 				i.fa.fa-arrow-up 
 			span {{ "Increment" | i18n }}
 		br
 		br
-		button.button.is-warning(@click="dec") 
+		button.button.warning(@click="dec") 
 			span
 				i.fa.fa-arrow-up 
 			span {{ "Decrement" | i18n }}

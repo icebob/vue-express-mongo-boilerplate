@@ -12,7 +12,7 @@ let bcrypt 			= require("bcrypt-nodejs");
 let db	    		= require("../core/mongo");
 let mongoose 		= require("mongoose");
 let Schema 			= mongoose.Schema;
-let hashids 		= require("../libs/hashids");
+let hashids 		= require("../libs/hashids")("users");
 let autoIncrement 	= require("mongoose-auto-increment");
 
 let schemaOptions = {
@@ -121,7 +121,7 @@ let UserSchema = new Schema({
 }, schemaOptions);
 
 UserSchema.virtual("code").get(function() {
-	return hashids.encodeHex(this._id);
+	return this.encodeID();
 });
 
 UserSchema.plugin(autoIncrement.plugin, {
@@ -155,6 +155,14 @@ UserSchema.virtual("gravatar").get(function() {
 	let md5 = crypto.createHash("md5").update(this.email).digest("hex");
 	return "https://gravatar.com/avatar/" + md5 + "?s=64&d=wavatar";
 });
+
+UserSchema.methods.encodeID = function() {
+	return hashids.encodeHex(this._id);
+}
+
+UserSchema.methods.decodeID = function(code) {
+	return hashids.decodeHex(code);
+}
 
 /*
 UserSchema.methods.gravatar = function (size, defaults) {

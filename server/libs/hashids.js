@@ -3,4 +3,6 @@
 let Hashids = require("hashids");
 let secrets = require("../core/secrets");
 
-module.exports = new Hashids(secrets.hashSecret, 10);
+module.exports = function(module, length) {
+	return new Hashids(module + secrets.hashSecret, length || 10);
+}

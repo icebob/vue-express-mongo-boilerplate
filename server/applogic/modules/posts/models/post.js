@@ -7,7 +7,7 @@ let logger    		= require(ROOT + "core/logger");
 let db	    		= require(ROOT + "core/mongo");
 let mongoose 		= require("mongoose");
 let Schema 			= mongoose.Schema;
-let hashids 		= require(ROOT + "libs/hashids");
+let hashids 		= require(ROOT + "libs/hashids")("posts");
 let autoIncrement 	= require("mongoose-auto-increment");
 
 let schemaOptions = {
@@ -53,13 +53,21 @@ let PostSchema = new Schema({
 }, schemaOptions);
 
 PostSchema.virtual("code").get(function() {
-	return hashids.encodeHex(this._id);
+	return this.encodeID();
 });
 
 PostSchema.plugin(autoIncrement.plugin, {
 	model: "Post",
 	startAt: 1
 });
+
+PostSchema.methods.encodeID = function() {
+	return hashids.encodeHex(this._id);
+}
+
+PostSchema.methods.decodeID = function(code) {
+	return hashids.decodeHex(code);
+}
 
 let Post = mongoose.model("Post", PostSchema);
 

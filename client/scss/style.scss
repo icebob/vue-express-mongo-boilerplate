@@ -310,6 +310,8 @@ body {
 	height: 100%;
 	z-index: 1023;
 
+	transition: width .5s ease;
+
 	top: $headerHeight;
 	left: 0;
 	bottom: 0;
@@ -354,6 +356,7 @@ body {
 
 			a {
 				display: block;
+				white-space: nowrap;
 				padding: 0.8em 0 0.8em 1.0em;
 				transition: color .2s ease;
 
@@ -388,7 +391,6 @@ body {
 
 	&.mini {
 		width: $menuMiniWidth;
-		transition: width .5s ease;
 
 		.menu-label {
 			height: 10px;

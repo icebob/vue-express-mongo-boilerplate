@@ -6,7 +6,6 @@ let logger 			= require(ROOT + "core/logger");
 let config 			= require(ROOT + "config");
 
 let _ 				= require("lodash");
-let hashids 		= require(ROOT + "libs/hashids");
 let C 				= require(ROOT + "core/constants");
 
 let Post 			= require(ROOT + "applogic/modules/posts/models/post");
@@ -57,7 +56,7 @@ const resolvers = {
 			let id = args.id;
 
 			if (args.code)
-				id = hashids.decodeHex(args.code);
+				id = User.schema.methods.decodeID(args.code);
 
 			if (id)
 				return User.findById(id).exec();

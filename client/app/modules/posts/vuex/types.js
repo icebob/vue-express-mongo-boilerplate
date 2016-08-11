@@ -1,4 +1,4 @@
-const MODULE = "SESSION_";
+const MODULE = "POSTS_";
 
 export const LOAD 			= MODULE + "LOAD";
 export const ADD 			= MODULE + "ADD";

@@ -9,7 +9,6 @@ let config 			= require(ROOT + "config");
 
 let _ 				= require("lodash");
 let async 			= require("async");
-let hashids 		= require(ROOT + "libs/hashids");
 let C 				= require(ROOT + "core/constants");
 
 let Device 			= require("./models/device");
@@ -53,7 +52,7 @@ const resolvers = {
 			let id = args.id;
 
 			if (args.code)
-				id = hashids.decodeHex(args.code);
+				id = Device.schema.methods.decodeID(args.code);
 
 			if (id)
 				return Device.findById(id).exec();

@@ -9,7 +9,6 @@ let moduleConfig	= require("./module.json");
 
 let _ 				= require("lodash");
 let async 			= require("async");
-let hashids 		= require(ROOT + "libs/hashids");
 let C 				= require(ROOT + "core/constants");
 
 let Post 			= require("./models/post");
@@ -62,7 +61,7 @@ const resolvers = {
 			let id = args.id;
 
 			if (args.code)
-				id = hashids.decodeHex(args.code);
+				id = Post.schema.methods.decodeID(args.code);
 
 			if (id)
 				return Post.findById(id).exec();
