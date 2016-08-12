@@ -128,7 +128,8 @@ TODO
 - Copy and paste *Consumer Key* and *Consumer Secret* keys into `secrets.json` file
 
 ## TODO
-* [ ] extract modules from App.vue header
+* [X] extract modules from App.vue header
+* [ ] service based modules like in FeatherJS ( https://blog.feathersjs.com/using-feathersjs-to-make-your-existing-api-real-time-813f7c3fd892#.stfdjx3cg ) 
 * [ ] create posts page with GraphQL with mutations
 * [ ] rewrite account.js response handlers
 * [ ] localized emails
