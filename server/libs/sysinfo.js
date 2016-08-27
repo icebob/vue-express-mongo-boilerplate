@@ -13,7 +13,7 @@ module.exports = function() {
 	let human = pretty(free);
 
 	logger.info("CPU:\t\tArch: " + (os.arch()) + ", Cores: " + (os.cpus().length));
-	logger.info("Memory:\t\t" + Gauge(used, total, 20, total * 0.8, human));
+	logger.info("Memory:\t\t" + Gauge(used, total, 20, total * 0.8, human + " free"));
 	logger.info("OS:\t\t" + (os.platform()) + " (" + (os.type()) + ")");
 };
 

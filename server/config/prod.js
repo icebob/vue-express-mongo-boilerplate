@@ -8,7 +8,7 @@ module.exports = {
 	ip: process.env.SERVER_IP || "127.0.0.1",
 
 	db: {
-		//uri: process.env.MONGO_URI || "mongodb://mongo/" + pkg.config.dbName,
+		uri: process.env.MONGO_URI || "mongodb://localhost/" + pkg.config.dbName,
 		options: {
 			user: "",
 			pass: ""
