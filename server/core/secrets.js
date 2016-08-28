@@ -1,6 +1,6 @@
 "use strict";
 
-let logger 			= require("./logger");
+//let logger 			= require("./logger");
 let chalk 			= require("chalk");
 let fs				= require("fs");
 let path			= require("path");
@@ -15,7 +15,7 @@ if (!fs.existsSync(fName)) {
 	};
 	fs.writeFileSync(fName, JSON.stringify(json, null, 2));
 	
-	logger.info(chalk.green.bold("Secret file created!"));
+	console.warn(chalk.green.bold("Secret file created!"));
 }
 
 module.exports = require("../../secrets.json");

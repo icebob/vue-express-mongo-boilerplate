@@ -98,6 +98,13 @@ module.exports = {
 
 	},
 
+	logging: {
+
+		graylog: {
+			enabled: false
+		}
+	},
+
 	disableSignUp: false,
 	verificationRequired: true,
 

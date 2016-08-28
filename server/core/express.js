@@ -97,6 +97,8 @@ function initMiddleware(app) {
 		app.use(morgan("dev", {
 			stream: lmStream
 		}));
+
+		app.use(require('express-status-monitor')());
 	}
 }
 

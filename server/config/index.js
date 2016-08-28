@@ -2,7 +2,6 @@
 
 let _ 		= require("lodash");
 let glob 	= require("glob");
-let logger 	= require("../core/logger");
 
 module.exports = {
 
@@ -46,11 +45,11 @@ module.exports = {
 
 let config = {};
 if (module.exports.isTestMode()) {
-	logger.info("Load test config...");
+	console.log("Load test config...");
 	config = require("./test");
 }
 else if (module.exports.isProductionMode()) {
-	logger.info("Load production config...");
+	console.log("Load production config...");
 	config = require("./prod");
 }
 
