@@ -103,6 +103,16 @@ module.exports = {
 		graylog: {
 			enabled: true,
 			servers: [ { host: "192.168.0.174", port: 12201 } ]
+		},
+
+		papertrail: {
+			enabled: true,
+			host: 'logs2.papertrailapp.com',
+			port: 19690/*,
+			level: 'debug',
+			program: 'vem',
+			facility: "server",
+			colorize: true*/
 		}
 	},
 

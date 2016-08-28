@@ -33,6 +33,23 @@ if (secrets.logentries && secrets.logentries.token) {
 	}));
 }
 
+if (config.logging.papertrail.enabled) {
+	require("winston-papertrail").Papertrail;
+
+	let ptTransport = new winston.transports.Papertrail(config.logging.papertrail);
+
+	console.log("Add Papertrail transport");
+	ptTransport.on("error", function(err) {
+		console.error(err);
+	});
+
+	ptTransport.on("connect", function(msg) {
+		console.warn(msg);
+	});
+
+	transports.push(ptTransport);
+}
+
 if (process.env.NODE_ENV === "production") {
 	transports.push(
 		new (require("winston-daily-rotate-file"))({
@@ -40,14 +57,14 @@ if (process.env.NODE_ENV === "production") {
 			level: "info",
 			timestamp: true,
 			json: true,
-			handleExceptions: process.env.NODE_ENV === "production"
+			handleExceptions: true
 		}), new winston.transports.File({
 			filename: path.join(logDir, "exceptions.log"),
 			level: "error",
 			timestamp: true,
 			json: false,
 			prettyPrint: true,
-			handleExceptions: process.env.NODE_ENV === "production",
+			handleExceptions: true,
 			humanReadableUnhandledException: true
 		})
 	);	
