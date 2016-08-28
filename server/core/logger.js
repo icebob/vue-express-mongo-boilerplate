@@ -33,14 +33,6 @@ if (secrets.logentries && secrets.logentries.token) {
 	}));
 }
 
-if (config.logging.graylog.enabled) {
-	let graylog = require("winston-graylog2");
-	transports.push(new graylog({
-		servers: config.logging.graylog.servers,
-		facility: "vem"
-	}));
-}
-
 if (process.env.NODE_ENV === "production") {
 	transports.push(
 		new (require("winston-daily-rotate-file"))({
@@ -91,5 +83,18 @@ if (secrets.logzio && secrets.logzio.token) {
 		token: secrets.logzio.token
 	});
 }
+
+if (config.logging.graylog.enabled) {
+	let graylog = require("winston-graylog2");
+	logger.add(graylog, {
+		name: "Graylog",
+		level: 'debug',
+		graylog: {
+			servers: config.logging.graylog.servers,
+			facility: "vem"
+		}
+	});
+}
+
 
 module.exports = logger;

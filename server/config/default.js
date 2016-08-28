@@ -101,7 +101,7 @@ module.exports = {
 	logging: {
 
 		graylog: {
-			enabled: false
+			enabled: true,
 		}
 	},
 
