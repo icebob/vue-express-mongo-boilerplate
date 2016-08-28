@@ -108,11 +108,9 @@ module.exports = {
 		papertrail: {
 			enabled: true,
 			host: 'logs2.papertrailapp.com',
-			port: 19690/*,
+			port: 19690,
 			level: 'debug',
-			program: 'vem',
-			facility: "server",
-			colorize: true*/
+			program: 'vem'
 		}
 	},
 
