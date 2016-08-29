@@ -98,7 +98,7 @@ function initMiddleware(app) {
 			stream: lmStream
 		}));
 
-		app.use(require('express-status-monitor')());
+		// app.use(require('express-status-monitor')());
 	}
 }
 

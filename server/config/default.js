@@ -101,7 +101,7 @@ module.exports = {
 	logging: {
 
 		graylog: {
-			enabled: true,
+			enabled: false,
 			servers: [ { host: "192.168.0.174", port: 12201 } ]
 		},
 
