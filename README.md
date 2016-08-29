@@ -22,7 +22,7 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 * [x] [NodeMailer](https://github.com/nodemailer/nodemailer) with SMTP, MailGun or SendGrid
 * [x] [Helmet](https://github.com/helmetjs/helmet)
 * [x] [Express-validator](https://github.com/ctavan/express-validator)
-* [x] [winston](https://github.com/winstonjs/winston)
+* [x] [winston](https://github.com/winstonjs/winston) + 6 transports
 * [x] **[GraphQL](http://graphql.org/)** with [Apollo stack](http://www.apollostack.com/)
 * [x] [i18next](http://i18next.com/) as the internationalization ecosystem
 
@@ -42,6 +42,14 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 	* Social signup/login with Facebook, Google, Twitter and Github
 	* API key authentication for REST API calls
 * [x] [Toastr](https://github.com/CodeSeven/toastr)
+
+**Supported remote logging services**
+* [x] [Papertrail](https://papertrailapp.com/)
+* [x] [Graylog](https://www.graylog.org/)
+* [x] [LogEntries](https://logentries.com/)
+* [x] [Loggly](https://www.loggly.com/)
+* [x] [Logsene](https://sematext.com/logsene/)
+* [x] [Logz.io](http://logz.io/)
 
 ## Usage
 For development

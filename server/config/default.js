@@ -2,6 +2,7 @@
 
 let path = require("path");
 let pkg = require("../../package.json");
+let secrets = require("../core/secrets");
 
 let rootPath = path.normalize(path.join(__dirname, "..", ".."));
 
@@ -101,17 +102,39 @@ module.exports = {
 	logging: {
 
 		graylog: {
-			enabled: false,
+			enabled: true,
 			servers: [ { host: "192.168.0.174", port: 12201 } ]
 		},
 
 		papertrail: {
-			enabled: false,
-			host: 'logs2.papertrailapp.com',
-			port: 19690,
+			enabled: secrets.papertrail != null,
+			host: secrets.papertrail != null ? secrets.papertrail.host : null,
+			port: secrets.papertrail != null ? secrets.papertrail.port : null,
 			level: 'debug',
 			program: 'vem'
-		}
+		},
+
+		logentries: {
+			enabled: secrets.logentries != null,
+			token: secrets.logentries != null ? secrets.logentries.token : null
+		},
+
+		loggly: {
+			enabled: secrets.loggly != null,
+			token: secrets.loggly != null ? secrets.loggly.token : null,
+			subdomain: secrets.loggly != null ? secrets.loggly.subdomain : null
+		},
+		
+		logsene: {
+			enabled: secrets.logsene != null,
+			token: secrets.logsene != null ? secrets.logsene.token : null
+		},
+		
+		logzio: {
+			enabled: secrets.logzio != null,
+			token: secrets.logzio != null ? secrets.logzio.token : null
+		},
+		
 	},
 
 	disableSignUp: false,

@@ -1,6 +1,5 @@
 "use strict";
 
-//let logger 			= require("./logger");
 let chalk 			= require("chalk");
 let fs				= require("fs");
 let path			= require("path");
