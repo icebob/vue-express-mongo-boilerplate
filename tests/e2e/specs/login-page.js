@@ -4,7 +4,7 @@ let mailtrap = require("../../util/mailtrap");
 
 let pauseTime = 100;
 
-describe.only("Test login page with username and password", () => {
+describe("Test login page with username and password", () => {
 
 	let loginPage;
 	let homePage;
@@ -53,8 +53,8 @@ describe.only("Test login page with username and password", () => {
 
 		homePage
 			.waitForElementVisible("@title")
-			.assert.urlEquals(homePage.url)
-			.assert.containsText("@title", "Home")
+			.assert.urlEquals(homePage.url())
+			.assert.containsText("@title", "Style guide")
 			.makeScreenshot();
 	});
 
@@ -98,7 +98,7 @@ describe("Test login page with passwordless", () => {
 			.waitForElementPresent("@flashInfo")
 			.assert.elementPresent("@flashInfo")
 			.api.pause(pauseTime)
-			.assert.urlEquals(loginPage.url)
+			.assert.urlEquals(loginPage.url())
 			.makeScreenshot();
 
 		browser
@@ -126,8 +126,8 @@ describe("Test login page with passwordless", () => {
 
 		homePage
 			.waitForElementVisible("@title")
-			.assert.urlEquals(homePage.url)
-			.assert.containsText("@title", "Home")
+			.assert.urlEquals(homePage.url())
+			.assert.containsText("@title", "Style guide")
 			.makeScreenshot();
 
 	});	

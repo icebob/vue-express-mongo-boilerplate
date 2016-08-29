@@ -106,7 +106,7 @@ module.exports = {
 		},
 
 		papertrail: {
-			enabled: true,
+			enabled: false,
 			host: 'logs2.papertrailapp.com',
 			port: 19690,
 			level: 'debug',

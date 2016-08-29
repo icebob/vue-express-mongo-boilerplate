@@ -101,8 +101,8 @@ describe("Test forgot page", () => {
 		// Check we logged in automatically
 		homePage
 			.waitForElementVisible("@title")
-			.assert.urlEquals(homePage.url)
-			.assert.containsText("@title", "Home")
+			.assert.urlEquals(homePage.url())
+			.assert.containsText("@title", "Style guide")
 			.makeScreenshot();
 
 		// Logout
@@ -115,8 +115,8 @@ describe("Test forgot page", () => {
 
 		homePage
 			.waitForElementVisible("@title")
-			.assert.urlEquals(homePage.url)
-			.assert.containsText("@title", "Home")
+			.assert.urlEquals(homePage.url())
+			.assert.containsText("@title", "Style guide")
 			.makeScreenshot();
 
 

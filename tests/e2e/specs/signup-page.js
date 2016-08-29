@@ -48,7 +48,7 @@ describe("Test signup page with password", () => {
 			.assert.elementPresent("@flashInfo")
 			.assert.containsText("@flashInfo", "Please check your email to verify your account. Thanks for signing up!")
 			.api.pause(pauseTime)
-			.assert.urlEquals(loginPage.url)
+			.assert.urlEquals(loginPage.url())
 			.makeScreenshot();
 
 		browser
@@ -77,8 +77,8 @@ describe("Test signup page with password", () => {
 		// Check the user redirected to main app
 		homePage
 			.waitForElementVisible("@title")
-			.assert.urlEquals(homePage.url)
-			.assert.containsText("@title", "Home")
+			.assert.urlEquals(homePage.url())
+			.assert.containsText("@title", "Style guide")
 			.makeScreenshot();
 
 	});	

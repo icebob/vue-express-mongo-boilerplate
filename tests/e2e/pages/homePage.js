@@ -16,6 +16,6 @@ module.exports = {
 	commands: [commands],
 
 	elements: {
-		title: "#app h2"
+		title: "#app h1"
 	}
 }

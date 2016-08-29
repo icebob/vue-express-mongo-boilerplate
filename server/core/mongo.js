@@ -16,7 +16,7 @@ module.exports = function() {
 
 	if (mongoose.connection.readyState !== 1) {
 		logger.info("Connecting to Mongo " + config.db.uri + "...");
-		db = mongoose.connect(config.db.uri, config.db.options, function(err) {
+		db = mongoose.connect(config.db.uri, config.db.options, function mongoAfterConnect(err) {
 			if (err) {
 				logger.error("Could not connect to MongoDB!");
 				return logger.error(err);
@@ -25,21 +25,21 @@ module.exports = function() {
 			mongoose.set("debug", config.isDevMode());
 		});
 
-		mongoose.connection.on("error", function(err) {
+		mongoose.connection.on("error", function mongoConnectionError(err) {
 			logger.error("Could not connect to MongoDB!");
 			return logger.error(err);
 		});
 
 		autoIncrement.initialize(db);		
 
-		mongoose.connection.once("open", function() {
+		mongoose.connection.once("open", function mongoAfterOpen() {
 			logger.info(chalk.yellow.bold("Mongo DB connected."));
 			logger.info();
 
 			if (config.isTestMode()) {
 				logger.warn("Drop test database...");
 				mongoose.connection.db.dropDatabase();
-				autoIncrement.initialize(db);		
+				//autoIncrement.initialize(db);		
 			}
 
 
