@@ -16,6 +16,7 @@ let bodyParser 		= require("body-parser");
 let cookieParser	= require("cookie-parser");
 let validator 		= require("express-validator");
 let csrf 			= require("csurf");
+let netjet			= require("netjet");
 
 let session 		= require("express-session");
 let compress 		= require("compression");
@@ -69,8 +70,16 @@ function initMiddleware(app) {
 	app.use(bodyParser.json());	
 	app.use(methodOverride());
 
-	// Setting up static folder
 	if (config.isProductionMode()) {
+
+		// HTTP/2 Server Push support
+		app.use(netjet({
+			cache: {
+				max: 100
+			}
+		}));
+
+		// Setting up static folder
 		app.use(express["static"](path.join(serverFolder, "public")));
 	}
 

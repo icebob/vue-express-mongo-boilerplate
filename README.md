@@ -25,6 +25,7 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 * [x] [winston](https://github.com/winstonjs/winston) + 6 transports
 * [x] **[GraphQL](http://graphql.org/)** with [Apollo stack](http://www.apollostack.com/)
 * [x] [i18next](http://i18next.com/) as the internationalization ecosystem
+* [x] **[HTTP/2 Server Push](https://en.wikipedia.org/wiki/HTTP/2_Server_Push)** with [netjet](https://github.com/cloudflare/netjet)
 
 **Client-side**
 * [x] **[VueJS](https://github.com/vuejs/vue)**
