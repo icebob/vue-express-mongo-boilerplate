@@ -1,6 +1,21 @@
 "use strict";
 
+let path 	= require("path");
 let _ 		= require("lodash");
+
+global.rootPath = path.normalize(path.join(__dirname, "..", ".."));
+
+// console.log("Application root path: " + global.rootPath);
+
+if (WEBPACK_BUNDLE) {
+	let bundleFullPath;
+	if (process.argv.length > 0)
+		bundleFullPath = process.argv[1];
+	else
+		bundleFullPath = path.dirname(process.argv[0]);
+	
+	global.rootPath = path.normalize(path.join(path.dirname(bundleFullPath), ".."));
+}
 
 module.exports = {
 

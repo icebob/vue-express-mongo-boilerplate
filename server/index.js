@@ -9,6 +9,9 @@ let chalk 		= require("chalk");
 
 logger.info();
 logger.info(chalk.bold("---------------------[ Server starting at %s ]---------------------------"), moment().format("YYYY-MM-DD HH:mm:ss.SSS"));
+logger.info();
+
+logger.info(chalk.bold("Application root path: ") + global.rootPath);
 
 let init		= require("./core/init");
 let db 			= require("./core/mongo")();

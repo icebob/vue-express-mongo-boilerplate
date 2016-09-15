@@ -4,13 +4,6 @@ let path = require("path");
 let pkg = require("../../package.json");
 let secrets = require("../core/secrets");
 
-let rootPath = path.normalize(path.join(__dirname, "..", ".."));
-
-if (WEBPACK_BUNDLE) {
-	let bundleFullPath = process.argv[1];
-	rootPath = path.normalize(path.join(path.dirname(bundleFullPath), ".."));
-}
-
 module.exports = {
 	app: {
 		title: pkg.title,
@@ -19,13 +12,13 @@ module.exports = {
 		keywords: pkg.keywords.join(","),
 		url: "http://localhost:" + (process.env.PORT || 3000) + "/",
 		//googleAnalyticsID: 'UA-xxxxx-x',
-		contactEmail: "hello@boilerplate-app.com"
+		contactEmail: "hello@vem-app.com"
 	},
 
 	ip: "0.0.0.0",
 	port: process.env.PORT || 3000,
-	rootPath: rootPath,
-	dataFolder: path.join(rootPath, "data"),
+	rootPath: global.rootPath,
+	dataFolder: path.join(global.rootPath, "data"),
 	uploadLimit: 2 * 1024 * 1024, // 2MB
 
 	sessions: {
