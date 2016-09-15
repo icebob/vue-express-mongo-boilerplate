@@ -1,22 +1,22 @@
 "use strict";
 
-let ROOT 			= "../../../";
+// let ROOT 			= "../../../";
 
-let logger 			= require(ROOT + "core/logger");
-let config 			= require(ROOT + "config");
+let logger 			= require("../../../core/logger");
+let config 			= require("../../../config");
 
 let moduleConfig	= require("./module.json");
 
 let _ 				= require("lodash");
 let async 			= require("async");
-let C 				= require(ROOT + "core/constants");
+let C 				= require("../../../core/constants");
 
 let Post 			= require("./models/post");
-let User 			= require(ROOT + "models/user");
+let User 			= require("../../../models/user");
 
-let io 				= require(ROOT + "core/socket");
+let io 				= require("../../../core/socket");
 
-let helper			= require(ROOT + "libs/schema-helper");
+let helper			= require("../../../libs/schema-helper");
 
 const query = `
 	posts(limit: Int, offset: Int, sort: String): [Post]

@@ -30,10 +30,7 @@ let i18next 		= require("i18next");
 let i18nextExpress 	= require("i18next-express-middleware");
 let i18nextFs 		= require("i18next-node-fs-backend");
 
-let webpack			= require("webpack");
-let wpConfig		= require("../../webpack.dev.config");
-
-let serverFolder = path.join(config.rootPath, "server");
+let serverFolder = path.normalize(path.join(config.rootPath, "server"));
 
 function initLocalVariables(app) {
 	// Setting application local variables
@@ -120,7 +117,7 @@ function initI18N(app) {
 		ns: ["app", "frontend"],
 		defaultNS: "frontend",
 		load: "all",
-		saveMissing: true,
+		saveMissing: true, //config.isDevMode(),
 		saveMissingTo: "all", // "fallback", "current", "all"
 
 		backend: {
@@ -240,6 +237,9 @@ function initAuth(app) {
 function initWebpack(app) {
 	// Webpack middleware in development mode
 	if (!config.isProductionMode()) {
+		let webpack	 = require("webpack");
+		let wpConfig = require("../../webpack.dev.config");
+
 		let compiler = webpack(wpConfig);
 		let devMiddleware = require('webpack-dev-middleware'); // eslint-disable-line
 		app.use(devMiddleware(compiler, {

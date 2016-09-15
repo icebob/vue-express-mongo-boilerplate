@@ -17,4 +17,4 @@ if (!fs.existsSync(fName)) {
 	console.warn(chalk.green.bold("Secret file created!"));
 }
 
-module.exports = require("../../secrets.json");
+module.exports = JSON.parse(fs.readFileSync(fName));

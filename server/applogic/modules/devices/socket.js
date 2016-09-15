@@ -1,9 +1,9 @@
 "use strict";
 
-let ROOT 			= "../../../";
+// let ROOT 			= "../../../";
 
-let logger 			= require(ROOT + "core/logger");
-let config 			= require(ROOT + "config");
+let logger 			= require("../../../core/logger");
+let config 			= require("../../../config");
 
 module.exports = {
 

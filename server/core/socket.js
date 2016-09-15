@@ -62,9 +62,7 @@ let self = {
 		});
 
 		// Initialize every socket handler
-		socketHandlers.handlers.forEach((handler) => {
-			let Handler = require(path.resolve(handler));
-
+		socketHandlers.handlers.forEach((Handler) => {
 			if (!Handler || !Handler.namespace) return;
 
 			let io = self.namespaces[Handler.namespace];

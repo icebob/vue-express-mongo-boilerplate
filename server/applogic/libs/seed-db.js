@@ -1,14 +1,14 @@
 "use strict";
 
-let ROOT 			= "../../";
-let logger 			= require(ROOT + "core/logger");
-let config 			= require(ROOT + "config");
+// let ROOT 			= "../../";
+let logger 			= require("../../core/logger");
+let config 			= require("../../config");
 
 let _ 				= require("lodash");
-let tokgen 			= require(ROOT + "libs/tokgen");
+let tokgen 			= require("../../libs/tokgen");
 let fakerator		= require("fakerator")();
 
-let User 			= require(ROOT + "./models/user");
+let User 			= require("../.././models/user");
 let Device 			= require("../modules/devices/models/device");
 let Post 			= require("../modules/posts/models/post");
 

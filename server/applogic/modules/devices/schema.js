@@ -1,19 +1,19 @@
 "use strict";
 
-let ROOT 			= "../../../";
+// let ROOT 			= "../../../";
 
-let logger 			= require(ROOT + "core/logger");
-let config 			= require(ROOT + "config");
+let logger 			= require("../../../core/logger");
+let config 			= require("../../../config");
 
 //let moduleConfig	= require("./module.json");
 
 let _ 				= require("lodash");
 let async 			= require("async");
-let C 				= require(ROOT + "core/constants");
+let C 				= require("../../../core/constants");
 
 let Device 			= require("./models/device");
 
-let helper			= require(ROOT + "libs/schema-helper");
+let helper			= require("../../../libs/schema-helper");
 
 
 const query = `

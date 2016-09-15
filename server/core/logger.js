@@ -8,7 +8,7 @@ let config = require("../config");
 let secrets = require("./secrets");
 
 // Create logs directory
-let logDir = path.join(__dirname, "..", "logs");
+let logDir = path.join(config.rootPath, "logs");
 if (!fs.existsSync(logDir)) {
 	fs.mkdir(logDir, (err) => {
 		if (err)

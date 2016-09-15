@@ -6,13 +6,18 @@ let secrets = require("../core/secrets");
 
 let rootPath = path.normalize(path.join(__dirname, "..", ".."));
 
+if (WEBPACK_BUNDLE) {
+	let bundleFullPath = process.argv[1];
+	rootPath = path.normalize(path.join(path.dirname(bundleFullPath), ".."));
+}
+
 module.exports = {
 	app: {
 		title: pkg.title,
 		version: pkg.version,
 		description: pkg.description,
 		keywords: pkg.keywords.join(","),
-		url: "http://localhost:3000/",
+		url: "http://localhost:" + (process.env.PORT || 3000) + "/",
 		//googleAnalyticsID: 'UA-xxxxx-x',
 		contactEmail: "hello@boilerplate-app.com"
 	},

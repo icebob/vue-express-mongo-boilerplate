@@ -1,5 +1,7 @@
 "use strict";
 
+global.WEBPACK_BUNDLE = false;
+
 let config		= require("./config");
 let logger 		= require("./core/logger");
 let moment 		= require("moment");

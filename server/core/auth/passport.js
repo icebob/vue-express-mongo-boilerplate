@@ -7,6 +7,8 @@ let passport 		= require("passport");
 let path 			= require("path");
 let chalk 			= require("chalk");
 
+if (!WEBPACK_BUNDLE) require('require-webpack-compat')(module, require);
+
 let User 			= require("../../models/user");
 
 module.exports = function(app) {
@@ -30,8 +32,14 @@ module.exports = function(app) {
 	logger.info("");
 	logger.info(chalk.bold("Search passport strategies..."));
 
-	return config.getGlobbedFiles(path.join(__dirname, "strategies", "**", "*.js")).forEach(function(strategy) {
-		logger.info("  Loading passport strategy file " + path.basename(strategy) + "...");
-		return require(path.resolve(strategy))();
-	});
+	function requireAll(r) { 
+		return r.keys().map(function(module) {
+			logger.info("  Loading passport strategy file " + path.basename(module) + "...");
+			let strategy = r(module);
+			strategy();
+
+			return strategy;
+		})
+	}
+	var modules = requireAll(require.context("./strategies", true, /\.js$/));
 };

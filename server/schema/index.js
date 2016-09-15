@@ -7,6 +7,9 @@ let path 			= require("path");
 let chalk 			= require("chalk");
 let _ 				= require("lodash");
 
+if (!WEBPACK_BUNDLE) require('require-webpack-compat')(module, require);
+
+
 let moduleQueries = [];
 let moduleTypeDefinitions = [];
 let moduleMutations = [];
@@ -15,22 +18,26 @@ let moduleResolvers = [];
 logger.info("");
 logger.info(chalk.bold("Search GraphQL schemas..."));
 
+function requireAll(r) { 
+	return r.keys().map(function(module) {
+		logger.info("  Load", path.relative(path.join(__dirname, "..", "applogic", "modules"), module), "schema...");		
+		return r(module);
+	})
+}
+let schemas = requireAll(require.context("./", true, /schema\.js$/));
+schemas = schemas.concat(requireAll(require.context("../applogic/modules", true, /schema\.js$/)));
+
 // --- LOAD MODULE SCHEMAS
 
-let files = config.getGlobbedFiles(path.join(__dirname, "**", "*schema.js"));
-files = files.concat(config.getGlobbedFiles(path.join(__dirname, "..", "applogic", "modules", "**", "*schema.js")));
-
 // Load schema files
-files.forEach((file) => {
-	logger.info("  Load", path.relative(path.join(__dirname, "..", "applogic", "modules"), file), "schema...");
-	let moduleSchema = require(path.resolve(file));
-
+schemas.forEach((moduleSchema) => {
 	moduleQueries.push(moduleSchema.schema.query);
 	moduleTypeDefinitions.push(moduleSchema.schema.typeDefinitions);
 	moduleMutations.push(moduleSchema.schema.mutation);
 
 	moduleResolvers.push(moduleSchema.resolvers);
 });
+
 
 // --- MERGE TYPE DEFINITONS
 

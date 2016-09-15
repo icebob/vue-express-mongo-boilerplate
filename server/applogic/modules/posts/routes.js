@@ -1,20 +1,20 @@
 "use strict";
 
-let ROOT 			= "../../../";
+// let ROOT 			= "../../../";
 
-let logger 			= require(ROOT + "core/logger");
-let config 			= require(ROOT + "config");
+let logger 			= require("../../../core/logger");
+let config 			= require("../../../config");
 
 let moduleConfig	= require("./module.json");
 
 let express			= require("express");
 let async 			= require("async");
 
-let auth			= require(ROOT + "core/auth/helper");
-let response		= require(ROOT + "core/response");
+let auth			= require("../../../core/auth/helper");
+let response		= require("../../../core/response");
 let Post 			= require("./models/post");
 
-let io 				= require(ROOT + "core/socket");
+let io 				= require("../../../core/socket");
 
 module.exports = function(app, db) {
 

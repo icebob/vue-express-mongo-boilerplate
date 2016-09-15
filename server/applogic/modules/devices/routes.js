@@ -1,17 +1,17 @@
 "use strict";
 
-let ROOT 			= "../../../";
+// let ROOT 			= "../../../";
 
-let logger 			= require(ROOT + "core/logger");
-let config 			= require(ROOT + "config");
+let logger 			= require("../../../core/logger");
+let config 			= require("../../../config");
 
 let express			= require("express");
 
-let auth			= require(ROOT + "core/auth/helper");
-let response		= require(ROOT + "core/response");
+let auth			= require("../../../core/auth/helper");
+let response		= require("../../../core/response");
 let Device 			= require("./models/device");
 
-let io 				= require(ROOT + "core/socket");
+let io 				= require("../../../core/socket");
 
 let namespace = "/devices";
 
