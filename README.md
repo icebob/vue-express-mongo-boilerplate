@@ -26,6 +26,7 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 * [x] **[GraphQL](http://graphql.org/)** with [Apollo stack](http://www.apollostack.com/)
 * [x] [i18next](http://i18next.com/) as the internationalization ecosystem
 * [x] **[HTTP/2 Server Push](https://en.wikipedia.org/wiki/HTTP/2_Server_Push)** with [netjet](https://github.com/cloudflare/netjet)
+* [x] Bundled server-side code with [Webpack](https://webpack.github.io/)
 
 **Client-side**
 * [x] **[VueJS](https://github.com/vuejs/vue)**
@@ -74,6 +75,20 @@ TODO
 
 ## Directory structure
 TODO
+
+## Bundled server-side
+If you want to bundle your NodeJS server-side code run webpack on server code with `npm run build && npm run build:server` command. It if was success, run the server: `npm run start:bundle`
+
+If you want to export bundled version copy these folders & files to the new place:
+- server
+	- locales
+	- public
+	- views
+	- bundle.js
+- package.json
+- secrects.json (optional)
+
+Before start, you have to install production dependencies with npm: `npm install --production`
 
 ## Obtaining API keys for social signup/login
 
