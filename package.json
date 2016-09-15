@@ -6,10 +6,10 @@
   "main": "server/index.js",
   "scripts": {
     "build": "webpack --progress --colors -p --config webpack.prod.config.js",
-    "build-server": "webpack --progress --colors --config webpack.server.config.js",
+    "build:server": "webpack --progress --colors --config webpack.server.config.js",
     "dev": "cross-env NODE_ENV=development nodemon",
     "start": "cross-env NODE_ENV=production node server/index.js",
-    "start-bundle": "cross-env NODE_ENV=production node server/bundle.js",
+    "start:bundle": "cross-env NODE_ENV=production node server/bundle.js",
     "test:unit": "cross-env NODE_ENV=test mocha --require babel-core/register --reporter spec tests/unit",
     "test:e2e:nightmare": "cross-env NODE_ENV=test mocha --require babel-core/register --timeout 30000 --reporter spec tests/e2e",
     "test:e2e": "node tests/e2e/runner.js",
