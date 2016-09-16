@@ -31,7 +31,7 @@ module.exports = {
 	},
 
 	externals: _.defaults(nodeModules, {
-		"../../package.json": "commonjs ../package.json"
+		//"../../package.json": "commonjs ../package.json"
 	}),
 
 	devtool: 'sourcemap',
