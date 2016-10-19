@@ -20,7 +20,7 @@ let agenda 		= require("./core/agenda");
 
 require("./libs/gracefulExit");
 
-app.listen(config.port, function() {
+app.listen(config.port, config.ip, function() {
 
 	logger.info("");
 	logger.info(config.app.title + " v" + config.app.version + " application started!");
