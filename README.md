@@ -1,4 +1,5 @@
 # vue-express-mongo-boilerplate #
+[![Known Vulnerabilities](https://snyk.io/test/github/icebob/vue-express-mongo-boilerplate/badge.svg)](https://snyk.io/test/github/icebob/vue-express-mongo-boilerplate)
 
 <img src="http://vuejs.org/images/logo.png" width="50">
 <img src="https://coligo.io/images/express.svg" width="100">
