@@ -36,7 +36,7 @@
 <script>
 	import Vue from "vue";
 	import { schema as schemaUtils } from "vue-form-generator";
-	import DataTable from "./DataTable.vue";
+	import DataTable from "./dataTable.vue";
 
 	import { searchText } from "../modules/session/vuex/getters";
 
