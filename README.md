@@ -161,6 +161,7 @@ Before start, you have to install production dependencies with npm: `npm install
 * [ ] rewrite account.js response handlers
 * [ ] localized emails
 * [ ] check https://github.com/keystonejs/keystone
+* [ ] check https://github.com/madhums/node-express-mongoose-demo/blob/master/config/express.js
 * [ ] add unit tests with mocha, chai, sinon
 * [ ] add E2E test with nightwatch
 * [ ] design styles: dropdown ( https://jsfiddle.net/Cerebrl/uhykY/ ), tabs ( http://v4-alpha.getbootstrap.com/components/card/ )
