@@ -60,6 +60,10 @@ module.exports = {
 		}
 	},
 
+	init(ctx) {
+		// Call when start the service
+	},
+
 	socket: {
 		afterConnection(socket, io) {
 			socket.emit("/counter", store.counter);

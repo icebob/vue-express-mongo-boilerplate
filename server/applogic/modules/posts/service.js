@@ -74,7 +74,11 @@ module.exports = {
 		});
 		
 		 */
-	}
+	},
+
+	init(ctx) {
+		// Call when start the service
+	},
 
 	socket: {
 		afterConnection(socket, io) {

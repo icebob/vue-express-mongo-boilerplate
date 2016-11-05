@@ -11,36 +11,37 @@ let Context = function(service) {
 	this.params = []; // params from ExpressJS REST or websocket or GraphQL args
 	this.model = null; // model from `modelResolvers`
 	this.actions = {} // actions from service (bind ctx parameter)
-	this.reqType = "" // `rest`, `socket` or `graphql`
+	this.provider = "" // `rest`, `socket` or `graphql`
 }
 
 // Initialize Context from a REST call
 Context.prototype.InitFromREST(app, req, res) {
-
-}
-
-// Initialize Context from a socket call
-Context.prototype.InitFromREST(io, socket) {
-
+	this.provider = "rest";
 }
 
 // Initialize Context from a socket call
 Context.prototype.InitFromSocket(io, socket, cmd, data) {
+	this.provider = "socket";
 
 }
 
-// Initialize Context from a socket call
+// Initialize Context from a GraphQL query
 Context.prototype.InitFromGraphQL(name, root, args, context) {
-
-}
-
-// Initialize Context from a REST call
-Context.prototype.InitFromREST(app, req, res) {
-
+	this.provider = "graphql";
 }
 
 // Broadcast a message 
-Context.prototype.emit(msg, data) {
+Context.prototype.emitBC(msg, data) {
+
+}
+
+// Send a message to me
+Context.prototype.emitUser(msg, data) {
+
+}
+
+// Broadcast a message to a role
+Context.prototype.emitRole(msg, data) {
 
 }
 
