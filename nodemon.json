@@ -1,6 +1,8 @@
 {
 	"ignore": ["node_modules", ".git", "client/**/*.*"],
 
+	"exec": "nodejs-dashboard node server/dev.js",
+
 	"verbose": false,
 
 	"watch": [
