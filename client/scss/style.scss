@@ -14,7 +14,7 @@ html {
 html, body {
 	min-height: 100%;
 	min-width: $minWidth;
-	font: 16px/18px $fontFamily;
+	font: $baseFont
 }
 
 body {
@@ -303,11 +303,9 @@ body {
 
 } // .page-header
 
-.menu {
+.nav {
 	position: fixed;
 	width: $menuWidth;
-	min-height: 100%;
-	height: 100%;
 	z-index: 1023;
 
 	transition: width .5s ease;
@@ -321,9 +319,6 @@ body {
 
 	box-shadow: 2px 0px 3px rgba(0, 0, 0, 0.5);
 
-	overflow-y: auto;
-	overflow-x: hidden;		
-
 	padding-top: 1.2rem;
 
 	a {
@@ -331,90 +326,134 @@ body {
 		color: $menuTextColor;
 	}
 
-	.menu-label {
-		padding-left: 0.7em;
-		text-transform: uppercase;
-		font-size: 1.1em;
-		line-height: 1.4em;
-		margin-bottom: 0.5em;
-		color: $titleTextColor;
-		&:not(:first-child) {
-			margin-top: 1.8rem;
-		}
-	} // .menu-label
+	display: flex;
+	flex-direction: column;
+	align-self: stretch;
 
-	.menu-list {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		font-size: 1.0em;
+	.menu {
+		flex: 1;
+		overflow-y: auto;
+		overflow-x: hidden;		
 
-		li {
-			border-left: 2px solid transparent;
-
-			transition: border-left .2s ease, background-color .2s ease;
-
-			a {
-				display: block;
-				white-space: nowrap;
-				padding: 0.8em 0 0.8em 1.0em;
-				transition: color .2s ease;
-
-				.icon {
-					display: inline-block;
-					width: 1.8em;
-					font-size: 1.2em;
-					text-align: center;
-				}
+		.title {
+			padding-left: 0.7em;
+			text-transform: uppercase;
+			font-size: 1.1em;
+			line-height: 1.4em;
+			margin-bottom: 0.5em;
+			color: $titleTextColor;
+			&:not(:first-child) {
+				margin-top: 1.8rem;
 			}
+		} // .title
 
-			&:hover {
-				border-left: 2px solid $secondColor;
+		ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			font-size: 1.0em;
+
+			li {
+				border-left: 2px solid transparent;
+
+				transition: border-left .2s ease, background-color .2s ease;
 
 				a {
-					color: $secondColor;
+					display: block;
+					white-space: nowrap;
+					padding: 0.8em 0 0.8em 1.0em;
+					transition: color .2s ease;
+
+					.icon {
+						display: inline-block;
+						width: 1.8em;
+						font-size: 1.2em;
+						text-align: center;
+					}
 				}
-			}
 
-			&.active {
-				background-color: rgba($secondColor, 0.8);
-				color: $menuTextColor;
+				&:hover {
+					border-left: 2px solid $secondColor;
 
-				a {
+					a {
+						color: $secondColor;
+					}
+				}
+
+				&.active {
+					background-color: rgba($secondColor, 0.8);
 					color: $menuTextColor;
+
+					a {
+						color: $menuTextColor;
+					}
+				}
+
+			} // li
+
+		} // ul
+
+	} // .menu
+
+	.footer {
+		border-top: 1px solid rgba($secondColor, 0.3);
+		margin-top: 0.3em;
+		padding: 0.8em;
+		font-size: 0.8em;
+
+		text-align: center;
+		color: mix($textColor, $backgroundColor, 30%);
+
+		.social {
+			display: flex;
+			margin-bottom: 0.5em;
+			font-size: 1.5em;
+
+			> a {
+				flex: 1;
+				color: mix($textColor, $backgroundColor, 50%);
+				transition: color .2s;
+
+				&:hover {
+					color: $textColor;
 				}
 			}
-
-		} // li
-
-	} // .menu-list
+		}
+	}
 
 	&.mini {
 		width: $menuMiniWidth;
 
-		.menu-label {
-			height: 10px;
-			text-indent: -99999px;
-			border-bottom: 1px solid rgba($secondColor, 0.6);
-			margin: 0 5px;
-		}
-
-		li {
-
-			a {
-
-				padding-left: 0.3em;
-
-				span.label {
-					display: none;
-				}
+		.menu {
+			.title {
+				height: 10px;
+				text-indent: -99999px;
+				border-bottom: 1px solid rgba($secondColor, 0.6);
+				margin: 0 5px;
 			}
 
-		} // li
+			li {
 
-	} // .menu.mini
+				a {
 
-} // .menu
+					padding-left: 0.3em;
+
+					span.label {
+						display: none;
+					}
+				}
+
+			} // li
+
+		} // .menu
+		
+		.footer {
+			display: none;
+		}
+
+	} // .nav.mini
+
+} // .nav
 
 .app-main {
 	min-height: 100vh;

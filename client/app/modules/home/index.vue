@@ -46,15 +46,10 @@
 				.content.typo
 					.headers
 						h1 Heading #1 - {{ getTypographyInfo("h1") }}
-						br
 						h2 Heading #2 -  {{ getTypographyInfo("h2") }}
-						br
 						h3 Heading #3 -  {{ getTypographyInfo("h3") }}
-						br
 						h4 Heading #4 -  {{ getTypographyInfo("h4") }}
-						br
 						h5 Heading #5 -  {{ getTypographyInfo("h5") }}
-						br
 						h5 ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 éáűőúöüóí ÉÁŰŐÚÖÜÓÍ 
 					hr
 					.paragraph
@@ -767,11 +762,14 @@
 	@import "../../../scss/themes/blurred/variables";
 
 	.container {
-		padding: 1rem;
+		padding: 0 1rem;
 	}
 
 	section {
-		margin-bottom: 40px;
+		&:not(:last-child) {
+			margin-bottom: 40px;
+		}
+
 		> h2 {
 			font-size: 1.5rem;
 			margin-bottom: 20px;
