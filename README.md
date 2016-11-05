@@ -159,19 +159,6 @@ Before start, you have to install production dependencies with npm: `npm install
 - Click **Update this Twitter's applications settings**
 - Copy and paste *Consumer Key* and *Consumer Secret* keys into `secrets.json` file
 
-## TODO
-* [X] extract modules from App.vue header
-* [ ] service based modules like in FeatherJS ( https://blog.feathersjs.com/using-feathersjs-to-make-your-existing-api-real-time-813f7c3fd892#.stfdjx3cg ) 
-* [ ] create posts page with GraphQL with mutations
-* [ ] rewrite account.js response handlers
-* [ ] localized emails
-* [ ] check https://github.com/keystonejs/keystone
-* [ ] check https://github.com/madhums/node-express-mongoose-demo/blob/master/config/express.js
-* [ ] add unit tests with mocha, chai, sinon
-* [ ] add E2E test with nightwatch
-* [ ] design styles: dropdown ( https://jsfiddle.net/Cerebrl/uhykY/ ), tabs ( http://v4-alpha.getbootstrap.com/components/card/ )
-
-
 ## License
 vue-express-mongo-boilerplate is available under the [MIT license](https://tldrlegal.com/license/mit-license).
 
