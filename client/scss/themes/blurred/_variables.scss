@@ -55,18 +55,18 @@ $dangerColor: #ab1b1b;
 $minWidth: 320px;
 
 /* Load fonts */
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900|Dosis:300,400,600,700,800|Droid+Sans:400,700|Lato:300,400,700,900|PT+Sans:400,700|Ubuntu:300,400,500,700|Open+Sans:400,300,600,700|Roboto:100,300,400,500,700,900|Roboto+Condensed:400,300,700|Open+Sans+Condensed:300,700|Work+Sans:400,300,700|Play:400,700|Maven+Pro:400,500,700,900&subset=latin,latin-ext);
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900|Dosis:300,400,600,700,800|Droid+Sans:400,700|Lato:300,400,700,900|Titillium+Web:300,400,600,700|PT+Sans:400,700|Ubuntu:300,400,500,700|Open+Sans:400,300,600,700|Roboto:100,300,400,500,700,900|Roboto+Condensed:400,300,700|Open+Sans+Condensed:300,700|Work+Sans:400,300,700|Play:400,700|Maven+Pro:400,500,700,900&subset=latin,latin-ext);
 @import url(http://netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.css);
 
 /* Set font family styles */
-$fontFamily: 'Ubuntu', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+$fontFamily: /*'Titillium Web',*/ 'Ubuntu', 'Roboto', 'Helvetica', 'Arial', sans-serif;
 $fontFamilyHeader: 'Lato', 'Work Sans', 'Helvetica', 'Arial', sans-serif;
 
 $fontThin: 100;
 $fontLight: 300;
 $fontNormal: 400;
-$fontBold: 700;
-$fontUltraBold: 800;
+$fontBold: 600;
+$fontUltraBold: 700;
 
 $headerHeight: 70px;
 $headerBgColor: $color1;
