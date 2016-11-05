@@ -4,11 +4,19 @@ patch:
   'npm:request:20160119':
     - winston-loggly-bulk > node-loggly-bulk > request:
         patched: '2016-11-05T16:53:47.533Z'
+    - winston-loggly-bulk > node-loggly-bulk > request:
+        patched: '2016-11-05T17:17:21.252Z'
   'npm:tough-cookie:20160722':
     - winston-loggly-bulk > node-loggly-bulk > request > tough-cookie:
         patched: '2016-11-05T16:53:47.533Z'
     - winston-logzio > logzio-nodejs > request > tough-cookie:
         patched: '2016-11-05T16:53:47.533Z'
+    - winston-loggly-bulk > node-loggly-bulk > request > tough-cookie:
+        patched: '2016-11-05T17:17:21.252Z'
+    - winston-logzio > logzio-nodejs > request > tough-cookie:
+        patched: '2016-11-05T17:17:21.252Z'
   'npm:uglify-js:20151024':
     - jade > transformers > uglify-js:
         patched: '2016-11-05T16:53:47.533Z'
+    - jade > transformers > uglify-js:
+        patched: '2016-11-05T17:17:21.252Z'
