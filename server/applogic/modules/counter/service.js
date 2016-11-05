@@ -9,42 +9,60 @@ module.exports = {
 
 	version: 1,
 	namespace: "/counter",
+	rest: true,
+	socket: true,
+	graphql: true,
+	needAuthenticated: true,
+	roles: ["user"]
 
-	actions: [
+	actions: {
+		// You can call it 
+		// 	via REST: /counter
+		// 	via socket: /counter
+		// 	via graphQL: Counter
+		find(ctx) {
+			return Promise.resolve(store.counter);
+		},
 
-		{
-			verb: "get",
-			path: "/counter",
-			rest: true,
-			socket: true
-			needAuthenticated: true,
-			roles: ["user"],
-			query: "Counter",
-
-			action(req, socket, io) {
-				return store.counter;
+		// You can call it 
+		// 	via REST: /counter/save
+		// 	via socket: /counter/save
+		// 	via graphQL: CounterSave (generated from path + functionName)
+		save(ctx) {
+			if (ctx.params.value) {
+				store.counter = ctx.params.value;
+				ctx.actions.notifyChanged();
 			}
 		},
 
-		{
-			verb: ["get", "post", "put"],
-			path: "/increment",
-			needAuthenticated: true,
-			roles: ["user"],
-			mutation: "IncrementCounter",
+		// You can call it 
+		// 	via REST: /counter/increment
+		// 	via socket: /counter/increment
+		// 	via graphQL: CounterIncrement (generated from path + functionName)
+		increment(ctx) {
+			store.counter++;
+			logger.info(socket.request.user.username + " increment the counter to ", store.counter);
+			ctx.actions.notifyChanged();
+		},
 
-			action(req, socket, io) {
-				store.counter++;
-				logger.info(socket.request.user.username + " increment the counter to ", store.counter);
-				socket.broadcast.emit("changed", store.counter);
-			}
+		// You can call it 
+		// 	via REST: /counter/decrement
+		// 	via socket: /counter/decrement
+		// 	via graphQL: CounterDecrement (generated from path + functionName)
+		decrement(ctx) {
+			store.counter++;
+			logger.info(socket.request.user.username + " decrement the counter to ", store.counter);
+			ctx.actions.notifyChanged();
+		},
+
+		notifyChanged(ctx) {
+			ctx.emit("counter", store.counter);	
 		}
-
-	],
+	},
 
 	socket: {
 		onConnection(socket, io) {
-			socket.emit("changed", store.counter);
+			socket.emit("/counter", store.counter);
 		}
 	},
 
