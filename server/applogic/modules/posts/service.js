@@ -14,18 +14,14 @@ module.exports = {
 	roles: ["user"]
 
 	actions: {
-		/*
-			if you call /posts/update?id=5 ctx will contain the model `ctx.model`
-		 */
 		find(ctx) {
-			/*
-				if (ctx.model) {
-					return a model
-				} else {
-					return all models
-				}
-			 */
+			// return all models
 			return Promise.resolve();
+		},
+
+		get(ctx) {
+			// return a model by ID
+			return ctx.model;
 		},
 
 		save: {
@@ -81,7 +77,7 @@ module.exports = {
 	}
 
 	socket: {
-		onConnection(socket, io) {
+		afterConnection(socket, io) {
 			
 		}
 	},

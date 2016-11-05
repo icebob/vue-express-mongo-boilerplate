@@ -61,7 +61,7 @@ module.exports = {
 	},
 
 	socket: {
-		onConnection(socket, io) {
+		afterConnection(socket, io) {
 			socket.emit("/counter", store.counter);
 		}
 	},
