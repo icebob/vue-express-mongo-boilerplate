@@ -43,8 +43,7 @@
 					i.fa.fa-twitter
 				a(href="https://github.com/icebob/vue-express-mongo-boilerplate", target="_blank")
 					i.fa.fa-github
-			.copyright
-				&copy; Copyright, 2016
+			.copyright &copy; Copyright, 2016
 </template>
 
 <script>
