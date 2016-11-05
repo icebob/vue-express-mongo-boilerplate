@@ -74,7 +74,12 @@ $ npm start
 ```
 
 ## Screenshots
-TODO
+### Login screen
+![Login screen](https://cloud.githubusercontent.com/assets/306521/20032026/e2241716-a381-11e6-8ec2-4e0263308762.png)
+### Index page after login
+![Index page](https://cloud.githubusercontent.com/assets/306521/20032034/e401f10c-a381-11e6-86bb-5325671d32bf.png)
+### Devices page
+![Devices module](https://cloud.githubusercontent.com/assets/306521/20032035/e5e7ec60-a381-11e6-9481-e1db97126797.png)
 
 ## Directory structure
 TODO
