@@ -1,7 +1,7 @@
 {
 	"ignore": ["node_modules", ".git", "client/**/*.*"],
 
-	"exec": "nodejs-dashboard node server/dev.js",
+	//"exec": "nodejs-dashboard node server/dev.js",
 
 	"verbose": false,
 

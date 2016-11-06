@@ -6,14 +6,13 @@ let config 			= require("../../../config");
 let store 			= require("./memstore");
 
 module.exports = {
-
+	name: "counter",
 	version: 1,
 	namespace: "/counter",
 	rest: true,
 	socket: true,
 	graphql: true,
-	needAuthenticated: true,
-	roles: ["user"]
+	//role: "user",
 
 	actions: {
 		// You can call it 
@@ -30,10 +29,23 @@ module.exports = {
 		// 	via graphQL: CounterSave (generated from path + functionName)
 		save(ctx) {
 			if (ctx.params.value) {
-				store.counter = ctx.params.value;
+				store.counter = parseInt(ctx.params.value);
 				ctx.actions.notifyChanged();
+				return Promise.resolve(store.counter);
+			} else {
+				throw new Error("Missing value from request!");
 			}
 		},
+
+		// You can call it 
+		// 	via REST: /counter/reset
+		// 	via socket: /counter/reset
+		// 	via graphQL: CounterReset (generated from path + functionName)
+		reset(ctx) {
+			store.counter = 0;
+			ctx.actions.notifyChanged();
+			return Promise.resolve(store.counter);
+		},		
 
 		// You can call it 
 		// 	via REST: /counter/increment
@@ -41,8 +53,10 @@ module.exports = {
 		// 	via graphQL: CounterIncrement (generated from path + functionName)
 		increment(ctx) {
 			store.counter++;
-			logger.info(socket.request.user.username + " increment the counter to ", store.counter);
+			//logger.info(ctx.user.username + " increment the counter to ", store.counter);
 			ctx.actions.notifyChanged();
+
+			return Promise.resolve(store.counter);
 		},
 
 		// You can call it 
@@ -51,17 +65,20 @@ module.exports = {
 		// 	via graphQL: CounterDecrement (generated from path + functionName)
 		decrement(ctx) {
 			store.counter++;
-			logger.info(socket.request.user.username + " decrement the counter to ", store.counter);
+			//logger.info(ctx.user.username + " decrement the counter to ", store.counter);
 			ctx.actions.notifyChanged();
+
+			return Promise.resolve(store.counter);
 		},
 
 		notifyChanged(ctx) {
-			ctx.emit("counter", store.counter);	
+			ctx.broadcast("changed", store.counter);	
 		}
 	},
 
 	init(ctx) {
 		// Call when start the service
+		logger.info("Initialize counter service!");
 	},
 
 	socket: {

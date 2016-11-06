@@ -4,15 +4,14 @@ let logger 			= require("../../../core/logger");
 let config 			= require("../../../config");
 
 module.exports = {
-
+	name: "posts",
 	version: 1,
 	namespace: "/posts",
 	rest: true,
 	socket: true,
 	graphql: true,
-	needAuthenticated: true,
-	roles: ["user"]
-
+	role: "user",
+	
 	actions: {
 		find(ctx) {
 			// return all models

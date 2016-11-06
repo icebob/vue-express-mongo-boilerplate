@@ -15,7 +15,7 @@ let	socketio 		= require("socket.io");
 let	session 		= require("express-session");
 let	MongoStore 		= require("connect-mongo")(session);
 
-let socketHandlers  = require("../applogic/socketHandlers");
+//let socketHandlers  = require("../applogic/socketHandlers");
 
 let self = {
 
@@ -62,7 +62,7 @@ let self = {
 		});
 
 		// Initialize every socket handler
-		socketHandlers.handlers.forEach((Handler) => {
+		/*socketHandlers.handlers.forEach((Handler) => {
 			if (!Handler || !Handler.namespace) return;
 
 			let io = self.namespaces[Handler.namespace];
@@ -73,7 +73,7 @@ let self = {
 				if (_.isFunction(Handler.init))
 					Handler.init(io);
 			}
-		});
+		});*/
 
 		app.io = self;
 
