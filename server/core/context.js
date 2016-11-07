@@ -146,6 +146,7 @@ Context.prototype.emit = function(cmd, data, role) {
 
 Context.prototype.validateParam = function(name, errorMessage) {
 	let validator = {
+		name: name,
 		value: null,
 		errors: []
 	};
@@ -164,6 +165,8 @@ Context.prototype.validateParam = function(name, errorMessage) {
 		if (!validator.noError())
 			throw new Error(validator.errors.join(" "));
 
+		this.params[validator.name] = validator.value;
+		
 		return validator.value;
 	}
 
