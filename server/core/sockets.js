@@ -30,7 +30,7 @@ let self = {
 	 * List of logged in online users/sockets
 	 * @type {Array}
 	 */
-	onlineUsers: [],
+	userSockets: [],
 
 	/**
 	 * Init Socket.IO module and load socket handlers 
@@ -64,20 +64,6 @@ let self = {
 
 		let services = require("./services");
 		services.registerSockets(IO, self);
-
-		// Initialize every socket handler
-		/*socketHandlers.handlers.forEach((Handler) => {
-			if (!Handler || !Handler.namespace) return;
-
-			let io = self.namespaces[Handler.namespace];
-			if (io == null) {
-				io = IO.of(Handler.namespace);
-				self.initNameSpace(Handler.namespace, io, mongoStore, Handler.role);
-				
-				if (_.isFunction(Handler.init))
-					Handler.init(io);
-			}
-		});*/
 
 		app.io = self;
 
@@ -177,11 +163,11 @@ let self = {
 
 	addOnlineUser(socket) {
 		self.removeOnlineUser(socket);
-		self.onlineUsers.push(socket);
+		self.userSockets.push(socket);
 	},
 
 	removeOnlineUser(socket) {
-		_.remove(self.onlineUsers, function(s) { return s.request.user._id == socket.request.user._id; });
+		_.remove(self.userSockets, function(s) { return s.request.user._id == socket.request.user._id; });
 	}
 
 };

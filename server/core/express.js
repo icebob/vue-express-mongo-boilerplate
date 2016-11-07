@@ -290,12 +290,13 @@ module.exports = function(db) {
 	let services = require("./services")
 	services.loadServices(app, db);
 
+	// Load socket.io server
+	let server = require("./sockets").init(app, db);
+	server._app = app;
+
 	// Load routes
 	require("../routes")(app, db);
 
-	// Load socket.io server
-	let server = require("./socket").init(app, db);
-	server._app = app;
 
 	return server;
 };

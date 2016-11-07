@@ -13,8 +13,6 @@ let User 			= require("../models/user");
 
 let helper			= require("../libs/schema-helper");
 
-let io 				= require("../core/socket");
-
 const query = `
 	users(limit: Int, offset: Int, sort: String): [User]
 	user(id: Int, code: String): User

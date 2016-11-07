@@ -3,7 +3,7 @@
 let logger 			= require("./logger");
 let config 			= require("../config");
 
-let socketHandler   = require("./socket");
+let Sockets   = require("./sockets");
 
 let _ 				= require("lodash");
 
@@ -18,7 +18,7 @@ let Context = function(service) {
 	this.params = []; // params from ExpressJS REST or websocket or GraphQL args
 	this.model = null; // model from `modelResolvers`
 	this.provider = "direct" // `direct`, `rest`, `socket` or `graphql`
-	this.actions = {} // actions from service (bind ctx parameter)
+	/*this.actions = {} // actions from service (bind ctx parameter)
 
 	if (service.actions) {
 		_.forIn(service.actions, (action, name) => {
@@ -26,7 +26,7 @@ let Context = function(service) {
 				return action.apply(service, [].concat([this], arguments));
 			}
 		})
-	}
+	}*/
 }
 
 // Initialize Context from a REST call
@@ -78,7 +78,7 @@ Context.CreateToServiceInit = function(service, app, db) {
 Context.prototype.broadcast = function(cmd, data) {
 	if (this.io) {
 		let path = "/" + this.service.namespace + "/" + cmd;
-		logger.info("Send broadcast message to '" + path + "':", data);
+		logger.debug("Send WS broadcast message to '" + path + "':", data);
 		this.io.emit(path, data);
 	}
 }
@@ -86,14 +86,14 @@ Context.prototype.broadcast = function(cmd, data) {
 // Send a message back to socket
 Context.prototype.emitUser = function(cmd, data) {
 	if (!this.socket && this.user) {
-		// If not socket, but has user, we try to find it
-		this.socket = _.find(socketHandler.onlineUsers, (socket) => { 
+		// If not socket (come from REST), but has user, we try to find it
+		this.socket = _.find(Sockets.userSockets, (socket) => { 
 			return socket.request.user._id == this.user._id
 		});
 	}
 	if (this.socket) {
 		let path = this.service.namespace + "/" + cmd;
-		logger.info("Send message to " + this.socket.request.user.username + " '" + path + "':", data);
+		logger.debug("Send WS message to " + this.socket.request.user.username + " '" + path + "':", data);
 		this.socket.emit(path, data);
 	}
 }
@@ -103,19 +103,19 @@ Context.prototype.emit = function(cmd, data, role) {
 	if (!role)
 		role = this.service.role;
 	
-	// If not definied we send a broadcast
+	// If not definied we will send a broadcast
 	if (!role) {
 		return this.broadcast(cmd, data);
 	}
 
 	if (this.io) {
 		let path = this.service.namespace + "/" + cmd;
-		logger.info("Send message to '" + role + "' role '" + path + "':", data);
+		logger.debug("Send WS message to '" + role + "' role '" + path + "':", data);
 
-		_.each(socketHandler.onlineUsers, (socket) => { 
+		_.each(Sockets.userSockets, (socket) => { 
 			let user = socket.request.user;
 			if (user && user.roles && user.roles.indexOf(role) !== -1) 
-				logger.info("Send message to " + user.username + " '" + path + "':", data);
+				logger.debug("Send WS message to " + user.username + " '" + path + "':", data);
 				socket.emit(path, data);
 		});
 	}

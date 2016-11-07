@@ -14,7 +14,7 @@ let C 				= require("../../../core/constants");
 let Post 			= require("./models/post");
 let User 			= require("../../../models/user");
 
-let io 				= require("../../../core/socket");
+//let io 				= require("../../../core/socket");
 
 let helper			= require("../../../libs/schema-helper");
 
@@ -186,7 +186,7 @@ const resolvers = {
 				// Send back the response
 				let json = doc.toJSON();
 
-				io.nsemit("update", json);
+				//io.nsemit("update", json);
 
 				return doc;
 

@@ -26,38 +26,30 @@ Services.prototype.loadServices = function(app, db) {
 	self.app = app;
 	self.db = db;
 
+	let addService = function(service) {
+		if (_.isFunction(service.init)) {
+			service.init(Context.CreateToServiceInit(service, app, db))
+		}
+		self.services[service.name] = service;
+	}
+
 	logger.info("");
 	logger.info(chalk.bold("Search built-in services..."));
 
-	function requireAllBuiltIn(r) { 
-		return r.keys().map(function(module) {
-			logger.info("  Load", path.relative(path.join(__dirname, "..", "services"), module), "service...");
-			let service = r(module);
-			if (_.isFunction(service.init)) {
-				service.init(Context.CreateToServiceInit(service, app, db))
-			}
-			self.services[service.name] = service;
-		})
-	}
-	requireAllBuiltIn(require.context("../services", true, /\.js$/));
-
+	let modules = require.context("../services", true, /\.js$/);
+	modules.keys().map(function(module) {
+		logger.info("  Load", path.relative(path.join(__dirname, "..", "services"), module), "service...");
+		addService(modules(module));
+	});
 
 	logger.info("");
 	logger.info(chalk.bold("Search applogic services..."));
 
-	function requireAllAppLogic(r) { 
-		return r.keys().map(function(module) {
-			logger.info("  Load", path.relative(path.join(__dirname, "..", "applogic", "modules"), module), "service...");
-			let service = r(module);
-			if (_.isFunction(service.init)) {
-				service.init(Context.CreateToServiceInit(service, app, db))
-			}
-			self.services[service.name] = service;
-		})
-	}
-	requireAllAppLogic(require.context("../applogic/modules", true, /service\.js$/));
-
-	// logger.info(this.services);
+	modules = require.context("../applogic/modules", true, /service\.js$/)
+	modules.keys().map(function(module) {
+		logger.info("  Load", path.relative(path.join(__dirname, "..", "applogic", "modules"), module), "service...");
+		addService(modules(module));
+	});
 }
 
 Services.prototype.registerRoutes = function(app) {
@@ -186,26 +178,16 @@ Services.prototype.registerSockets = function(IO, socketHandler) {
 
 			});
 
-			// Initialize every socket handler
-			/*socketHandlers.handlers.forEach((Handler) => {
-				if (!Handler || !Handler.namespace) return;
-
-				let io = self.namespaces[Handler.namespace];
-				if (io == null) {
-					io = IO.of(Handler.namespace);
-					self.initNameSpace(Handler.namespace, io, mongoStore, Handler.role);
-					
-					if (_.isFunction(Handler.init))
-						Handler.init(io);
-				}
-			});*/
-
 		}
 	});	
 }
 
 Services.prototype.registerGraphQLDefs = function() {
 	
+}
+
+Services.prototype.get = function(serviceName) {
+
 }
 
 module.exports = new Services();
