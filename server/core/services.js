@@ -86,8 +86,11 @@ Services.prototype.registerRoutes = function(app) {
 
 				let handler = (req, res) => {
 					let ctx = Context.CreateFromREST(service, app, req, res);
-					
+
 					Promise.resolve()
+					.then(() => {
+						return ctx.resolveModel();
+					})
 					.then(() => {
 						return action.call(service, ctx);
 					})

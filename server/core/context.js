@@ -3,7 +3,7 @@
 let logger 			= require("./logger");
 let config 			= require("../config");
 
-let Sockets   = require("./sockets");
+let Sockets   		= require("./sockets");
 
 let _ 				= require("lodash");
 
@@ -12,6 +12,7 @@ let Context = function(service) {
 	this.app = null; // ExpressJS app
 	this.req = null; // req from ExpressJS router
 	this.res = null; // res from ExpressJS router
+	this.t = null; // i18n translate method
 	this.user = null; // logged in user
 	this.socket = null; // socket from socket.io session
 	this.io = null; // namespace IO
@@ -37,6 +38,7 @@ Context.CreateFromREST = function(service, app, req, res) {
 	ctx.io = service.io;
 	ctx.req = req;
 	ctx.res = res;
+	ctx.t = req.t;
 	ctx.user = req.user;
 	ctx.params = _.defaults({}, req.query, req.params);
 
@@ -75,6 +77,23 @@ Context.CreateToServiceInit = function(service, app, db) {
 	//ctx.io = app.io.IO;
 
 	return ctx;
+}
+
+Context.prototype.resolveModel = function() {
+	if (this.service.model && _.isFunction(this.service.modelResolver)) {
+		let idParamName = this.service.idParamName || "id";
+
+		let id = this.params[idParamName];
+
+		if (id != null) {
+			return this.service.modelResolver(this, id).then( (model) => {
+				this.model = model;
+				return model;
+			});
+		}
+	}
+
+	return Promise.resolve(null);
 }
 
 // Broadcast a message 
@@ -123,6 +142,49 @@ Context.prototype.emit = function(cmd, data, role) {
 		});
 	}
 
+}
+
+Context.prototype.validateParam = function(name, errorMessage) {
+	let validator = {
+		value: null,
+		errors: []
+	};
+
+	let value = this.params[name];
+	if (value != null) 
+		validator.value = value;
+	else
+		validator.errors.push(errorMessage || `Parameter '${name}' missing!`); // i18n
+
+	validator.noError = function() {
+		return validator.errors.length == 0;
+	}
+
+	validator.end = function() {
+		if (!validator.noError())
+			throw new Error(validator.errors.join(" "));
+
+		return validator.value;
+	}
+
+	validator.notEmpty = (errorMessage) => {
+		if (validator.value == null || validator.value == "")
+			validator.errors.push(errorMessage || `Parameter '${name}' is empty!`); // i18n
+
+		if (_.isArray(validator.value) && validator.value.length == 0)
+			validator.errors.push(errorMessage || `Parameter '${name}' is empty!`); // i18n
+
+		return validator;
+	}
+
+	validator.trim = () => {
+		if (validator.noError())
+			validator.value = validator.value.trim();
+		
+		return validator;
+	}
+
+	return validator;
 }
 
 // Generate an error response
