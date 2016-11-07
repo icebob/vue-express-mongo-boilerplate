@@ -88,7 +88,7 @@ module.exports = {
 	graphql: {
 		query: ``,
 		types: ``,
-		mutations: ``,
+		mutation: ``,
 		resolvers: {
 			// Generated from actions
 		}

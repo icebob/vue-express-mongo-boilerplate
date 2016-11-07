@@ -60,6 +60,8 @@ Context.CreateFromSocket = function(service, app, socket, cmd, data) {
 Context.CreateFromGraphQL = function(service, name, root, args, context) {
 	let ctx = new Context(service);
 	ctx.provider = "graphql";
+	ctx.params = args;
+	ctx.user = context.user;
 
 	return ctx;
 }

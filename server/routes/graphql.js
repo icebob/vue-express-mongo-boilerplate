@@ -10,7 +10,11 @@ let Resolvers 		= require("../schema").resolvers;
 
 module.exports = function(app, db) {
 
-	let schema = graphqlTools.makeExecutableSchema({ typeDefs: Schema, resolvers: Resolvers });
+	//let schema = graphqlTools.makeExecutableSchema({ typeDefs: Schema, resolvers: Resolvers });
+	
+	let servicesSchema = require("../core/services").registerGraphQLSchema();
+
+	let schema = graphqlTools.makeExecutableSchema({ typeDefs: servicesSchema.schema, resolvers: servicesSchema.resolvers });	
 	//console.log(schema);
 
 	// Register graphql server

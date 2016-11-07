@@ -6,7 +6,7 @@ let config 			= require("../../../config");
 let store 			= require("./memstore");
 
 module.exports = {
-	
+
 	// Name of service
 	name: "counter",
 
@@ -37,11 +37,11 @@ module.exports = {
 		 *		GET /counter
 		 *		GET /counter/find
 		 *		
-		 *	via websocket: 
+		 *	via Websocket: 
 		 *		/counter/find
 		 *		
-		 *	via graphQL: 
-		 *		query Counter {}
+		 *	via GraphQL: 
+		 *		query { counter }
 		 */
 		find(ctx) {
 			return Promise.resolve(store.counter);
@@ -56,12 +56,12 @@ module.exports = {
 		 *		
 		 *		GET /counter/save?value=123
 		 *		
-		 *	via websocket: 
+		 *	via Websocket: 
 		 *		/counter/save
 		 *			data: { value: 123 }
 		 *		
-		 *	via graphQL: 
-		 *		query CounterSave
+		 *	via GraphQL: 
+		 *		mutation { counterSave(value: 123) }
 		 *		
 		 */		
 		save(ctx) {
@@ -78,11 +78,11 @@ module.exports = {
 		 *	via REST: 
 		 *		GET /counter/reset
 		 *		
-		 *	via websocket: 
+		 *	via Websocket: 
 		 *		/counter/reset
 		 *		
-		 *	via graphQL: 
-		 *		query CounterReset
+		 *	via GraphQL: 
+		 *		mutation { counterReset }
 		 */
 		reset(ctx) {
 			return this.changeCounter(ctx, 0);
@@ -94,11 +94,11 @@ module.exports = {
 		 *	via REST: 
 		 *		GET /counter/increment
 		 *		
-		 *	via websocket: 
+		 *	via Websocket: 
 		 *		/counter/increment
 		 *		
-		 *	via graphQL: 
-		 *		query CounterIncrement
+		 *	via GraphQL: 
+		 *		mutation { counterIncrement }
 		 */
 		increment(ctx) {
 			return this.changeCounter(ctx, store.counter + 1);
@@ -110,11 +110,11 @@ module.exports = {
 		 *	via REST: 
 		 *		GET /counter/decrement
 		 *		
-		 *	via websocket: 
+		 *	via Websocket: 
 		 *		/counter/decrement
 		 *		
-		 *	via graphQL: 
-		 *		query CounterDecrement
+		 *	via GraphQL: 
+		 *		mutation { counterDecrement }
 		 */
 		decrement(ctx) {
 			return this.changeCounter(ctx, store.counter - 1);
@@ -141,8 +141,13 @@ module.exports = {
 	 * @param  {Context} ctx   Context of request
 	 */
 	notifyChanged(ctx) {
+		// Send message to everyone
 		ctx.broadcast("changed", store.counter);	
+		
+		// Send message to the requested user
 		ctx.emitUser("changed", store.counter);	
+
+		// Send message to the role of service ('user')
 		ctx.emit("changed", store.counter);	
 	},
 
@@ -170,11 +175,31 @@ module.exports = {
 	},
 
 	graphql: {
-		query: ``,
+		query: `
+			counter: Int
+		`,
+
 		types: ``,
-		mutations: ``,
+
+		mutation: `
+			counterSave(value: Int!): Int
+			counterReset: Int
+			counterIncrement: Int
+			counterDecrement: Int
+		`,
+		
 		resolvers: {
-			// Generated from actions
+
+			Query: {
+				counter: "find",
+			},
+
+			Mutation: {
+				counterSave: "save",
+				counterReset: "reset",
+				counterIncrement: "increment",
+				counterDecrement: "decrement"
+			}
 		}
 	}
 
