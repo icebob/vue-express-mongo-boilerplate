@@ -215,21 +215,25 @@ Services.prototype.registerGraphQLSchema = function() {
 		if (service.graphql !== false && service.graphql) {
 			service.graphql.resolvers = service.graphql.resolvers || {};
 
-			/*if (service.role) {
-				// Must be authenticated
-				router.use(auth.isAuthenticatedOrApiKey);
-
-				// Need a role
-				router.use(auth.hasRole(service.role));
-			}*/
-
 			let processResolvers = function(resolvers) {
 				_.forIn(resolvers, (resolver, name) => {
 
 					if (_.isString(resolver) && _.isFunction(service.actions[resolver])) {
 
 						let handler = (root, args, context) => {
-							let ctx = Context.CreateFromGraphQL(service, name, root, args, context);
+
+							if (service.role) {
+								// Must be authenticated
+								if (!context.user) {
+									return Promise.reject("Forbidden");
+								}
+
+								// Need a role
+								if (context.user.roles.indexOf(service.role) == -1)
+									return Promise.reject("Forbidden");
+							}
+
+							let ctx = Context.CreateFromGraphQL(service, root, args, context);
 							
 							return Promise.resolve()
 							.then(() => {

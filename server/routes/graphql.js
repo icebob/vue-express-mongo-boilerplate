@@ -25,7 +25,7 @@ module.exports = function(app, db) {
 			// Probably indicates someone trying to send an overly expensive query
 			throw new Error("Query too large.");
 		}	
-		logger.debug("GraphQL query:", query);
+		logger.debug("GraphQL request:", query);
 
 		return {
 			graphiql: config.isDevMode(),

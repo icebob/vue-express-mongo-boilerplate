@@ -18,6 +18,8 @@ let	MongoStore 		= require("connect-mongo")(session);
 //let socketHandlers  = require("../applogic/socketHandlers");
 
 let self = {
+	IO: null,
+	
 	mongoStore: null,
 
 	/**
@@ -66,6 +68,7 @@ let self = {
 		services.registerSockets(IO, self);
 
 		app.io = self;
+		self.IO = IO;
 
 		return server;
 	},
