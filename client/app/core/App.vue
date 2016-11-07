@@ -121,6 +121,7 @@
 		created() {
 			console.log("App started!");
 			window.app = this;
+			window.io = this.$socket; // debug
 
 			this.getSessionUser();
 		}

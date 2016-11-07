@@ -284,10 +284,10 @@ module.exports = function(db) {
 	initAuth(app);
 
 	// Init webpack devserver & hot reload module
-	//initWebpack(app);
+	initWebpack(app);
 
 	// Load services
-	let services = require("./service")
+	let services = require("./services")
 	services.loadServices(app, db);
 
 	// Load routes

@@ -6,9 +6,9 @@ let config 			= require("../../../config");
 module.exports = {
 	name: "posts",
 	version: 1,
-	namespace: "/posts",
+	namespace: "posts",
 	rest: true,
-	socket: true,
+	ws: true,
 	graphql: true,
 	role: "user",
 	

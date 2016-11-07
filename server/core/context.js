@@ -3,6 +3,8 @@
 let logger 			= require("./logger");
 let config 			= require("../config");
 
+let socketHandler   = require("./socket");
+
 let _ 				= require("lodash");
 
 let Context = function(service) {
@@ -32,7 +34,7 @@ Context.CreateFromREST = function(service, app, req, res) {
 	let ctx = new Context(service);
 	ctx.provider = "rest";
 	ctx.app = app;
-	ctx.io = app.io;
+	ctx.io = service.io;
 	ctx.req = req;
 	ctx.res = res;
 	ctx.user = req.user;
@@ -42,9 +44,14 @@ Context.CreateFromREST = function(service, app, req, res) {
 }
 
 // Initialize Context from a socket call
-Context.CreateFromSocket = function(service, io, socket, cmd, data) {
+Context.CreateFromSocket = function(service, app, socket, cmd, data) {
 	let ctx = new Context(service);
 	ctx.provider = "socket";
+	ctx.app = app;
+	ctx.io = service.io;
+	ctx.socket = socket;
+	ctx.user = socket.request.user
+	ctx.params = data;
 
 	return ctx;
 }
@@ -68,20 +75,50 @@ Context.CreateToServiceInit = function(service, app, db) {
 }
 
 // Broadcast a message 
-Context.prototype.broadcast = function(msg, data) {
-	let path = this.service.namespace + "/" + msg;
-	logger.info("Send broadcast message to `" + path + "`:", data);
+Context.prototype.broadcast = function(cmd, data) {
+	if (this.io) {
+		let path = "/" + this.service.namespace + "/" + cmd;
+		logger.info("Send broadcast message to '" + path + "':", data);
+		this.io.emit(path, data);
+	}
 }
 
-// Send a message to me
-Context.prototype.emitUser = function(msg, data) {
-	let path = this.service.namespace + "/" + msg;
-
+// Send a message back to socket
+Context.prototype.emitUser = function(cmd, data) {
+	if (!this.socket && this.user) {
+		// If not socket, but has user, we try to find it
+		this.socket = _.find(socketHandler.onlineUsers, (socket) => { 
+			return socket.request.user._id == this.user._id
+		});
+	}
+	if (this.socket) {
+		let path = this.service.namespace + "/" + cmd;
+		logger.info("Send message to " + this.socket.request.user.username + " '" + path + "':", data);
+		this.socket.emit(path, data);
+	}
 }
 
-// Broadcast a message to a role
-Context.prototype.emitRole = function(role, msg, data) {
-	let path = this.service.namespace + "/" + msg;
+// Broadcast a message to a role If the `role` is not specified, we use the role of service
+Context.prototype.emit = function(cmd, data, role) {
+	if (!role)
+		role = this.service.role;
+	
+	// If not definied we send a broadcast
+	if (!role) {
+		return this.broadcast(cmd, data);
+	}
+
+	if (this.io) {
+		let path = this.service.namespace + "/" + cmd;
+		logger.info("Send message to '" + role + "' role '" + path + "':", data);
+
+		_.each(socketHandler.onlineUsers, (socket) => { 
+			let user = socket.request.user;
+			if (user && user.roles && user.roles.indexOf(role) !== -1) 
+				logger.info("Send message to " + user.username + " '" + path + "':", data);
+				socket.emit(path, data);
+		});
+	}
 
 }
 

@@ -8,11 +8,11 @@ let store 			= require("./memstore");
 module.exports = {
 	name: "counter",
 	version: 1,
-	namespace: "/counter",
+	namespace: "counter",
 	rest: true,
-	socket: true,
+	ws: true,
 	graphql: true,
-	//role: "user",
+	role: "user",
 
 	actions: {
 		// You can call it 
@@ -73,17 +73,21 @@ module.exports = {
 
 		notifyChanged(ctx) {
 			ctx.broadcast("changed", store.counter);	
+			ctx.emitUser("changed", store.counter);	
+			ctx.emit("changed", store.counter);	
 		}
 	},
 
 	init(ctx) {
 		// Call when start the service
-		logger.info("Initialize counter service!");
+		//logger.info("Initialize counter service!");
 	},
 
 	socket: {
+		ns: "/",
 		afterConnection(socket, io) {
-			socket.emit("/counter", store.counter);
+			//logger.info("counter afterConnection");
+			socket.emit("/counter/changed", store.counter);
 		}
 	},
 

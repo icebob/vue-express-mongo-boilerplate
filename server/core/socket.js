@@ -18,6 +18,7 @@ let	MongoStore 		= require("connect-mongo")(session);
 //let socketHandlers  = require("../applogic/socketHandlers");
 
 let self = {
+	mongoStore: null,
 
 	/**
 	 * IO namespaces
@@ -26,7 +27,7 @@ let self = {
 	namespaces: {},
 
 	/** 
-	 * List of logged in online users
+	 * List of logged in online users/sockets
 	 * @type {Array}
 	 */
 	onlineUsers: [],
@@ -40,26 +41,29 @@ let self = {
 	 */
 	init(app, db) {
 
-		// Create a new HTTP server
-		let server = http.createServer(app);
-
 		// Create a MongoDB storage object
-		let mongoStore = new MongoStore({
+		self.mongoStore = new MongoStore({
 			mongooseConnection: db.connection,
 			collection: config.sessions.collection,
 			autoReconnect: true
-		});
+		});		
+
+		// Create a new HTTP server
+		let server = http.createServer(app);
 
 		// Create a new Socket.io server
 		let IO = socketio(server);
 
 		// Add common handler to the root namespace
-		self.initNameSpace("/", IO, mongoStore);
+		self.initNameSpace("/", IO, self.mongoStore);
 		IO.on("connection", function (socket) {
 			socket.on("welcome", function(msg) {
 				logger.info("Incoming welcome message from " + socket.request.user.username + ":", msg);
 			});
 		});
+
+		let services = require("./services");
+		services.registerSockets(IO, self);
 
 		// Initialize every socket handler
 		/*socketHandlers.handlers.forEach((Handler) => {
@@ -78,6 +82,16 @@ let self = {
 		app.io = self;
 
 		return server;
+	},
+
+	addNameSpace(ns, role) {
+		let io = self.namespaces[ns];
+		if (io == null) {
+			io = IO.of(ns);
+			self.initNameSpace(ns, io, self.mongoStore, role);
+		}
+
+		return io;
 	},
 
 	/**
@@ -142,11 +156,11 @@ let self = {
 
 		// Add an event listener to the 'connection' event
 		io.on("connection", function (socket) {
-			self.addOnlineUser(socket.request.user);
+			self.addOnlineUser(socket);
 			logger.debug("WS client connected to namespace " + (io.name || "root") + "! User: " + socket.request.user.username);
 
 			socket.on("disconnect", function() {
-				self.removeOnlineUser(socket.request.user);
+				self.removeOnlineUser(socket);
 				logger.debug("WS client disconnected from namespace " + (io.name || "root") + "!");
 			});
 		});
@@ -161,13 +175,13 @@ let self = {
 		}
 	},
 
-	addOnlineUser(user) {
-		self.removeOnlineUser(user);
-		self.onlineUsers.push(user);
+	addOnlineUser(socket) {
+		self.removeOnlineUser(socket);
+		self.onlineUsers.push(socket);
 	},
 
-	removeOnlineUser(user) {
-		_.remove(self.onlineUsers, function(u) { return u._id == user._id; });
+	removeOnlineUser(socket) {
+		_.remove(self.onlineUsers, function(s) { return s.request.user._id == socket.request.user._id; });
 	}
 
 };
