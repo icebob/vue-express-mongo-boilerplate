@@ -225,12 +225,12 @@ Services.prototype.registerGraphQLSchema = function() {
 							if (service.role) {
 								// Must be authenticated
 								if (!context.user) {
-									return Promise.reject("Forbidden");
+									return Promise.reject(new Error("Forbidden"));
 								}
 
 								// Need a role
 								if (context.user.roles.indexOf(service.role) == -1)
-									return Promise.reject("Forbidden");
+									return Promise.reject(new Error("Forbidden"));
 							}
 
 							let ctx = Context.CreateFromGraphQL(service, root, args, context);

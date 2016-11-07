@@ -161,6 +161,9 @@ module.exports = {
 		//logger.info("Initialize counter service!");
 	},
 
+	/**
+	 * Websocket option
+	 */
 	socket: {
 		// Namespace of socket
 		ns: "/",
@@ -174,6 +177,9 @@ module.exports = {
 		}
 	},
 
+	/**
+	 * Define GraphQL queries, types, mutations
+	 */
 	graphql: {
 		query: `
 			counter: Int

@@ -5,13 +5,9 @@ let logger 			= require("../core/logger");
 let auth 			= require("../core/auth/helper");
 let ApolloServer 	= require("apollo-server").apolloServer;
 let graphqlTools 	= require("graphql-tools");
-let Schema 			= require("../schema").schema;
-let Resolvers 		= require("../schema").resolvers;
 
 module.exports = function(app, db) {
 
-	//let schema = graphqlTools.makeExecutableSchema({ typeDefs: Schema, resolvers: Resolvers });
-	
 	let servicesSchema = require("../core/services").registerGraphQLSchema();
 
 	let schema = graphqlTools.makeExecutableSchema({ typeDefs: servicesSchema.schema, resolvers: servicesSchema.resolvers });	
