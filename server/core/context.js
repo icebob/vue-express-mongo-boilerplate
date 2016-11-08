@@ -28,6 +28,8 @@ let Context = function(service) {
 			}
 		})
 	}*/
+
+	this.validationErrors = [];
 }
 
 // Initialize Context from a REST call
@@ -40,7 +42,7 @@ Context.CreateFromREST = function(service, app, req, res) {
 	ctx.res = res;
 	ctx.t = req.t;
 	ctx.user = req.user;
-	ctx.params = _.defaults({}, req.query, req.params);
+	ctx.params = _.defaults({}, req.query, req.params, req.body);
 
 	return ctx;
 }
@@ -52,8 +54,10 @@ Context.CreateFromSocket = function(service, app, socket, cmd, data) {
 	ctx.app = app;
 	ctx.io = service.io;
 	ctx.socket = socket;
+	ctx.t = app.t;
 	ctx.user = socket.request.user
-	ctx.params = data;
+	ctx.params = data || {};
+	logger.info(ctx.params);
 
 	return ctx;
 }
@@ -62,6 +66,7 @@ Context.CreateFromSocket = function(service, app, socket, cmd, data) {
 Context.CreateFromGraphQL = function(service, root, args, context) {
 	let ctx = new Context(service);
 	ctx.provider = "graphql";
+	ctx.t = service.app.t;
 	ctx.params = args;
 	ctx.user = context.user;
 	ctx.io = service.io;
@@ -74,7 +79,6 @@ Context.CreateToServiceInit = function(service, app, db) {
 	let ctx = new Context(service);
 	ctx.provider = "";
 	ctx.app = app;
-	//ctx.io = app.io.IO;
 
 	return ctx;
 }
@@ -114,7 +118,7 @@ Context.prototype.emitUser = function(cmd, data) {
 		});
 	}
 	if (this.socket) {
-		let path = this.service.namespace + "/" + cmd;
+		let path = "/" + this.service.namespace + "/" + cmd;
 		logger.debug("Send WS message to " + this.socket.request.user.username + " '" + path + "':", data);
 		this.socket.emit(path, data);
 	}
@@ -131,7 +135,7 @@ Context.prototype.emit = function(cmd, data, role) {
 	}
 
 	if (this.io) {
-		let path = this.service.namespace + "/" + cmd;
+		let path = "/" + this.service.namespace + "/" + cmd;
 		logger.debug("Send WS message to '" + role + "' role '" + path + "':", data);
 
 		_.each(Sockets.userSockets, (socket) => { 
@@ -145,49 +149,65 @@ Context.prototype.emit = function(cmd, data, role) {
 }
 
 Context.prototype.validateParam = function(name, errorMessage) {
+	let self = this;
+
 	let validator = {
 		name: name,
 		value: null,
 		errors: []
 	};
 
-	let value = this.params[name];
-	if (value != null) 
-		validator.value = value;
-	else
-		validator.errors.push(errorMessage || `Parameter '${name}' missing!`); // i18n
-
 	validator.noError = function() {
 		return validator.errors.length == 0;
 	}
 
-	validator.end = function() {
-		if (!validator.noError())
-			throw new Error(validator.errors.join(" "));
+	validator.addError = function(message) {
+		validator.errors.push(message);
+		self.validationErrors.push(message);
+	}
 
-		this.params[validator.name] = validator.value;
-		
+	validator.end = function() {
+		if (validator.noError())
+			self.params[validator.name] = validator.value;
+
 		return validator.value;
 	}
 
-	validator.notEmpty = (errorMessage) => {
+	validator.throw = function() {
+		if (!validator.noError())
+			throw new Error(validator.errors.join(" "));
+		
+		return validator.value;
+	}	
+
+	validator.notEmpty = function(errorMessage) {
 		if (validator.value == null || validator.value == "")
-			validator.errors.push(errorMessage || `Parameter '${name}' is empty!`); // i18n
+			validator.addError(errorMessage || `Parameter '${name}' is empty!`); // i18n
 
 		if (_.isArray(validator.value) && validator.value.length == 0)
-			validator.errors.push(errorMessage || `Parameter '${name}' is empty!`); // i18n
+			validator.addError(errorMessage || `Parameter '${name}' is empty!`); // i18n
 
 		return validator;
 	}
 
-	validator.trim = () => {
+	validator.trim = function() {
 		if (validator.noError())
 			validator.value = validator.value.trim();
 		
 		return validator;
 	}
 
+	let value = this.params[name];
+	if (value != null) 
+		validator.value = value;
+	else
+		validator.addError(errorMessage || `Parameter '${name}' missing!`); // i18n
+
 	return validator;
+}
+
+Context.prototype.hasValidationErrors = function() {
+	return this.validationErrors.length > 0;
 }
 
 // Generate an error response

@@ -141,6 +141,7 @@ function initI18N(app) {
 		.use(i18nextFs)
 		.use(i18nextExpress.LanguageDetector)
 		.init(conf, function(err, t) {
+			app.t = t;
 			if (err)
 				logger.warn(err);
 		});
@@ -284,7 +285,7 @@ module.exports = function(db) {
 	initAuth(app);
 
 	// Init webpack devserver & hot reload module
-	//initWebpack(app);
+	initWebpack(app);
 
 	// Load services
 	let services = require("./services")

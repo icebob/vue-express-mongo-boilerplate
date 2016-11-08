@@ -4,6 +4,9 @@ let logger 			= require("../../../core/logger");
 let config 			= require("../../../config");
 
 let Post 			= require("./models/post");
+let User 			= require("../../../models/user");
+
+let helper			= require("../../../libs/schema-helper");
 
 module.exports = {
 	name: "posts",
@@ -16,6 +19,8 @@ module.exports = {
 	model: Post,
 	idParamName: "code", // GET /posts/find?code=123
 	
+	populateAuthorFields: "username fullName code email gravatar",
+
 	actions: {
 		find(ctx) {
 			let filter = {};
@@ -34,7 +39,7 @@ module.exports = {
 			if (ctx.params.limit)
 				query.limit(ctx.params.limit || 20);
 		
-			query.populate("author", "username fullName code email gravatar");
+			query.populate("author", this.populateAuthorFields);
 
 			return query.exec().then( (docs) => {
 				if (!docs || docs.length == 0) return [];
@@ -48,9 +53,6 @@ module.exports = {
 			if (!ctx.model)
 				throw ctx.errorBadRequest(ctx.t("PostNotFound"));
 
-			let foo = ctx.validateParam("foo").trim().notEmpty("Ez üres!!!!").end();
-			logger.info(foo);
-
 			return Post.findByIdAndUpdate(ctx.model.id, { $inc: { views: 1 } }).exec().then( (doc) => {
 				return ctx.model.toJSON();
 			});
@@ -60,6 +62,31 @@ module.exports = {
 			roles: "admin",
 			handler(ctx) {
 
+				ctx.validateParam("title").trim().notEmpty(ctx.t("PostTitleCannotBeEmpty")).end();
+				ctx.validateParam("content").trim().notEmpty(ctx.t("PostContentCannotBeEmpty")).end();
+				if (ctx.hasValidationErrors())
+					throw ctx.errorBadRequest(ctx.validationErrors);
+			
+
+				let post = new Post({
+					title: ctx.params.title,
+					content: ctx.params.content,
+					author: ctx.user.id
+				});
+
+				return post.save()
+					.then((doc) => {
+						return Post.populate(doc, { path: "author", select: this.populateAuthorFields});
+					})
+					.then((doc) => {
+						return doc.toJSON();
+					})
+					.then((json) => {
+
+						this.notifyModelChanges(ctx, "created", json);
+
+						return json;
+					});								
 			}
 		},
 
@@ -67,12 +94,49 @@ module.exports = {
 			if (!ctx.model)
 				throw ctx.errorBadRequest(ctx.t("PostNotFound"));
 
+			ctx.validateParam("title").trim().notEmpty(ctx.t("PostTitleCannotBeEmpty")).end();
+			ctx.validateParam("content").trim().notEmpty(ctx.t("PostContentCannotBeEmpty")).end();
+			if (ctx.hasValidationErrors())
+				throw ctx.errorBadRequest(ctx.validationErrors);
+
+			if (ctx.model.author.id != ctx.user.id) {
+				return ctx.errorBadRequest(ctx.t("OnlyAuthorEditPost"));
+			}
+
+			ctx.model.title = ctx.params.title;
+			ctx.model.content = ctx.params.content;
+
+			return ctx.model.save()
+				.then((doc) => {
+					return doc.toJSON();
+				})
+				.then((json) => {
+
+					this.notifyModelChanges(ctx, "updated", json);
+
+					return json;
+				});								
+
 		},
 
 		remove(ctx) {
 			if (!ctx.model)
 				throw ctx.errorBadRequest(ctx.t("PostNotFound"));
 
+			if (ctx.model.author.id != ctx.user.id) {
+				return ctx.errorBadRequest(ctx.t("OnlyAuthorDeletePost"));
+			}
+
+			return Post.remove({ _id: ctx.model.id })
+				.then(() => {
+					return ctx.model.toJSON();
+				})
+				.then((json) => {
+
+					this.notifyModelChanges(ctx, "removed", json);
+
+					return json;
+				});		
 		},
 
 		upVote(ctx) {
@@ -87,22 +151,21 @@ module.exports = {
 			}).then(() => {
 				// Remove user from downVoters if it is on the list
 				if (ctx.model.downVoters.indexOf(ctx.user.id) !== -1) 
-					return Post.findByIdAndUpdate(ctx.model.id, { $pull: { downVoters: ctx.user.id }, $inc: { votes: -1 } }, { "new": true });
+					return Post.findByIdAndUpdate(ctx.model.id, { $pull: { downVoters: ctx.user.id }, $inc: { votes: 1 } }, { "new": true });
 
 			}).then(() => {
 				// Add user to upVoters
-				return Post.findByIdAndUpdate(ctx.model.id, { $addToSet: { upVoters: ctx.user.id } , $inc: { votes: -1 }}, { "new": true });
+				return Post.findByIdAndUpdate(ctx.model.id, { $addToSet: { upVoters: ctx.user.id } , $inc: { votes: 1 }}, { "new": true });
 
 			}).then((doc) => {
 				// Populate author
-				return Post.populate(doc, { path: "author", select: "username fullName code email gravatar"});
+				return Post.populate(doc, { path: "author", select: this.populateAuthorFields});
 
 			}).then((doc) => {
 				// Send back the response
 				let json = doc.toJSON();
 
-				//if (io.namespaces[moduleConfig.namespace])
-				//	io.namespaces[moduleConfig.namespace].emit("update", json);
+				this.notifyModelChanges(ctx, "updated", json);
 
 				return json;
 			});
@@ -128,14 +191,13 @@ module.exports = {
 
 			}).then((doc) => {
 				// Populate author
-				return Post.populate(doc, { path: "author", select: "username fullName code email gravatar"});
+				return Post.populate(doc, { path: "author", select: this.populateAuthorFields});
 
 			}).then((doc) => {
 				// Send back the response
 				let json = doc.toJSON();
 
-				//if (io.namespaces[moduleConfig.namespace])
-				//	io.namespaces[moduleConfig.namespace].emit("update", json);
+				this.notifyModelChanges(ctx, "updated", json);
 
 				return json;
 			});
@@ -148,15 +210,20 @@ module.exports = {
 	modelResolver(ctx, code) {
 		let id = Post.schema.methods.decodeID(code);
 		if (id == null || id == "")
-			return new Error(ctx.t("InvalidPostID"));
+			return Promise.reject(new Error(ctx.t("InvalidPostID")));
 
 		return Post.findById(id).exec().then( (doc) => {
 			if (!doc) 
-				return null;
+				return Promise.reject(new Error(ctx.t("PostNotFound")));
 
-			return doc.populate("author", "username fullName code email gravatar");
+			return Post.populate(doc, { path: "author", select: this.populateAuthorFields});
 		});		
 		
+	},
+
+	notifyModelChanges(ctx, type, json) {
+		ctx.emit(type, json);
+		logger.debug(json);
 	},
 
 	init(ctx) {
@@ -170,16 +237,82 @@ module.exports = {
 	},
 
 	graphql: {
-		query: ``,
-		types: ``,
-		mutation: ``,
+
+		query: `
+			posts(limit: Int, offset: Int, sort: String): [Post]
+			post(code: String): Post
+		`,
+
+		types: `
+			type Post {
+				id: Int!
+				code: String!
+				title: String
+				content: String
+				author: User!
+				views: Int
+				voters(limit: Int, offset: Int, sort: String): [User]
+				upVoters(limit: Int, offset: Int, sort: String): [User]
+				downVoters(limit: Int, offset: Int, sort: String): [User]
+				votes: Int,
+				createdAt: Timestamp
+				updatedAt: Timestamp
+			}
+
+			type User {
+				id: Int!
+				code: String!
+				fullName: String
+				email: String
+				username: String
+				provider: String
+				roles: [String]
+				verified: Boolean
+				gravatar: String
+				lastLogin: Timestamp
+			}
+		`,
+
+		mutation: `
+			postSave(title: String!, content: String!): Post
+			postUpdate(code: String!, title: String!, content: String!): Post
+			postRemove(code: String!): Post
+
+			postUpVote(code: String!): Post
+			postDownVote(code: String!): Post
+		`,
+
 		resolvers: {
 			Query: {
+				posts: "find",
+				post: "get"
+			},
+
+			Post: {
+				author(post, args, context) {
+					return User.findById(post.author).exec();
+				},
+
+				upVoters(post, args, context) {
+					return helper.applyLimitOffsetSort(User.find({ _id: { $in: post.upVoters} }), args).exec();
+				},
+
+				downVoters(post, args, context) {
+					return helper.applyLimitOffsetSort(User.find({ _id: { $in: post.downVoters} }), args).exec();
+				},
+
+				voters(post, args, context) {
+					return helper.applyLimitOffsetSort(User.find({ _id: { $in: post.upVoters.concat(post.downVoters) } }), args).exec();
+				}
 
 			},
 
 			Mutation: {
-
+				postSave: "save",
+				postUpdate: "update",
+				postRemove: "remove",
+				postUpVote: "upVote",
+				postDownVote: "downVote",
 			}
 		}
 	}

@@ -122,6 +122,7 @@
 			console.log("App started!");
 			window.app = this;
 			window.io = this.$socket; // debug
+			window.socket = window.io.connect();// debug
 
 			this.getSessionUser();
 		}

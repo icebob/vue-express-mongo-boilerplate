@@ -36,6 +36,8 @@ Services.prototype.loadServices = function(app, db) {
 	self.db = db;
 
 	let addService = function(service) {
+		service.app = app;
+		service.db = db;
 		if (_.isFunction(service.init)) {
 			service.init(Context.CreateToServiceInit(service, app, db))
 		}
@@ -92,7 +94,15 @@ Services.prototype.registerRoutes = function(app) {
 						return ctx.resolveModel();
 					})
 					.then(() => {
-						return action.call(service, ctx);
+						let func = action;
+						if (_.isObject(action) && !_.isFunction(action)) {
+							func = action.handler;
+						}
+
+						if (!_.isFunction(func))
+							throw new Error(`Missing handler function in '${name}' action in '${service.name}' service!`);
+
+						return func.call(service, ctx);
 					})
 					.then((json) => {
 						response.json(res, json);
@@ -175,7 +185,18 @@ Services.prototype.registerSockets = function(IO, socketHandler) {
 						
 						Promise.resolve()
 						.then(() => {
-							return action.call(service, ctx);
+							return ctx.resolveModel();
+						})
+						.then(() => {
+							let func = action;
+							if (_.isObject(action) && !_.isFunction(action)) {
+								func = action.handler;
+							}
+
+							if (!_.isFunction(func))
+								throw new Error(`Missing handler function in '${name}' action in '${service.name}' service!`);
+
+							return func.call(service, ctx);
 						})
 						.then((json) => {
 							//response.json(res, json);
@@ -221,7 +242,7 @@ Services.prototype.registerGraphQLSchema = function() {
 			let processResolvers = function(resolvers) {
 				_.forIn(resolvers, (resolver, name) => {
 
-					if (_.isString(resolver) && _.isFunction(service.actions[resolver])) {
+					if (_.isString(resolver) && service.actions[resolver]) {
 
 						let handler = (root, args, context) => {
 
@@ -240,7 +261,19 @@ Services.prototype.registerGraphQLSchema = function() {
 							
 							return Promise.resolve()
 							.then(() => {
-								return service.actions[resolver].call(service, ctx);
+								return ctx.resolveModel();
+							})
+							.then(() => {
+								let action = service.actions[resolver];
+								let func = action;
+								if (_.isObject(action) && !_.isFunction(action)) {
+									func = action.handler;
+								}
+
+								if (!_.isFunction(func))
+									throw new Error(`Missing handler function in '${name}' action in '${service.name}' service!`);
+
+								return func.call(service, ctx);
 							})
 							/*.then((json) => {
 								response.json(res, json);
