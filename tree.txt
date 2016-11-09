@@ -1,0 +1,50 @@
++---client
+|   +---app
+|   |   +---core
+|   |   +---modules
+|   |       +---demo
+|   |       +---devices
+|   |       +---home
+|   |       +---posts
+|   |       +---session
+|   |                   
+|   +---frontend
+|   +---images
+|   +---scss
+|                   
++---data
++---logs
++---server
+|   |   bundle.js
+|   |   bundle.js.map
+|   |   dev.js
+|   |   index.js
+|   +---applogic
+|   |   +---libs
+|   |   +---modules
+|   |       +---counter
+|   |       +---devices
+|   |       +---posts
+|   |       +---session
+|   +---config
+|   |       default.js
+|   |       index.js
+|   |       prod.js
+|   |       test.js
+|   |       
+|   +---core
+|   +---libs
+|   +---locales
+|   |   +---en
+|   |   +---hu
+|   +---models
+|   |       user.js
+|   +---public
+|   +---routes
+|   +---schema
+|   +---services
+|   +---views
++---tests
+|
+|   package.json
+|   secrets.json

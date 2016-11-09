@@ -19,15 +19,6 @@ let Context = function(service) {
 	this.params = []; // params from ExpressJS REST or websocket or GraphQL args
 	this.model = null; // model from `modelResolvers`
 	this.provider = "direct" // `direct`, `rest`, `socket` or `graphql`
-	/*this.actions = {} // actions from service (bind ctx parameter)
-
-	if (service.actions) {
-		_.forIn(service.actions, (action, name) => {
-			this.actions[name] = () => {
-				return action.apply(service, [].concat([this], arguments));
-			}
-		})
-	}*/
 
 	this.validationErrors = [];
 }
@@ -84,7 +75,7 @@ Context.CreateToServiceInit = function(service, app, db) {
 }
 
 Context.prototype.resolveModel = function() {
-	if (this.service.model && _.isFunction(this.service.modelResolver)) {
+	if (_.isFunction(this.service.modelResolver)) {
 		let idParamName = this.service.idParamName || "id";
 
 		let id = this.params[idParamName];
@@ -216,6 +207,45 @@ Context.prototype.errorBadRequest = function(msg) {
 	err.status = 400;
 
 	throw err;
+}
+
+Context.prototype.toJSON = function(docs, skipFields) {
+	let func = function(doc) {
+		let json = doc.toJSON();
+		skipFields = ["id", "_id", "__v"].concat(skipFields || []);		
+		return _.omit(json, skipFields);
+	}
+
+	if (docs == null) 
+		docs = this.model;
+
+	if (_.isArray(docs)) {
+		return _.map(docs, (doc) => func(doc, skipFields));
+	} else if (_.isObject(docs)) {
+		return func(docs);
+	}
+}
+
+Context.prototype.queryPageSort = function(query) {
+	if (this.params) {
+		if (this.params.limit)
+			query.limit(this.params.limit);
+
+		if (this.params.offset)
+			query.skip(this.params.offset);
+
+		if (this.params.sort)
+			query.sort(this.params.sort);
+	}
+	return query;
+}
+
+Context.prototype.isAuthenticated = function(role) {
+	return this.user != null;
+}
+
+Context.prototype.hasRole = function(role) {
+	return this.user && this.user.roles.indexOf(role) != -1;
 }
 
 module.exports = Context;

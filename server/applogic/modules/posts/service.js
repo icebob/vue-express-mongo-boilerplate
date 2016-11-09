@@ -4,9 +4,7 @@ let logger 			= require("../../../core/logger");
 let config 			= require("../../../config");
 
 let Post 			= require("./models/post");
-let User 			= require("../../../models/user");
-
-let helper			= require("../../../libs/schema-helper");
+let User 			= require("../users/models/user");
 
 module.exports = {
 	name: "posts",
@@ -30,21 +28,10 @@ module.exports = {
 
 			let query = Post.find(filter);
 
-			switch(ctx.params.sort) {
-			case "hot": query.sort({ votes: -1 }); break;
-			case "mostviewed": query.sort({ views: -1 }); break;
-			default: query.sort({ createdAt: -1 });
-			}
-
-			if (ctx.params.limit)
-				query.limit(ctx.params.limit || 20);
-		
 			query.populate("author", this.populateAuthorFields);
 
-			return query.exec().then( (docs) => {
-				if (!docs || docs.length == 0) return [];
-
-				return docs.map((item) => item.toJSON());
+			return ctx.queryPageSort(query).exec().then( (docs) => {
+				return ctx.toJSON(docs);
 			});
 		},
 
@@ -54,7 +41,7 @@ module.exports = {
 				throw ctx.errorBadRequest(ctx.t("PostNotFound"));
 
 			return Post.findByIdAndUpdate(ctx.model.id, { $inc: { views: 1 } }).exec().then( (doc) => {
-				return ctx.model.toJSON();
+				return ctx.toJSON(doc);
 			});
 		},
 
@@ -79,10 +66,9 @@ module.exports = {
 						return Post.populate(doc, { path: "author", select: this.populateAuthorFields});
 					})
 					.then((doc) => {
-						return doc.toJSON();
+						return ctx.toJSON(doc);
 					})
 					.then((json) => {
-
 						this.notifyModelChanges(ctx, "created", json);
 
 						return json;
@@ -108,7 +94,7 @@ module.exports = {
 
 			return ctx.model.save()
 				.then((doc) => {
-					return doc.toJSON();
+					return ctx.toJSON(doc);
 				})
 				.then((json) => {
 
@@ -129,7 +115,7 @@ module.exports = {
 
 			return Post.remove({ _id: ctx.model.id })
 				.then(() => {
-					return ctx.model.toJSON();
+					return ctx.toJSON();
 				})
 				.then((json) => {
 
@@ -163,7 +149,7 @@ module.exports = {
 
 			}).then((doc) => {
 				// Send back the response
-				let json = doc.toJSON();
+				let json = ctx.toJSON(doc);
 
 				this.notifyModelChanges(ctx, "updated", json);
 
@@ -195,7 +181,7 @@ module.exports = {
 
 			}).then((doc) => {
 				// Send back the response
-				let json = doc.toJSON();
+				let json = ctx.toJSON(doc);
 
 				this.notifyModelChanges(ctx, "updated", json);
 
@@ -258,19 +244,6 @@ module.exports = {
 				createdAt: Timestamp
 				updatedAt: Timestamp
 			}
-
-			type User {
-				id: Int!
-				code: String!
-				fullName: String
-				email: String
-				username: String
-				provider: String
-				roles: [String]
-				verified: Boolean
-				gravatar: String
-				lastLogin: Timestamp
-			}
 		`,
 
 		mutation: `
@@ -294,15 +267,15 @@ module.exports = {
 				},
 
 				upVoters(post, args, context) {
-					return helper.applyLimitOffsetSort(User.find({ _id: { $in: post.upVoters} }), args).exec();
+					return ctx.queryPageSort(User.find({ _id: { $in: post.upVoters} })).exec();
 				},
 
 				downVoters(post, args, context) {
-					return helper.applyLimitOffsetSort(User.find({ _id: { $in: post.downVoters} }), args).exec();
+					return ctx.queryPageSort(User.find({ _id: { $in: post.downVoters} })).exec();
 				},
 
 				voters(post, args, context) {
-					return helper.applyLimitOffsetSort(User.find({ _id: { $in: post.upVoters.concat(post.downVoters) } }), args).exec();
+					return ctx.queryPageSort(User.find({ _id: { $in: post.upVoters.concat(post.downVoters) } })).exec();
 				}
 
 			},
