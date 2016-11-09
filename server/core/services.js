@@ -84,53 +84,109 @@ Services.prototype.registerRoutes = function(app) {
 				router.use(auth.hasRole(service.role));
 			}
 
+			let idParamName = service.idParamName || "id";
+
 			_.forIn(service.actions, (action, name) => {
 
+				// Make then request handler for action
 				let handler = (req, res) => {
 					let ctx = Context.CreateFromREST(service, app, req, res);
 					logger.debug("Request via REST '" + req.url + "'", ctx.params);
 
 					Promise.resolve()
+
+					// Resolve model if ID provided
 					.then(() => {
 						return ctx.resolveModel();
 					})
+
+					// Call the action handler
 					.then(() => {
+						let role = null;
 						let func = action;
 						if (_.isObject(action) && !_.isFunction(action)) {
 							func = action.handler;
+							role = action.role;
 						}
 
 						if (!_.isFunction(func))
 							throw new Error(`Missing handler function in '${name}' action in '${service.name}' service!`);
 
+						if (role) {
+							// TODO: call the hasRole middleware with the overrided role
+						}
+
 						return func.call(service, ctx);
 					})
+
+					// Response the result
 					.then((json) => {
 						response.json(res, json);
-					}).catch((err) => {
+					})
+
+					// Response the error
+					.catch((err) => {
 						logger.error(err);
 						response.json(res, null, response.BAD_REQUEST, err);
 					});
 
 				}
 
+				// Register handler to all method types
+				// So you can call the /namespace/action with any request method.
 				router.all("/" + name, handler);
+				router.all("/" + name + "/:" + idParamName, handler);
 
 				// Create default RESTful handlers
 				switch (name) {
+
+					// You can call the find action with 
+					// 		GET /namespace/
 					case "find": {
 						router.get("/", handler);	
 						break;
 					}
+
+					// You can call the get action with
+					// 		GET /namespace/?id=123 
+					// 	or 
+					// 		GET /namespace/123
+					case "get": {
+						router.get("/:" + idParamName, handler);	
+						break;
+					}
+
+					// You can call the save action with 
+					// 		POST /namespace/
 					case "save": {
+						router.post("/:" + idParamName, handler);	
 						router.post("/", handler);	
 						break;
 					}
+
+					// You can call the update action with
+					// 		PUT /namespace/?id=123 
+					// 	or 
+					// 		PATCH /namespace/?id=123 
+					// 	or 
+					// 		PUT /namespace/123
+					// 	or 
+					// 		PATCH /namespace/123
 					case "update": {
+						router.put("/:" + idParamName, handler);	
+						router.patch("/:" + idParamName, handler);	
+
 						router.put("/", handler);	
+						router.patch("/", handler);	
 						break;
 					}
+
+					// You can call the remove action with 
+					// 		DELETE /namespace/?id=123 
+					// 	or 
+					// 		DELETE /namespace/123
 					case "remove": {
+						router.delete("/:" + idParamName, handler);	
 						router.delete("/", handler);	
 						break;
 					}

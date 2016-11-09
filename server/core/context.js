@@ -96,7 +96,7 @@ Context.prototype.broadcast = function(cmd, data) {
 	}
 }
 
-// Send a message back to socket
+// Send a message back to the requested user
 Context.prototype.emitUser = function(cmd, data) {
 	if (!this.socket && this.user) {
 		// If not socket (come from REST), but has user, we try to find it
@@ -118,7 +118,15 @@ Context.prototype.emit = function(cmd, data, role) {
 	
 	// If not definied we will send a broadcast
 	if (!role) {
-		return this.broadcast(cmd, data);
+		let path = "/" + this.service.namespace + "/" + cmd;
+		logger.debug("Send WS broadcast message to '" + path + "':", data);
+
+		if (this.socket)
+			this.socket.broadcast.emit(path, data);
+		else
+			this.io.emit(path, data);
+
+		return;
 	}
 
 	if (this.io) {
@@ -128,6 +136,9 @@ Context.prototype.emit = function(cmd, data, role) {
 		_.each(Sockets.userSockets, (socket) => { 
 			let user = socket.request.user;
 			if (user && user.roles && user.roles.indexOf(role) !== -1) 
+				// If requested via socket we skip the requester user
+				if (this.provider == "socket" && user == this.user) return;
+
 				logger.debug("Send WS message to " + user.username + " '" + path + "':", data);
 				socket.emit(path, data);
 		});
