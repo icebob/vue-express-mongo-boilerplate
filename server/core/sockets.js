@@ -149,7 +149,7 @@ let self = {
 			logger.debug("WS client connected to namespace " + (io.name || "root") + "! User: " + socket.request.user.username);
 
 			socket.on("disconnect", function() {
-				self.removeOnlineUser(socket);
+				self.removeSocket(socket);
 				logger.debug("WS client disconnected from namespace " + (io.name || "root") + "!");
 			});
 		});
@@ -167,6 +167,10 @@ let self = {
 	addOnlineUser(socket) {
 		self.removeOnlineUser(socket);
 		self.userSockets.push(socket);
+	},
+
+	removeSocket(socket) {
+		_.remove(self.userSockets, function(s) { return s == socket; });
 	},
 
 	removeOnlineUser(socket) {

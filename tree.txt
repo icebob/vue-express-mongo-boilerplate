@@ -26,6 +26,7 @@
 |   |       +---devices
 |   |       +---posts
 |   |       +---session
+|   |       +---users
 |   +---config
 |   |       default.js
 |   |       index.js
@@ -41,7 +42,6 @@
 |   |       user.js
 |   +---public
 |   +---routes
-|   +---schema
 |   +---services
 |   +---views
 +---tests

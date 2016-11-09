@@ -88,6 +88,7 @@ Services.prototype.registerRoutes = function(app) {
 
 				let handler = (req, res) => {
 					let ctx = Context.CreateFromREST(service, app, req, res);
+					logger.debug("Request via REST '" + req.url + "'", ctx.params);
 
 					Promise.resolve()
 					.then(() => {
@@ -180,8 +181,8 @@ Services.prototype.registerSockets = function(IO, socketHandler) {
 					let cmd = "/" + service.namespace + "/" + name;
 
 					let handler = (data) => {
-						logger.debug("Socket '" + cmd + "'", data);
 						let ctx = Context.CreateFromSocket(service, self.app, socket, cmd, data);
+						logger.debug("Request via websocket '" + cmd + "'", ctx.params);
 						
 						Promise.resolve()
 						.then(() => {
@@ -199,11 +200,16 @@ Services.prototype.registerSockets = function(IO, socketHandler) {
 							return func.call(service, ctx);
 						})
 						.then((json) => {
-							//response.json(res, json);
-							logger.info("Socket response", json);
+							if (ctx.params["$token"]) {
+								sendResponse(ctx, response.json(null, json));
+							} else
+								logger.warn("Missing socket response:", json);
+
 						}).catch((err) => {
 							logger.error(err);
-							//response.json(res, null, response.BAD_REQUEST, err);
+							if (ctx.params["$token"]) {
+								sendResponse(ctx, response.json(null, null, response.BAD_REQUEST, err));
+							}
 						});
 
 					}
@@ -217,6 +223,10 @@ Services.prototype.registerSockets = function(IO, socketHandler) {
 				});
 
 			});
+
+			function sendResponse(ctx, data) {
+				ctx.socket.emit("$response/" + ctx.params["$token"], data);
+			}
 
 		}
 	});	
@@ -258,6 +268,7 @@ Services.prototype.registerGraphQLSchema = function() {
 							}
 
 							let ctx = Context.CreateFromGraphQL(service, root, args, context);
+							logger.debug("Request via GraphQL", ctx.params, context.query);
 							
 							return Promise.resolve()
 							.then(() => {

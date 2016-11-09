@@ -1,6 +1,7 @@
 import Vue from "vue";
 import IO from "socket.io-client";
-import { each } from "lodash";
+import { each, isFunction } from "lodash";
+import uuid from "uuid";
 
 export default function createIOMixin(connection, opts) {
 	let socket;
@@ -21,6 +22,29 @@ export default function createIOMixin(connection, opts) {
 	socket.on("error", (err) => {
 		console.error("Websocket error!", err);
 	});
+
+	socket.request = function(cmd, data, callback) {
+		let token;
+
+		if (isFunction(data)) {
+			callback = data;
+			data = {};
+		}
+
+		if (callback) {
+			token = uuid.v4();
+			this.once("$response/" + token, callback);
+
+			if (data == null)
+				data = {};
+			
+			data.$token = token;
+		}
+
+		this.emit(cmd, data);
+
+		return token;
+	}
 
 
 	return {

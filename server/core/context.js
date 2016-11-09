@@ -9,13 +9,13 @@ let _ 				= require("lodash");
 
 let Context = function(service) {
 	this.service = service; // service instance
+	this.io = service.io; // namespace IO
 	this.app = null; // ExpressJS app
 	this.req = null; // req from ExpressJS router
 	this.res = null; // res from ExpressJS router
 	this.t = null; // i18n translate method
 	this.user = null; // logged in user
 	this.socket = null; // socket from socket.io session
-	this.io = null; // namespace IO
 	this.params = []; // params from ExpressJS REST or websocket or GraphQL args
 	this.model = null; // model from `modelResolvers`
 	this.provider = "direct" // `direct`, `rest`, `socket` or `graphql`
@@ -28,7 +28,6 @@ Context.CreateFromREST = function(service, app, req, res) {
 	let ctx = new Context(service);
 	ctx.provider = "rest";
 	ctx.app = app;
-	ctx.io = service.io;
 	ctx.req = req;
 	ctx.res = res;
 	ctx.t = req.t;
@@ -43,12 +42,10 @@ Context.CreateFromSocket = function(service, app, socket, cmd, data) {
 	let ctx = new Context(service);
 	ctx.provider = "socket";
 	ctx.app = app;
-	ctx.io = service.io;
 	ctx.socket = socket;
 	ctx.t = app.t;
 	ctx.user = socket.request.user
 	ctx.params = data || {};
-	logger.info(ctx.params);
 
 	return ctx;
 }
@@ -57,10 +54,9 @@ Context.CreateFromSocket = function(service, app, socket, cmd, data) {
 Context.CreateFromGraphQL = function(service, root, args, context) {
 	let ctx = new Context(service);
 	ctx.provider = "graphql";
-	ctx.t = service.app.t;
+	ctx.t = context.t;
 	ctx.params = args;
 	ctx.user = context.user;
-	ctx.io = service.io;
 
 	return ctx;
 }
