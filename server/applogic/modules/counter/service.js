@@ -1,9 +1,10 @@
 "use strict";
 
-let logger 			= require("../../../core/logger");
-let config 			= require("../../../config");
+let logger 		= require("../../../core/logger");
+let config 		= require("../../../config");
+let C 	 		= require("../../../core/constants");
 
-let store 			= require("./memstore");
+let store 		= require("./memstore");
 
 module.exports = {
 
@@ -26,7 +27,7 @@ module.exports = {
 	graphql: true,
 
 	// Required role for calling
-	role: "user",
+	role: C.ROLE_USER,
 
 	// Actions of service
 	actions: {

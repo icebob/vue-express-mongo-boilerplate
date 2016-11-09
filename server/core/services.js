@@ -3,6 +3,7 @@
 let logger 			= require("./logger");
 let config 			= require("../config");
 
+let Emitter 		= require('events').EventEmitter;
 let	path 			= require("path");
 let	fs 				= require("fs");
 let _ 				= require("lodash");
@@ -23,6 +24,11 @@ let Services = function() {
 	this.db = null;
 	this.services = {};
 }
+
+/**
+ * Inherit from EventEmitter
+ */
+Services.prototype.__proto__ = Emitter.prototype;
 
 /**
  * Load built-in and applogic services. Scan the folders
@@ -127,7 +133,7 @@ Services.prototype.registerRoutes = function(app) {
 					// Response the error
 					.catch((err) => {
 						logger.error(err);
-						response.json(res, null, response.BAD_REQUEST, err);
+						response.json(res, null, err);
 					});
 
 				}
@@ -236,7 +242,7 @@ Services.prototype.registerSockets = function(IO, socketHandler) {
 
 					let cmd = "/" + service.namespace + "/" + name;
 
-					let handler = (data) => {
+					let handler = (data, callback) => {
 						let ctx = Context.CreateFromSocket(service, self.app, socket, cmd, data);
 						logger.debug("Request via websocket '" + cmd + "'", ctx.params);
 						
@@ -256,15 +262,13 @@ Services.prototype.registerSockets = function(IO, socketHandler) {
 							return func.call(service, ctx);
 						})
 						.then((json) => {
-							if (ctx.params["$token"]) {
-								sendResponse(ctx, response.json(null, json));
-							} else
-								logger.warn("Missing socket response:", json);
-
+							if (_.isFunction(callback)) {
+								callback(response.json(null, json));
+							}
 						}).catch((err) => {
 							logger.error(err);
-							if (ctx.params["$token"]) {
-								sendResponse(ctx, response.json(null, null, response.BAD_REQUEST, err));
+							if (_.isFunction(callback)) {
+								callback(response.json(null, null, err));
 							}
 						});
 
@@ -279,10 +283,6 @@ Services.prototype.registerSockets = function(IO, socketHandler) {
 				});
 
 			});
-
-			function sendResponse(ctx, data) {
-				ctx.socket.emit("$response/" + ctx.params["$token"], data);
-			}
 
 		}
 	});	
@@ -372,7 +372,7 @@ Services.prototype.registerGraphQLSchema = function() {
 
 	});
 
-	// MERGE TYPE DEFINITONS
+	// Merge Type Definitons
 
 	let mergedSchema = `
 
@@ -394,7 +394,7 @@ Services.prototype.registerGraphQLSchema = function() {
 		}
 	`;
 
-	// --- MERGE RESOLVERS
+	// Merge Resolvers
 
 	let mergeModuleResolvers = function(baseResolvers) {
 		schemas.resolvers.forEach((module) => {

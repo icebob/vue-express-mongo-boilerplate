@@ -2,6 +2,7 @@
 
 let logger 			= require("./logger");
 let config 			= require("../config");
+let response		= require("./response");
 
 let Sockets   		= require("./sockets");
 
@@ -136,7 +137,7 @@ Context.prototype.emit = function(cmd, data, role) {
 		_.each(Sockets.userSockets, (socket) => { 
 			let user = socket.request.user;
 			if (user && user.roles && user.roles.indexOf(role) !== -1) 
-				// If requested via socket we skip the requester user
+				// If requested via socket we omit the requester user
 				if (this.provider == "socket" && user == this.user) return;
 
 				logger.debug("Send WS message to " + user.username + " '" + path + "':", data);
@@ -209,9 +210,12 @@ Context.prototype.hasValidationErrors = function() {
 }
 
 // Generate an error response
-Context.prototype.errorBadRequest = function(msg) {
+Context.prototype.errorBadRequest = function(code, msg) {
 	let err = new Error(msg);
-	err.status = 400;
+	err = _.defaults(response.BAD_REQUEST);
+	err.code = code;
+	if (msg)
+		err.message = msg;
 
 	throw err;
 }

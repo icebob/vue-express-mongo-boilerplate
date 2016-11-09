@@ -1,12 +1,13 @@
 "use strict";
 
-let logger 			= require("../../../core/logger");
-let Sockets			= require("../../../core/sockets");
-let config 			= require("../../../config");
+let logger 		= require("../../../core/logger");
+let config 		= require("../../../config");
+let C 	 		= require("../../../core/constants");
 
-let _ 				= require("lodash");
+let _ 			= require("lodash");
 
-let User 			= require("../users/models/user");
+let Sockets		= require("../../../core/sockets");
+let User 		= require("../users/models/user");
 
 module.exports = {
 	name: "session",
@@ -15,7 +16,7 @@ module.exports = {
 	rest: true,
 	ws: true,
 	graphql: true,
-	role: "user",
+	role: C.ROLE_USER,
 	
 	actions: {
 		// return my User model

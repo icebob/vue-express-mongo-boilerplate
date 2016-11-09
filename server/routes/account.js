@@ -3,18 +3,19 @@
 let config 	= require("../config");
 let logger 	= require("../core/logger");
 
+let C 			= require("../core/constants");
 let secrets 	= require("../core/secrets");
 let tokgen 		= require("../libs/tokgen");
 
-let crypto = require("crypto");
-let async = require("async");
-let passport = require("passport");
-let express = require("express");
+let crypto 		= require("crypto");
+let async 		= require("async");
+let passport 	= require("passport");
+let express 	= require("express");
 
-let response = require("../core/response");
-let mailer = require("../libs/mailer");
+let response 	= require("../core/response");
+let mailer 		= require("../libs/mailer");
 
-let User = require("../models/user");
+let User 		= require("../models/user");
 
 /**
  * Check what social API are configured. We only show
@@ -132,7 +133,7 @@ module.exports = function(app, db) {
 					email: req.body.email,
 					username: req.body.username,
 					password: password,
-					roles: ["user"],
+					roles: [C.ROLE_USER],
 					provider: "local"
 				});
 

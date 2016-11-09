@@ -1,10 +1,11 @@
 "use strict";
 
-let logger 			= require("../../../core/logger");
-let config 			= require("../../../config");
+let logger 		= require("../../../core/logger");
+let config 		= require("../../../config");
+let C 	 		= require("../../../core/constants");
 
-let Post 			= require("./models/post");
-let User 			= require("../users/models/user");
+let Post 		= require("./models/post");
+let User 		= require("../users/models/user");
 
 module.exports = {
 	name: "posts",
@@ -13,7 +14,7 @@ module.exports = {
 	rest: true,
 	ws: true,
 	graphql: true,
-	role: "user",
+	role: C.ROLE_USER,
 	model: Post,
 	idParamName: "code", // GET /posts/find?code=123
 	
@@ -38,7 +39,7 @@ module.exports = {
 		// return a model by ID
 		get(ctx) {
 			if (!ctx.model)
-				throw ctx.errorBadRequest(ctx.t("PostNotFound"));
+				throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("PostNotFound"));
 
 			return Post.findByIdAndUpdate(ctx.model.id, { $inc: { views: 1 } }).exec().then( (doc) => {
 				return ctx.toJSON(doc);
@@ -52,8 +53,7 @@ module.exports = {
 				ctx.validateParam("title").trim().notEmpty(ctx.t("PostTitleCannotBeEmpty")).end();
 				ctx.validateParam("content").trim().notEmpty(ctx.t("PostContentCannotBeEmpty")).end();
 				if (ctx.hasValidationErrors())
-					throw ctx.errorBadRequest(ctx.validationErrors);
-			
+					throw ctx.errorBadRequest(C.ERR_VALIDATION, ctx.validationErrors);			
 
 				let post = new Post({
 					title: ctx.params.title,
@@ -78,15 +78,15 @@ module.exports = {
 
 		update(ctx) {
 			if (!ctx.model)
-				throw ctx.errorBadRequest(ctx.t("PostNotFound"));
+				throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("PostNotFound"));
 
 			ctx.validateParam("title").trim().notEmpty(ctx.t("PostTitleCannotBeEmpty")).end();
 			ctx.validateParam("content").trim().notEmpty(ctx.t("PostContentCannotBeEmpty")).end();
 			if (ctx.hasValidationErrors())
-				throw ctx.errorBadRequest(ctx.validationErrors);
+				throw ctx.errorBadRequest(C.ERR_VALIDATION, ctx.validationErrors);
 
 			if (ctx.model.author.id != ctx.user.id) {
-				return ctx.errorBadRequest(ctx.t("OnlyAuthorEditPost"));
+				return ctx.errorBadRequest(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, ctx.t("OnlyAuthorEditPost"));
 			}
 
 			ctx.model.title = ctx.params.title;
@@ -107,10 +107,10 @@ module.exports = {
 
 		remove(ctx) {
 			if (!ctx.model)
-				throw ctx.errorBadRequest(ctx.t("PostNotFound"));
+				throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("PostNotFound"));
 
 			if (ctx.model.author.id != ctx.user.id) {
-				return ctx.errorBadRequest(ctx.t("OnlyAuthorDeletePost"));
+				return ctx.errorBadRequest(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, ctx.t("OnlyAuthorDeletePost"));
 			}
 
 			return Post.remove({ _id: ctx.model.id })
@@ -132,7 +132,7 @@ module.exports = {
 			return Promise.resolve().then(() => {		
 				// Check user is on upVoters
 				if (ctx.model.upVoters.indexOf(ctx.user.id) !== -1) 
-					throw ctx.errorBadRequest(ctx.t("YouHaveAlreadyVotedThisPost"));
+					throw ctx.errorBadRequest(C.ERR_ALREADY_VOTED, ctx.t("YouHaveAlreadyVotedThisPost"));
 
 			}).then(() => {
 				// Remove user from downVoters if it is on the list
@@ -164,7 +164,7 @@ module.exports = {
 			return Promise.resolve().then(() => {		
 				// Check user is on downVoters
 				if (ctx.model.downVoters.indexOf(ctx.user.id) !== -1) 
-					throw ctx.errorBadRequest(ctx.t("YouHaveAlreadyVotedThisPost"));
+					throw ctx.errorBadRequest(C.ERR_ALREADY_VOTED, ctx.t("YouHaveAlreadyVotedThisPost"));
 
 			}).then(() => {
 				// Remove user from upVoters if it is on the list
@@ -214,6 +214,11 @@ module.exports = {
 
 	init(ctx) {
 		// Fired when start the service
+		 
+		// Add custom error types
+		C.append([
+			"ALREADY_VOTED"
+		], "ERR");
 	},
 
 	socket: {

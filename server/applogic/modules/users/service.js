@@ -1,9 +1,11 @@
 "use strict";
 
-let logger 			= require("../../../core/logger");
-let config 			= require("../../../config");
+let logger 		= require("../../../core/logger");
+let config 		= require("../../../config");
+let Sockets		= require("../../../core/sockets");
+let C 	 		= require("../../../core/constants");
 
-let User 			= require("./models/user");
+let User 		= require("./models/user");
 
 module.exports = {
 	name: "users",
@@ -12,7 +14,7 @@ module.exports = {
 	rest: true,
 	ws: true,
 	graphql: true,
-	role: "user",
+	role: C.ROLE_USER,
 	model: User,
 	idParamName: "code", // GET /users/find?code=bD6kd
 	

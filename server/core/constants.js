@@ -1,13 +1,37 @@
 "use strict";
 
-module.exports = {
+let C = {};
 
-	/**
-	 * User role constants
-	 */
-	ROLE_ADMIN 		: "admin",
-	ROLE_USER 		: "user",
-	ROLE_GUEST 		: "guest"
+C.append = function(items, prefix) {
+	items.forEach((item) => {
+		let name = item.toUpperCase();
+		if (prefix)
+			name = prefix + "_" + name;
+		C[name] = item;
+	});
+}
+
+/**
+ * User role constants
+ */
+C.append([
+	"admin",
+	"user",
+	"guest"
+], "ROLE");
 
 
-};
+/**
+ * Response error causes
+ */
+C.append([
+	"VALIDATION_ERROR",
+	"INVALID_CODE",
+	"MODEL_NOT_FOUND",
+	"ONLY_OWNER_CAN_EDIT_AND_DELETE"
+], "ERR");
+
+
+module.exports = C;
+
+//console.log(C);
