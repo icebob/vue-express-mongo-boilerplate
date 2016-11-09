@@ -53,7 +53,7 @@ module.exports = {
 				ctx.validateParam("title").trim().notEmpty(ctx.t("PostTitleCannotBeEmpty")).end();
 				ctx.validateParam("content").trim().notEmpty(ctx.t("PostContentCannotBeEmpty")).end();
 				if (ctx.hasValidationErrors())
-					throw ctx.errorBadRequest(C.ERR_VALIDATION, ctx.validationErrors);			
+					throw ctx.errorBadRequest(C.ERR_VALIDATION_ERROR, ctx.validationErrors);			
 
 				let post = new Post({
 					title: ctx.params.title,
@@ -83,7 +83,7 @@ module.exports = {
 			ctx.validateParam("title").trim().notEmpty(ctx.t("PostTitleCannotBeEmpty")).end();
 			ctx.validateParam("content").trim().notEmpty(ctx.t("PostContentCannotBeEmpty")).end();
 			if (ctx.hasValidationErrors())
-				throw ctx.errorBadRequest(C.ERR_VALIDATION, ctx.validationErrors);
+				throw ctx.errorBadRequest(C.ERR_VALIDATION_ERROR, ctx.validationErrors);
 
 			if (ctx.model.author.id != ctx.user.id) {
 				return ctx.errorBadRequest(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, ctx.t("OnlyAuthorEditPost"));

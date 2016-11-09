@@ -190,7 +190,7 @@ Context.prototype.validateParam = function(name, errorMessage) {
 	}
 
 	validator.trim = function() {
-		if (validator.noError())
+		if (validator.noError() && validator.value != null)
 			validator.value = validator.value.trim();
 		
 		return validator;
@@ -199,8 +199,8 @@ Context.prototype.validateParam = function(name, errorMessage) {
 	let value = this.params[name];
 	if (value != null) 
 		validator.value = value;
-	else
-		validator.addError(errorMessage || `Parameter '${name}' missing!`); // i18n
+	//else
+	//	validator.addError(errorMessage || `Parameter '${name}' missing!`); // i18n
 
 	return validator;
 }
