@@ -82,7 +82,59 @@ $ npm start
 ![Devices module](https://cloud.githubusercontent.com/assets/306521/20032035/e5e7ec60-a381-11e6-9481-e1db97126797.png)
 
 ## Directory structure
-TODO
+```txt
++---client
+|   +---app
+|   |   +---core
+|   |   +---modules
+|   |       +---demo
+|   |       +---devices
+|   |       +---home
+|   |       +---posts
+|   |       +---session
+|   |                   
+|   +---frontend
+|   +---images
+|   +---scss
+|                   
++---data
++---logs
++---server
+|   |   bundle.js
+|   |   bundle.js.map
+|   |   dev.js
+|   |   index.js
+|   +---applogic
+|   |   +---libs
+|   |   +---modules
+|   |       +---counter
+|   |       +---devices
+|   |       +---posts
+|   |       +---session
+|   +---config
+|   |       default.js
+|   |       index.js
+|   |       prod.js
+|   |       test.js
+|   |       
+|   +---core
+|   +---libs
+|   +---locales
+|   |   +---en
+|   |   +---hu
+|   +---models
+|   |       user.js
+|   +---public
+|   +---routes
+|   +---schema
+|   +---services
+|   +---views
++---tests
+|
+|   package.json
+|   secrets.json
+
+```
 
 ## Bundled server-side
 If you want to bundle your NodeJS server-side code run webpack on server code with `npm run build && npm run build:server` command. It if was success, run the server: `npm run start:bundle`
