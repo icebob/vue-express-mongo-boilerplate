@@ -261,7 +261,7 @@ Services.prototype.registerSockets = function(IO, socketHandler) {
 					let handler = (data, callback) => {
 						let ctx = Context.CreateFromSocket(service, action, self.app, socket, data);
 						logger.debug(`Request via WebSocket '${service.namespace}/${action.name}'`, ctx.params);
-						this.emit("request-socket", ctx);
+						self.emit("request-socket", ctx);
 						
 						Promise.resolve()
 

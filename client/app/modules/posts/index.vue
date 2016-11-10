@@ -74,7 +74,7 @@
 		/**
 		 * Create websocket connection to '/posts' namespace
 		 */
-		mixins: [ MixinsIO("/posts") ],
+		mixins: [ MixinsIO() ],
 
 		filters: {
 			marked

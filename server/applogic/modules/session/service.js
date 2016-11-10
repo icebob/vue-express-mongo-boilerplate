@@ -16,7 +16,7 @@ module.exports = {
 	rest: true,
 	ws: true,
 	graphql: true,
-	role: C.ROLE_USER,
+	permission: C.PERM_LOGGEDIN,
 	
 	actions: {
 		// return my User model

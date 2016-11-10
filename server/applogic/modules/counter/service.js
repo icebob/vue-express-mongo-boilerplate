@@ -26,8 +26,8 @@ module.exports = {
 	// Enable calling via GraphQL
 	graphql: true,
 
-	// Required role for calling
-	role: C.ROLE_USER,
+	// Required permission for actions
+	permission: C.PERM_LOGGEDIN,
 
 	// Actions of service
 	actions: {
@@ -85,8 +85,14 @@ module.exports = {
 		 *	via GraphQL: 
 		 *		mutation { counterReset }
 		 */
-		reset(ctx) {
-			return this.changeCounter(ctx, 0);
+		reset: {
+			// Need administration role to perform this action
+			permission: C.PERM_ADMIN,
+
+			// Handler
+			handler(ctx) {
+				return this.changeCounter(ctx, 0);
+			}
 		},		
 
 		/**
@@ -143,13 +149,13 @@ module.exports = {
 	 */
 	notifyChanged(ctx) {
 		// Send message to everyone
-		ctx.broadcast("changed", store.counter);	
+		 		ctx.broadcast("changed", store.counter);	
 		
 		// Send message to the requested user
-		ctx.emitUser("changed", store.counter);	
+		// 		ctx.emitUser("changed", store.counter);	
 
 		// Send message to the role of service ('user')
-		ctx.emit("changed", store.counter);	
+		// 		ctx.emit("changed", store.counter);	
 	},
 
 	/**

@@ -14,7 +14,7 @@ module.exports = {
 	rest: true,
 	ws: true,
 	graphql: true,
-	role: C.ROLE_USER,
+	permission: C.PERM_LOGGEDIN,
 	model: User,
 	idParamName: "code", // GET /users/find?code=bD6kd
 	

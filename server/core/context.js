@@ -21,11 +21,18 @@ let Context = function(service) {
 	this.socket = null; // socket from socket.io session
 	this.params = []; // params from ExpressJS REST or websocket or GraphQL args
 	this.model = null; // model from `modelResolvers`
-	this.provider = "direct" // `direct`, `rest`, `socket` or `graphql`
+	this.provider = "internal" // `internal`, `rest`, `socket` or `graphql`
 
 	this.validationErrors = [];
 }
-
+/*
+// Initialize Context from other context
+Context.from = function(ctx, service) {
+	let newCtx = _.defaults(new Context(service), ctx);
+	newCtx.provider = "internal";
+	return newCtx;
+}
+*/
 // Initialize Context from a REST call
 Context.CreateFromREST = function(service, action, app, req, res) {
 	let ctx = new Context(service);
@@ -299,6 +306,16 @@ Context.prototype.toJSON = function(docs, skipFields) {
 	}
 }
 
+/**
+ * Process limit, offset and sort params from request
+ * and use them in the query
+ *
+ * Example:
+ * 	GET /posts?offset=20&limit=10&sort=-votes,createdAt
+ * 
+ * @param  {query} query Mongo query object
+ * @return {query}
+ */
 Context.prototype.queryPageSort = function(query) {
 	if (this.params) {
 		if (this.params.limit)
@@ -308,7 +325,7 @@ Context.prototype.queryPageSort = function(query) {
 			query.skip(this.params.offset);
 
 		if (this.params.sort)
-			query.sort(this.params.sort);
+			query.sort(this.params.sort.replace(/,/, " "));
 	}
 	return query;
 }

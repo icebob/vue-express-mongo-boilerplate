@@ -26,7 +26,7 @@
 		/**
 		 * Create websocket connection to '/counter' namespace
 		 */
-		mixins: [ MixinsIO("/counter") ],
+		mixins: [ MixinsIO() ],
 
 		/**
 		 * Set Vuex actions & getters
@@ -45,16 +45,14 @@
 			 * Increment counter
 			 */
 			inc() {
-				this.increment();
-				this.$socket.emit("changed", this.count);
+				this.increment(this);
 			},
 
 			/**
 			 * Decrement counter
 			 */
 			dec() {
-				this.decrement();
-				this.$socket.emit("changed", this.count);
+				this.decrement(this);
 			}
 		},
 
@@ -67,9 +65,9 @@
 			 * Counter value is changed
 			 * @param  {Number} msg Value of counter
 			 */
-			changed(msg) {
+			["/counter/changed"] (msg) {
 				console.log("New counter value: " + msg);
-				this.changeValue(msg);
+				this.changedValue(msg);
 			}
 		}
 	};

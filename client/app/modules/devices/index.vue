@@ -22,7 +22,7 @@
 		/**
 		 * Create websocket connection to '/devices' namespace
 		 */
-		mixins: [ MixinsIO("/devices") ],
+		mixins: [ MixinsIO() ],
 
 		components: {
 			AdminPage: AdminPage

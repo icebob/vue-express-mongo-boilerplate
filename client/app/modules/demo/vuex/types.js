@@ -1,5 +1,5 @@
-const MODULE = "DEMO_";
+const MODULE = "COUNTER_";
 
-export const INCREMENT 				= MODULE + "INCREMENT";
-export const DECREMENT 				= MODULE + "DECREMENT";
-export const CHANGE_VALUE 			= MODULE + "CHANGE_VALUE";
+export const NAMESPACE	 			= "/counter";
+
+export const CHANGED_VALUE 			= MODULE + "CHANGED_VALUE";
