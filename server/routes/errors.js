@@ -25,7 +25,7 @@ module.exports = function(app, db) {
 
 		// Respond with json
 		if (req.accepts("json")) {
-			return response.json(res, null, response.SERVER_ERROR);
+			return response.json(res, null, response.SERVER_ERROR, err.message);
 		}
 	});
 

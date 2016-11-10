@@ -26,7 +26,7 @@ let Response 	= require("../core/response");
  * @param  {String} redirect redirect site URL.
  * @param  {Object} err      Error object.
  */
-function response(req, res, redirect, err) {
+function respond(req, res, redirect, err) {
 	if (req.accepts("json") && !req.accepts("html")) {
 
 		let flash = req.flash();
@@ -44,8 +44,15 @@ function response(req, res, redirect, err) {
 		}
 
 	}
-	else if (redirect)
+	else if (redirect) {
+		// Redirect to the original url
+		if (req.session.returnTo) {
+			redirect = req.session.returnTo;
+			delete req.session.returnTo;
+		}
+
 		res.redirect(redirect);
+	}
 }
 
 module.exports = function(app, db) {
@@ -65,7 +72,7 @@ module.exports = function(app, db) {
 		let errors = req.validationErrors();
 		if (errors) {
 			req.flash("error", errors);
-			return response(req, res, "/login", Response.BAD_REQUEST);
+			return respond(req, res, "/login", Response.BAD_REQUEST);
 		}
 
 		if (req.body.password) {
@@ -73,13 +80,13 @@ module.exports = function(app, db) {
 			passport.authenticate("local", function(err, user, info) { 
 				if (!user) {
 					req.flash("error", { msg: info.message });
-					return response(req, res, "/login");
+					return respond(req, res, "/login");
 				}
 
 				req.login(user, function(err) {
 					if (err) {
 						req.flash("error", { msg: err });
-						return response(req, res, "/login");
+						return respond(req, res, "/login");
 					}
 
 					// Update user's record with login time
@@ -88,7 +95,8 @@ module.exports = function(app, db) {
 						// Remove sensitive data before login
 						req.user.password = undefined;
 						req.user.salt = undefined;
-						response(req, res, "/");
+
+						respond(req, res, "/");
 					});
 
 				});
@@ -147,7 +155,7 @@ module.exports = function(app, db) {
 					logger.error(err);
 				}
 
-				response(req, res, "back");
+				respond(req, res, "back");
 			});
 		}
 

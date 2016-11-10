@@ -14,7 +14,7 @@ module.exports = {
 	rest: true,
 	ws: true,
 	graphql: true,
-	role: C.ROLE_USER,
+	permission: C.PERM_LOGGEDIN,
 	model: Post,
 	idParamName: "code", // GET /posts/find?code=123
 	
@@ -24,7 +24,7 @@ module.exports = {
 		find(ctx) {
 			let filter = {};
 
-			if (ctx.params.viewMode == "my") 
+			if (ctx.params.filter == "my") 
 				filter.author = ctx.user.id;
 
 			let query = Post.find(filter);
@@ -37,17 +37,20 @@ module.exports = {
 		},
 
 		// return a model by ID
-		get(ctx) {
-			if (!ctx.model)
-				throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("PostNotFound"));
+		get: {
+			permission: C.PERM_PUBLIC,
+			handler(ctx) {
+				if (!ctx.model)
+					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("PostNotFound"));
 
-			return Post.findByIdAndUpdate(ctx.model.id, { $inc: { views: 1 } }).exec().then( (doc) => {
-				return ctx.toJSON(doc);
-			});
+				return Post.findByIdAndUpdate(ctx.model.id, { $inc: { views: 1 } }).exec().then( (doc) => {
+					return ctx.toJSON(doc);
+				});
+			}
 		},
 
 		save: {
-			roles: "admin",
+			permission: C.PERM_ADMIN,
 			handler(ctx) {
 
 				ctx.validateParam("title").trim().notEmpty(ctx.t("PostTitleCannotBeEmpty")).end();
@@ -76,53 +79,58 @@ module.exports = {
 			}
 		},
 
-		update(ctx) {
-			if (!ctx.model)
-				throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("PostNotFound"));
+		update: {
+			permission: C.PERM_OWNER,
+			handler(ctx) {
+				if (!ctx.model)
+					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("PostNotFound"));
 
-			ctx.validateParam("title").trim().notEmpty(ctx.t("PostTitleCannotBeEmpty")).end();
-			ctx.validateParam("content").trim().notEmpty(ctx.t("PostContentCannotBeEmpty")).end();
-			if (ctx.hasValidationErrors())
-				throw ctx.errorBadRequest(C.ERR_VALIDATION_ERROR, ctx.validationErrors);
+				ctx.validateParam("title").trim().notEmpty(ctx.t("PostTitleCannotBeEmpty")).end();
+				ctx.validateParam("content").trim().notEmpty(ctx.t("PostContentCannotBeEmpty")).end();
+				if (ctx.hasValidationErrors())
+					throw ctx.errorBadRequest(C.ERR_VALIDATION_ERROR, ctx.validationErrors);
 
-			if (ctx.model.author.id != ctx.user.id) {
-				return ctx.errorBadRequest(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, ctx.t("OnlyAuthorEditPost"));
+				if (ctx.model.author.id != ctx.user.id) {
+					return ctx.errorBadRequest(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, ctx.t("OnlyAuthorEditPost"));
+				}
+
+				ctx.model.title = ctx.params.title;
+				ctx.model.content = ctx.params.content;
+
+				return ctx.model.save()
+					.then((doc) => {
+						return ctx.toJSON(doc);
+					})
+					.then((json) => {
+
+						this.notifyModelChanges(ctx, "updated", json);
+
+						return json;
+					});								
 			}
-
-			ctx.model.title = ctx.params.title;
-			ctx.model.content = ctx.params.content;
-
-			return ctx.model.save()
-				.then((doc) => {
-					return ctx.toJSON(doc);
-				})
-				.then((json) => {
-
-					this.notifyModelChanges(ctx, "updated", json);
-
-					return json;
-				});								
-
 		},
 
-		remove(ctx) {
-			if (!ctx.model)
-				throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("PostNotFound"));
+		remove: {
+			permission: C.PERM_OWNER,
+			handler(ctx) {
+				if (!ctx.model)
+					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("PostNotFound"));
 
-			if (ctx.model.author.id != ctx.user.id) {
-				return ctx.errorBadRequest(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, ctx.t("OnlyAuthorDeletePost"));
+				if (ctx.model.author.id != ctx.user.id) {
+					return ctx.errorBadRequest(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, ctx.t("OnlyAuthorDeletePost"));
+				}
+
+				return Post.remove({ _id: ctx.model.id })
+					.then(() => {
+						return ctx.toJSON();
+					})
+					.then((json) => {
+
+						this.notifyModelChanges(ctx, "removed", json);
+
+						return json;
+					});		
 			}
-
-			return Post.remove({ _id: ctx.model.id })
-				.then(() => {
-					return ctx.toJSON();
-				})
-				.then((json) => {
-
-					this.notifyModelChanges(ctx, "removed", json);
-
-					return json;
-				});		
 		},
 
 		upVote(ctx) {
@@ -205,6 +213,19 @@ module.exports = {
 			return Post.populate(doc, { path: "author", select: this.populateAuthorFields});
 		});		
 		
+	},
+
+	// Check the owner of model
+	ownerChecker(ctx) {
+		return new Promise((resolve, reject) => {
+			if (!ctx.model)
+				ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("PostNotFound"));
+
+			if (ctx.model.author.id == ctx.user.id) 
+				resolve();
+			else
+				reject();
+		});
 	},
 
 	notifyModelChanges(ctx, type, json) {

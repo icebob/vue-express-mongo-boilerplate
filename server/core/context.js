@@ -4,6 +4,7 @@ let logger 			= require("./logger");
 let config 			= require("../config");
 let response		= require("./response");
 
+let C 				= require("./constants");
 let Sockets   		= require("./sockets");
 
 let _ 				= require("lodash");
@@ -14,6 +15,7 @@ let Context = function(service) {
 	this.app = null; // ExpressJS app
 	this.req = null; // req from ExpressJS router
 	this.res = null; // res from ExpressJS router
+	this.action = null; // action of service
 	this.t = null; // i18n translate method
 	this.user = null; // logged in user
 	this.socket = null; // socket from socket.io session
@@ -25,7 +27,7 @@ let Context = function(service) {
 }
 
 // Initialize Context from a REST call
-Context.CreateFromREST = function(service, app, req, res) {
+Context.CreateFromREST = function(service, action, app, req, res) {
 	let ctx = new Context(service);
 	ctx.provider = "rest";
 	ctx.app = app;
@@ -34,12 +36,13 @@ Context.CreateFromREST = function(service, app, req, res) {
 	ctx.t = req.t;
 	ctx.user = req.user;
 	ctx.params = _.defaults({}, req.query, req.params, req.body);
+	ctx.action = action;
 
 	return ctx;
 }
 
 // Initialize Context from a socket call
-Context.CreateFromSocket = function(service, app, socket, cmd, data) {
+Context.CreateFromSocket = function(service, action, app, socket, data) {
 	let ctx = new Context(service);
 	ctx.provider = "socket";
 	ctx.app = app;
@@ -47,17 +50,19 @@ Context.CreateFromSocket = function(service, app, socket, cmd, data) {
 	ctx.t = app.t;
 	ctx.user = socket.request.user
 	ctx.params = data || {};
+	ctx.action = action;
 
 	return ctx;
 }
 
 // Initialize Context from a GraphQL query
-Context.CreateFromGraphQL = function(service, root, args, context) {
+Context.CreateFromGraphQL = function(service, action, root, args, context) {
 	let ctx = new Context(service);
 	ctx.provider = "graphql";
 	ctx.t = context.t;
 	ctx.params = args;
 	ctx.user = context.user;
+	ctx.action = action;
 
 	return ctx;
 }
@@ -87,6 +92,42 @@ Context.prototype.resolveModel = function() {
 
 	return Promise.resolve(null);
 }
+
+Context.prototype.checkPermission = function() {
+	let permission = this.action.permission || this.service.permission || C.PERM_LOGGEDIN;
+
+	if (permission == C.PERM_PUBLIC)
+		return Promise.resolve();
+
+
+	return Promise.resolve()
+
+	// check logged in
+	.then(() => {
+		if (!this.user)
+			this.errorUnauthorized();
+	})
+
+	// check role
+	.then(() => {
+		if (permission == C.PERM_ADMIN && this.user.roles.indexOf(C.ROLE_ADMIN) == -1) {
+			this.errorForbidden();
+		}
+		else if (permission == C.PERM_USER && this.user.roles.indexOf(C.ROLE_USER) == -1) {
+			this.errorForbidden();
+		}
+	})
+
+	// check owner
+	.then(() => {
+		if (permission == C.PERM_OWNER && _.isFunction(this.service.ownerChecker)) {
+			return this.service.ownerChecker(this).catch((err) => {
+				this.errorForbidden(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, err ? err.message || err : this.t("YouAreNotTheOwner"));
+			})
+		}
+	})
+}
+
 
 // Broadcast a message 
 Context.prototype.broadcast = function(cmd, data) {
@@ -214,6 +255,27 @@ Context.prototype.errorBadRequest = function(code, msg) {
 	let err = new Error(msg);
 	err = _.defaults(response.BAD_REQUEST);
 	err.code = code;
+	if (msg)
+		err.message = msg;
+
+	throw err;
+}
+
+// Generate an error response
+Context.prototype.errorForbidden = function(code, msg) {
+	let err = new Error(msg);
+	err = _.defaults(response.FORBIDDEN);
+	err.code = code;
+	if (msg)
+		err.message = msg;
+
+	throw err;
+}
+
+// Generate an error response
+Context.prototype.errorUnauthorized = function(msg) {
+	let err = new Error(msg);
+	err = _.defaults(response.UNAUTHORIZED);
 	if (msg)
 		err.message = msg;
 

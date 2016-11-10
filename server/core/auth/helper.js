@@ -16,6 +16,29 @@ module.exports.isAuthenticated = function isAuthenticated(req, res, next) {
 	}
 };
 
+module.exports.tryAuthenticateWithApiKey = function tryAuthenticatedWithApiKey(req, res, next) {
+	if (!req.isAuthenticated()) {
+		// Try authenticate with API KEY
+		if (req.headers.apikey || req.query.apikey || req.body.apikey) {
+			passport.authenticate("localapikey", (err, user, info) => {
+				if (user) {
+					req.login(user, function(err) {
+						next();
+					});
+				} else {
+					logger.warn("Apikey error:", info);
+					next();
+				}
+
+			})(req, res, next);
+		}
+		else
+			next();
+	}
+	else
+		next()
+};
+
 module.exports.isAuthenticatedOrApiKey = function isAuthenticated(req, res, next) {
 	if (req.isAuthenticated())
 		return next();

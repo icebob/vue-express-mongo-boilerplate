@@ -20,6 +20,12 @@ C.append([
 	"guest"
 ], "ROLE");
 
+C.append([
+	"admin",
+	"owner",
+	"loggedIn",
+	"public"
+], "PERM");
 
 /**
  * Response error causes
@@ -34,4 +40,4 @@ C.append([
 
 module.exports = C;
 
-//console.log(C);
+console.log(C);

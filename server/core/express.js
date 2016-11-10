@@ -52,7 +52,8 @@ function initMiddleware(app) {
 		filter: function(req, res) {
 			return /json|text|javascript|css/.test(res.getHeader("Content-Type"));
 		},
-		level: 3
+		level: 3,
+		threshold: 512
 	}));
 
 	// Configure express app
@@ -194,7 +195,7 @@ function initSession(app, db) {
 	// Express MongoDB session storage
 	app.use(session({
 		saveUninitialized: true,
-		resave: true,
+		resave: false,
 		secret: secrets.sessionSecret,
 		store: new MongoStore({
 			mongooseConnection: db.connection,

@@ -14,7 +14,7 @@ module.exports = function(app, db) {
 	//console.log(schema);
 
 	// Register graphql server
-	app.use("/graphql", auth.isAuthenticatedOrApiKey, ApolloServer( (req) => {
+	app.use("/graphql", ApolloServer( (req) => {
 		const query = req.query.query || req.body.query;
 		if (query && query.length > 2000) {
 			// None of our app's queries are this long

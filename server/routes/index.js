@@ -16,6 +16,9 @@ module.exports = function(app, db) {
 			res.render("index");
 	});
 
+	// Handle health check routes
+	require("./health")(app, db);
+
 	// Handle account routes
 	require("./account")(app, db);
 

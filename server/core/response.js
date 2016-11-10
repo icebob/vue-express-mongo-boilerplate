@@ -23,7 +23,7 @@ module.exports = {
 	FORBIDDEN: {
 		status: 403,
 		type: "FORBIDDEN",
-		message: "You have no permission for this resource!"
+		message: "You have not enough permission for this resource!"
 	},
 
 	NOT_FOUND: {
