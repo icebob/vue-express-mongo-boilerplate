@@ -3,13 +3,15 @@
 let logger 			= require("./logger");
 let config 			= require("../config");
 
-let Emitter 		= require('events').EventEmitter;
+let EventEmitter	= require('events').EventEmitter;
 let	path 			= require("path");
 let	fs 				= require("fs");
+let	util 			= require("util");
 let _ 				= require("lodash");
 let chalk 			= require("chalk");
 let express			= require("express");
 
+let C 				= require("./constants");
 let Context 		= require("./context");
 let auth			= require("./auth/helper");
 let response		= require("./response");
@@ -20,15 +22,18 @@ if (!WEBPACK_BUNDLE) require('require-webpack-compat')(module, require);
  * Service handler class
  */
 let Services = function() {
+	this.setMaxListeners(0); // turn off
+
 	this.app = null;
 	this.db = null;
 	this.services = {};
+
 }
 
 /**
  * Inherit from EventEmitter
  */
-Services.prototype.__proto__ = Emitter.prototype;
+Services.prototype.__proto__ = EventEmitter.prototype;
 
 /**
  * Load built-in and applogic services. Scan the folders
@@ -69,6 +74,8 @@ Services.prototype.loadServices = function(app, db) {
 	});
 }
 
+
+
 /**
  * Register actions of services as REST routes
  * @param  {Object} app ExpressJS instance
@@ -82,22 +89,29 @@ Services.prototype.registerRoutes = function(app) {
 
 			let router = express.Router();
 
-			if (service.role) {
-				// Must be authenticated
-				router.use(auth.isAuthenticatedOrApiKey);
-
-				// Need a role
-				router.use(auth.hasRole(service.role));
-			}
+			// Trying authenticate with API key
+			router.use(auth.tryAuthenticateWithApiKey);
 
 			let idParamName = service.idParamName || "id";
 
 			_.forIn(service.actions, (action, name) => {
 
-				// Make then request handler for action
+				// Handle shorthand action defs
+				if (_.isFunction(action)) {
+					action = {
+						handler: action
+					}
+				}
+				action.name = action.name || name;
+
+				if (!_.isFunction(action.handler))
+					throw new Error(`Missing handler function in '${name}' action in '${service.name}' service!`);
+
+				// Make the request handler for action
 				let handler = (req, res) => {
-					let ctx = Context.CreateFromREST(service, app, req, res);
-					logger.debug("Request via REST '" + req.url + "'", ctx.params);
+					let ctx = Context.CreateFromREST(service, action, app, req, res);
+					logger.debug(`Request via REST '${service.namespace}/${action.name}'`, ctx.params);
+					this.emit("request-rest", ctx);
 
 					Promise.resolve()
 
@@ -106,23 +120,14 @@ Services.prototype.registerRoutes = function(app) {
 						return ctx.resolveModel();
 					})
 
+					// Check permission
+					.then(() => {
+						return ctx.checkPermission();
+					})
+
 					// Call the action handler
 					.then(() => {
-						let role = null;
-						let func = action;
-						if (_.isObject(action) && !_.isFunction(action)) {
-							func = action.handler;
-							role = action.role;
-						}
-
-						if (!_.isFunction(func))
-							throw new Error(`Missing handler function in '${name}' action in '${service.name}' service!`);
-
-						if (role) {
-							// TODO: call the hasRole middleware with the overrided role
-						}
-
-						return func.call(service, ctx);
+						return action.handler.call(service, ctx);
 					})
 
 					// Response the result
@@ -240,32 +245,50 @@ Services.prototype.registerSockets = function(IO, socketHandler) {
 
 				_.forIn(service.actions, (action, name) => {
 
-					let cmd = "/" + service.namespace + "/" + name;
+					// Handle shorthand action defs
+					if (_.isFunction(action)) {
+						action = {
+							handler: action
+						}
+					}
+					action.name = action.name || name;
+
+					if (!_.isFunction(action.handler))
+						throw new Error(`Missing handler function in '${name}' action in '${service.name}' service!`);
+
+					let cmd = "/" + service.namespace + "/" + action.name;
 
 					let handler = (data, callback) => {
-						let ctx = Context.CreateFromSocket(service, self.app, socket, cmd, data);
-						logger.debug("Request via websocket '" + cmd + "'", ctx.params);
+						let ctx = Context.CreateFromSocket(service, action, self.app, socket, data);
+						logger.debug(`Request via WebSocket '${service.namespace}/${action.name}'`, ctx.params);
+						this.emit("request-socket", ctx);
 						
 						Promise.resolve()
+
+						// Resolve model if ID provided
 						.then(() => {
 							return ctx.resolveModel();
 						})
+
+						// Check permission
 						.then(() => {
-							let func = action;
-							if (_.isObject(action) && !_.isFunction(action)) {
-								func = action.handler;
-							}
-
-							if (!_.isFunction(func))
-								throw new Error(`Missing handler function in '${name}' action in '${service.name}' service!`);
-
-							return func.call(service, ctx);
+							return ctx.checkPermission();
 						})
+
+						// Call the action handler
+						.then(() => {
+							return action.handler.call(service, ctx);
+						})
+
+						// Response the result
 						.then((json) => {
 							if (_.isFunction(callback)) {
 								callback(response.json(null, json));
 							}
-						}).catch((err) => {
+						})
+
+						// Response the error
+						.catch((err) => {
 							logger.error(err);
 							if (_.isFunction(callback)) {
 								callback(response.json(null, null, err));
@@ -312,42 +335,46 @@ Services.prototype.registerGraphQLSchema = function() {
 
 						let handler = (root, args, context) => {
 
-							if (service.role) {
-								// Must be authenticated
-								if (!context.user) {
-									return Promise.reject(new Error("Forbidden"));
+							let action = service.actions[resolver];
+
+							// Handle shorthand action defs
+							if (_.isFunction(action)) {
+								action = {
+									handler: action
 								}
-
-								// Need a role
-								if (context.user.roles.indexOf(service.role) == -1)
-									return Promise.reject(new Error("Forbidden"));
 							}
+							action.name = action.name || name;							
 
-							let ctx = Context.CreateFromGraphQL(service, root, args, context);
+							if (!_.isFunction(action.handler))
+								throw new Error(`Missing handler function in '${name}' action in '${service.name}' service!`);
+						
+							let ctx = Context.CreateFromGraphQL(service, action, root, args, context);
 							logger.debug("Request via GraphQL", ctx.params, context.query);
+							self.emit("request-graphql", ctx);
 							
 							return Promise.resolve()
+							
+							// Resolve model if ID provided
 							.then(() => {
 								return ctx.resolveModel();
 							})
+
+							// Check permission
 							.then(() => {
-								let action = service.actions[resolver];
-								let func = action;
-								if (_.isObject(action) && !_.isFunction(action)) {
-									func = action.handler;
-								}
+								return ctx.checkPermission();
+							})
 
-								if (!_.isFunction(func))
-									throw new Error(`Missing handler function in '${name}' action in '${service.name}' service!`);
-
-								return func.call(service, ctx);
+							// Call the action handler
+							.then(() => {
+								return action.handler.call(service, ctx);
 							})
 							/*.then((json) => {
-								response.json(res, json);
-							}).catch((err) => {
+								logger.debug("GraphQL response:", json)
+							})*/
+							.catch((err) => {
 								logger.error(err);
-								response.json(res, null, response.BAD_REQUEST, err);
-							});*/
+								throw err;
+							});
 						}
 
 						resolvers[name] = handler;
