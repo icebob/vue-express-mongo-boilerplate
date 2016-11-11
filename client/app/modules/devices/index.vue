@@ -8,8 +8,6 @@
 	import schema from "./schema";
 	import toast from "../../core/toastr";
 
-	import MixinsIO from "../../core/mixins/io";
-
 	import gql from "graphql-tag";
 	window["gql"] = gql;
 
@@ -19,11 +17,6 @@
 	import * as getters from "./vuex/getters";
 
 	export default {
-		/**
-		 * Create websocket connection to '/devices' namespace
-		 */
-		mixins: [ MixinsIO() ],
-
 		components: {
 			AdminPage: AdminPage
 		},
@@ -61,39 +54,41 @@
 		/**
 		 * Socket handlers. Every property is an event handler
 		 */
-		sockets: {
+		socket: {
 
-			/**
-			 * New device added
-			 * @param  {Object} row Device object
-			 */
-			new(row) {
-				console.log("New device: ", row);
-				this.rowAdded(row);
+			events: {
+				/**
+				 * New device added
+				 * @param  {Object} row Device object
+				 */
+				created(row) {
+					console.log("New device: ", row);
+					this.rowAdded(row);
 
-				toast.success(this._("DeviceNameAdded", row), this._("DeviceAdded"));
-			},
+					toast.success(this._("DeviceNameAdded", row), this._("DeviceAdded"));
+				},
 
-			/**
-			 * Device updated
-			 * @param  {Object} row Device object
-			 */
-			update(row) {
-				console.log("Update device: ", row);
-				this.rowChanged(row);
+				/**
+				 * Device updated
+				 * @param  {Object} row Device object
+				 */
+				updated(row) {
+					console.log("Update device: ", row);
+					this.rowChanged(row);
 
-				toast.success(this._("DeviceNameUpdated", row), this._("DeviceUpdated"));
-			},
+					toast.success(this._("DeviceNameUpdated", row), this._("DeviceUpdated"));
+				},
 
-			/**
-			 * Device removed
-			 * @param  {Object} row Device object
-			 */
-			remove(row) {
-				console.log("Remove device: ", row);
-				this.rowRemoved(row);	
+				/**
+				 * Device removed
+				 * @param  {Object} row Device object
+				 */
+				removed(row) {
+					console.log("Remove device: ", row);
+					this.rowRemoved(row);	
 
-				toast.success(this._("DeviceNameDeleted", row), this._("DeviceDeleted"));
+					toast.success(this._("DeviceNameDeleted", row), this._("DeviceDeleted"));
+				}
 			}
 		},		
 

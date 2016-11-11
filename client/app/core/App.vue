@@ -13,7 +13,6 @@
 
 <script>
 	import Vue from "vue";
-	import MixinsIO from "./mixins/io";
 	import store from "../store";
 
 	import PageHeader from "./components/header/index";
@@ -27,7 +26,7 @@
 		/**
 		 * Create websocket connection to the root namespace
 		 */		
-		mixins: [ MixinsIO() ],
+		//mixins: [ MixinsIO() ],
 
 		/**
 		 * Load sub-components
@@ -70,21 +69,30 @@
 		/**
 		 * Socket handlers. Every property is an event handler
 		 */
-		sockets: {
+		socket: {
 
-			/**
-			 * Send welcome message after connect
-			 */
-			connect() {
-				if (this.wsReconnecting)
-					// Reload browser if connection established after disconnect
-					window.location.reload(true);
-				else
-					this.$socket.emit("welcome", "Hello! " + navigator.userAgent);
-			},
+			events: {
+				/**
+				 * Send welcome message after connect
+				 */
+				connect() {
+					console.log("Websocket connected to " + socket.nsp);
 
-			disconnect() {
-				this.wsReconnecting = true;
+					if (this.wsReconnecting)
+						// Reload browser if connection established after disconnect
+						window.location.reload(true);
+					else
+						this.$socket.emit("welcome", "Hello! " + navigator.userAgent);
+				},
+
+				disconnect() {
+					console.log("Websocket disconnected from " + socket.nsp);
+					this.wsReconnecting = true;
+				},
+
+				error(err) {
+					console.error("Websocket error!", err);
+				}
 			}
 		},
 
@@ -121,8 +129,7 @@
 		created() {
 			console.log("App started!");
 			window.app = this;
-			window.io = this.$socket; // debug
-			window.socket = window.io.connect();// debug
+			window.socket = this.$socket; // debug
 
 			this.getSessionUser();
 		}

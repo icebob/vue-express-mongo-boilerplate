@@ -4,9 +4,9 @@
 
 		.header.flex.row.justify-space-between
 			.group.sort
-				a.link(@click="setSort('hot')", :class="{ active: sort == 'hot' }") {{ _("Hot") }}
-				a.link(@click="setSort('mostviewed')", :class="{ active: sort == 'mostviewed' }") {{ _("MostViewed") }}
-				a.link(@click="setSort('new')", :class="{ active: sort == 'new' }") {{ _("New") }}
+				a.link(@click="setSort('-votes')", :class="{ active: sort == '-votes' }") {{ _("Hot") }}
+				a.link(@click="setSort('-views')", :class="{ active: sort == '-views' }") {{ _("MostViewed") }}
+				a.link(@click="setSort('-createdAt')", :class="{ active: sort == '-createdAt' }") {{ _("New") }}
 
 			button.button.primary(@click="newPost")
 				span.icon
@@ -26,7 +26,7 @@
 
 
 		ul.posts
-			li(v-for="post of rows | orderBy orderPosts -1", transition="post", track-by="code")
+			li(v-for="post of rows", transition="post", track-by="code")
 				article.media
 					.media-left
 						img.avatar(:src="post.author.gravatar")
@@ -60,8 +60,6 @@
 	import { cloneDeep } from "lodash";
 	import { validators, schema as schemaUtils } from "vue-form-generator";
 
-	import MixinsIO from "../../core/mixins/io";
-
 	/*import gql from 'graphql-tag';
 	window['gql'] = gql;
 
@@ -71,11 +69,6 @@
 	import * as getters from "./vuex/getters";
 
 	export default {
-		/**
-		 * Create websocket connection to '/posts' namespace
-		 */
-		mixins: [ MixinsIO() ],
-
 		filters: {
 			marked
 		},
@@ -85,7 +78,7 @@
 		 */
 		data() {
 			return {
-				sort: "hot",
+				sort: "-votes",
 				viewMode: "all",
 
 				showForm: false,
@@ -141,39 +134,43 @@
 		/**
 		 * Socket handlers. Every property is an event handler
 		 */
-		sockets: {
+		socket: {
 
-			/**
-			 * New device added
-			 * @param  {Object} row Device object
-			 */
-			new(row) {
-				console.log("New post: ", row);
-				this.rowAdded(row);
+			prefix: "/posts/",
 
-				toast.success(this._("PostNameAdded", row), this._("PostAdded"));
-			},
+			events: {
+				/**
+				 * New device added
+				 * @param  {Object} row Device object
+				 */
+				created(row) {
+					console.log("New post: ", row);
+					this.created(row);
 
-			/**
-			 * Post updated
-			 * @param  {Object} row Post object
-			 */
-			update(row) {
-				console.log("Update post: ", row);
-				this.rowChanged(row);
+					toast.success(this._("PostNameAdded", row), this._("PostAdded"));
+				},
 
-				toast.success(this._("PostNameUpdated", row), this._("PostUpdated"));
-			},
+				/**
+				 * Post updated
+				 * @param  {Object} row Post object
+				 */
+				updated(row) {
+					console.log("Update post: ", row);
+					this.updated(row);
 
-			/**
-			 * Post removed
-			 * @param  {Object} row Post object
-			 */
-			remove(row) {
-				console.log("Remove post: ", row);
-				this.rowRemoved(row);	
+					toast.success(this._("PostNameUpdated", row), this._("PostUpdated"));
+				},
 
-				toast.success(this._("PostNameDeleted", row), this._("PostDeleted"));
+				/**
+				 * Post removed
+				 * @param  {Object} row Post object
+				 */
+				removed(row) {
+					console.log("Remove post: ", row);
+					this.removed(row);	
+
+					toast.success(this._("PostNameDeleted", row), this._("PostDeleted"));
+				}
 			}
 		},	
 
@@ -182,7 +179,7 @@
 				switch(this.sort) {
 				case "hot": return a.votes - b.votes;
 				case "mostviewed": return a.views - b.views;
-				case "new": return a.createdAt - b.createdAt;
+				case "new": return b.createdAt - a.createdAt;
 				}
 			},
 

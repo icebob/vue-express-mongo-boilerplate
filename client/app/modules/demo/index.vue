@@ -17,17 +17,10 @@
 </template>
 
 <script>
-	import MixinsIO from "../../core/mixins/io";
-
 	import * as actions from "./vuex/actions";
 	import * as getters from "./vuex/getters";
 
 	export default {
-		/**
-		 * Create websocket connection to '/counter' namespace
-		 */
-		mixins: [ MixinsIO() ],
-
 		/**
 		 * Set Vuex actions & getters
 		 */
@@ -59,15 +52,19 @@
 		/**
 		 * Socket handlers. Every property is an event handler
 		 */
-		sockets: {
+		socket: {
 
-			/**
-			 * Counter value is changed
-			 * @param  {Number} msg Value of counter
-			 */
-			["/counter/changed"] (msg) {
-				console.log("New counter value: " + msg);
-				this.changedValue(msg);
+			prefix: "/counter/",
+
+			events: {
+				/**
+				 * Counter value is changed
+				 * @param  {Number} msg Value of counter
+				 */
+				changed(msg) {
+					console.log("New counter value: " + msg);
+					this.changedValue(msg);
+				}
 			}
 		}
 	};

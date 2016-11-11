@@ -50,7 +50,7 @@ module.exports = {
 		},
 
 		save: {
-			permission: C.PERM_ADMIN,
+			//permission: C.PERM_ADMIN,
 			handler(ctx) {
 
 				ctx.validateParam("title").trim().notEmpty(ctx.t("PostTitleCannotBeEmpty")).end();

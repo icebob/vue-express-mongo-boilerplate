@@ -4,10 +4,10 @@ import { LOAD, ADD, UPDATE, UPVOTE, DOWNVOTE, REMOVE } from "./types";
 
 const BASE_URL = "/posts";
 
-export const downloadRows = ({ dispatch }, viewMode, sort) => {
-	Vue.http.get(BASE_URL + "/" + viewMode + "/" + sort).then((response) => {
+export const downloadRows = ({ dispatch }, filter, sort) => {
+	Vue.http.get(BASE_URL, { params: { filter, sort }}).then((response) => {
 		let res = response.json();
-		if (res.status == 200)
+		if (res.status == 200 && res.data)
 			dispatch(LOAD, res.data);
 		else
 			console.error("Request error!", res.error);
@@ -20,29 +20,24 @@ export const downloadRows = ({ dispatch }, viewMode, sort) => {
 
 export const saveRow = ({ dispatch }, model) => {
 	Vue.http.post(BASE_URL, model).then((response) => {
-		let res = response.data;
+		let res = response.json();
 
-		// Websocket event will add this row
-		//if (res.data)
-		//	addRow({ dispatch }, res.data, true);
+		if (res.status == 200 && res.data)
+			created({ dispatch }, res.data, true);
 	}).catch((response) => {
 		if (response.data.error)
 			toastr.error(response.data.error.message);
 	});	
 };
 
-export const addRow = ({ dispatch }, row) => {
-	dispatch(ADD, row);
-};
-
-export const rowAdded = ({ dispatch }, row) => {
+export const created = ({ dispatch }, row) => {
 	dispatch(ADD, row);
 };
 
 export const updateRow = ({ dispatch }, row) => {
 	Vue.http.put(BASE_URL + "/" + row.code, row).then((response) => {
-		let res = response.data;
-		if (res.data)
+		let res = response.json();
+		if (res.status == 200 && res.data)
 			dispatch(UPDATE, res.data);
 	}).catch((response) => {
 		if (response.data.error)
@@ -50,30 +45,7 @@ export const updateRow = ({ dispatch }, row) => {
 	});	
 };
 
-export const upVote = ({ dispatch }, row) => {
-	Vue.http.get(BASE_URL + "/upvote/" + row.code, row).then((response) => {
-		let res = response.data;
-		if (res.data)
-			dispatch(UPDATE, res.data);
-		
-	}).catch((response) => {
-		if (response.data.error)
-			toastr.error(response.data.error.message);
-	});	
-};
-
-export const downVote = ({ dispatch }, row) => {
-	Vue.http.get(BASE_URL + "/downvote/" + row.code, row).then((response) => {
-		let res = response.data;
-		if (res.data)
-			dispatch(UPDATE, res.data);
-	}).catch((response) => {
-		if (response.data.error)
-			toastr.error(response.data.error.message);
-	});	
-};
-
-export const rowChanged = ({ dispatch }, row) => {
+export const updated = ({ dispatch }, row) => {
 	dispatch(UPDATE, row);
 };
 
@@ -86,6 +58,30 @@ export const removeRow = ({ dispatch }, row) => {
 	});	
 };
 
-export const rowRemoved = ({ dispatch }, row) => {
+export const removed = ({ dispatch }, row) => {
 	dispatch(REMOVE, row);
+};
+
+
+export const upVote = ({ dispatch }, row) => {
+	Vue.http.get(BASE_URL + "/upvote", { params: { code: row.code }}).then((response) => {
+		let res = response.json();
+		if (res.status == 200 && res.data)
+			dispatch(UPDATE, res.data);
+		
+	}).catch((response) => {
+		if (response.data.error)
+			toastr.error(response.data.error.message);
+	});	
+};
+
+export const downVote = ({ dispatch }, row) => {
+	Vue.http.get(BASE_URL + "/downvote", { params: { code: row.code }}).then((response) => {
+		let res = response.json();
+		if (res.status == 200 && res.data)
+			dispatch(UPDATE, res.data);
+	}).catch((response) => {
+		if (response.data.error)
+			toastr.error(response.data.error.message);
+	});	
 };

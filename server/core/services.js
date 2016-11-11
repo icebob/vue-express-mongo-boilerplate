@@ -163,7 +163,7 @@ Services.prototype.registerRoutes = function(app) {
 					// 	or 
 					// 		GET /namespace/123
 					case "get": {
-						router.get("/:" + idParamName, handler);	
+						//router.get("/:" + idParamName, handler);	
 						break;
 					}
 

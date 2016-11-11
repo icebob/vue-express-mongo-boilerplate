@@ -18,7 +18,7 @@ const mutations = {
 
 	[UPDATE] (state, post) {
 		each(state.rows, (item) => {
-			if (item.id == post.id) {
+			if (item.code == post.code) {
 				assign(item, post);
 			}
 		});
@@ -26,7 +26,7 @@ const mutations = {
 
 	[REMOVE] (state, post) {
 		// We need find the exact object, because post may come via websocket
-		let found = find(state.rows, (item) => item.id == post.id);
+		let found = find(state.rows, (item) => item.code == post.code);
 
 		if (found) {
 			state.rows.$remove(found);

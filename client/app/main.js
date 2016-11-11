@@ -8,6 +8,7 @@ import VueAnimatedList from "vue-animated-list";
 import Filters from "./core/filters";
 import VueI18Next from "./core/i18next.js";
 import VueFormGenerator from "vue-form-generator";
+import Socket from "./core/socket";
 
 import App from "./core/App";
 
@@ -19,6 +20,8 @@ Vue.use(VueAnimatedList);
 
 // Register vue-form-generator
 Vue.use(VueFormGenerator);
+
+Vue.use(Socket, "");
 
 
 //Vue.http.headers.common['X-CSRF-TOKEN'] = $('input[name="csrf"]').val();
