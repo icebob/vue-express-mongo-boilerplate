@@ -173,7 +173,7 @@ module.exports = {
 	 */
 	socket: {
 		// Namespace of socket
-		ns: "/",
+		nsp: "/counter",
 
 		// Fired after a new socket connected
 		afterConnection(socket, io) {

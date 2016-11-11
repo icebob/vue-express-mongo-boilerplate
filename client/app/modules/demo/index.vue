@@ -56,6 +56,8 @@
 
 			prefix: "/counter/",
 
+			namespace: "/counter",
+
 			events: {
 				/**
 				 * Counter value is changed

@@ -230,8 +230,8 @@ Services.prototype.registerSockets = function(IO, socketHandler) {
 
 			// get namespace IO
 			let io;
-			if (service.socket.ns && service.socket.ns !== "/") {
-				io = socketHandler.addNameSpace(service.socket.ns, service.role);
+			if (service.socket.nsp && service.socket.nsp !== "/") {
+				io = socketHandler.addNameSpace(service.socket.nsp, service.role);
 			}
 			else
 				io = IO;

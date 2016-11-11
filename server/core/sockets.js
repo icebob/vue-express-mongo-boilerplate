@@ -42,6 +42,7 @@ let self = {
 	 * @param  {Object} db  MongoDB connection
 	 */
 	init(app, db) {
+		logger.info("Init Socket handler")
 
 		// Create a MongoDB storage object
 		self.mongoStore = new MongoStore({
@@ -56,6 +57,9 @@ let self = {
 		// Create a new Socket.io server
 		let IO = socketio(server);
 
+		app.io = self;
+		self.IO = IO;
+
 		// Add common handler to the root namespace
 		self.initNameSpace("/", IO, self.mongoStore);
 		IO.on("connection", function (socket) {
@@ -67,16 +71,13 @@ let self = {
 		let services = require("./services");
 		services.registerSockets(IO, self);
 
-		app.io = self;
-		self.IO = IO;
-
 		return server;
 	},
 
 	addNameSpace(ns, role) {
 		let io = self.namespaces[ns];
 		if (io == null) {
-			io = IO.of(ns);
+			io = self.IO.of(ns);
 			self.initNameSpace(ns, io, self.mongoStore, role);
 		}
 

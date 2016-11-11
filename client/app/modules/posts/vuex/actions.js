@@ -30,12 +30,12 @@ export const saveRow = ({ dispatch }, model) => {
 	});	
 };
 
-export const created = ({ dispatch }, row) => {
-	dispatch(ADD, row);
+export const created = ({ dispatch }, model) => {
+	dispatch(ADD, model);
 };
 
-export const updateRow = ({ dispatch }, row) => {
-	Vue.http.put(BASE_URL + "/" + row.code, row).then((response) => {
+export const updateRow = ({ dispatch }, model) => {
+	Vue.http.put(BASE_URL + "/" + model.code, model).then((response) => {
 		let res = response.json();
 		if (res.status == 200 && res.data)
 			dispatch(UPDATE, res.data);
@@ -45,26 +45,26 @@ export const updateRow = ({ dispatch }, row) => {
 	});	
 };
 
-export const updated = ({ dispatch }, row) => {
-	dispatch(UPDATE, row);
+export const updated = ({ dispatch }, model) => {
+	dispatch(UPDATE, model);
 };
 
-export const removeRow = ({ dispatch }, row) => {
-	Vue.http.delete(BASE_URL + "/" + row.code).then((response) => {
-		dispatch(REMOVE, row);
+export const removeRow = ({ dispatch }, model) => {
+	Vue.http.delete(BASE_URL + "/" + model.code).then((response) => {
+		dispatch(REMOVE, model);
 	}).catch((response) => {
 		if (response.data.error)
 			toastr.error(response.data.error.message);
 	});	
 };
 
-export const removed = ({ dispatch }, row) => {
-	dispatch(REMOVE, row);
+export const removed = ({ dispatch }, model) => {
+	dispatch(REMOVE, model);
 };
 
 
-export const upVote = ({ dispatch }, row) => {
-	Vue.http.get(BASE_URL + "/upvote", { params: { code: row.code }}).then((response) => {
+export const upVote = ({ dispatch }, model) => {
+	Vue.http.get(BASE_URL + "/upvote", { params: { code: model.code }}).then((response) => {
 		let res = response.json();
 		if (res.status == 200 && res.data)
 			dispatch(UPDATE, res.data);
@@ -75,8 +75,8 @@ export const upVote = ({ dispatch }, row) => {
 	});	
 };
 
-export const downVote = ({ dispatch }, row) => {
-	Vue.http.get(BASE_URL + "/downvote", { params: { code: row.code }}).then((response) => {
+export const downVote = ({ dispatch }, model) => {
+	Vue.http.get(BASE_URL + "/downvote", { params: { code: model.code }}).then((response) => {
 		let res = response.json();
 		if (res.status == 200 && res.data)
 			dispatch(UPDATE, res.data);
