@@ -56,7 +56,7 @@
 
 			prefix: "/counter/",
 
-			namespace: "/counter",
+			//namespace: "/counter",
 
 			events: {
 				/**
