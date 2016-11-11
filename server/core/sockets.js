@@ -42,8 +42,6 @@ let self = {
 	 * @param  {Object} db  MongoDB connection
 	 */
 	init(app, db) {
-		logger.info("Init Socket handler")
-
 		// Create a MongoDB storage object
 		self.mongoStore = new MongoStore({
 			mongooseConnection: db.connection,

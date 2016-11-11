@@ -159,6 +159,7 @@
     "vue-resource": "0.9.3",
     "vue-router": "0.7.13",
     "vue-style-loader": "1.0.0",
+    "vue-websocket": "0.2.0",
     "vuex": "0.8.2",
     "webpack": "1.13.2",
     "webpack-dev-middleware": "1.6.1",

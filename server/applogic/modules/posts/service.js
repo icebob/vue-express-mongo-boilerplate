@@ -229,8 +229,7 @@ module.exports = {
 	},
 
 	notifyModelChanges(ctx, type, json) {
-		ctx.emit(type, json);
-		logger.debug(json);
+		ctx.emit(type, json, "role");
 	},
 
 	init(ctx) {
