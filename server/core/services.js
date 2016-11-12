@@ -55,23 +55,31 @@ Services.prototype.loadServices = function(app, db) {
 		self.services[service.name] = service;
 	}
 
-	logger.info("");
-	logger.info(chalk.bold("Search built-in services..."));
+	if (fs.existsSync(path.join(__dirname, "..", "services"))) {
+		logger.info("");
+		logger.info(chalk.bold("Search built-in services..."));
 
-	let modules = require.context("../services", true, /\.js$/);
-	modules.keys().map(function(module) {
-		logger.info("  Load", path.relative(path.join(__dirname, "..", "services"), module), "service...");
-		addService(modules(module));
-	});
+		let modules = require.context("../services", true, /\.js$/);
+		if (modules) {
+			modules.keys().map(function(module) {
+				logger.info("  Load", path.relative(path.join(__dirname, "..", "services"), module), "service...");
+				addService(modules(module));
+			});
+		}
+	}
 
-	logger.info("");
-	logger.info(chalk.bold("Search applogic services..."));
+	if (fs.existsSync(path.join(__dirname, "..", "applogic", "modules"))) {
+		logger.info("");
+		logger.info(chalk.bold("Search applogic services..."));
 
-	modules = require.context("../applogic/modules", true, /service\.js$/)
-	modules.keys().map(function(module) {
-		logger.info("  Load", path.relative(path.join(__dirname, "..", "applogic", "modules"), module), "service...");
-		addService(modules(module));
-	});
+		let modules = require.context("../applogic/modules", true, /service\.js$/)
+		if (modules) {
+			modules.keys().map(function(module) {
+				logger.info("  Load", path.relative(path.join(__dirname, "..", "applogic", "modules"), module), "service...");
+				addService(modules(module));
+			});
+		}
+	}
 }
 
 
