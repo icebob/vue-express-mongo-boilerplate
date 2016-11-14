@@ -259,10 +259,11 @@ Context.prototype.hasValidationErrors = function() {
 };
 
 // Generate an error response
-Context.prototype.errorBadRequest = function(code, msg) {
+Context.prototype.errorBadRequest = function(type, msg) {
 	let err = new Error(msg);
 	err = _.defaults(response.BAD_REQUEST);
-	err.code = code;
+	if (type)
+		err.type = type;
 	if (msg)
 		err.message = msg;
 
@@ -270,10 +271,11 @@ Context.prototype.errorBadRequest = function(code, msg) {
 };
 
 // Generate an error response
-Context.prototype.errorForbidden = function(code, msg) {
+Context.prototype.errorForbidden = function(type, msg) {
 	let err = new Error(msg);
 	err = _.defaults(response.FORBIDDEN);
-	err.code = code;
+	if (type)
+		err.type = type;
 	if (msg)
 		err.message = msg;
 
@@ -281,9 +283,11 @@ Context.prototype.errorForbidden = function(code, msg) {
 };
 
 // Generate an error response
-Context.prototype.errorUnauthorized = function(msg) {
+Context.prototype.errorUnauthorized = function(type, msg) {
 	let err = new Error(msg);
 	err = _.defaults(response.UNAUTHORIZED);
+	if (type)
+		err.type = type;
 	if (msg)
 		err.message = msg;
 

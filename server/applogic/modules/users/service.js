@@ -28,7 +28,7 @@ module.exports = {
 		// return a model by ID
 		get(ctx) {
 			if (!ctx.model)
-				throw ctx.errorBadRequest(ctx.t("UserNotFound"));
+				throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("UserNotFound"));
 
 			return Promise.resolve(ctx.model).then( (doc) => {
 				return ctx.toJSON(doc, "password");
