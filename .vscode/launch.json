@@ -18,7 +18,8 @@
 			"type": "node",
 			"request": "attach",
 			"name": "Attach to Process",
-			"port": 5858
+			"port": 5858,
+			"restart": true
 		}
 	]
 }
