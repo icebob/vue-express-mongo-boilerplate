@@ -13,7 +13,6 @@ module.exports = {
 	namespace: "posts",
 	rest: true,
 	ws: true,
-	graphql: true,
 	permission: C.PERM_LOGGEDIN,
 	model: Post,
 	idParamName: "code", // GET /posts/find?code=123
@@ -229,7 +228,7 @@ module.exports = {
 	},
 
 	notifyModelChanges(ctx, type, json) {
-		ctx.emit(type, json, "role");
+		ctx.emit(type, json);
 	},
 
 	init(ctx) {
@@ -292,15 +291,15 @@ module.exports = {
 				},
 
 				upVoters(post, args, context) {
-					return ctx.queryPageSort(User.find({ _id: { $in: post.upVoters} })).exec();
+					// return ctx.queryPageSort(User.find({ _id: { $in: post.upVoters} })).exec();
 				},
 
 				downVoters(post, args, context) {
-					return ctx.queryPageSort(User.find({ _id: { $in: post.downVoters} })).exec();
+					// return ctx.queryPageSort(User.find({ _id: { $in: post.downVoters} })).exec();
 				},
 
 				voters(post, args, context) {
-					return ctx.queryPageSort(User.find({ _id: { $in: post.upVoters.concat(post.downVoters) } })).exec();
+					// return ctx.queryPageSort(User.find({ _id: { $in: post.upVoters.concat(post.downVoters) } })).exec();
 				}
 
 			},

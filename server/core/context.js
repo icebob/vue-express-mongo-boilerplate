@@ -21,10 +21,10 @@ let Context = function(service) {
 	this.socket = null; // socket from socket.io session
 	this.params = []; // params from ExpressJS REST or websocket or GraphQL args
 	this.model = null; // model from `modelResolvers`
-	this.provider = "internal" // `internal`, `rest`, `socket` or `graphql`
+	this.provider = "internal"; // `internal`, `rest`, `socket` or `graphql`
 
 	this.validationErrors = [];
-}
+};
 /*
 // Initialize Context from other context
 Context.from = function(ctx, service) {
@@ -46,7 +46,7 @@ Context.CreateFromREST = function(service, action, app, req, res) {
 	ctx.action = action;
 
 	return ctx;
-}
+};
 
 // Initialize Context from a socket call
 Context.CreateFromSocket = function(service, action, app, socket, data) {
@@ -55,12 +55,12 @@ Context.CreateFromSocket = function(service, action, app, socket, data) {
 	ctx.app = app;
 	ctx.socket = socket;
 	ctx.t = app.t;
-	ctx.user = socket.request.user
+	ctx.user = socket.request.user;
 	ctx.params = data || {};
 	ctx.action = action;
 
 	return ctx;
-}
+};
 
 // Initialize Context from a GraphQL query
 Context.CreateFromGraphQL = function(service, action, root, args, context) {
@@ -72,7 +72,7 @@ Context.CreateFromGraphQL = function(service, action, root, args, context) {
 	ctx.action = action;
 
 	return ctx;
-}
+};
 
 // Initialize Context for Service.init
 Context.CreateToServiceInit = function(service, app, db) {
@@ -81,7 +81,7 @@ Context.CreateToServiceInit = function(service, app, db) {
 	ctx.app = app;
 
 	return ctx;
-}
+};
 
 Context.prototype.resolveModel = function() {
 	if (_.isFunction(this.service.modelResolver)) {
@@ -98,7 +98,7 @@ Context.prototype.resolveModel = function() {
 	}
 
 	return Promise.resolve(null);
-}
+};
 
 Context.prototype.checkPermission = function() {
 	let permission = this.action.permission || this.service.permission || C.PERM_LOGGEDIN;
@@ -130,10 +130,10 @@ Context.prototype.checkPermission = function() {
 		if (permission == C.PERM_OWNER && _.isFunction(this.service.ownerChecker)) {
 			return this.service.ownerChecker(this).catch((err) => {
 				this.errorForbidden(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, err ? err.message || err : this.t("YouAreNotTheOwner"));
-			})
+			});
 		}
-	})
-}
+	});
+};
 
 
 // Broadcast a message 
@@ -143,14 +143,14 @@ Context.prototype.broadcast = function(cmd, data) {
 		logger.debug("Send WS broadcast message to '" + path + "':", data);
 		this.io.emit(path, data);
 	}
-}
+};
 
 // Send a message back to the requested user
 Context.prototype.emitUser = function(cmd, data) {
 	if (!this.socket && this.user) {
 		// If not socket (come from REST), but has user, we try to find it
 		this.socket = _.find(Sockets.userSockets, (socket) => { 
-			return socket.request.user._id == this.user._id
+			return socket.request.user._id == this.user._id;
 		});
 	}
 	if (this.socket) {
@@ -158,7 +158,7 @@ Context.prototype.emitUser = function(cmd, data) {
 		logger.debug("Send WS message to " + this.socket.request.user.username + " '" + path + "':", data);
 		this.socket.emit(path, data);
 	}
-}
+};
 
 // Broadcast a message to a role If the `role` is not specified, we use the role of service
 Context.prototype.emit = function(cmd, data, role) {
@@ -184,16 +184,17 @@ Context.prototype.emit = function(cmd, data, role) {
 
 		_.each(Sockets.userSockets, (socket) => { 
 			let user = socket.request.user;
-			if (user && user.roles && user.roles.indexOf(role) !== -1) 
+			if (user && user.roles && user.roles.indexOf(role) !== -1) {
 				// If requested via socket we omit the requester user
 				if (this.provider == "socket" && user == this.user) return;
 
 				logger.debug("Send WS message to " + user.username + " '" + path + "':", data);
 				socket.emit(path, data);
+			}
 		});
 	}
 
-}
+};
 
 Context.prototype.validateParam = function(name, errorMessage) {
 	let self = this;
@@ -206,26 +207,26 @@ Context.prototype.validateParam = function(name, errorMessage) {
 
 	validator.noError = function() {
 		return validator.errors.length == 0;
-	}
+	};
 
 	validator.addError = function(message) {
 		validator.errors.push(message);
 		self.validationErrors.push(message);
-	}
+	};
 
 	validator.end = function() {
 		if (validator.noError())
 			self.params[validator.name] = validator.value;
 
 		return validator.value;
-	}
+	};
 
 	validator.throw = function() {
 		if (!validator.noError())
 			throw new Error(validator.errors.join(" "));
 		
 		return validator.value;
-	}	
+	};
 
 	validator.notEmpty = function(errorMessage) {
 		if (validator.value == null || validator.value == "")
@@ -235,14 +236,14 @@ Context.prototype.validateParam = function(name, errorMessage) {
 			validator.addError(errorMessage || `Parameter '${name}' is empty!`); // i18n
 
 		return validator;
-	}
+	};
 
 	validator.trim = function() {
 		if (validator.noError() && validator.value != null)
 			validator.value = validator.value.trim();
 		
 		return validator;
-	}
+	};
 
 	let value = this.params[name];
 	if (value != null) 
@@ -251,11 +252,11 @@ Context.prototype.validateParam = function(name, errorMessage) {
 	//	validator.addError(errorMessage || `Parameter '${name}' missing!`); // i18n
 
 	return validator;
-}
+};
 
 Context.prototype.hasValidationErrors = function() {
 	return this.validationErrors.length > 0;
-}
+};
 
 // Generate an error response
 Context.prototype.errorBadRequest = function(code, msg) {
@@ -266,7 +267,7 @@ Context.prototype.errorBadRequest = function(code, msg) {
 		err.message = msg;
 
 	throw err;
-}
+};
 
 // Generate an error response
 Context.prototype.errorForbidden = function(code, msg) {
@@ -277,7 +278,7 @@ Context.prototype.errorForbidden = function(code, msg) {
 		err.message = msg;
 
 	throw err;
-}
+};
 
 // Generate an error response
 Context.prototype.errorUnauthorized = function(msg) {
@@ -287,14 +288,14 @@ Context.prototype.errorUnauthorized = function(msg) {
 		err.message = msg;
 
 	throw err;
-}
+};
 
 Context.prototype.toJSON = function(docs, skipFields) {
 	let func = function(doc) {
 		let json = doc.toJSON();
 		skipFields = ["id", "_id", "__v"].concat(skipFields || []);		
 		return _.omit(json, skipFields);
-	}
+	};
 
 	if (docs == null) 
 		docs = this.model;
@@ -304,14 +305,14 @@ Context.prototype.toJSON = function(docs, skipFields) {
 	} else if (_.isObject(docs)) {
 		return func(docs);
 	}
-}
+};
 
 /**
  * Process limit, offset and sort params from request
  * and use them in the query
  *
  * Example:
- * 	GET /posts?offset=20&limit=10&sort=-votes,createdAt
+ * 	GET /posts?offset=20&limit=10&sort=-votes,createdAtR
  * 
  * @param  {query} query Mongo query object
  * @return {query}
@@ -328,14 +329,14 @@ Context.prototype.queryPageSort = function(query) {
 			query.sort(this.params.sort.replace(/,/, " "));
 	}
 	return query;
-}
+};
 
 Context.prototype.isAuthenticated = function(role) {
 	return this.user != null;
-}
+};
 
 Context.prototype.hasRole = function(role) {
 	return this.user && this.user.roles.indexOf(role) != -1;
-}
+};
 
 module.exports = Context;

@@ -23,9 +23,6 @@ module.exports = {
 	// Enable calling via websocket
 	ws: true,
 
-	// Enable calling via GraphQL
-	graphql: true,
-
 	// Required permission for actions
 	permission: C.PERM_LOGGEDIN,
 

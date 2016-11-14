@@ -15,7 +15,6 @@ module.exports = {
 	namespace: "session",
 	rest: true,
 	ws: true,
-	graphql: true,
 	permission: C.PERM_LOGGEDIN,
 	
 	actions: {

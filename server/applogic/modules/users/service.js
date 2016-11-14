@@ -13,7 +13,6 @@ module.exports = {
 	namespace: "users",
 	rest: true,
 	ws: true,
-	graphql: true,
 	permission: C.PERM_LOGGEDIN,
 	model: User,
 	idParamName: "code", // GET /users/find?code=bD6kd
