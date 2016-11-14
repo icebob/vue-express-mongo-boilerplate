@@ -228,12 +228,12 @@ module.exports = {
 	},
 
 	notifyModelChanges(ctx, type, json) {
-		ctx.emit(type, json);
+		ctx.emit(type, json, "user");
 	},
 
 	init(ctx) {
 		// Fired when start the service
-		 
+ 
 		// Add custom error types
 		C.append([
 			"ALREADY_VOTED"

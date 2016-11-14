@@ -2,7 +2,7 @@ import Vue from "vue";
 import toastr from "../../../core/toastr";
 import { LOAD, ADD, UPDATE, UPVOTE, DOWNVOTE, REMOVE } from "./types";
 
-const BASE_URL = "/posts";
+const BASE_URL = "/api/posts";
 
 export const downloadRows = ({ dispatch }, filter, sort) => {
 	Vue.http.get(BASE_URL, { params: { filter, sort }}).then((response) => {

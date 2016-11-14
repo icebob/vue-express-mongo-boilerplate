@@ -247,7 +247,7 @@ Context.prototype.emit = function(cmd, data, role) {
 
 	if (this.io) {
 		let path = "/" + this.service.namespace + "/" + cmd;
-		logger.debug("Send WS message to '" + role + "' role '" + path + "':", data);
+		logger.debug("Send WS message to '" + role + "' role '" + path);
 
 		_.each(Sockets.userSockets, (socket) => { 
 			let user = socket.request.user;

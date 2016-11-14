@@ -16,6 +16,7 @@ let Context 		= require("./context");
 let auth			= require("./auth/helper");
 let response		= require("./response");
 
+/* global WEBPACK_BUNDLE */
 if (!WEBPACK_BUNDLE) require("require-webpack-compat")(module, require);
 
 /**
@@ -152,73 +153,73 @@ Services.prototype.registerRoutes = function(app) {
 				};
 
 				// Register handler to all method types
-				// So you can call the /namespace/action with any request method.
+				// So you can call the /api/namespace/action with any request method.
 				router.all("/" + name, handler);
 				router.all("/" + name + "/:" + idParamName, handler);
 
 				// Create default RESTful handlers
 				switch (name) {
 
-					// You can call the find action with 
-					// 		GET /namespace/
+				// You can call the find action with 
+				// 		GET /api/namespace/
 				case "find": {
-						router.get("/", handler);	
-						break;
-					}
+					router.get("/", handler);	
+					break;
+				}
 
-					// You can call the get action with
-					// 		GET /namespace/?id=123 
-					// 	or 
-					// 		GET /namespace/123
+				// You can call the get action with
+				// 		GET /api/namespace/?id=123 
+				// 	or 
+				// 		GET /api/namespace/123
 				case "get": {
-						//router.get("/:" + idParamName, handler);	
-						break;
-					}
+					//router.get("/:" + idParamName, handler);	
+					break;
+				}
 
-					// You can call the save action with 
-					// 		POST /namespace/
+				// You can call the save action with 
+				// 		POST /api/namespace/
 				case "save": {
-						router.post("/:" + idParamName, handler);	
-						router.post("/", handler);	
-						break;
-					}
+					router.post("/:" + idParamName, handler);	
+					router.post("/", handler);	
+					break;
+				}
 
-					// You can call the update action with
-					// 		PUT /namespace/?id=123 
-					// 	or 
-					// 		PATCH /namespace/?id=123 
-					// 	or 
-					// 		PUT /namespace/123
-					// 	or 
-					// 		PATCH /namespace/123
+				// You can call the update action with
+				// 		PUT /api/namespace/?id=123 
+				// 	or 
+				// 		PATCH /api/namespace/?id=123 
+				// 	or 
+				// 		PUT /api/namespace/123
+				// 	or 
+				// 		PATCH /api/namespace/123
 				case "update": {
-						router.put("/:" + idParamName, handler);	
-						router.patch("/:" + idParamName, handler);	
+					router.put("/:" + idParamName, handler);	
+					router.patch("/:" + idParamName, handler);	
 
-						router.put("/", handler);	
-						router.patch("/", handler);	
-						break;
-					}
+					router.put("/", handler);	
+					router.patch("/", handler);	
+					break;
+				}
 
-					// You can call the remove action with 
-					// 		DELETE /namespace/?id=123 
-					// 	or 
-					// 		DELETE /namespace/123
+				// You can call the remove action with 
+				// 		DELETE /api/namespace/?id=123 
+				// 	or 
+				// 		DELETE /api/namespace/123
 				case "remove": {
-						router.delete("/:" + idParamName, handler);	
-						router.delete("/", handler);	
-						break;
-					}
+					router.delete("/:" + idParamName, handler);	
+					router.delete("/", handler);	
+					break;
+				}
 				}
 
 			});
 
 			// Register router to namespace
-			app.use("/" + service.namespace, router);
+			app.use("/api/" + service.namespace, router);
 
 			// Register a version namespace
 			if (service.version) {
-				app.use("/v" + service.version + "/" + service.namespace, router);
+				app.use("/api/v" + service.version + "/" + service.namespace, router);
 			}
 		}
 	});

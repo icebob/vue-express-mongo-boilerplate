@@ -63,11 +63,11 @@ PostSchema.plugin(autoIncrement.plugin, {
 
 PostSchema.methods.encodeID = function() {
 	return hashids.encodeHex(this._id);
-}
+};
 
 PostSchema.methods.decodeID = function(code) {
 	return hashids.decodeHex(code);
-}
+};
 
 let Post = mongoose.model("Post", PostSchema);
 

@@ -146,7 +146,7 @@ module.exports = {
 	 */
 	notifyChanged(ctx) {
 		// Send message to everyone
-		 		ctx.broadcast("changed", store.counter);	
+		ctx.broadcast("changed", store.counter);	
 		
 		// Send message to the requested user
 		// 		ctx.emitUser("changed", store.counter);	
@@ -182,7 +182,8 @@ module.exports = {
 	},
 
 	/**
-	 * Define GraphQL queries, types, mutations
+	 * Define GraphQL queries, types, mutations. 
+	 * This definitions enable to access this service via graphql
 	 */
 	graphql: {
 		query: `
