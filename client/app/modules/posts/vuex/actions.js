@@ -1,11 +1,9 @@
 import Vue from "vue";
 import toastr from "../../../core/toastr";
-import { LOAD, ADD, UPDATE, UPVOTE, DOWNVOTE, REMOVE } from "./types";
+import { NAMESPACE, LOAD, ADD, UPDATE, UPVOTE, DOWNVOTE, REMOVE } from "./types";
 
-const BASE_URL = "/api/posts";
-
-export const downloadRows = ({ dispatch }, filter, sort) => {
-	Vue.http.get(BASE_URL, { params: { filter, sort }}).then((response) => {
+export const downloadRows = function ({ dispatch }, filter, sort) {
+	this.$http.get(NAMESPACE, { params: { filter, sort }}).then((response) => {
 		let res = response.json();
 		if (res.status == 200 && res.data)
 			dispatch(LOAD, res.data);
@@ -18,8 +16,8 @@ export const downloadRows = ({ dispatch }, filter, sort) => {
 
 };
 
-export const saveRow = ({ dispatch }, model) => {
-	Vue.http.post(BASE_URL, model).then((response) => {
+export const saveRow = function({ dispatch }, model) {
+	this.$http.post(NAMESPACE, model).then((response) => {
 		let res = response.json();
 
 		if (res.status == 200 && res.data)
@@ -30,12 +28,12 @@ export const saveRow = ({ dispatch }, model) => {
 	});	
 };
 
-export const created = ({ dispatch }, model) => {
+export const created = function({ dispatch }, model) {
 	dispatch(ADD, model);
 };
 
-export const updateRow = ({ dispatch }, model) => {
-	Vue.http.put(BASE_URL + "/" + model.code, model).then((response) => {
+export const updateRow = function({ dispatch }, model) {
+	this.$http.put(NAMESPACE + "/" + model.code, model).then((response) => {
 		let res = response.json();
 		if (res.status == 200 && res.data)
 			dispatch(UPDATE, res.data);
@@ -45,12 +43,12 @@ export const updateRow = ({ dispatch }, model) => {
 	});	
 };
 
-export const updated = ({ dispatch }, model) => {
+export const updated = function({ dispatch }, model) {
 	dispatch(UPDATE, model);
 };
 
-export const removeRow = ({ dispatch }, model) => {
-	Vue.http.delete(BASE_URL + "/" + model.code).then((response) => {
+export const removeRow = function({ dispatch }, model) {
+	this.$http.delete(NAMESPACE + "/" + model.code).then((response) => {
 		dispatch(REMOVE, model);
 	}).catch((response) => {
 		if (response.data.error)
@@ -58,13 +56,13 @@ export const removeRow = ({ dispatch }, model) => {
 	});	
 };
 
-export const removed = ({ dispatch }, model) => {
+export const removed = function({ dispatch }, model) {
 	dispatch(REMOVE, model);
 };
 
 
-export const upVote = ({ dispatch }, model) => {
-	Vue.http.get(BASE_URL + "/upvote", { params: { code: model.code }}).then((response) => {
+export const upVote = function({ dispatch }, model) {
+	this.$http.get(NAMESPACE + "/upvote", { params: { code: model.code }}).then((response) => {
 		let res = response.json();
 		if (res.status == 200 && res.data)
 			dispatch(UPDATE, res.data);
@@ -75,8 +73,8 @@ export const upVote = ({ dispatch }, model) => {
 	});	
 };
 
-export const downVote = ({ dispatch }, model) => {
-	Vue.http.get(BASE_URL + "/downvote", { params: { code: model.code }}).then((response) => {
+export const downVote = function({ dispatch }, model) {
+	this.$http.get(NAMESPACE + "/downvote", { params: { code: model.code }}).then((response) => {
 		let res = response.json();
 		if (res.status == 200 && res.data)
 			dispatch(UPDATE, res.data);
