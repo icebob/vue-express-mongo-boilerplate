@@ -55,7 +55,7 @@ module.exports = {
 	 * Generate a JSON REST API response
 	 *
 	 * If data present and no error, we will send status 200 with JSON data
-	 * If not data but error, we will send HTTP error code and message
+	 * If no data but has error, we will send HTTP error code and message
 	 * 
 	 * @param  {Object} res        	ExpressJS res object
 	 * @param  {json} 	data       	JSON response data

@@ -16,10 +16,3 @@ module.exports = function() {
 	logger.info("Memory:\t\t" + Gauge(used, total, 20, total * 0.8, human + " free"));
 	logger.info("OS:\t\t" + (os.platform()) + " (" + (os.type()) + ")");
 };
-
-/*let mailer = require("./mailer");
-
-setTimeout(function() {
-	mailer.send("bd0fa9fb42-4967aa@inbox.mailtrap.io", "Boilerplate test message", "<h1>Boilerplate test message</h1><p>Hello NodeMailer</p>");
-}, 5 * 1000);
-*/

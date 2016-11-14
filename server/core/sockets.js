@@ -131,7 +131,7 @@ let self = {
 									if (user.roles && user.roles.indexOf(roleRequired) !== -1) 
 										next(null, true);	
 									else {
-										logger.warn(`Websocket user has no access to this namespace '${ns}'!`);
+										logger.warn(`Websocket user has no access to this namespace '${ns}'!`, user.username);
 										next(new Error(`You have NO access to this namespace '${ns}'!`), false);
 									}
 								}

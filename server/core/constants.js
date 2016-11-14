@@ -9,7 +9,7 @@ C.append = function(items, prefix) {
 			name = prefix + "_" + name;
 		C[name] = item;
 	});
-}
+};
 
 /**
  * User role constants

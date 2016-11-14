@@ -27,7 +27,7 @@ let	transports = [
 
 if (config.logging.logentries.enabled && config.logging.logentries.token) {
 	console.log("Logentries log transport enabled!");
-	let Logentries = require('le_node');
+	let Logentries = require("le_node");
 	transports.push(new winston.transports.Logentries({
 		level: "debug",
 		token: config.logging.logentries.token
@@ -91,7 +91,7 @@ if (config.logging.loggly.enabled && config.logging.loggly.token) {
 
 if (config.logging.logsene.enabled && config.logging.logsene.token) {
 	console.log("Logsene log transport enabled!");
-	let logsene = require('winston-logsene');
+	let logsene = require("winston-logsene");
 	logger.add(logsene, {
 		type: "vem-server",
 		token: config.logging.logsene.token
@@ -100,7 +100,7 @@ if (config.logging.logsene.enabled && config.logging.logsene.token) {
 
 if (config.logging.logzio.enabled && config.logging.logzio.token) {
 	console.log("Logz.io log transport enabled!");
-	let logzio = require('winston-logzio');
+	let logzio = require("winston-logzio");
 	logger.add(logzio, {
 		token: config.logging.logzio.token
 	});
@@ -111,7 +111,7 @@ if (config.logging.graylog.enabled) {
 	let graylog = require("winston-graylog2");
 	logger.add(graylog, {
 		name: "Graylog",
-		level: 'debug',
+		level: "debug",
 		graylog: {
 			servers: config.logging.graylog.servers,
 			facility: "vem"
