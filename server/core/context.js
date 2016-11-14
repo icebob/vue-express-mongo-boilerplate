@@ -9,6 +9,11 @@ let Sockets   		= require("./sockets");
 
 let _ 				= require("lodash");
 
+/**
+ * Context object for requests
+ * 
+ * @param {any} called service
+ */
 let Context = function(service) {
 	this.service = service; // service instance
 	this.io = service.io; // namespace IO
@@ -33,7 +38,17 @@ Context.from = function(ctx, service) {
 	return newCtx;
 }
 */
-// Initialize Context from a REST call
+ 
+/**
+ * Create a new Context from a REST request
+ * 
+ * @param {any} service
+ * @param {any} action
+ * @param {any} app
+ * @param {any} req
+ * @param {any} res
+ * @returns
+ */
 Context.CreateFromREST = function(service, action, app, req, res) {
 	let ctx = new Context(service);
 	ctx.provider = "rest";
@@ -48,7 +63,16 @@ Context.CreateFromREST = function(service, action, app, req, res) {
 	return ctx;
 };
 
-// Initialize Context from a socket call
+/**
+ * Create a new Context from a websocket request
+ * 
+ * @param {any} service
+ * @param {any} action
+ * @param {any} app
+ * @param {any} socket
+ * @param {any} data
+ * @returns
+ */
 Context.CreateFromSocket = function(service, action, app, socket, data) {
 	let ctx = new Context(service);
 	ctx.provider = "socket";
@@ -62,7 +86,16 @@ Context.CreateFromSocket = function(service, action, app, socket, data) {
 	return ctx;
 };
 
-// Initialize Context from a GraphQL query
+/**
+ * Create a new Context from a GraphQL request
+ * 
+ * @param {any} service
+ * @param {any} action
+ * @param {any} root
+ * @param {any} args
+ * @param {any} context
+ * @returns
+ */
 Context.CreateFromGraphQL = function(service, action, root, args, context) {
 	let ctx = new Context(service);
 	ctx.provider = "graphql";
@@ -74,7 +107,14 @@ Context.CreateFromGraphQL = function(service, action, root, args, context) {
 	return ctx;
 };
 
-// Initialize Context for Service.init
+/**
+ * Create a new Context for initialize services
+ * 
+ * @param {any} service
+ * @param {any} app
+ * @param {any} db
+ * @returns
+ */
 Context.CreateToServiceInit = function(service, app, db) {
 	let ctx = new Context(service);
 	ctx.provider = "";
@@ -83,6 +123,11 @@ Context.CreateToServiceInit = function(service, app, db) {
 	return ctx;
 };
 
+/**
+ * Resolve model from request by id/code
+ * 
+ * @returns
+ */
 Context.prototype.resolveModel = function() {
 	if (_.isFunction(this.service.modelResolver)) {
 		let idParamName = this.service.idParamName || "id";
@@ -100,6 +145,11 @@ Context.prototype.resolveModel = function() {
 	return Promise.resolve(null);
 };
 
+/**
+ * Check permission of request
+ * 
+ * @returns
+ */
 Context.prototype.checkPermission = function() {
 	let permission = this.action.permission || this.service.permission || C.PERM_LOGGEDIN;
 
@@ -136,7 +186,12 @@ Context.prototype.checkPermission = function() {
 };
 
 
-// Broadcast a message 
+/**
+ * Broadcast a websocket message
+ * 
+ * @param {any} cmd		command of message
+ * @param {any} data	data of message
+ */
 Context.prototype.broadcast = function(cmd, data) {
 	if (this.io) {
 		let path = "/" + this.service.namespace + "/" + cmd;
@@ -145,7 +200,12 @@ Context.prototype.broadcast = function(cmd, data) {
 	}
 };
 
-// Send a message back to the requested user
+/**
+ * Send a message back to the requester
+ * 
+ * @param {any} cmd		command of message
+ * @param {any} data	data of message
+ */
 Context.prototype.emitUser = function(cmd, data) {
 	if (!this.socket && this.user) {
 		// If not socket (come from REST), but has user, we try to find it
@@ -160,7 +220,14 @@ Context.prototype.emitUser = function(cmd, data) {
 	}
 };
 
-// Broadcast a message to a role If the `role` is not specified, we use the role of service
+/**
+ * Broadcast a message to a role 
+ * 
+ * @param {any} cmd		command of message
+ * @param {any} data	data of message
+ * @param {any} role	If the `role` is not specified, we use the role of service
+ * @returns
+ */
 Context.prototype.emit = function(cmd, data, role) {
 	if (!role)
 		role = this.service.role;
@@ -196,6 +263,13 @@ Context.prototype.emit = function(cmd, data, role) {
 
 };
 
+/**
+ * Validate the requested parameters
+ * 
+ * @param {any} name
+ * @param {any} errorMessage
+ * @returns
+ */
 Context.prototype.validateParam = function(name, errorMessage) {
 	let self = this;
 
@@ -205,15 +279,30 @@ Context.prototype.validateParam = function(name, errorMessage) {
 		errors: []
 	};
 
+	/**
+	 * Check has no errors yet
+	 * 
+	 * @returns
+	 */
 	validator.noError = function() {
 		return validator.errors.length == 0;
 	};
 
+	/**
+	 * Add a new validation error
+	 * 
+	 * @param {any} message
+	 */
 	validator.addError = function(message) {
 		validator.errors.push(message);
 		self.validationErrors.push(message);
 	};
 
+	/**
+	 * Close the validation. If no error set back the parameter value to this.params
+	 * 
+	 * @returns
+	 */
 	validator.end = function() {
 		if (validator.noError())
 			self.params[validator.name] = validator.value;
@@ -221,6 +310,11 @@ Context.prototype.validateParam = function(name, errorMessage) {
 		return validator.value;
 	};
 
+	/**
+	 * Throw exception if has validation error
+	 * 
+	 * @returns
+	 */
 	validator.throw = function() {
 		if (!validator.noError())
 			throw new Error(validator.errors.join(" "));
@@ -228,6 +322,12 @@ Context.prototype.validateParam = function(name, errorMessage) {
 		return validator.value;
 	};
 
+	/**
+	 * Assert the parameter is not empty
+	 * 
+	 * @param {any} errorMessage
+	 * @returns
+	 */
 	validator.notEmpty = function(errorMessage) {
 		if (validator.value == null || validator.value == "")
 			validator.addError(errorMessage || `Parameter '${name}' is empty!`); // i18n
@@ -238,6 +338,11 @@ Context.prototype.validateParam = function(name, errorMessage) {
 		return validator;
 	};
 
+	/**
+	 * Trim the content of parameter
+	 * 
+	 * @returns
+	 */
 	validator.trim = function() {
 		if (validator.noError() && validator.value != null)
 			validator.value = validator.value.trim();
@@ -254,11 +359,21 @@ Context.prototype.validateParam = function(name, errorMessage) {
 	return validator;
 };
 
+/**
+ * Check has validation errors
+ * 
+ * @returns
+ */
 Context.prototype.hasValidationErrors = function() {
 	return this.validationErrors.length > 0;
 };
 
-// Generate an error response
+/**
+ * Generate and throw a new BAD_REQUEST response error
+ * 
+ * @param {any} type 	type of error
+ * @param {any} msg		message of error (localized)
+ */
 Context.prototype.errorBadRequest = function(type, msg) {
 	let err = new Error(msg);
 	err = _.defaults(response.BAD_REQUEST);
@@ -270,7 +385,12 @@ Context.prototype.errorBadRequest = function(type, msg) {
 	throw err;
 };
 
-// Generate an error response
+/**
+ * Generate and throw a new FORBIDDEN response error
+ * 
+ * @param {any} type 	type of error
+ * @param {any} msg		message of error (localized)
+ */
 Context.prototype.errorForbidden = function(type, msg) {
 	let err = new Error(msg);
 	err = _.defaults(response.FORBIDDEN);
@@ -283,6 +403,12 @@ Context.prototype.errorForbidden = function(type, msg) {
 };
 
 // Generate an error response
+/**
+ * Generate and throw a new UNAUTHORIZED response error
+ * 
+ * @param {any} type 	type of error
+ * @param {any} msg		message of error (localized)
+ */
 Context.prototype.errorUnauthorized = function(type, msg) {
 	let err = new Error(msg);
 	err = _.defaults(response.UNAUTHORIZED);
@@ -294,7 +420,21 @@ Context.prototype.errorUnauthorized = function(type, msg) {
 	throw err;
 };
 
+/**
+ * Convert the `docs` MongoDB model to JSON object.
+ * With `skipFields` can be filter the properties
+ * 
+ * @param {any} docs		MongoDB document(s)
+ * @param {any} skipFields	Array of skipped field names
+ * @returns					JSON object/array
+ */
 Context.prototype.toJSON = function(docs, skipFields) {
+	/**
+	 * 
+	 * 
+	 * @param {any} doc
+	 * @returns
+	 */
 	let func = function(doc) {
 		let json = doc.toJSON();
 		skipFields = ["id", "_id", "__v"].concat(skipFields || []);		
@@ -335,12 +475,25 @@ Context.prototype.queryPageSort = function(query) {
 	return query;
 };
 
+/**
+ * Check the request is authenticated.
+ * 
+ * @param {any} role
+ * @returns
+ */
 Context.prototype.isAuthenticated = function(role) {
 	return this.user != null;
 };
 
+/**
+ * Check the request come from a user who has the required role
+ * 
+ * @param {any} role		required role
+ * @returns
+ */
 Context.prototype.hasRole = function(role) {
 	return this.user && this.user.roles.indexOf(role) != -1;
 };
+
 
 module.exports = Context;

@@ -15,8 +15,6 @@ let	socketio 		= require("socket.io");
 let	session 		= require("express-session");
 let	MongoStore 		= require("connect-mongo")(session);
 
-//let socketHandlers  = require("../applogic/socketHandlers");
-
 let self = {
 	IO: null,
 	
@@ -72,6 +70,13 @@ let self = {
 		return server;
 	},
 
+	/**
+	 * Create a new Socket.IO namespace
+	 * 
+	 * @param {any} ns		name of namespace
+	 * @param {any} role	required role for namespace
+	 * @returns
+	 */
 	addNameSpace(ns, role) {
 		let io = self.namespaces[ns];
 		if (io == null) {
@@ -85,9 +90,10 @@ let self = {
 	/**
 	 * Initialize IO namespace. Apply authentication middleware
 	 * 
-	 * @param  {String} ns         Name of namespace
-	 * @param  {Object} io         IO instance
-	 * @param  {Object} mongoStore Mongo Session store
+	 * @param  {String} ns         		Name of namespace
+	 * @param  {Object} io         		IO instance
+	 * @param  {Object} mongoStore 		Mongo Session store
+	 * @param  {Object} roleRequired 	required role
 	 */
 	initNameSpace(ns, io, mongoStore, roleRequired) {
 
@@ -156,6 +162,14 @@ let self = {
 		self.namespaces[ns] = io;
 	},
 
+	/**
+	 * Emit a message to a namespace
+	 * 
+	 * @param {any} namespace
+	 * @param {any} command
+	 * @param {any} data
+	 * @returns
+	 */
 	nsEmit(namespace, command, data) {
 		if (self.namespaces[namespace]) {
 			self.namespaces[namespace].emit(command, data);
@@ -163,15 +177,30 @@ let self = {
 		}
 	},
 
+	/**
+	 * Add a socket to the online users list
+	 * 
+	 * @param {any} socket
+	 */
 	addOnlineUser(socket) {
 		self.removeOnlineUser(socket);
 		self.userSockets.push(socket);
 	},
 
+	/**
+	 * Remove a socket from the online users
+	 * 
+	 * @param {any} socket
+	 */
 	removeSocket(socket) {
 		_.remove(self.userSockets, function(s) { return s == socket; });
 	},
 
+	/**
+	 * Remove sockets of user from the online users
+	 * 
+	 * @param {any} socket
+	 */
 	removeOnlineUser(socket) {
 		_.remove(self.userSockets, function(s) { return s.request.user._id == socket.request.user._id; });
 	}
