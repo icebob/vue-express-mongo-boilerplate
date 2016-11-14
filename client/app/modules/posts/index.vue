@@ -371,10 +371,13 @@
 
 			} // .votes
 
-			.media-content {
+			.media-content {				
+				overflow-x: auto;
+				
 				h3 {
 					margin: 0 0 0.5em 0;
 				}
+
 			}
 		}
 	}
