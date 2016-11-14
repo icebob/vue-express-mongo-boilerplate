@@ -3,7 +3,7 @@
 let logger 			= require("./logger");
 let config 			= require("../config");
 
-let EventEmitter	= require('events').EventEmitter;
+let EventEmitter	= require("events").EventEmitter;
 let	path 			= require("path");
 let	fs 				= require("fs");
 let	util 			= require("util");
@@ -16,7 +16,7 @@ let Context 		= require("./context");
 let auth			= require("./auth/helper");
 let response		= require("./response");
 
-if (!WEBPACK_BUNDLE) require('require-webpack-compat')(module, require);
+if (!WEBPACK_BUNDLE) require("require-webpack-compat")(module, require);
 
 /**
  * Service handler class
@@ -28,7 +28,7 @@ let Services = function() {
 	this.db = null;
 	this.services = {};
 
-}
+};
 
 /**
  * Inherit from EventEmitter
@@ -50,10 +50,10 @@ Services.prototype.loadServices = function(app, db) {
 		service.app = app;
 		service.db = db;
 		if (_.isFunction(service.init)) {
-			service.init(Context.CreateToServiceInit(service, app, db))
+			service.init(Context.CreateToServiceInit(service, app, db));
 		}
 		self.services[service.name] = service;
-	}
+	};
 
 	if (fs.existsSync(path.join(__dirname, "..", "services"))) {
 		logger.info("");
@@ -72,7 +72,7 @@ Services.prototype.loadServices = function(app, db) {
 		logger.info("");
 		logger.info(chalk.bold("Search applogic services..."));
 
-		let modules = require.context("../applogic/modules", true, /service\.js$/)
+		let modules = require.context("../applogic/modules", true, /service\.js$/);
 		if (modules) {
 			modules.keys().map(function(module) {
 				logger.info("  Load", path.relative(path.join(__dirname, "..", "applogic", "modules"), module), "service...");
@@ -80,7 +80,7 @@ Services.prototype.loadServices = function(app, db) {
 			});
 		}
 	}
-}
+};
 
 
 
@@ -108,7 +108,7 @@ Services.prototype.registerRoutes = function(app) {
 				if (_.isFunction(action)) {
 					action = {
 						handler: action
-					}
+					};
 				}
 				action.name = action.name || name;
 
@@ -149,7 +149,7 @@ Services.prototype.registerRoutes = function(app) {
 						response.json(res, null, err);
 					});
 
-				}
+				};
 
 				// Register handler to all method types
 				// So you can call the /namespace/action with any request method.
@@ -161,7 +161,7 @@ Services.prototype.registerRoutes = function(app) {
 
 					// You can call the find action with 
 					// 		GET /namespace/
-					case "find": {
+				case "find": {
 						router.get("/", handler);	
 						break;
 					}
@@ -170,14 +170,14 @@ Services.prototype.registerRoutes = function(app) {
 					// 		GET /namespace/?id=123 
 					// 	or 
 					// 		GET /namespace/123
-					case "get": {
+				case "get": {
 						//router.get("/:" + idParamName, handler);	
 						break;
 					}
 
 					// You can call the save action with 
 					// 		POST /namespace/
-					case "save": {
+				case "save": {
 						router.post("/:" + idParamName, handler);	
 						router.post("/", handler);	
 						break;
@@ -191,7 +191,7 @@ Services.prototype.registerRoutes = function(app) {
 					// 		PUT /namespace/123
 					// 	or 
 					// 		PATCH /namespace/123
-					case "update": {
+				case "update": {
 						router.put("/:" + idParamName, handler);	
 						router.patch("/:" + idParamName, handler);	
 
@@ -204,7 +204,7 @@ Services.prototype.registerRoutes = function(app) {
 					// 		DELETE /namespace/?id=123 
 					// 	or 
 					// 		DELETE /namespace/123
-					case "remove": {
+				case "remove": {
 						router.delete("/:" + idParamName, handler);	
 						router.delete("/", handler);	
 						break;
@@ -222,7 +222,7 @@ Services.prototype.registerRoutes = function(app) {
 			}
 		}
 	});
-}
+};
 
 /**
  * Register actions of services as socket.io event handlers
@@ -257,7 +257,7 @@ Services.prototype.registerSockets = function(IO, socketHandler) {
 					if (_.isFunction(action)) {
 						action = {
 							handler: action
-						}
+						};
 					}
 					action.name = action.name || name;
 
@@ -303,7 +303,7 @@ Services.prototype.registerSockets = function(IO, socketHandler) {
 							}
 						});
 
-					}
+					};
 
 					socket.on(cmd, handler);
 
@@ -317,7 +317,7 @@ Services.prototype.registerSockets = function(IO, socketHandler) {
 
 		}
 	});	
-}
+};
 
 /**
  * Get actions of services as GraphQL queries & mutations schema
@@ -349,7 +349,7 @@ Services.prototype.registerGraphQLSchema = function() {
 							if (_.isFunction(action)) {
 								action = {
 									handler: action
-								}
+								};
 							}
 							action.name = action.name || name;							
 
@@ -383,14 +383,14 @@ Services.prototype.registerGraphQLSchema = function() {
 								logger.error(err);
 								throw err;
 							});
-						}
+						};
 
 						resolvers[name] = handler;
 
-					};
+					}
 
 				});
-			}
+			};
 
 			if (service.graphql.resolvers.Query)
 				processResolvers(service.graphql.resolvers.Query);
@@ -437,7 +437,7 @@ Services.prototype.registerGraphQLSchema = function() {
 		});
 
 		return baseResolvers;
-	}
+	};
 
 	return {
 		schema: [mergedSchema],
@@ -461,7 +461,7 @@ Services.prototype.registerGraphQLSchema = function() {
 		})
 	};
 
-}
+};
 
 /**
  * Get a service by name
@@ -470,7 +470,7 @@ Services.prototype.registerGraphQLSchema = function() {
  */
 Services.prototype.get = function(serviceName) {
 	return this.services[serviceName];
-}
+};
 
 // Export instance of class
 module.exports = new Services();
