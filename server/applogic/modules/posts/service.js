@@ -52,10 +52,7 @@ module.exports = {
 			//permission: C.PERM_ADMIN,
 			handler(ctx) {
 
-				ctx.validateParam("title").trim().notEmpty(ctx.t("PostTitleCannotBeEmpty")).end();
-				ctx.validateParam("content").trim().notEmpty(ctx.t("PostContentCannotBeEmpty")).end();
-				if (ctx.hasValidationErrors())
-					throw ctx.errorBadRequest(C.ERR_VALIDATION_ERROR, ctx.validationErrors);			
+				this.validateParams(ctx, true);
 
 				let post = new Post({
 					title: ctx.params.title,
@@ -84,17 +81,17 @@ module.exports = {
 				if (!ctx.model)
 					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("PostNotFound"));
 
-				ctx.validateParam("title").trim().notEmpty(ctx.t("PostTitleCannotBeEmpty")).end();
-				ctx.validateParam("content").trim().notEmpty(ctx.t("PostContentCannotBeEmpty")).end();
-				if (ctx.hasValidationErrors())
-					throw ctx.errorBadRequest(C.ERR_VALIDATION_ERROR, ctx.validationErrors);
+				this.validateParams(ctx);
 
 				if (ctx.model.author.id != ctx.user.id) {
 					return ctx.errorBadRequest(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, ctx.t("OnlyAuthorEditPost"));
 				}
 
-				ctx.model.title = ctx.params.title;
-				ctx.model.content = ctx.params.content;
+				if (ctx.params.title != null)
+					ctx.model.title = ctx.params.title;
+
+				if (ctx.params.content != null)
+					ctx.model.content = ctx.params.content;
 
 				return ctx.model.save()
 					.then((doc) => {
@@ -199,6 +196,24 @@ module.exports = {
 
 	},
 
+	/**
+	 * Validate params of context.
+	 * We will call it in `save` and `update` actions
+	 * 
+	 * @param {Context} ctx 			context of request
+	 * @param {boolean} strictMode 		strictMode. If true, need to exists the required parameters
+	 */
+	validateParams(ctx, strictMode) {
+		if (strictMode || ctx.hasParam("title"))
+			ctx.validateParam("title").trim().notEmpty(ctx.t("PostTitleCannotBeEmpty")).end();
+
+		if (strictMode || ctx.hasParam("content"))
+			ctx.validateParam("content").trim().notEmpty(ctx.t("PostContentCannotBeEmpty")).end();
+		
+		if (ctx.hasValidationErrors())
+			throw ctx.errorBadRequest(C.ERR_VALIDATION_ERROR, ctx.validationErrors);			
+	},	
+
 	// resolve model by ID		
 	modelResolver(ctx, code) {
 		let id = Post.schema.methods.decodeID(code);
@@ -271,7 +286,7 @@ module.exports = {
 
 		mutation: `
 			postSave(title: String!, content: String!): Post
-			postUpdate(code: String!, title: String!, content: String!): Post
+			postUpdate(code: String!, title: String, content: String): Post
 			postRemove(code: String!): Post
 
 			postUpVote(code: String!): Post
@@ -314,3 +329,76 @@ module.exports = {
 	}
 
 };
+
+/*
+## GraphiQL test ##
+
+# Find all posts
+query getPosts {
+  posts(sort: "-createdAt -votes", limit: 3) {
+    ...postFields
+  }
+}
+
+# Save a new post
+mutation savePost {
+  postSave(title: "New post", content: "New post content") {
+    ...postFields
+  }
+}
+
+# Get a post
+query getPost {
+  post(code: "xpQM5oQRgY") {
+    ...postFields
+  }
+}
+
+# Update an existing post
+mutation updatePost {
+  postUpdate(code: "xpQM5oQRgY", content: "Modified post content") {
+    ...postFields
+  }
+}
+
+# upVote to the post
+mutation upVotePost {
+  postUpVote(code: "xpQM5oQRgY") {
+    ...postFields
+  }
+}
+
+# upVote to the post
+mutation downVotePost {
+  postDownVote(code: "xpQM5oQRgY") {
+    ...postFields
+  }
+}
+
+# Remove a post
+mutation removePost {
+  postRemove(code: "xpQM5oQRgY") {
+    ...postFields
+  }
+}
+
+
+
+fragment postFields on Post {
+    code
+    title
+    content
+    author {
+      code
+      fullName
+      email
+      username
+      roles
+      gravatar
+      lastLogin
+    }
+    views
+    votes
+}
+
+*/

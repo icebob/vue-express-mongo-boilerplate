@@ -131,10 +131,11 @@ module.exports = {
 	 * @param {boolean} strictMode 		strictMode. If true, need to exists the required parameters
 	 */
 	validateParams(ctx, strictMode) {
-		if (strictMode || ctx.hasParam("name")) {
+		if (strictMode || ctx.hasParam("name"))
 			ctx.validateParam("name").trim().notEmpty(ctx.t("DeviceNameCannotBeBlank")).end();
+
+		if (strictMode || ctx.hasParam("status"))
 			ctx.validateParam("status").isNumber();
-		}
 
 		ctx.validateParam("description").trim().end();
 		ctx.validateParam("address").trim().end();
@@ -220,58 +221,39 @@ module.exports = {
 # Find all devices
 query getDevices {
   devices(sort: "lastCommunication", limit: 5) {
-    code
-    address
-    type
-    name
-    description
-    status
-    lastCommunication
+    ...deviceFields
   }
 }
 
 # Save a new device
 mutation saveDevice {
   deviceSave(name: "New device", address: "192.168.0.1", type: "raspberry", description: "My device", status: 1) {
-    code
-    address
-    type
-    name
-    description
-    status
-    lastCommunication
+    ...deviceFields
   }
 }
 
 # Get a device
 query getDevice {
   device(code: "Mnwy22ByZR") {
-    code
-    address
-    type
-    name
-    description
-    status
-    lastCommunication
+    ...deviceFields
   }
 }
 
 # Update an existing device
 mutation updateDevice {
   deviceUpdate(code: "Mnwy22ByZR", address: "127.0.0.1") {
-    code
-    address
-    type
-    name
-    description
-    status
-    lastCommunication
+    ...deviceFields
   }
 }
 
 # Remove a device
 mutation removeDevice {
   deviceRemove(code: "Mnwy22ByZR") {
+    ...deviceFields
+  }
+}
+
+fragment deviceFields on Device {
     code
     address
     type
@@ -279,8 +261,6 @@ mutation removeDevice {
     description
     status
     lastCommunication
-  }
 }
-
 
 */
