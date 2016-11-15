@@ -215,3 +215,35 @@ module.exports = {
 	}
 
 };
+
+
+/*
+## GraphiQL test ##
+
+# Find all posts
+query getCounter {
+  counter
+}
+
+# Save a new counter value
+mutation saveCounter {
+  counterSave(value: 12)
+}
+
+# Reset the counter
+mutation resetCounter {
+  counterReset
+}
+
+# Increment the counter
+mutation incrementCounter {
+  counterIncrement
+}
+
+# Decrement the counter
+mutation decrementCounter {
+  counterDecrement
+}
+
+
+*/

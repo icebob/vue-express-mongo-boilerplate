@@ -79,3 +79,34 @@ module.exports = {
 	}
 
 };
+
+/*
+## GraphiQL test ##
+
+# Find all users
+query getUsers {
+  users(sort: "-lastLogin", limit: 3) {
+    ...userFields
+  }
+}
+
+# Get a user
+query getUser {
+  user(code: "jQalr8wqZo") {
+    ...userFields
+  }
+}
+
+
+fragment userFields on User {
+	code
+  fullName
+  email
+  username
+  roles
+  verified
+  gravatar
+  lastLogin
+}
+
+*/

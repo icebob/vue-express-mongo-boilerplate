@@ -52,3 +52,35 @@ module.exports = {
 	}
 
 };
+
+/*
+## GraphiQL test ##
+
+# Get my account
+query me {
+  me {
+    ...userFields
+  }
+}
+
+
+# Get list of online users
+query getOnlineUser {
+  onlineUsers {
+    ...userFields
+  }
+}
+
+
+fragment userFields on User {
+	code
+  fullName
+  email
+  username
+  roles
+  verified
+  gravatar
+  lastLogin
+}
+
+*/
