@@ -264,6 +264,16 @@ Context.prototype.emit = function(cmd, data, role) {
 };
 
 /**
+ * Check the context has the `name` parameter
+ * 
+ * @param {any} name
+ * @returns {boolean}
+ */
+Context.prototype.hasParam = function(name, errorMessage) {
+	return this.params[name] != null;
+};
+
+/**
  * Validate the requested parameters
  * 
  * @param {any} name
@@ -329,7 +339,7 @@ Context.prototype.validateParam = function(name, errorMessage) {
 	 * @returns
 	 */
 	validator.notEmpty = function(errorMessage) {
-		if (validator.value == null || validator.value == "")
+		if (validator.value == null || validator.value === "")
 			validator.addError(errorMessage || `Parameter '${name}' is empty!`); // i18n
 
 		if (_.isArray(validator.value) && validator.value.length == 0)
@@ -337,6 +347,19 @@ Context.prototype.validateParam = function(name, errorMessage) {
 
 		return validator;
 	};
+
+	/**
+	 * Assert the parameter is a Number
+	 * 
+	 * @param {any} errorMessage
+	 * @returns
+	 */
+	validator.isNumber = function(errorMessage) {
+		if (validator.value == null || validator.value == "")
+			validator.addError(errorMessage || `Parameter '${name}' is empty!`); // i18n
+
+		return _.isNumber(validator.value);
+	};	
 
 	/**
 	 * Trim the content of parameter

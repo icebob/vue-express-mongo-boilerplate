@@ -16,6 +16,9 @@ let Context 		= require("./context");
 let auth			= require("./auth/helper");
 let response		= require("./response");
 
+let GraphQLScalarType 	= require("graphql").GraphQLScalarType ;
+let Kind				= require("graphql/language").Kind;
+
 /* global WEBPACK_BUNDLE */
 if (!WEBPACK_BUNDLE) require("require-webpack-compat")(module, require);
 
@@ -334,7 +337,7 @@ Services.prototype.registerGraphQLSchema = function() {
 	};
 
 	_.forIn(this.services, (service, name) => {
-		if (service.graphql !== false && service.graphql) {
+		if (service.graphql !== false && _.isObject(service.graphql)) {
 			service.graphql.resolvers = service.graphql.resolvers || {};
 
 			let processResolvers = function(resolvers) {
@@ -446,19 +449,38 @@ Services.prototype.registerGraphQLSchema = function() {
 
 			Timestamp: {
 				__parseValue(value) {
-					return new Date(value);
+					return new Date(value); // value from the client
 				},
 				__serialize(value) {
-					return value.getTime();
+					return value.getTime(); // value sent to the client
 				},
 				__parseLiteral(ast) {
-					console.log(ast); // ???? when will be called it?
-					/*if (ast.kind === Kind.INT) {
-						return parseInt(ast.value, 10);
-					}*/
+					if (ast.kind === Kind.INT)
+						return parseInt(ast.value, 10); // ast value is always in string format
+					
+					return null;
 				}
 			}
-
+			/* This version is not working
+				Copied from http://dev.apollodata.com/tools/graphql-tools/scalars.html
+			*/
+			/*
+			Timestamp: new GraphQLScalarType({
+				name: "Timestamp",
+				description: "Timestamp scalar type",
+				parseValue(value) {
+					return new Date(value); // value from the client
+				},
+				serialize(value) {
+					return value.getTime(); // value sent to the client
+				},
+				parseLiteral(ast) {
+					if (ast.kind === Kind.INT) {
+						return parseInt(ast.value, 10); // ast value is always in string format
+					}
+					return null;
+				},
+			}),*/
 		})
 	};
 

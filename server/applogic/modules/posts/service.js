@@ -203,7 +203,7 @@ module.exports = {
 	modelResolver(ctx, code) {
 		let id = Post.schema.methods.decodeID(code);
 		if (id == null || id == "")
-			return Promise.reject(new Error(ctx.t("InvalidPostID")));
+			return Promise.reject(new Error(ctx.t("InvalidCode")));
 
 		return Post.findById(id).exec().then( (doc) => {
 			if (!doc) 
@@ -255,7 +255,6 @@ module.exports = {
 
 		types: `
 			type Post {
-				id: Int!
 				code: String!
 				title: String
 				content: String

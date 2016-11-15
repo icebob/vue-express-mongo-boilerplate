@@ -14,10 +14,13 @@
 	"DeviceAdded": "Eszköz hozzáadva",
 	"DeviceUpdated": "Eszköz módosítva",
 	"DeviceDeleted": "Eszköz törölve",
+	"DeviceNotFound": "Az eszköz nem található!",
 
 	"DeviceNameAdded": "Eszköz '{{name}}' hozzáadva!",
 	"DeviceNameUpdated": "Eszköz '{{name}}' módosítva!",
 	"DeviceNameDeleted": "Eszköz '{{name}}' törölve!",
+
+	"DeviceNameCannotBeBlank": "Device name cannot be blank!",
 
 	"ID": "ID",
 	"Type": "Típus",
@@ -58,6 +61,8 @@
 	"PostNameAdded": "Bejegyzés '{{title}}' hozzáadva!",
 	"PostNameUpdated": "Bejegyzés '{{title}}' módosítva!",
 	"PostNameDeleted": "Bejegyzés '{{title}}' törölve!",
+
+	"InvalidCode": "Invalid code!",
 
 	"Demo": "Demó",
 

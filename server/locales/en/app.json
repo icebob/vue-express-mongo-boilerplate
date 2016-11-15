@@ -14,10 +14,13 @@
 	"DeviceAdded": "Device added",
 	"DeviceUpdated": "Device updated",
 	"DeviceDeleted": "Device deleted",
+	"DeviceNotFound": "Device not found!",
 
 	"DeviceNameAdded": "Device '{{name}}' added!",
 	"DeviceNameUpdated": "Device '{{name}}' updated!",
 	"DeviceNameDeleted": "Device '{{name}}' deleted!",
+
+	"DeviceNameCannotBeBlank": "Device name cannot be blank!",
 
 	"ID": "ID",
 	"Type": "Type",
@@ -58,6 +61,8 @@
 	"PostNameAdded": "Post '{{title}}' added!",
 	"PostNameUpdated": "Post '{{title}}' updated!",
 	"PostNameDeleted": "Post '{{title}}' deleted!",
+
+	"InvalidCode": "Invalid code!",
 
 	"Demo": "Demo",
 

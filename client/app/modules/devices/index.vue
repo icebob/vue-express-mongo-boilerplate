@@ -3,6 +3,12 @@
 </template>
 
 <script>
+/*
+https://dev-blog.apollodata.com/use-apollo-in-your-vuejs-app-89812429d8b2#.epkgpe2xz
+https://github.com/Akryum/vue-apollo
+
+*/
+
 	import Vue from "vue";
 	import AdminPage from "../../core/DefaultAdminPage.vue";
 	import schema from "./schema";
