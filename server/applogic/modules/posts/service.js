@@ -218,11 +218,11 @@ module.exports = {
 	modelResolver(ctx, code) {
 		let id = Post.schema.methods.decodeID(code);
 		if (id == null || id == "")
-			return Promise.reject(new Error(ctx.t("InvalidCode")));
+			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("InvalidCode"));
 
 		return Post.findById(id).exec().then( (doc) => {
 			if (!doc) 
-				return Promise.reject(new Error(ctx.t("PostNotFound")));
+				return ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("DeviceNotFound"));
 
 			return Post.populate(doc, { path: "author", select: this.populateAuthorFields});
 		});		

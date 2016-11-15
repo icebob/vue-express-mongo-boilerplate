@@ -149,15 +149,9 @@ module.exports = {
 	modelResolver(ctx, code) {
 		let id = Device.schema.methods.decodeID(code);
 		if (id == null || id == "")
-			return Promise.reject(new Error(ctx.t("InvalidCode")));
+			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("InvalidCode"));
 
-		return Device.findById(id).exec().then( (doc) => {
-			if (!doc) 
-				return Promise.reject(new Error(ctx.t("DeviceNotFound")));
-
-			return doc;
-		});		
-		
+		return Device.findById(id).exec();
 	},
 
 	notifyModelChanges(ctx, type, json) {
