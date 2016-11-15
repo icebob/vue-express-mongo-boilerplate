@@ -13,7 +13,7 @@
 
 <script>
 	import Vue from "vue";
-	import store from "../store";
+	import store from "../core/store";
 
 	import PageHeader from "./components/header/index";
 	import Sidebar from "./components/sidebar/index";
@@ -38,6 +38,8 @@
 
 		/**
 		 * Create app data object
+		 * 
+		 * TODO: move to vuex state
 		 */
 		data() {
 			return {
