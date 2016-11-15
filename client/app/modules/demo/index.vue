@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 	.container
 		h2.title {{ "Demo" | i18n }}
 

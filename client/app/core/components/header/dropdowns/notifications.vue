@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 	.notification-dropdown(:class="{ 'visible': visible }")
 		.panel
 			.header 

@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 	.user-box(v-if="me")
 	
 		.user-info.right(@click="toggleUserMenu()")

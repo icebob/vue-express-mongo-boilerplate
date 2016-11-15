@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 	admin-page(:schema="schema", :selected="selected", :rows="rows")
 </template>
 

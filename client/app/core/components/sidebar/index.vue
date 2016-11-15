@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 	aside.nav(:class="{ mini: minimized }")
 		.menu
 			.title {{ "General" | i18n }}
