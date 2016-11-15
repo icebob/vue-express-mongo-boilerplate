@@ -348,36 +348,36 @@ mutation savePost {
 }
 
 # Get a post
-query getPost {
-  post(code: "xpQM5oQRgY") {
+query getPost($code: String!) {
+  post(code: $code) {
     ...postFields
   }
 }
 
 # Update an existing post
-mutation updatePost {
-  postUpdate(code: "xpQM5oQRgY", content: "Modified post content") {
+mutation updatePost($code: String!) {
+  postUpdate(code: $code, content: "Modified post content") {
     ...postFields
   }
 }
 
 # upVote to the post
-mutation upVotePost {
-  postUpVote(code: "xpQM5oQRgY") {
+mutation upVotePost($code: String!) {
+  postUpVote(code: $code) {
     ...postFields
   }
 }
 
 # upVote to the post
-mutation downVotePost {
-  postDownVote(code: "xpQM5oQRgY") {
+mutation downVotePost($code: String!) {
+  postDownVote(code: $code) {
     ...postFields
   }
 }
 
 # Remove a post
-mutation removePost {
-  postRemove(code: "xpQM5oQRgY") {
+mutation removePost($code: String!) {
+  postRemove(code: $code) {
     ...postFields
   }
 }

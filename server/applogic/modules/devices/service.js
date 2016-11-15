@@ -233,22 +233,22 @@ mutation saveDevice {
 }
 
 # Get a device
-query getDevice {
-  device(code: "Mnwy22ByZR") {
+query getDevice($code: String!) {
+  device(code: $code) {
     ...deviceFields
   }
 }
 
 # Update an existing device
-mutation updateDevice {
-  deviceUpdate(code: "Mnwy22ByZR", address: "127.0.0.1") {
+mutation updateDevice($code: String!) {
+  deviceUpdate(code: $code, address: "127.0.0.1") {
     ...deviceFields
   }
 }
 
 # Remove a device
-mutation removeDevice {
-  deviceRemove(code: "Mnwy22ByZR") {
+mutation removeDevice($code: String!) {
+  deviceRemove(code: $code) {
     ...deviceFields
   }
 }

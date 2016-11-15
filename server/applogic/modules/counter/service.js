@@ -220,7 +220,7 @@ module.exports = {
 /*
 ## GraphiQL test ##
 
-# Find all posts
+# Get value of counter
 query getCounter {
   counter
 }
