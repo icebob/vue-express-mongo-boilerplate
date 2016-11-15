@@ -41,7 +41,17 @@ module.exports = function(app, db) {
 				user: req.user,
 				session: req.session
 			},
-			debug: config.isDevMode()
+			debug: config.isDevMode(),
+			formatError(e) {
+				//console.dir(e);
+				return {
+					status: e.originalError ? e.originalError.status : 400, 
+					type: e.originalError ? e.originalError.type : null, 
+					message: e.message,
+					locations: e.locations,
+					path: e.path
+				};
+			}
 			/*
 			// function used to format errors before returning them to clients
 			formatError?: Function,

@@ -40,7 +40,7 @@ module.exports = {
 	modelResolver(ctx, code) {
 		let id = User.schema.methods.decodeID(code);
 		if (id == null || id == "")
-			return Promise.reject(new Error(ctx.t("InvalidUserCode")));
+			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("InvalidCode"));
 
 		return User.findById(id).exec();		
 	},	
