@@ -38,14 +38,14 @@
 			 * Increment counter
 			 */
 			inc() {
-				this.increment(this);
+				this.increment();
 			},
 
 			/**
 			 * Decrement counter
 			 */
 			dec() {
-				this.decrement(this);
+				this.decrement();
 			}
 		},
 
@@ -68,6 +68,11 @@
 					this.changedValue(msg);
 				}
 			}
+		},
+
+		created() {
+			// Get the latest value of counter
+			this.getValue(); 
 		}
 	};
 
