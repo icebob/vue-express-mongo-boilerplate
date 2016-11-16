@@ -3,7 +3,7 @@
 
 	"__exec": "nodejs-dashboard node server/dev.js",
 
-	"verbose": true,
+	"verbose": false,
 
 	"watch": [
 		"server",

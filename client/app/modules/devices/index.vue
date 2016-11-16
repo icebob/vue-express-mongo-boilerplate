@@ -68,35 +68,29 @@ https://github.com/Akryum/vue-apollo
 			events: {
 				/**
 				 * New device added
-				 * @param  {Object} row Device object
+				 * @param  {Object} res Device object
 				 */
-				created(row) {
-					console.log("New device: ", row);
-					this.created(row);
-
-					toast.success(this._("DeviceNameAdded", row), this._("DeviceAdded"));
+				created(res) {
+					this.created(res.data);
+					toast.success(this._("DeviceNameAdded", res), this._("DeviceAdded"));
 				},
 
 				/**
 				 * Device updated
-				 * @param  {Object} row Device object
+				 * @param  {Object} res Device object
 				 */
-				updated(row) {
-					console.log("Update device: ", row);
-					this.updated(row);
-
-					toast.success(this._("DeviceNameUpdated", row), this._("DeviceUpdated"));
+				updated(res) {
+					this.updated(res.data);
+					toast.success(this._("DeviceNameUpdated", res), this._("DeviceUpdated"));
 				},
 
 				/**
 				 * Device removed
-				 * @param  {Object} row Device object
+				 * @param  {Object} res Response object
 				 */
-				removed(row) {
-					console.log("Remove device: ", row);
-					this.removed(row);	
-
-					toast.success(this._("DeviceNameDeleted", row), this._("DeviceDeleted"));
+				removed(res) {
+					this.removed(res.data);	
+					toast.success(this._("DeviceNameDeleted", res), this._("DeviceDeleted"));
 				}
 			}
 		},		

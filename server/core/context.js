@@ -9,6 +9,9 @@ let Sockets   		= require("./sockets");
 
 let _ 				= require("lodash");
 
+
+let Services; // circular reference
+
 /**
  * Context object for requests
  * 
@@ -29,6 +32,9 @@ let Context = function(service) {
 	this.provider = "internal"; // `internal`, `rest`, `socket` or `graphql`
 
 	this.validationErrors = [];
+
+	if (!Services) 
+		Services = require("./services");
 };
 /*
 // Initialize Context from other context
@@ -355,10 +361,11 @@ Context.prototype.validateParam = function(name, errorMessage) {
 	 * @returns
 	 */
 	validator.isNumber = function(errorMessage) {
-		if (validator.value == null || validator.value == "")
-			validator.addError(errorMessage || `Parameter '${name}' is empty!`); // i18n
+		if (validator.value != null)
+			return _.isNumber(validator.value);
 
-		return _.isNumber(validator.value);
+		// We don't check if it is not null
+		return true;
 	};	
 
 	/**
@@ -447,31 +454,48 @@ Context.prototype.errorUnauthorized = function(type, msg) {
  * Convert the `docs` MongoDB model to JSON object.
  * With `skipFields` can be filter the properties
  * 
- * @param {any} docs		MongoDB document(s)
- * @param {any} skipFields	Array of skipped field names
- * @returns					JSON object/array
+ * @param {any} 	docs		MongoDB document(s)
+ * @param {String} 	propFilter	Filter properties of model. It is a space-separated string 
+ * @returns						JSON object/array
  */
-Context.prototype.toJSON = function(docs, skipFields) {
-	/**
-	 * 
-	 * 
-	 * @param {any} doc
-	 * @returns
-	 */
+Context.prototype.toJSON = function(docs, propFilter) {
 	let func = function(doc) {
 		let json = doc.toJSON();
-		skipFields = ["id", "_id", "__v"].concat(skipFields || []);		
-		return _.omit(json, skipFields);
+		if (propFilter != null)
+			return _.pick(json, propFilter);
+		else
+			return json;
 	};
 
 	if (docs == null) 
 		docs = this.model;
 
+	if (propFilter == null) {
+		propFilter = this.service.modelPropFilter;
+	}
+
+	if (_.isString(propFilter)) 
+		propFilter = propFilter.split(" ");
+
 	if (_.isArray(docs)) {
-		return _.map(docs, (doc) => func(doc, skipFields));
+		return _.map(docs, (doc) => func(doc, propFilter));
 	} else if (_.isObject(docs)) {
 		return func(docs);
 	}
+};
+
+Context.prototype.notifyChanges = function(type, json, role) {
+	let response = {
+		status: 200,
+		event: type,
+		data: json
+	};
+
+	if (this.user) {
+		let userService = Services.get("users");
+		response.user = this.toJSON(this.user, "code username fullName gravatar lastLogin roles");
+	}
+	this.emit(type, response, role);	
 };
 
 /**

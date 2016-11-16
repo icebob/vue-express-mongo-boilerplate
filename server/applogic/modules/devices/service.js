@@ -33,7 +33,7 @@ module.exports = {
 		get: {
 			handler(ctx) {
 				if (!ctx.model)
-					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("DeviceNotFound"));
+					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:DeviceNotFound"));
 
 				return Device.findByIdAndUpdate(ctx.model.id).exec().then( (doc) => {
 					return ctx.toJSON(doc);
@@ -71,7 +71,7 @@ module.exports = {
 		update: {
 			handler(ctx) {
 				if (!ctx.model)
-					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("DeviceNotFound"));
+					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:DeviceNotFound"));
 
 				this.validateParams(ctx);
 
@@ -106,7 +106,7 @@ module.exports = {
 		remove: {
 			handler(ctx) {
 				if (!ctx.model)
-					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("DeviceNotFound"));
+					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:DeviceNotFound"));
 
 				return Device.remove({ _id: ctx.model.id })
 					.then(() => {
@@ -132,7 +132,7 @@ module.exports = {
 	 */
 	validateParams(ctx, strictMode) {
 		if (strictMode || ctx.hasParam("name"))
-			ctx.validateParam("name").trim().notEmpty(ctx.t("DeviceNameCannotBeBlank")).end();
+			ctx.validateParam("name").trim().notEmpty(ctx.t("app:DeviceNameCannotBeBlank")).end();
 
 		if (strictMode || ctx.hasParam("status"))
 			ctx.validateParam("status").isNumber();
@@ -149,13 +149,13 @@ module.exports = {
 	modelResolver(ctx, code) {
 		let id = Device.schema.methods.decodeID(code);
 		if (id == null || id == "")
-			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("InvalidCode"));
+			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("app:InvalidCode"));
 
 		return Device.findById(id).exec();
 	},
 
 	notifyModelChanges(ctx, type, json) {
-		ctx.emit(type, json, "user");
+		ctx.notifyChanges(type, json, "user");
 	},
 
 	init(ctx) {

@@ -40,7 +40,7 @@ module.exports = {
 			permission: C.PERM_PUBLIC,
 			handler(ctx) {
 				if (!ctx.model)
-					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("PostNotFound"));
+					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:PostNotFound"));
 
 				return Post.findByIdAndUpdate(ctx.model.id, { $inc: { views: 1 } }).exec().then( (doc) => {
 					return ctx.toJSON(doc);
@@ -79,12 +79,12 @@ module.exports = {
 			permission: C.PERM_OWNER,
 			handler(ctx) {
 				if (!ctx.model)
-					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("PostNotFound"));
+					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:PostNotFound"));
 
 				this.validateParams(ctx);
 
 				if (ctx.model.author.id != ctx.user.id) {
-					return ctx.errorBadRequest(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, ctx.t("OnlyAuthorEditPost"));
+					return ctx.errorBadRequest(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, ctx.t("app:OnlyAuthorEditPost"));
 				}
 
 				if (ctx.params.title != null)
@@ -110,10 +110,10 @@ module.exports = {
 			permission: C.PERM_OWNER,
 			handler(ctx) {
 				if (!ctx.model)
-					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("PostNotFound"));
+					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:PostNotFound"));
 
 				if (ctx.model.author.id != ctx.user.id) {
-					return ctx.errorBadRequest(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, ctx.t("OnlyAuthorDeletePost"));
+					return ctx.errorBadRequest(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, ctx.t("app:OnlyAuthorDeletePost"));
 				}
 
 				return Post.remove({ _id: ctx.model.id })
@@ -131,12 +131,12 @@ module.exports = {
 
 		upVote(ctx) {
 			if (!ctx.model)
-				return Promise.reject(new Error(ctx.t("PostNotFound")));
+				return Promise.reject(new Error(ctx.t("app:PostNotFound")));
 
 			return Promise.resolve().then(() => {		
 				// Check user is on upVoters
 				if (ctx.model.upVoters.indexOf(ctx.user.id) !== -1) 
-					throw ctx.errorBadRequest(C.ERR_ALREADY_VOTED, ctx.t("YouHaveAlreadyVotedThisPost"));
+					throw ctx.errorBadRequest(C.ERR_ALREADY_VOTED, ctx.t("app:YouHaveAlreadyVotedThisPost"));
 
 			}).then(() => {
 				// Remove user from downVoters if it is on the list
@@ -163,12 +163,12 @@ module.exports = {
 
 		downVote(ctx) {
 			if (!ctx.model)
-				return Promise.reject(new Error(ctx.t("PostNotFound")));
+				return Promise.reject(new Error(ctx.t("app:PostNotFound")));
 
 			return Promise.resolve().then(() => {		
 				// Check user is on downVoters
 				if (ctx.model.downVoters.indexOf(ctx.user.id) !== -1) 
-					throw ctx.errorBadRequest(C.ERR_ALREADY_VOTED, ctx.t("YouHaveAlreadyVotedThisPost"));
+					throw ctx.errorBadRequest(C.ERR_ALREADY_VOTED, ctx.t("app:YouHaveAlreadyVotedThisPost"));
 
 			}).then(() => {
 				// Remove user from upVoters if it is on the list
@@ -205,10 +205,10 @@ module.exports = {
 	 */
 	validateParams(ctx, strictMode) {
 		if (strictMode || ctx.hasParam("title"))
-			ctx.validateParam("title").trim().notEmpty(ctx.t("PostTitleCannotBeEmpty")).end();
+			ctx.validateParam("title").trim().notEmpty(ctx.t("app:PostTitleCannotBeEmpty")).end();
 
 		if (strictMode || ctx.hasParam("content"))
-			ctx.validateParam("content").trim().notEmpty(ctx.t("PostContentCannotBeEmpty")).end();
+			ctx.validateParam("content").trim().notEmpty(ctx.t("app:PostContentCannotBeEmpty")).end();
 		
 		if (ctx.hasValidationErrors())
 			throw ctx.errorBadRequest(C.ERR_VALIDATION_ERROR, ctx.validationErrors);			
@@ -218,11 +218,11 @@ module.exports = {
 	modelResolver(ctx, code) {
 		let id = Post.schema.methods.decodeID(code);
 		if (id == null || id == "")
-			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("InvalidCode"));
+			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("app:InvalidCode"));
 
 		return Post.findById(id).exec().then( (doc) => {
 			if (!doc) 
-				return ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("DeviceNotFound"));
+				return ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:DeviceNotFound"));
 
 			return Post.populate(doc, { path: "author", select: this.populateAuthorFields});
 		});		
@@ -243,7 +243,7 @@ module.exports = {
 	},
 
 	notifyModelChanges(ctx, type, json) {
-		ctx.emit(type, json, "user");
+		ctx.notifyChanges(type, json, "user");
 	},
 
 	init(ctx) {

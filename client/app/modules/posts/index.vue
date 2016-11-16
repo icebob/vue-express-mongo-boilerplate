@@ -141,35 +141,29 @@
 			events: {
 				/**
 				 * New device added
-				 * @param  {Object} row Device object
+				 * @param  {Object} res Device object
 				 */
-				created(row) {
-					console.log("New post: ", row);
-					this.created(row);
-
-					toast.success(this._("PostNameAdded", row), this._("PostAdded"));
+				created(res) {
+					this.created(res.data);
+					toast.success(this._("PostNameAdded", res), this._("PostAdded"));
 				},
 
 				/**
 				 * Post updated
-				 * @param  {Object} row Post object
+				 * @param  {Object} res Post object
 				 */
-				updated(row) {
-					console.log("Update post: ", row);
-					this.updated(row);
-
-					toast.success(this._("PostNameUpdated", row), this._("PostUpdated"));
+				updated(res) {
+					this.updated(res.data);
+					toast.success(this._("PostNameUpdated", res), this._("PostUpdated"));
 				},
 
 				/**
 				 * Post removed
-				 * @param  {Object} row Post object
+				 * @param  {Object} res Post object
 				 */
-				removed(row) {
-					console.log("Remove post: ", row);
-					this.removed(row);	
-
-					toast.success(this._("PostNameDeleted", row), this._("PostDeleted"));
+				removed(res) {
+					this.removed(res.data);	
+					toast.success(this._("PostNameDeleted", res), this._("PostDeleted"));
 				}
 			}
 		},	

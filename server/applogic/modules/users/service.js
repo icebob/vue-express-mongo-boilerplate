@@ -16,22 +16,24 @@ module.exports = {
 	permission: C.PERM_LOGGEDIN,
 	model: User,
 	idParamName: "code", // GET /users/find?code=bD6kd
+
+	modelPropFilter: "code username fullName gravatar lastLogin roles",
 	
 	actions: {
 		// return all model
 		find(ctx) {
 			return ctx.queryPageSort(User.find({})).exec().then( (docs) => {
-				return ctx.toJSON(docs, "password");
+				return ctx.toJSON(docs);
 			});
 		},
 
 		// return a model by ID
 		get(ctx) {
 			if (!ctx.model)
-				throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("UserNotFound"));
+				throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:UserNotFound"));
 
 			return Promise.resolve(ctx.model).then( (doc) => {
-				return ctx.toJSON(doc, "password");
+				return ctx.toJSON(doc);
 			});
 		}
 	},
@@ -40,7 +42,7 @@ module.exports = {
 	modelResolver(ctx, code) {
 		let id = User.schema.methods.decodeID(code);
 		if (id == null || id == "")
-			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("InvalidCode"));
+			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("app:InvalidCode"));
 
 		return User.findById(id).exec();		
 	},	

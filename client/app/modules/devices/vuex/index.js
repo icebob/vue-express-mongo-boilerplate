@@ -8,20 +8,15 @@ const state = {
 };
 
 const mutations = {
-	[LOAD] (state, devices) {
+	[LOAD] (state, models) {
 		state.rows.splice(0);
-		state.rows.push(...devices);
+		state.rows.push(...models);
 	},
 
-	[ADD] (state, device) {
-		let found = false;
-		each(state.rows, (item) => {
-			if (item.code == device.code)
-				found = true;
-		});
-		
+	[ADD] (state, model) {
+		let found = find(state.rows, (item) => item.code == model.code);
 		if (!found)
-			state.rows.push(device);
+			state.rows.push(model);
 	},
 
 	[SELECT] (state, row, multiSelect) {
@@ -46,16 +41,16 @@ const mutations = {
 		state.selected.splice(0);
 	},
 
-	[UPDATE] (state, device) {
+	[UPDATE] (state, model) {
 		each(state.rows, (item) => {
-			if (item.code == device.code)
-				assign(item, device);
+			if (item.code == model.code)
+				assign(item, model);
 		});
 	},
 
-	[REMOVE] (state, device) {
-		// We need find the exact object, because device may come via websocket
-		let found = find(state.rows, (item) => item.code == device.code);
+	[REMOVE] (state, model) {
+		// We need find the exact object, because model may come via websocket
+		let found = find(state.rows, (item) => item.code == model.code);
 
 		if (found) {
 			state.rows.$remove(found);

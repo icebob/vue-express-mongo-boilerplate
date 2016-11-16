@@ -16,7 +16,7 @@ let Context 		= require("./context");
 let auth			= require("./auth/helper");
 let response		= require("./response");
 
-let GraphQLScalarType 	= require("graphql").GraphQLScalarType ;
+let GraphQLScalarType 	= require("graphql").GraphQLScalarType;
 let Kind				= require("graphql/language").Kind;
 
 /* global WEBPACK_BUNDLE */

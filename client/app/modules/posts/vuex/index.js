@@ -13,7 +13,9 @@ const mutations = {
 	},
 
 	[ADD] (state, model) {
-		state.rows.push(model);
+		let found = find(state.rows, (item) => item.code == model.code);
+		if (!found)
+			state.rows.push(model);
 	},
 
 	[UPDATE] (state, model) {

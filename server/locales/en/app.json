@@ -16,9 +16,9 @@
 	"DeviceDeleted": "Device deleted",
 	"DeviceNotFound": "Device not found!",
 
-	"DeviceNameAdded": "Device '{{name}}' added!",
-	"DeviceNameUpdated": "Device '{{name}}' updated!",
-	"DeviceNameDeleted": "Device '{{name}}' deleted!",
+	"DeviceNameAdded": "Device '{{data.name}}' added by {{user.fullName}}!",
+	"DeviceNameUpdated": "Device '{{data.name}}' updated by {{user.fullName}}!",
+	"DeviceNameDeleted": "Device '{{data.name}}' deleted by {{user.fullName}}!",
 
 	"DeviceNameCannotBeBlank": "Device name cannot be blank!",
 
@@ -58,9 +58,9 @@
 	"PostUpdated": "Post updated",
 	"PostDeleted": "Post deleted",
 
-	"PostNameAdded": "Post '{{title}}' added!",
-	"PostNameUpdated": "Post '{{title}}' updated!",
-	"PostNameDeleted": "Post '{{title}}' deleted!",
+	"PostNameAdded": "Post '{{data.title}}' added by {{user.fullName}}!",
+	"PostNameUpdated": "Post '{{data.title}}' updated by {{user.fullName}}!",
+	"PostNameDeleted": "Post '{{data.title}}' deleted by {{user.fullName}}!",
 
 	"InvalidCode": "Invalid code!",
 

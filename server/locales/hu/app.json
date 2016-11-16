@@ -16,9 +16,9 @@
 	"DeviceDeleted": "Eszköz törölve",
 	"DeviceNotFound": "Az eszköz nem található!",
 
-	"DeviceNameAdded": "Eszköz '{{name}}' hozzáadva!",
-	"DeviceNameUpdated": "Eszköz '{{name}}' módosítva!",
-	"DeviceNameDeleted": "Eszköz '{{name}}' törölve!",
+	"DeviceNameAdded": "{{user.fullName}} létrehozta a(z) '{{data.name}}' eszközt!",
+	"DeviceNameUpdated": "{{user.fullName}} módosította a(z) '{{data.name}}' eszközt!",
+	"DeviceNameDeleted": "{{user.fullName}} törölte a(z) '{{data.name}}' eszközt!",
 
 	"DeviceNameCannotBeBlank": "Device name cannot be blank!",
 
@@ -58,9 +58,9 @@
 	"PostUpdated": "Bejegyzés módosítva",
 	"PostDeleted": "Bejegyzés törölve",
 
-	"PostNameAdded": "Bejegyzés '{{title}}' hozzáadva!",
-	"PostNameUpdated": "Bejegyzés '{{title}}' módosítva!",
-	"PostNameDeleted": "Bejegyzés '{{title}}' törölve!",
+	"PostNameAdded": "{{user.fullName}} létrehozta a(z) '{{data.title}}' bejegyzést!",
+	"PostNameUpdated": "{{user.fullName}} módosította a(z) '{{data.title}}' bejegyzést!",
+	"PostNameDeleted": "{{user.fullName}} törölte a(z) '{{data.title}}' bejegyzést!",
 
 	"InvalidCode": "Invalid code!",
 
