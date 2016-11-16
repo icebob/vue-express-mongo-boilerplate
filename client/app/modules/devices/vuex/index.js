@@ -14,7 +14,14 @@ const mutations = {
 	},
 
 	[ADD] (state, device) {
-		state.rows.push(device);
+		let found = false;
+		each(state.rows, (item) => {
+			if (item.code == device.code)
+				found = true;
+		});
+		
+		if (!found)
+			state.rows.push(device);
 	},
 
 	[SELECT] (state, row, multiSelect) {
@@ -41,14 +48,14 @@ const mutations = {
 
 	[UPDATE] (state, device) {
 		each(state.rows, (item) => {
-			if (item.id == device.id)
+			if (item.code == device.code)
 				assign(item, device);
 		});
 	},
 
 	[REMOVE] (state, device) {
 		// We need find the exact object, because device may come via websocket
-		let found = find(state.rows, (item) => item.id == device.id);
+		let found = find(state.rows, (item) => item.code == device.code);
 
 		if (found) {
 			state.rows.$remove(found);

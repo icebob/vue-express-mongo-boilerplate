@@ -1,7 +1,6 @@
 import Vue from "vue";
-import { LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE } from "./types";
-
-const BASE_URL = "/devices";
+import toastr from "../../../core/toastr";
+import { NAMESPACE, LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE } from "./types";
 
 export const selectRow = ({ dispatch }, row, multiSelect) => {
 	dispatch(SELECT, row, multiSelect);
@@ -12,9 +11,9 @@ export const clearSelection = ({ dispatch }) => {
 };
 
 export const downloadRows = ({ dispatch }) => {
-	Vue.http.get(BASE_URL).then((response) => {
+	Vue.http.get(NAMESPACE).then((response) => {
 		let res = response.json();
-		if (res.status == 200)
+		if (res.status == 200 && res.data)
 			dispatch(LOAD, res.data);
 		else
 			console.error("Request error!", res.error);
@@ -26,43 +25,47 @@ export const downloadRows = ({ dispatch }) => {
 };
 
 export const saveRow = ({ dispatch }, model) => {
-	Vue.http.post(BASE_URL, model).then((response) => {
+	Vue.http.post(NAMESPACE, model).then((response) => {
 		let res = response.data;
 
-		// Websocket event will add this row
-		//if (res.data)
-		//	addRow({ dispatch }, res.data, true);
-	});	
+		if (res.status == 200 && res.data)
+			created({ dispatch }, res.data, true);
+	}).catch((response) => {
+		if (response.data.error)
+			toastr.error(response.data.error.message);
+	});		
 };
 
-export const addRow = ({ dispatch }, row, needSelect) => {
+export const created = ({ dispatch }, row, needSelect) => {
 	dispatch(ADD, row);
 	if (needSelect)
 		dispatch(SELECT, row, false);
 };
 
-export const rowAdded = ({ dispatch }, row) => {
-	dispatch(ADD, row);
-};
-
 export const updateRow = ({ dispatch }, row) => {
-	Vue.http.put(BASE_URL + "/" + row.code, row).then((response) => {
+	Vue.http.put(NAMESPACE + "/" + row.code, row).then((response) => {
 		let res = response.data;
 		if (res.data)
 			dispatch(UPDATE, res.data);
+	}).catch((response) => {
+		if (response.data.error)
+			toastr.error(response.data.error.message);
 	});	
 };
 
-export const rowChanged = ({ dispatch }, row) => {
+export const updated = ({ dispatch }, row) => {
 	dispatch(UPDATE, row);
 };
 
 export const removeRow = ({ dispatch }, row) => {
-	Vue.http.delete(BASE_URL + "/" + row.code).then((response) => {
+	Vue.http.delete(NAMESPACE + "/" + row.code).then((response) => {
 		dispatch(REMOVE, row);
+	}).catch((response) => {
+		if (response.data.error)
+			toastr.error(response.data.error.message);
 	});
 };
 
-export const rowRemoved = ({ dispatch }, row) => {
+export const removed = ({ dispatch }, row) => {
 	dispatch(REMOVE, row);
 };

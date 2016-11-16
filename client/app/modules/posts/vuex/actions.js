@@ -21,7 +21,7 @@ export const saveRow = function({ dispatch }, model) {
 		let res = response.json();
 
 		if (res.status == 200 && res.data)
-			created({ dispatch }, res.data, true);
+			created({ dispatch }, res.data);
 	}).catch((response) => {
 		if (response.data.error)
 			toastr.error(response.data.error.message);

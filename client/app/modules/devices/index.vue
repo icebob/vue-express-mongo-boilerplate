@@ -14,10 +14,11 @@ https://github.com/Akryum/vue-apollo
 	import schema from "./schema";
 	import toast from "../../core/toastr";
 
-	import gql from "graphql-tag";
+	/*import gql from "graphql-tag";
 	window["gql"] = gql;
 
 	import ApolloClient, { createNetworkInterface } from "apollo-client";
+	*/
 
 	import * as actions from "./vuex/actions";
 	import * as getters from "./vuex/getters";
@@ -62,6 +63,8 @@ https://github.com/Akryum/vue-apollo
 		 */
 		socket: {
 
+			prefix: "/devices/",
+
 			events: {
 				/**
 				 * New device added
@@ -69,7 +72,7 @@ https://github.com/Akryum/vue-apollo
 				 */
 				created(row) {
 					console.log("New device: ", row);
-					this.rowAdded(row);
+					this.created(row);
 
 					toast.success(this._("DeviceNameAdded", row), this._("DeviceAdded"));
 				},
@@ -80,7 +83,7 @@ https://github.com/Akryum/vue-apollo
 				 */
 				updated(row) {
 					console.log("Update device: ", row);
-					this.rowChanged(row);
+					this.updated(row);
 
 					toast.success(this._("DeviceNameUpdated", row), this._("DeviceUpdated"));
 				},
@@ -91,7 +94,7 @@ https://github.com/Akryum/vue-apollo
 				 */
 				removed(row) {
 					console.log("Remove device: ", row);
-					this.rowRemoved(row);	
+					this.removed(row);	
 
 					toast.success(this._("DeviceNameDeleted", row), this._("DeviceDeleted"));
 				}
@@ -105,7 +108,7 @@ https://github.com/Akryum/vue-apollo
 			// Download rows for the page
 			this.downloadRows();
 
-
+			/*
 			const networkInterface = createNetworkInterface("/graphql");
 
 			networkInterface.use([{
@@ -148,6 +151,7 @@ https://github.com/Akryum/vue-apollo
 			}).catch( (error) => {
 				console.error("There was an error sending the query", error);
 			});
+			*/
 		}
 	};
 </script>
