@@ -21,6 +21,8 @@
 	import * as actions from "../modules/session/vuex/actions";
 	import * as getters from "../modules/session/vuex/getters";
 
+	import Service from "./service";
+
 	export default {
 
 		/**
@@ -132,6 +134,8 @@
 			console.log("App started!");
 			window.app = this;
 			window.socket = this.$socket; // debug
+
+			window.rest = new Service("posts").getRESTInterface();
 
 			this.getSessionUser();
 		}

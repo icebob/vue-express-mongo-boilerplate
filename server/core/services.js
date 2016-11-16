@@ -106,6 +106,8 @@ Services.prototype.registerRoutes = function(app) {
 
 			let idParamName = service.idParamName || "id";
 
+			let lastRoutes = [];
+
 			_.forIn(service.actions, (action, name) => {
 
 				// Handle shorthand action defs
@@ -176,13 +178,15 @@ Services.prototype.registerRoutes = function(app) {
 				// 		GET /api/namespace/123
 				case "get": {
 					//router.get("/:" + idParamName, handler);	
+					lastRoutes.push({ method: "get", path: "/:" + idParamName, handler: handler });
 					break;
 				}
 
 				// You can call the save action with 
 				// 		POST /api/namespace/
 				case "save": {
-					router.post("/:" + idParamName, handler);	
+					//router.post("/:" + idParamName, handler);	
+					lastRoutes.push({ method: "post", path: "/:" + idParamName, handler: handler });
 					router.post("/", handler);	
 					break;
 				}
@@ -196,8 +200,10 @@ Services.prototype.registerRoutes = function(app) {
 				// 	or 
 				// 		PATCH /api/namespace/123
 				case "update": {
-					router.put("/:" + idParamName, handler);	
-					router.patch("/:" + idParamName, handler);	
+					//router.put("/:" + idParamName, handler);	
+					lastRoutes.push({ method: "put", path: "/:" + idParamName, handler: handler });
+					//router.patch("/:" + idParamName, handler);	
+					lastRoutes.push({ method: "patch", path: "/:" + idParamName, handler: handler });
 
 					router.put("/", handler);	
 					router.patch("/", handler);	
@@ -209,12 +215,18 @@ Services.prototype.registerRoutes = function(app) {
 				// 	or 
 				// 		DELETE /api/namespace/123
 				case "remove": {
-					router.delete("/:" + idParamName, handler);	
+					//router.delete("/:" + idParamName, handler);	
+					lastRoutes.push({ method: "delete", path: "/:" + idParamName, handler: handler });
 					router.delete("/", handler);	
 					break;
 				}
 				}
 
+			});
+
+			// Register '/:code' routes 
+			lastRoutes.forEach((item) => {
+				router[item.method](item.path, item.handler);
 			});
 
 			// Register router to namespace

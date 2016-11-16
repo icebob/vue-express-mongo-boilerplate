@@ -16,6 +16,8 @@ module.exports = {
 	model: Device,
 	idParamName: "code", // GET /devices/find?code=123
 	
+	modelPropFilter: "code type address name description status lastCommunication createdAt updatedAt",
+	
 	actions: {
 		find(ctx) {
 			let filter = {};

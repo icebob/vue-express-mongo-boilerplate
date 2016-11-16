@@ -16,6 +16,8 @@ module.exports = {
 	permission: C.PERM_LOGGEDIN,
 	model: Post,
 	idParamName: "code", // GET /posts/find?code=123
+
+	modelPropFilter: "code title content author votes downVoters upVoters views createdAt updatedAt",
 	
 	populateAuthorFields: "username fullName code email gravatar",
 
