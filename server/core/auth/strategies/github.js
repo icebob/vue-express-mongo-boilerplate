@@ -2,7 +2,6 @@
 
 let logger 	= require("../../logger");
 let config 	= require("../../../config");
-let secrets = require("../../secrets");
 let helper 	= require("../helper");
 
 let passport 		= require("passport");
@@ -11,11 +10,11 @@ let User 			= require("../../../models/user");
 
 // https://github.com/settings/applications/new
 module.exports = function() {
-	if (secrets.apiKeys && secrets.apiKeys.github && secrets.apiKeys.github.clientID) {
+	if (config.authKeys.github.clientID && config.authKeys.github.clientSecret) {
 
 		passport.use("github", new GithubStrategy({
-			clientID: secrets.apiKeys.github.clientID,
-			clientSecret: secrets.apiKeys.github.clientSecret,
+			clientID: config.authKeys.github.clientID,
+			clientSecret: config.authKeys.github.clientSecret,
 			callbackURL: "/auth/github/callback",
 			scope: [ 'user:email' ],
 			passReqToCallback: true

@@ -115,7 +115,7 @@ Before start, you have to install production dependencies with npm: `npm install
  - **Authorized Javascript origins**: http://localhost:3000
  - **Authorized redirect URI**: http://localhost:3000/auth/google/callback
 - Click on **Create Client ID** button
-- Copy and paste *Client ID* and *Client secret* keys into `secrets.json` file
+- Copy and paste *Client ID* and *Client secret* keys into `config.js` file
 
 <hr>
 
@@ -127,7 +127,7 @@ Before start, you have to install production dependencies with npm: `npm install
 - Choose a **Category** that best describes your app
 - Click on **Create App ID** button
 - In the upper right corner click on **Skip Quick Star**
-- Copy and paste *App ID* and *App Secret* keys into `secrets.json` file
+- Copy and paste *App ID* and *App Secret* keys into `config.js` file
  - **Note:** *App ID* is **clientID**, *App Secret* is **clientSecret**
 - Click on the *Settings* tab in the left nav, then click on **+ Add Platform**
 - Select **Website**
@@ -144,7 +144,7 @@ Before start, you have to install production dependencies with npm: `npm install
 - Enter *Application Name* and *Homepage URL*
 - For *Authorization Callback URL*: http://localhost:3000/auth/github/callback
 - Click **Register application**
-- Now copy and paste *Client ID* and *Client Secret* keys into `secrets.json` file
+- Now copy and paste *Client ID* and *Client Secret* keys into `config.js` file
 
 <hr>
 
@@ -157,7 +157,7 @@ Before start, you have to install production dependencies with npm: `npm install
 - Under *Application Type* select **Read and Write** access
 - Check the box **Allow this application to be used to Sign in with Twitter**
 - Click **Update this Twitter's applications settings**
-- Copy and paste *Consumer Key* and *Consumer Secret* keys into `secrets.json` file
+- Copy and paste *Consumer Key* and *Consumer Secret* keys into `config.js` file
 
 ## License
 vue-express-mongo-boilerplate is available under the [MIT license](https://tldrlegal.com/license/mit-license).

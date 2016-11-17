@@ -2,7 +2,6 @@
 
 let logger 	= require("../../logger");
 let config 	= require("../../../config");
-let secrets = require("../../secrets");
 let helper 	= require("../helper");
 
 let passport 		= require("passport");
@@ -11,11 +10,11 @@ let User 			= require("../../../models/user");
 
 // https://apps.twitter.com/app/new
 module.exports = function() {
-	if (secrets.apiKeys && secrets.apiKeys.twitter && secrets.apiKeys.twitter.clientID) {
+	if (config.authKeys.twitter.clientID && config.authKeys.twitter.clientSecret) {
 
 		passport.use("twitter", new GoogleStrategy({
-			consumerKey: secrets.apiKeys.twitter.clientID,
-			consumerSecret: secrets.apiKeys.twitter.clientSecret,
+			consumerKey: config.authKeys.twitter.clientID,
+			consumerSecret: config.authKeys.twitter.clientSecret,
 			callbackURL: "/auth/twitter/callback",
 			passReqToCallback: true
 		}, function(req, accessToken, refreshToken, profile, done) {

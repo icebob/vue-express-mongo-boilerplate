@@ -2,7 +2,6 @@
 
 let path = require("path");
 let pkg = require("../../package.json");
-let secrets = require("../core/secrets");
 
 module.exports = {
 	app: {
@@ -15,7 +14,7 @@ module.exports = {
 		contactEmail: "hello@vem-app.com"
 	},
 
-	ip: "0.0.0.0",
+	ip: process.env.NODE_IP || "0.0.0.0",
 	port: process.env.PORT || 3000,
 	rootPath: global.rootPath,
 	dataFolder: path.join(global.rootPath, "data"),
@@ -44,6 +43,19 @@ module.exports = {
 	},
 
 	test: false,
+
+	db: {
+		uri: process.env.MONGO_URI || "mongodb://localhost/" + pkg.config.dbName + "-dev",
+		options: {
+			user: "",
+			pass: "",
+			server: {
+				socketOptions: {
+					keepAlive: 1
+				}
+			}
+		}
+	},
 
 	mailer: {
 		from: "noreply@bolierplate-app.com",
@@ -83,55 +95,64 @@ module.exports = {
 		}*/
 	},
 
-	db: {
-		uri: process.env.MONGO_URI || "mongodb://localhost/" + pkg.config.dbName + "-dev",
-		options: {
-			user: "",
-			pass: "",
-			server: {
-				socketOptions: {
-					keepAlive: 1
-				}
-			}
-		}
+	authKeys: {
 
+		google: {
+			clientID: null,
+			clientSecret: null
+		},
+
+		facebook: {
+			clientID: null,
+			clientSecret: null
+		},
+
+		github: {
+			clientID: null,
+			clientSecret: null
+		},
+
+		twitter: {
+			clientID: null,
+			clientSecret: null
+		}		
 	},
 
 	logging: {
 
 		graylog: {
-			enabled: false,
-			servers: [ { host: "192.168.0.174", port: 12201 } ]
+			enabled: false
+			// servers: [ { host: "192.168.0.174", port: 12201 } ]
 		},
 
 		papertrail: {
-			enabled: secrets.papertrail != null,
-			host: secrets.papertrail != null ? secrets.papertrail.host : null,
-			port: secrets.papertrail != null ? secrets.papertrail.port : null,
-			level: 'debug',
-			program: 'vem'
+			enabled: false,
+			host: null,
+			port: null,
+			level: "debug",
+			program: "vem"
 		},
 
 		logentries: {
-			enabled: secrets.logentries != null,
-			token: secrets.logentries != null ? secrets.logentries.token : null
+			enabled: false,
+			token: null
 		},
 
 		loggly: {
-			enabled: secrets.loggly != null,
-			token: secrets.loggly != null ? secrets.loggly.token : null,
-			subdomain: secrets.loggly != null ? secrets.loggly.subdomain : null
+			enabled: false,
+			token: null,
+			subdomain: null
 		},
 		
 		logsene: {
-			enabled: secrets.logsene != null,
-			token: secrets.logsene != null ? secrets.logsene.token : null
+			enabled: false,
+			token: null
 		},
 		
 		logzio: {
-			enabled: secrets.logzio != null,
-			token: secrets.logzio != null ? secrets.logzio.token : null
-		},
+			enabled: false,
+			token: null
+		}
 		
 	},
 

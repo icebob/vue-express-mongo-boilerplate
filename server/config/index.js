@@ -1,7 +1,9 @@
 "use strict";
 
 let path 	= require("path");
+let fs 		= require("fs");
 let _ 		= require("lodash");
+let chalk	= require("chalk");
 
 global.rootPath = path.normalize(path.join(__dirname, "..", ".."));
 console.log("process.argv: " + process.argv);
@@ -34,6 +36,23 @@ module.exports = {
 	}
 };
 
+// Load external configuration if exists `config.js`
+let externalConfig = {};
+
+const extConfigFile = path.join(global.rootPath, "config.js"); 
+
+try {
+	if (fs.existsSync(extConfigFile))
+		externalConfig = require(extConfigFile);
+	else
+		console.warn(chalk.bold(chalk.yellow("External production configuration not found!. Please create a `configuration.js` file!")));
+
+} catch (error) {
+	console.warn("Unable to load external production config.js file!", error);
+}
+
+
+
 let config = {};
 if (module.exports.isTestMode()) {
 	console.log("Load test config...");
@@ -44,5 +63,5 @@ else if (module.exports.isProductionMode()) {
 	config = require("./prod");
 }
 
-module.exports = _.defaultsDeep(module.exports, config, require("./default"));
+module.exports = _.defaultsDeep(module.exports, externalConfig, config, require("./default"));
 

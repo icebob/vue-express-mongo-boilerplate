@@ -5,7 +5,7 @@ let fs				= require("fs");
 let path			= require("path");
 let secretUtils		= require("secret-utils");
 
-let fName = path.join(__dirname, "..", "..", "secrets.json");
+let fName = path.join(__dirname, "..", "..", "config.js");
 if (!fs.existsSync(fName)) {
 
 	let json = {
@@ -14,7 +14,7 @@ if (!fs.existsSync(fName)) {
 	};
 	fs.writeFileSync(fName, JSON.stringify(json, null, 2));
 	
-	console.warn(chalk.green.bold("Secret file created!"));
+	console.warn(chalk.green.bold("Config.js file created!"));
 }
 
 module.exports = JSON.parse(fs.readFileSync(fName));

@@ -2,7 +2,6 @@
 
 let logger 			= require("./logger");
 let config 			= require("../config");
-let secrets 		= require("./secrets");
 
 let	path 			= require("path");
 let	fs 				= require("fs");
@@ -100,7 +99,7 @@ let self = {
 		// Intercept Socket.io's handshake request
 		io.use(function (socket, next) {
 			// Use the 'cookie-parser' module to parse the request cookies
-			cookieParser(secrets.sessionSecret)(socket.request, {}, function (err) {
+			cookieParser(config.sessionSecret)(socket.request, {}, function (err) {
 				// Get the session id from the request cookies
 				let sessionId = socket.request.signedCookies ? socket.request.signedCookies[config.sessions.name] : undefined;
 

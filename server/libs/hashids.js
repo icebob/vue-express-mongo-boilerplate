@@ -1,8 +1,8 @@
 "use strict";
 
 let Hashids = require("hashids");
-let secrets = require("../core/secrets");
+let config = require("../config");
 
 module.exports = function(module, length) {
-	return new Hashids(module + secrets.hashSecret, length || 10);
+	return new Hashids(module + config.hashSecret, length || 10);
 };

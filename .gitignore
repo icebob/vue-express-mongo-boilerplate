@@ -55,8 +55,8 @@ bower_components
 Thumbs.db
 
 # Secret file
-secrets.json
-configuration.js
+config.js
+config.json
 
 # Data folder
 data

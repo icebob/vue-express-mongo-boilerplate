@@ -7,7 +7,7 @@
 
 	"watch": [
 		"server",
-		"secrets.json",
+		"config.js",
 		"webpack.*.config.js"
 	],
 

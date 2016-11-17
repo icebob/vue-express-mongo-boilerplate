@@ -5,7 +5,6 @@ let path = require("path");
 let fs = require("fs");
 
 let config = require("../config");
-let secrets = require("./secrets");
 
 // Create logs directory
 let logDir = path.join(config.rootPath, "logs");

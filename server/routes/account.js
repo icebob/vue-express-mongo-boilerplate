@@ -4,7 +4,6 @@ let config 	= require("../config");
 let logger 	= require("../core/logger");
 
 let C 			= require("../core/constants");
-let secrets 	= require("../core/secrets");
 let tokgen 		= require("../libs/tokgen");
 
 let crypto 		= require("crypto");
@@ -25,17 +24,17 @@ function checkAvailableSocialAuth() {
 	// set social options
 	let social = {};
 
-	if (secrets.apiKeys) {
-		if (secrets.apiKeys.google && secrets.apiKeys.google.clientID)
+	if (config.authKeys) {
+		if (config.authKeys.google && config.authKeys.google.clientID)
 			social.google = true;
 
-		if (secrets.apiKeys.facebook && secrets.apiKeys.facebook.clientID)
+		if (config.authKeys.facebook && config.authKeys.facebook.clientID)
 			social.facebook = true;
 
-		if (secrets.apiKeys.github && secrets.apiKeys.github.clientID)
+		if (config.authKeys.github && config.authKeys.github.clientID)
 			social.github = true;
 
-		if (secrets.apiKeys.twitter && secrets.apiKeys.twitter.clientID)
+		if (config.authKeys.twitter && config.authKeys.twitter.clientID)
 			social.twitter = true;
 	}
 

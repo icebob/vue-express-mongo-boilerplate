@@ -2,7 +2,6 @@
 
 let logger 			= require("./logger");
 let config 			= require("../config");
-let secrets 		= require("./secrets");
 
 let express 		= require("express");
 let http 			= require("http");
@@ -196,7 +195,7 @@ function initSession(app, db) {
 	app.use(session({
 		saveUninitialized: true,
 		resave: false,
-		secret: secrets.sessionSecret,
+		secret: config.sessionSecret,
 		store: new MongoStore({
 			mongooseConnection: db.connection,
 			collection: config.sessions.collection,
@@ -289,7 +288,7 @@ module.exports = function(db) {
 	initWebpack(app);
 
 	// Load services
-	let services = require("./services")
+	let services = require("./services");
 	services.loadServices(app, db);
 
 	// Load socket.io server
