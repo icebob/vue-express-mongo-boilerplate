@@ -17,10 +17,10 @@ module.exports = {
 		columns: [
 			{
 				title: _("ID"),
-				field: "id",
+				field: "code",
 				align: "left",
 				formatter(value, model) {
-					return model ? `${model.id} - ${model.code}` : "";
+					return model ? model.code : "";
 				}
 			},
 			{
@@ -69,13 +69,13 @@ module.exports = {
 			{
 				type: "text",
 				label: _("ID"),
-				model: "id",
+				model: "code",
 				readonly: true,
 				disabled: true,
 				multi: false,
 				get(model) {
-					if (model.id)
-						return model ? `${model.id} - ${model.code}` : "";
+					if (model.code)
+						return model.code;
 					else
 						return _("willBeGenerated");
 				}
