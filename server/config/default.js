@@ -58,17 +58,17 @@ module.exports = {
 	},
 
 	mailer: {
-		from: "noreply@bolierplate-app.com",
-
+		from: "noreply@vem-app.com"
+		/*
 		transport: "smtp",
 		smtp: {
 			host: "mailtrap.io",
 			port: 2525,
 			auth: {
-				user: "367335eaa82697636",
-				pass: "e5a76af9b056d0"
+				user: "",
+				pass: ""
 			}
-		}
+		}*/
 
 		/*transport: "smtp",
 		smtp: {
