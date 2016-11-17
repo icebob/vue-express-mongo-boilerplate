@@ -307,15 +307,15 @@ module.exports = {
 				},
 
 				upVoters(post, args, context) {
-					// return ctx.queryPageSort(User.find({ _id: { $in: post.upVoters} })).exec();
+					return context.ctx.queryPageSort(User.find({ _id: { $in: post.upVoters} })).exec();
 				},
 
 				downVoters(post, args, context) {
-					// return ctx.queryPageSort(User.find({ _id: { $in: post.downVoters} })).exec();
+					return context.ctx.queryPageSort(User.find({ _id: { $in: post.downVoters} })).exec();
 				},
 
 				voters(post, args, context) {
-					// return ctx.queryPageSort(User.find({ _id: { $in: post.upVoters.concat(post.downVoters) } })).exec();
+					return context.ctx.queryPageSort(User.find({ _id: { $in: post.upVoters.concat(post.downVoters) } })).exec();
 				}
 
 			},
@@ -393,14 +393,17 @@ fragment postFields on Post {
     author {
       code
       fullName
-      email
       username
-      roles
       gravatar
-      lastLogin
     }
     views
     votes
+  	voters {
+  	  code
+  	  fullName
+  	  username
+  	  gravatar
+  	}
 }
 
 */

@@ -9,7 +9,6 @@ let Sockets   		= require("./sockets");
 
 let _ 				= require("lodash");
 
-
 let Services; // circular reference
 
 /**
@@ -111,6 +110,7 @@ class Context {
 		ctx.params = args;
 		ctx.user = context.user;
 		ctx.action = action;
+		context.ctx = ctx;
 
 		return ctx;
 	}
@@ -501,6 +501,16 @@ class Context {
 		}
 	}
 
+	
+	/**
+	 * Send notification from data changes via websocket
+	 * 
+	 * @param {any} type	type of changes
+	 * @param {any} json	Changed JSON object
+	 * @param {any} role	affected role
+	 * 
+	 * @memberOf Context
+	 */
 	notifyChanges(type, json, role) {
 		let response = {
 			status: 200,
@@ -520,7 +530,7 @@ class Context {
 	 * and use them in the query
 	 *
 	 * Example:
-	 * 	GET /posts?offset=20&limit=10&sort=-votes,createdAtR
+	 * 		GET /posts?offset=20&limit=10&sort=-votes,createdAt
 	 * 
 	 * @param  {query} query Mongo query object
 	 * @return {query}

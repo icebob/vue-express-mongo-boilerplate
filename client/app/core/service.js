@@ -5,12 +5,18 @@ import ApolloClient, { createNetworkInterface } from "apollo-client";
 
 window.gql = gql; // debug
 
+// Create the apollo client for GraphQL
 const networkInterface = createNetworkInterface({
 	uri: "/graphql",
 	opts: {
 		credentials: "same-origin"
 	}
 });
+
+const apolloClient = new ApolloClient({
+	networkInterface
+});
+
 /*
 networkInterface.use([{
 	applyMiddleware(req, next) {
@@ -36,11 +42,6 @@ export default class Service {
 		this.axios = axios.create({
 			baseURL: `/api/${namespace}/`,
 			responseType: "json"
-		});
-
-		// Create the apollo client for GraphQL
-		this.apolloClient = new ApolloClient({
-			networkInterface
 		});
 	}
 
@@ -104,8 +105,18 @@ export default class Service {
 			window.counterService.query(gql`query($code: String!) {post(code: $code) { code title } }`, { code: "Jk8Pqb5MAN" })
 	*/
 
+	/**
+	 * Call a service action via GraphQL query
+	 * 
+	 * @param {any} query 		GraphQL query string
+	 * @param {any} variables 	variables of query
+	 * @param {any} fragments	fragments of query
+	 * @returns {Promise}
+	 * 
+	 * @memberOf Service
+	 */
 	query(query, variables, fragments) {
-		return this.apolloClient.query({
+		return apolloClient.query({
 			query,
 			variables,
 			fragments,
@@ -125,8 +136,9 @@ export default class Service {
 		});
 	}
 
+	// under dev
 	watchQuery(query, variables, fragments, pollInterval) {
-		return this.apolloClient.watchQuery({
+		return apolloClient.watchQuery({
 			query,
 			variables,
 			fragments, 
@@ -136,21 +148,27 @@ export default class Service {
 	}
 
 
+	/**
+	 * Call a service action via GraphQL mutation
+	 * 
+	 * @param {any} mutation 	GraphQL mutation string
+	 * @param {any} variables 	variables of query
+	 * @param {any} fragments	fragments of query
+	 * @returns {Promise}
+	 * 
+	 * @memberOf Service
+	 */
 	mutate(mutation, variables, fragments) {
-		return this.apolloClient.mutate({
+		return apolloClient.mutate({
 			mutation,
 			variables,
 			fragments
 		}).then( (result) => {
-			console.log("GraphQL response: ", result);
-			/*if (result.errors)
-				return console.error("Got some GraphQL execution errors!", result.errors);
+			//console.log("GraphQL response: ", result);
 
-			if (result.data) {
-				console.log(result.data);
-			}*/
+			return result.data;
 		}).catch( (error) => {
-			console.error("GraphQL query error", error);
+			//console.error("GraphQL query error", error);
 
 			let err = error;
 			if (error.graphQLErrors && error.graphQLErrors.length > 0) 

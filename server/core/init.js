@@ -13,7 +13,7 @@ if (!fs.existsSync(config.dataFolder)) {
 }
 
 // Show config in dev mode
-if (config.isDevMode()) {
+if (true || config.isDevMode()) {
 	logger.info("Loaded configuration:");
 	logger.info(config);
 	logger.info();

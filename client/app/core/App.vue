@@ -115,7 +115,6 @@
 					this.update(children[i]);
 			},
 
-
 			toggleSidebar() {
 				this.miniSidebar = !this.miniSidebar;
 			}
@@ -133,13 +132,14 @@
 		created() {
 			console.log("App started!");
 			window.app = this;
-			window.socket = this.$socket; // debug
 
+			this.getSessionUser();
+
+			// debug
 			window.postService = new Service("posts", this);
 			window.counterService = new Service("counter", this);
 			window.deviceService = new Service("device", this);
-
-			this.getSessionUser();
+			
 		}
 	};
 </script>

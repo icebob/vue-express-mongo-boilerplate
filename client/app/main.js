@@ -17,12 +17,8 @@ Vue.use(Filters);
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(VueAnimatedList);
-
-// Register vue-form-generator
 Vue.use(VueFormGenerator);
-
 Vue.use(VueWebsocket);
-
 
 //Vue.http.headers.common['X-CSRF-TOKEN'] = $('input[name="csrf"]').val();
 Vue.http.headers.common["Accept"] = "application/json";
@@ -30,7 +26,8 @@ Vue.http.headers.common["Accept"] = "application/json";
 Vue.config.debug = true;
 
 
-// Register i18next localization module
+// Register i18next localization module. We need to 
+// wait it before start the application!
 Vue.use(VueI18Next, (i18next) => {
 
 	let router = require("./core/router")();
