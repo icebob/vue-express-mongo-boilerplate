@@ -22,9 +22,6 @@ module.exports = {
 		find(ctx) {
 			let filter = {};
 
-			//if (ctx.params.filter == "my") 
-			//	filter.author = ctx.user.id;
-
 			let query = Device.find(filter);
 			return ctx.queryPageSort(query).exec().then( (docs) => {
 				return ctx.toJSON(docs);
