@@ -135,7 +135,7 @@
 			window.app = this;
 			window.socket = this.$socket; // debug
 
-			window.rest = new Service("posts").getRESTInterface();
+			window.postService = new Service("posts", this);
 
 			this.getSessionUser();
 		}
