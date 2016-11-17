@@ -42,19 +42,11 @@ class Context {
 		if (!Services) 
 			Services = require("./services");
 	}
-/*
-// Initialize Context from other context
-Context.from = function(ctx, service) {
-	let newCtx = _.defaults(new Context(service), ctx);
-	newCtx.provider = "internal";
-	return newCtx;
-}
-*/
 
 	services(serviceName) {
 		return Services.get(serviceName);
 	}
-	
+
 	/**
 	 * Create a new Context from a REST request
 	 * 
@@ -138,6 +130,22 @@ Context.from = function(ctx, service) {
 
 		return ctx;
 	}
+
+	/**
+	 * Initialize new Context from self
+	 * 
+	 * @param {any} params
+	 * @returns
+	 * 
+	 * @memberOf Context
+	 */
+	copy(params) {
+		let newCtx = _.defaults(new Context(this.service), this);
+		newCtx.provider = "internal";
+		newCtx.params = _.defaults(this.params, params);
+		return newCtx;
+	}
+	
 
 	/**
 	 * Resolve model from request by id/code
