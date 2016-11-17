@@ -1,5 +1,25 @@
 import axios from "axios";
 
+import gql from "graphql-tag";
+import ApolloClient, { createNetworkInterface } from "apollo-client";
+
+window.gql = gql; // debug
+
+const networkInterface = createNetworkInterface({
+	uri: "/graphql",
+	opts: {
+		credentials: "same-origin"
+	}
+});
+/*
+networkInterface.use([{
+	applyMiddleware(req, next) {
+		// Send to back the session ID
+		req.options.credentials = "same-origin";
+		next();
+	}
+}]);*/
+
 export default class Service {
 	
 	/**
@@ -16,6 +36,11 @@ export default class Service {
 		this.axios = axios.create({
 			baseURL: `/api/${namespace}/`,
 			responseType: "json"
+		});
+
+		// Create the apollo client for GraphQL
+		this.apolloClient = new ApolloClient({
+			networkInterface
 		});
 	}
 
@@ -71,6 +96,67 @@ export default class Service {
 				}
 			});
 			
+		});
+	}
+
+	/* 
+		Example:
+			window.counterService.query(gql`query($code: String!) {post(code: $code) { code title } }`, { code: "Jk8Pqb5MAN" })
+	*/
+
+	query(query, variables, fragments) {
+		return this.apolloClient.query({
+			query,
+			variables,
+			fragments,
+			forceFetch: true
+		}).then( (result) => {
+			// console.log("GraphQL response: ", result);
+
+			return result.data;
+		}).catch( (error) => {
+			// console.error("GraphQL query error", error);
+
+			let err = error;
+			if (error.graphQLErrors && error.graphQLErrors.length > 0) 
+				err = error.graphQLErrors[0];
+
+			throw err;
+		});
+	}
+
+	watchQuery(query, variables, fragments, pollInterval) {
+		return this.apolloClient.watchQuery({
+			query,
+			variables,
+			fragments, 
+			pollInterval,
+			forceFetch: true,
+		});
+	}
+
+
+	mutate(mutation, variables, fragments) {
+		return this.apolloClient.mutate({
+			mutation,
+			variables,
+			fragments
+		}).then( (result) => {
+			console.log("GraphQL response: ", result);
+			/*if (result.errors)
+				return console.error("Got some GraphQL execution errors!", result.errors);
+
+			if (result.data) {
+				console.log(result.data);
+			}*/
+		}).catch( (error) => {
+			console.error("GraphQL query error", error);
+
+			let err = error;
+			if (error.graphQLErrors && error.graphQLErrors.length > 0) 
+				err = error.graphQLErrors[0];
+
+			throw err;
 		});
 	}
 }

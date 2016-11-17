@@ -136,6 +136,8 @@
 			window.socket = this.$socket; // debug
 
 			window.postService = new Service("posts", this);
+			window.counterService = new Service("counter", this);
+			window.deviceService = new Service("device", this);
 
 			this.getSessionUser();
 		}
