@@ -56,7 +56,7 @@ Thumbs.db
 
 # Secret file
 secrets.json
-configuration.json
+configuration.js
 
 # Data folder
 data
