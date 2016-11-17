@@ -52,17 +52,17 @@ module.exports = {
 		 *		POST /counter
 		 *			body: { value: 123 }
 		 *		
-		 *		GET /counter/save?value=123
+		 *		GET /counter/create?value=123
 		 *		
 		 *	via Websocket: 
-		 *		/counter/save
+		 *		/counter/create
 		 *			data: { value: 123 }
 		 *		
 		 *	via GraphQL: 
-		 *		mutation { counterSave(value: 123) }
+		 *		mutation { countercreate(value: 123) }
 		 *		
 		 */		
-		save(ctx) {
+		create(ctx) {
 			if (ctx.params.value) {
 				return this.changeCounter(ctx, parseInt(ctx.params.value));
 			} else {
@@ -193,7 +193,7 @@ module.exports = {
 		types: ``,
 
 		mutation: `
-			counterSave(value: Int!): Int
+			counterCreate(value: Int!): Int
 			counterReset: Int
 			counterIncrement: Int
 			counterDecrement: Int
@@ -206,7 +206,7 @@ module.exports = {
 			},
 
 			Mutation: {
-				counterSave: "save",
+				counterCreate: "create",
 				counterReset: "reset",
 				counterIncrement: "increment",
 				counterDecrement: "decrement"
@@ -227,7 +227,7 @@ query getCounter {
 
 # Save a new counter value
 mutation saveCounter {
-  counterSave(value: 12)
+  counterCreate(value: 12)
 }
 
 # Reset the counter

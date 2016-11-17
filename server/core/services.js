@@ -164,14 +164,14 @@ class Services extends EventEmitter {
 					// Create default RESTful handlers
 					switch (name) {
 
-					// You can call the find action with 
+					// You can call the `find` action with 
 					// 		GET /api/namespace/
 					case "find": {
 						router.get("/", handler);	
 						break;
 					}
 
-					// You can call the get action with
+					// You can call the `get` action with
 					// 		GET /api/namespace/?id=123 
 					// 	or 
 					// 		GET /api/namespace/123
@@ -181,16 +181,16 @@ class Services extends EventEmitter {
 						break;
 					}
 
-					// You can call the save action with 
+					// You can call the `create` action with 
 					// 		POST /api/namespace/
-					case "save": {
+					case "create": {
 						//router.post("/:" + idParamName, handler);	
 						lastRoutes.push({ method: "post", path: "/:" + idParamName, handler: handler });
 						router.post("/", handler);	
 						break;
 					}
 
-					// You can call the update action with
+					// You can call the `update` action with
 					// 		PUT /api/namespace/?id=123 
 					// 	or 
 					// 		PATCH /api/namespace/?id=123 
@@ -209,7 +209,7 @@ class Services extends EventEmitter {
 						break;
 					}
 
-					// You can call the remove action with 
+					// You can call the `remove` action with 
 					// 		DELETE /api/namespace/?id=123 
 					// 	or 
 					// 		DELETE /api/namespace/123

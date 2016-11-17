@@ -50,7 +50,7 @@ module.exports = {
 			}
 		},
 
-		save: {
+		create: {
 			//permission: C.PERM_ADMIN,
 			handler(ctx) {
 
@@ -200,7 +200,7 @@ module.exports = {
 
 	/**
 	 * Validate params of context.
-	 * We will call it in `save` and `update` actions
+	 * We will call it in `create` and `update` actions
 	 * 
 	 * @param {Context} ctx 			context of request
 	 * @param {boolean} strictMode 		strictMode. If true, need to exists the required parameters
@@ -287,7 +287,7 @@ module.exports = {
 		`,
 
 		mutation: `
-			postSave(title: String!, content: String!): Post
+			postCreate(title: String!, content: String!): Post
 			postUpdate(code: String!, title: String, content: String): Post
 			postRemove(code: String!): Post
 
@@ -321,7 +321,7 @@ module.exports = {
 			},
 
 			Mutation: {
-				postSave: "save",
+				postCreate: "create",
 				postUpdate: "update",
 				postRemove: "remove",
 				postUpVote: "upVote",
@@ -342,9 +342,9 @@ query getPosts {
   }
 }
 
-# Save a new post
-mutation savePost {
-  postSave(title: "New post", content: "New post content") {
+# Create a new post
+mutation createPost {
+  postCreate(title: "New post", content: "New post content") {
     ...postFields
   }
 }

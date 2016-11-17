@@ -40,7 +40,7 @@ module.exports = {
 			}
 		},
 
-		save: {
+		create: {
 			handler(ctx) {
 				this.validateParams(ctx, true);
 				
@@ -124,7 +124,7 @@ module.exports = {
 	
 	/**
 	 * Validate params of context.
-	 * We will call it in `save` and `update` actions
+	 * We will call it in `create` and `update` actions
 	 * 
 	 * @param {Context} ctx 			context of request
 	 * @param {boolean} strictMode 		strictMode. If true, need to exists the required parameters
@@ -187,7 +187,7 @@ module.exports = {
 		`,
 
 		mutation: `
-			deviceSave(name: String!, address: String, type: String, description: String, status: Int): Device
+			deviceCreate(name: String!, address: String, type: String, description: String, status: Int): Device
 			deviceUpdate(code: String!, name: String, address: String, type: String, description: String, status: Int): Device
 			deviceRemove(code: String!): Device
 		`,
@@ -199,7 +199,7 @@ module.exports = {
 			},
 
 			Mutation: {
-				deviceSave: "save",
+				deviceCreate: "create",
 				deviceUpdate: "update",
 				deviceRemove: "remove"
 			}
@@ -218,9 +218,9 @@ query getDevices {
   }
 }
 
-# Save a new device
-mutation saveDevice {
-  deviceSave(name: "New device", address: "192.168.0.1", type: "raspberry", description: "My device", status: 1) {
+# Create a new device
+mutation createDevice {
+  deviceCreate(name: "New device", address: "192.168.0.1", type: "raspberry", description: "My device", status: 1) {
     ...deviceFields
   }
 }

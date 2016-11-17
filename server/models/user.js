@@ -159,11 +159,11 @@ UserSchema.virtual("gravatar").get(function() {
 
 UserSchema.methods.encodeID = function() {
 	return hashids.encodeHex(this._id);
-}
+};
 
 UserSchema.methods.decodeID = function(code) {
 	return hashids.decodeHex(code);
-}
+};
 
 UserSchema.methods.pick = function(props, model) {
 	return _.pick(model || this.toJSON(), props || [
@@ -175,7 +175,7 @@ UserSchema.methods.pick = function(props, model) {
 		"lastLogin",
 		"gravatar"
 	]);	
-}
+};
 
 /*
 UserSchema.methods.gravatar = function (size, defaults) {

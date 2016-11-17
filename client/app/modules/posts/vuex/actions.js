@@ -14,7 +14,7 @@ export const downloadRows = function ({ dispatch }, filter, sort) {
 };
 
 export const saveRow = function(store, model) {
-	rest.invoke("save", model).then((data) => {
+	rest.invoke("create", model).then((data) => {
 		created(store, data);
 	}).catch((err) => {
 		toastr.error(err.message);
