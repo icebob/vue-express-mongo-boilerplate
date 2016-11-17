@@ -59,6 +59,9 @@ block content
 							if socialAuth.google
 								a.group.google(href="/auth/google", title=t("SignupGoogle"))
 									i.fa.fa-google-plus
+							if socialAuth.github
+								a.group.github(href="/auth/github", title=t("SignupGithub"))
+									i.fa.fa-github
 
 					hr
 					.alreadyLink

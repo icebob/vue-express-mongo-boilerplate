@@ -30,6 +30,7 @@
 	"PasswordlessAccount": "Passwordless account?",
 	"SignUpFacebook": "Sign up with Facebook",
 	"SignupGoogle": "Sign up with Google",
+	"SignupGithub": "Sign up with Github",
 	"AlreadyHaveAnAccount": "Already have an account?",
 	"YourName": "Your Name",
 	"YourEmail": "Your e-mail address",

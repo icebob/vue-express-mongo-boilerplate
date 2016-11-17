@@ -27,6 +27,7 @@
 	"PasswordlessAccount": "Jelszómentes fiók?",
 	"SignUpFacebook": "Regisztráció Facebook fiókkal",
 	"SignupGoogle": "Regisztráció Google fiókkal",
+	"SignupGithub": "Regisztráció Github fiókkal",
 	"AlreadyHaveAnAccount": "Már van fiókod?",
 	"YourName": "Te neved",
 	"YourEmail": "Te e-mail címed",
