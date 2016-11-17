@@ -168,7 +168,7 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 					return;
 				}
 
-				if (config.disableSignUp === true) {
+				if (config.features.disableSignUp === true) {
 					req.flash("error", { msg: req.t("SignUpDisabledPleaseLogin") });
 					return done();
 				}

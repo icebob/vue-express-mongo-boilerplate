@@ -22,7 +22,7 @@ block content
 
 		.buttons
 			a.button(href="/login")=t("Login")
-			if disableSignUp !== true
+			if features.disableSignUp !== true
 				a.button(href="/signup")=t("Signup")
 
 	include parts/footer

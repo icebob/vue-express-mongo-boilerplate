@@ -42,7 +42,7 @@ function initLocalVariables(app) {
 	});
 
 	app.locals.year = moment().format("YYYY");
-	app.locals.disableSignUp = config.disableSignUp || false;
+	app.locals.features = config.features;
 }
 
 function initMiddleware(app) {

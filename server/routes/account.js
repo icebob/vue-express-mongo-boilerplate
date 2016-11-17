@@ -65,7 +65,7 @@ module.exports = function(app, db) {
 
 	// Sign-up
 	app.get("/signup", function(req, res) {
-		if (config.disableSignUp === true)
+		if (config.features.disableSignUp === true)
 			return res.redirect("/login");
 
 		res.render("account/signup", {
@@ -76,7 +76,7 @@ module.exports = function(app, db) {
 
 	// User registration
 	app.post("/signup", function(req, res) {
-		if (config.disableSignUp === true)
+		if (config.features.disableSignUp === true)
 			return res.redirect("/");
 
 		req.assert("name", req.t("NameCannotBeEmpty")).notEmpty();
@@ -106,7 +106,7 @@ module.exports = function(app, db) {
 		async.waterfall([
 
 			function generateVerificationToken(done) {
-				if (config.verificationRequired) {
+				if (config.features.verificationRequired) {
 					crypto.randomBytes(25, function(err, buf) {
 						done(err, err ? null : buf.toString("hex"));
 					});
