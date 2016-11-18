@@ -17,7 +17,7 @@ module.exports = {
 	ws: true,
 	permission: C.PERM_LOGGEDIN,
 	
-	userModelPropFilter: "code username fullName gravatar lastLogin roles",
+	userModelPropFilter: "code username fullName avatar lastLogin roles",
 
 	actions: {
 		// return my User model
@@ -81,7 +81,7 @@ fragment userFields on User {
   username
   roles
   verified
-  gravatar
+  avatar
   lastLogin
 }
 

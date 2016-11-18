@@ -520,7 +520,7 @@ class Context {
 
 		if (this.user) {
 			let userService = this.services("users");
-			response.user = this.toJSON(this.user, "code username fullName gravatar lastLogin roles");
+			response.user = this.toJSON(this.user, "code username fullName avatar lastLogin roles");
 		}
 		this.emit(type, response, role);	
 	}

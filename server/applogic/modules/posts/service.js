@@ -19,7 +19,7 @@ module.exports = {
 
 	modelPropFilter: "code title content author votes downVoters upVoters views createdAt updatedAt",
 	
-	populateAuthorFields: "username fullName code email gravatar",
+	populateAuthorFields: "username fullName code email avatar",
 
 	actions: {
 		find(ctx) {
@@ -394,7 +394,7 @@ fragment postFields on Post {
       code
       fullName
       username
-      gravatar
+      avatar
     }
     views
     votes
@@ -402,7 +402,7 @@ fragment postFields on Post {
   	  code
   	  fullName
   	  username
-  	  gravatar
+  	  avatar
   	}
 }
 

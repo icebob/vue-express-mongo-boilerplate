@@ -2,7 +2,7 @@
 	.user-box(v-if="me")
 	
 		.user-info.right(@click="toggleUserMenu()")
-			img.avatar(:src='me.gravatar')
+			img.avatar(:src='me.avatar')
 			.username {{ me.fullName }}
 			i.fa.fa-chevron-down
 

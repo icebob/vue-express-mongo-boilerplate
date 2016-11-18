@@ -29,7 +29,7 @@
 			li(v-for="post of rows", transition="post", track-by="code")
 				article.media
 					.media-left
-						img.avatar(:src="post.author.gravatar")
+						img.avatar(:src="post.author.avatar")
 
 						.votes
 							.count.text-center {{ post.votes }}

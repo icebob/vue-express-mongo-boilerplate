@@ -17,7 +17,7 @@ module.exports = {
 	model: User,
 	idParamName: "code", // GET /users/find?code=bD6kd
 
-	modelPropFilter: "code username fullName gravatar lastLogin roles",
+	modelPropFilter: "code username fullName avatar lastLogin roles",
 	
 	actions: {
 		// return all model
@@ -63,7 +63,7 @@ module.exports = {
 				provider: String
 				roles: [String]
 				verified: Boolean
-				gravatar: String
+				avatar: String
 				lastLogin: Timestamp
 			}
 		`,
@@ -107,7 +107,7 @@ fragment userFields on User {
   username
   roles
   verified
-  gravatar
+  avatar
   lastLogin
 }
 

@@ -74,7 +74,7 @@ let UserSchema = new Schema({
 		type: String,
 		"default": "local"
 	},
-	profile: {},
+	profile: {},	
 	socialLinks: {
 		facebook: { type: String, unique: true, sparse: true },
 		twitter: { type: String, unique: true, sparse: true },
@@ -149,10 +149,15 @@ UserSchema.methods.comparePassword = function(password, cb) {
 	});
 };
 
-UserSchema.virtual("gravatar").get(function() {
-	if (!this.email) {
+UserSchema.virtual("avatar").get(function() {
+	// Load picture from profile
+	if (this.profile && this.profile.picture)
+		return this.profile.picture;
+
+	// Generate a gravatar picture
+	if (!this.email)
 		return "https://gravatar.com/avatar/?s=64&d=wavatar";
-	}
+	
 	let md5 = crypto.createHash("md5").update(this.email).digest("hex");
 	return "https://gravatar.com/avatar/" + md5 + "?s=64&d=wavatar";
 });
