@@ -95,6 +95,11 @@ module.exports = {
 		}*/
 	},
 
+	features: {
+		disableSignUp: false,
+		verificationRequired: true
+	},
+
 	authKeys: {
 
 		google: {
@@ -154,11 +159,6 @@ module.exports = {
 			token: null
 		}
 		
-	},
-
-	features: {
-		disableSignUp: false,
-		verificationRequired: true
 	},
 
 	agendaTimer: "one minute"

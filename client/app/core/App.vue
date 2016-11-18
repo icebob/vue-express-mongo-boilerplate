@@ -80,7 +80,7 @@
 				 * Send welcome message after connect
 				 */
 				connect() {
-					console.log("Websocket connected to " + socket.nsp);
+					console.log("Websocket connected to " + this.$socket.nsp);
 
 					if (this.wsReconnecting)
 						// Reload browser if connection established after disconnect
@@ -90,7 +90,7 @@
 				},
 
 				disconnect() {
-					console.log("Websocket disconnected from " + socket.nsp);
+					console.log("Websocket disconnected from " + this.$socket.nsp);
 					this.wsReconnecting = true;
 				},
 

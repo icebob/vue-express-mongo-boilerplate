@@ -72,6 +72,7 @@
     "le_node": "1.6.8",
     "lodash": "4.17.1",
     "method-override": "2.3.6",
+    "mkdirp": "0.5.1",
     "moment": "2.16.0",
     "mongoose": "4.6.8",
     "mongoose-auto-increment": "5.0.1",

@@ -3,17 +3,15 @@
 let logger 	= require("../core/logger");
 let config	= require("../config");
 let fs		= require("fs");
+let mkdirp 	= require("mkdirp");
 
 // Create data folder if not exist
 if (!fs.existsSync(config.dataFolder)) {
-	fs.mkdir(config.dataFolder, (err) => {
-		if (err)
-			throw err;
-	});
+	mkdirp.sync(config.dataFolder);
 }
 
 // Show config in dev mode
-if (true || config.isDevMode()) {
+if (config.isDevMode()) {
 	logger.info("Loaded configuration:");
 	logger.info(config);
 	logger.info();
