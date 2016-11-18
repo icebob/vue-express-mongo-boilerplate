@@ -30,6 +30,11 @@ module.exports = function() {
 			return logger.error(err);
 		});
 
+		/*
+			Maybe change to 
+				https://github.com/icebob/mongoose-autoincrement
+
+		 */
 		autoIncrement.initialize(db);		
 
 		mongoose.connection.once("open", function mongoAfterOpen() {
@@ -41,7 +46,7 @@ module.exports = function() {
 				//mongoose.connection.db.dropDatabase((err) => {
 				//	autoIncrement.initialize(db);
 					require("./seed-db")();		
-				//});
+				//);
 			}
 			else {
 				if (!config.isProduction) {
