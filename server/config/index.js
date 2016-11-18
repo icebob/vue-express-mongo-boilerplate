@@ -64,7 +64,12 @@ try {
 	externalConfig = require(extConfigFile);
 
 } catch (error) {
-	console.warn("Unable to load external production config.js file!", error);
+	console.warn(chalk.red.bold("\r\n=============================================="));
+	console.warn(chalk.red.bold("  Unable to load external `config.js` file!"));
+	console.warn(chalk.red.bold("  " + error));
+	//console.warn(chalk.red.bold(error.stack));
+	console.warn(chalk.red.bold("==============================================\r\n"));
+	process.exit(1);
 }
 
 

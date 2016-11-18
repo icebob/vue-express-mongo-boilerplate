@@ -1,8 +1,17 @@
+"use strict";
+
+let path = require("path");
+let pkg = require("./package.json");
+
 module.exports = {
 	
+	// Secret for ID hashing
 	hashSecret: "{{hashSecret}}",
+
+	// Secret for session hashing
 	sessionSecret: "{{sessionSecret}}",
 
+	// Application settings
 	app: {
 		//title: "VEM APP",
 		//version: "1.0.0",
@@ -16,6 +25,10 @@ module.exports = {
 	// ip: process.env.NODE_IP || "127.0.0.1",
 	// port: process.env.NODE_PORT || 3000,
 
+	// dataFolder: path.join(global.rootPath, "data"),
+	// logFolder: path.join(global.rootPath, "logs"),
+
+	// Database (Mongo) settings
 	db: {
 		// uri: process.env.MONGO_URI || "mongodb://localhost/vemapp",
 		options: {
@@ -24,6 +37,7 @@ module.exports = {
 		}
 	},
 
+	// Mail sending settings
 	mailer: {
 		//from: "noreply@vem-app.com",
 
@@ -63,11 +77,13 @@ module.exports = {
 		}*/
 	},
 
+	// Features of application
 	features: {
 		disableSignUp: false,
 		verificationRequired: true
 	},	
 
+	// Social authentication (OAuth) keys
 	authKeys: {
 
 		google: {
@@ -91,7 +107,20 @@ module.exports = {
 		}		
 	},
 
+	// Logging settings
 	logging: {
+		
+		console: {
+			// level: "debug"
+		},
+
+		file: {
+			enabled: false,
+			// path: path.join(global.rootPath, "logs"),
+			// level: "info",
+			// json: false,
+			// exceptionsSeparateFile: true
+		},
 
 		graylog: {
 			enabled: false

@@ -16,8 +16,10 @@ module.exports = {
 
 	ip: process.env.NODE_IP || "0.0.0.0",
 	port: process.env.PORT || 3000,
+
 	rootPath: global.rootPath,
 	dataFolder: path.join(global.rootPath, "data"),
+
 	uploadLimit: 2 * 1024 * 1024, // 2MB
 
 	sessions: {
@@ -124,6 +126,17 @@ module.exports = {
 	},
 
 	logging: {
+		console: {
+			level: "debug"
+		},
+
+		file: {
+			enabled: false,
+			path: path.join(global.rootPath, "logs"),
+			level: "info",
+			json: false,
+			exceptionFile: true
+		},
 
 		graylog: {
 			enabled: false

@@ -3,21 +3,13 @@
 let winston = require("winston");
 let path = require("path");
 let fs = require("fs");
+let mkdirp = require("mkdirp");
 
 let config = require("../config");
 
-// Create logs directory
-let logDir = path.join(config.rootPath, "logs");
-if (!fs.existsSync(logDir)) {
-	fs.mkdir(logDir, (err) => {
-		if (err)
-			throw err;
-	});
-}
-
 let	transports = [
 	new winston.transports.Console({
-		level: "debug",
+		level: config.logging.console.level,
 		colorize: true,
 		prettyPrint: true,
 		handleExceptions: process.env.NODE_ENV === "production"
@@ -51,24 +43,33 @@ if (config.logging.papertrail.enabled) {
 	transports.push(ptTransport);
 }
 
-if (process.env.NODE_ENV === "production") {
-	transports.push(
-		new (require("winston-daily-rotate-file"))({
-			filename: path.join(logDir, "server.log"),
-			level: "info",
-			timestamp: true,
-			json: true,
-			handleExceptions: true
-		}), new winston.transports.File({
+if (config.logging.file.enabled) {
+
+	// Create logs directory
+	let logDir = config.logging.file.path;
+	if (!fs.existsSync(logDir)) {
+		mkdirp(logDir);
+	}
+	
+	transports.push(new (require("winston-daily-rotate-file"))({
+		filename: path.join(logDir, "server.log"),
+		level: config.logging.file.level || "info",
+		timestamp: true,
+		json: config.logging.file.json || false,
+		handleExceptions: true
+	}));
+		
+	if (config.logging.file.exceptionFile) {
+		transports.push(new winston.transports.File({
 			filename: path.join(logDir, "exceptions.log"),
 			level: "error",
 			timestamp: true,
-			json: false,
+			json: config.logging.file.json || false,
 			prettyPrint: true,
 			handleExceptions: true,
 			humanReadableUnhandledException: true
-		})
-	);	
+		}));
+	}	
 }
 
 let logger = new winston.Logger({
