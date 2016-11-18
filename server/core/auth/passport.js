@@ -39,7 +39,7 @@ module.exports = function(app) {
 			strategy();
 
 			return strategy;
-		})
+		});
 	}
-	var modules = requireAll(require.context("./strategies", true, /\.js$/));
+	let modules = requireAll(require.context("./strategies", true, /\.js$/));
 };

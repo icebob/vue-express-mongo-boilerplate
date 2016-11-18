@@ -14,6 +14,8 @@ module.exports = function() {
 		if (docs.length === 0) {
 			logger.warn("Load default Users to DB...");
 
+			let users = [];
+
 			let admin = new User({
 				fullName: "Administrator",
 				email: "admin@boilerplate-app.com",
@@ -23,30 +25,30 @@ module.exports = function() {
 				roles: ["admin", "user"],
 				verified: true
 			});
+			users.push(admin.save());
 
-			return admin.save();
-		} else 
-			throw new Error("No need to seed the Users table!");
-	}).then(function() {
-		let test = new User({
-			fullName: "Test User",
-			email: "test@boilerplate-app.com",
-			username: "test",
-			password: "test1234",
-			provider: "local",
-			roles: ["user"],
-			verified: true,
-			apiKey: tokgen()
-		});
-		
-		return test.save();
-	}).then(() => {
-		logger.info("Default users created!");
+			let test = new User({
+				fullName: "Test User",
+				email: "test@boilerplate-app.com",
+				username: "test",
+				password: "test1234",
+				provider: "local",
+				roles: ["user"],
+				verified: true,
+				apiKey: tokgen()
+			});
+			
+			users.push(test.save());
+
+			return Promise.all(users).then(() => {
+				logger.warn("Default users created!");
+			});
+		}
 	}).catch((err) => {
-		console.warn("Seeding: ", err.message);
+		logger.warning(err.message);
 	}).then(() => {
 		return require("../applogic/libs/seed-db")();
 	}).then(() => {
-		logger.info("Seeding done!");
+		logger.debug("Seeding done!");
 	});	
 };

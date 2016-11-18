@@ -28,11 +28,11 @@ module.exports = function() {
 					lastCommunication: Date.now()
 				});
 
-				return device.save();
+				return device.save().then(() => {
+					logger.info("Default devices created!");
+				});
 			});
 		}
-	}).then(() => {
-		logger.info("Default devices created!");
 	});
 
 	let posts = Post.find({}).exec(function(err, docs) {
@@ -51,15 +51,15 @@ module.exports = function() {
 							author: fakerator.random.arrayElement(users)._id
 						});
 
-						return post.save();
+						return post.save().then(() => {
+							logger.info("Default posts created!");
+						});
 					});
 				}
 
 			});
 
 		}
-	}).then(() => {
-		logger.info("Default posts created!");
 	});
 
 	return Promise.all([devices, posts]);
