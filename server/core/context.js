@@ -13,8 +13,6 @@ let Services; // circular reference
 
 /**
  * Context class for requests
- * 
- * @param {any} called service
  */
 class Context {
 	/**
@@ -42,6 +40,14 @@ class Context {
 			Services = require("./services");
 	}
 
+	/**
+	 * Get a service by name of service
+	 * 
+	 * @param {any} serviceName
+	 * @returns {Service}
+	 * 
+	 * @memberOf Context	
+	 */
 	services(serviceName) {
 		return Services.get(serviceName);
 	}

@@ -9,6 +9,7 @@ let secretUtils		= require("secret-utils");
 global.rootPath = path.normalize(path.join(__dirname, "..", ".."));
 console.log("process.argv: " + process.argv);
 
+/* global WEBPACK_BUNDLE */
 if (WEBPACK_BUNDLE) {
 	let bundleFullPath;
 	if (process.argv.length > 0)

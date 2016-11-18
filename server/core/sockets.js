@@ -15,8 +15,16 @@ let	session 		= require("express-session");
 let	MongoStore 		= require("connect-mongo")(session);
 
 let self = {
+	/**
+	 * IO server instance
+	 * We will assign it in `init`
+	 */
 	IO: null,
 	
+	/**
+	 * Mongo store instance.
+	 * We will assign it in `init`
+	 */
 	mongoStore: null,
 
 	/**

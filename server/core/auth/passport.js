@@ -7,6 +7,7 @@ let passport 		= require("passport");
 let path 			= require("path");
 let chalk 			= require("chalk");
 
+/* global WEBPACK_BUNDLE */
 if (!WEBPACK_BUNDLE) require('require-webpack-compat')(module, require);
 
 let User 			= require("../../models/user");

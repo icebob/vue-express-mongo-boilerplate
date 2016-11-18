@@ -32,7 +32,6 @@ class Services extends EventEmitter {
 
 	/**
 	 * Constructor of Service
-	 * 
 	 */
 	constructor() {
 		super();
@@ -46,6 +45,7 @@ class Services extends EventEmitter {
 	/**
 	 * Load built-in and applogic services. Scan the folders
 	 * and load service files
+	 * 
 	 * @param  {Object} app ExpressJS instance
 	 * @param  {Object} db  Database instance
 	 */
@@ -92,6 +92,7 @@ class Services extends EventEmitter {
 
 	/**
 	 * Register actions of services as REST routes
+	 * 
 	 * @param  {Object} app ExpressJS instance
 	 */
 	registerRoutes(app) {
@@ -244,6 +245,7 @@ class Services extends EventEmitter {
 
 	/**
 	 * Register actions of services as socket.io event handlers
+	 * 
 	 * @param  {Object} IO            Socket.IO object
 	 * @param  {Object} socketHandler Socket handler instance
 	 */
@@ -509,7 +511,11 @@ class Services extends EventEmitter {
 		return this.services[serviceName];
 	}
 
-
+	/**
+	 * Print service info to the console (in dev mode)
+	 * 
+	 * @memberOf Services
+	 */
 	printServicesInfo() {
 		let endPoints = listEndpoints(this.app);
 		//logger.debug(endPoints);

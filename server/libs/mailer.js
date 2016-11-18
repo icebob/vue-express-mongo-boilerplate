@@ -9,6 +9,7 @@ let htmlToText 	= require("nodemailer-html-to-text").htmlToText;
 module.exports = {
 	send: function(recipients, subject, body, cb) {
 		logger.info(`Sending email to ${recipients} with subject ${subject}...`);
+		logger.debug("Deprecated! libs/mailer is deprecated. Use Service.get('mailer') instead!");
 
 		let mailOptions = {
 			from: config.mailer.from,

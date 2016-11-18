@@ -7,15 +7,23 @@ let mkdirp = require("mkdirp");
 
 let config = require("../config");
 
-let	transports = [
-	new winston.transports.Console({
-		level: config.logging.console.level,
-		colorize: true,
-		prettyPrint: true,
-		handleExceptions: process.env.NODE_ENV === "production"
-	})
-];
+let	transports = [];
 
+/**
+ * Console transporter
+ */
+transports.push(new winston.transports.Console({
+	level: config.logging.console.level,
+	colorize: true,
+	prettyPrint: true,
+	handleExceptions: process.env.NODE_ENV === "production"
+}));
+
+/**
+ * Logentries transporter
+ * 
+ * https://logentries.com/
+ */
 if (config.logging.logentries.enabled && config.logging.logentries.token) {
 	console.log("Logentries log transport enabled!");
 	let Logentries = require("le_node");
@@ -25,6 +33,11 @@ if (config.logging.logentries.enabled && config.logging.logentries.token) {
 	}));
 }
 
+/**
+ * Papertrail transporter
+ * 
+ * https://papertrailapp.com/
+ */
 if (config.logging.papertrail.enabled) {
 	console.log("Papertrail log transport enabled!");
 	require("winston-papertrail").Papertrail;
@@ -43,6 +56,9 @@ if (config.logging.papertrail.enabled) {
 	transports.push(ptTransport);
 }
 
+/**
+ * File transporter
+ */
 if (config.logging.file.enabled) {
 
 	// Create logs directory
@@ -78,6 +94,11 @@ let logger = new winston.Logger({
 	exitOnError: false
 });
 
+/**
+ * Loggly transporter
+ * 
+ * https://www.loggly.com/
+ */
 if (config.logging.loggly.enabled && config.logging.loggly.token) {
 	console.log("Loggly log transport enabled!");
 	let loggly = require("winston-loggly-bulk");
@@ -89,6 +110,11 @@ if (config.logging.loggly.enabled && config.logging.loggly.token) {
 	});
 }
 
+/**
+ * Logsene transporter
+ * 
+ * https://sematext.com/logsene/
+ */
 if (config.logging.logsene.enabled && config.logging.logsene.token) {
 	console.log("Logsene log transport enabled!");
 	let logsene = require("winston-logsene");
@@ -98,6 +124,11 @@ if (config.logging.logsene.enabled && config.logging.logsene.token) {
 	});
 }
 
+/**
+ * Logz.io transporter
+ * 
+ * https://sematext.com/logsene/
+ */
 if (config.logging.logzio.enabled && config.logging.logzio.token) {
 	console.log("Logz.io log transport enabled!");
 	let logzio = require("winston-logzio");
@@ -106,6 +137,11 @@ if (config.logging.logzio.enabled && config.logging.logzio.token) {
 	});
 }
 
+/**
+ * Graylog transporter
+ * 
+ * https://www.graylog.org/
+ */
 if (config.logging.graylog.enabled) {
 	console.log("Graylog log transport enabled! Servers: " + JSON.stringify(config.logging.graylog.servers));
 	let graylog = require("winston-graylog2");

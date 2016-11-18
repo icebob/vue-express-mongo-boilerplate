@@ -121,15 +121,24 @@ let UserSchema = new Schema({
 
 }, schemaOptions);
 
+/**
+ * Virtual `code` field instead of _id
+ */
 UserSchema.virtual("code").get(function() {
 	return this.encodeID();
 });
 
+/**
+ * Auto increment for `_id`
+ */
 UserSchema.plugin(autoIncrement.plugin, {
 	model: "User",
 	startAt: 1
 });
 
+/**
+ * Password hashing
+ */
 UserSchema.pre("save", function(next) {
 	let user = this;
 	if (!user.isModified("password")) 
@@ -143,12 +152,18 @@ UserSchema.pre("save", function(next) {
 	});
 });
 
+/**
+ * Password compare
+ */
 UserSchema.methods.comparePassword = function(password, cb) {
 	bcrypt.compare(password, this.password, function(err, isMatch) {
 		cb(err, isMatch);
 	});
 };
 
+/**
+ * Virtual field for `avatar`.
+ */
 UserSchema.virtual("avatar").get(function() {
 	// Load picture from profile
 	if (this.profile && this.profile.picture)
@@ -162,14 +177,25 @@ UserSchema.virtual("avatar").get(function() {
 	return "https://gravatar.com/avatar/" + md5 + "?s=64&d=wavatar";
 });
 
+/**
+ * Encode `_id` to `code`
+ */
 UserSchema.methods.encodeID = function() {
 	return hashids.encodeHex(this._id);
 };
 
+/**
+ * Decode `code` to `_id`
+ */
 UserSchema.methods.decodeID = function(code) {
 	return hashids.decodeHex(code);
 };
 
+/**
+ * Pick is only some fields of object 
+ * 
+ * http://mongoosejs.com/docs/api.html#document_Document-toObject
+ *
 UserSchema.methods.pick = function(props, model) {
 	return _.pick(model || this.toJSON(), props || [
 		"code",
@@ -178,9 +204,18 @@ UserSchema.methods.pick = function(props, model) {
 		"username",
 		"roles",
 		"lastLogin",
-		"gravatar"
+		"avatar"
 	]);	
 };
+
+UserSchema.method('toJSON', function() {
+    var user = this.toObject();
+    delete user.salt;
+    delete user.hash;
+    delete user.__v;
+    return user;
+  });
+*/
 
 /*
 UserSchema.methods.gravatar = function (size, defaults) {

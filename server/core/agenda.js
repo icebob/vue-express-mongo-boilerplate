@@ -24,7 +24,6 @@ agenda.on("fail", function(err, job) {
 /**
  * Remove unverified account after 24 hours
  */
-
 agenda.define("removeUnverifiedAccounts", function(job, done) {
 	logger.debug("Running 'removeUnverifiedAccounts' process...");
 	try {
@@ -47,6 +46,9 @@ agenda.define("removeUnverifiedAccounts", function(job, done) {
 	}
 });
 
+/**
+ * Starting agenda
+ */
 agenda.on("ready", function() {
 	if (config.isTestMode())
 		return;

@@ -31,6 +31,11 @@ let i18nextFs 		= require("i18next-node-fs-backend");
 
 let serverFolder = path.normalize(path.join(config.rootPath, "server"));
 
+/**
+ * Initialize local variables
+ * 
+ * @param {any} app
+ */
 function initLocalVariables(app) {
 	// Setting application local variables
 	app.locals.app = config.app;
@@ -45,6 +50,11 @@ function initLocalVariables(app) {
 	app.locals.features = config.features;
 }
 
+/**
+ * Initialize middlewares
+ * 
+ * @param {any} app
+ */
 function initMiddleware(app) {
 	// Should be placed before express.static
 	app.use(compress({
@@ -108,6 +118,11 @@ function initMiddleware(app) {
 	}
 }
 
+/**
+ * Initialize i18next module for localization
+ * 
+ * @param {any} app
+ */
 function initI18N(app) {
 
 	let conf = {
@@ -167,6 +182,11 @@ function initI18N(app) {
 	app.post("/locales/add/:lng/:ns", i18nextExpress.missingKeyHandler(i18next));		
 }
 
+/**
+ * Initialize view engine (pug)
+ * 
+ * @param {any} app
+ */
 function initViewEngine(app) {
 	// Set view folder
 	app.set("views", path.join(serverFolder, "views"));
@@ -190,6 +210,12 @@ function initViewEngine(app) {
 	}
 }
 
+/**
+ * Initialize session handler (mongo-store)
+ * 
+ * @param {any} app
+ * @param {any} db
+ */
 function initSession(app, db) {
 	// Express MongoDB session storage
 	app.use(session({
@@ -206,6 +232,11 @@ function initSession(app, db) {
 	}));
 }
 
+/**
+ * Initiliaze Helmet security module
+ * 
+ * @param {any} app
+ */
 function initHelmetHeaders(app) {
 	// Use helmet to secure Express headers
 	app.use(helmet.xssFilter());
@@ -215,6 +246,11 @@ function initHelmetHeaders(app) {
 	app.use(helmet.hidePoweredBy());
 }
 
+/**
+ * Initialize authentication & CSRF
+ * 
+ * @param {any} app
+ */
 function initAuth(app) {
 	// Init auth
 	require("./auth/passport")(app);
@@ -235,6 +271,12 @@ function initAuth(app) {
 	}
 }
 
+/**
+ * Initialize Webpack hot reload module.
+ * 	Note: Only in development mode 
+ * 
+ * @param {any} app
+ */
 function initWebpack(app) {
 	// Webpack middleware in development mode
 	if (!config.isProductionMode()) {
@@ -297,7 +339,6 @@ module.exports = function(db) {
 
 	// Load routes
 	require("../routes")(app, db);
-
 
 	return server;
 };

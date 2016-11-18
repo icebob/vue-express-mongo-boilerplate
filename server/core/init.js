@@ -10,7 +10,7 @@ if (!fs.existsSync(config.dataFolder)) {
 	mkdirp.sync(config.dataFolder);
 }
 
-// Show config in dev mode
+// Print to console the full config in dev mode
 if (!config.isProductionMode()) {
 	logger.info("Loaded configuration:");
 	logger.info(config);

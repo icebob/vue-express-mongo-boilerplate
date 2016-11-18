@@ -20,6 +20,9 @@ C.append([
 	"guest"
 ], "ROLE");
 
+/**
+ * User permission constants
+ */
 C.append([
 	"admin",
 	"owner",
@@ -28,7 +31,7 @@ C.append([
 ], "PERM");
 
 /**
- * Response error causes
+ * Response error reasons
  */
 C.append([
 	"VALIDATION_ERROR",

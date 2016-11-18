@@ -10,6 +10,9 @@ let fakerator		= require("fakerator")();
 let User 			= require("../models/user");
 
 module.exports = function() {
+	/**
+	 * Create default `admin` and `test` users
+	 */
 	return User.find({}).exec().then((docs) => {
 		if (docs.length === 0) {
 			logger.warn("Load default Users to DB...");

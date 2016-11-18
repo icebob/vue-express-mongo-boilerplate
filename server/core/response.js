@@ -61,7 +61,7 @@ module.exports = {
 	 * @param  {json} 	data       	JSON response data
 	 * @param  {Object} err        	Error object
 	 * @param  {String} errMessage  Custom error message
-	 * @return {json} If res assigned return with res, otherwise return the response JSON object
+	 * @return {json} If res assigned, return with res, otherwise return the response JSON object
 	 */
 	json(res, data, err, errMessage) {
 		let response = {};

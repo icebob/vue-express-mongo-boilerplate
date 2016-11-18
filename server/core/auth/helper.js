@@ -1,13 +1,16 @@
 "use strict";
 
-let logger = require("../logger");
-let config = require("../../config");
-let passport = require("passport");
+let logger 		= require("../logger");
+let config 		= require("../../config");
+let passport 	= require("passport");
 
-let User 	= require("../../models/user");
+let User 		= require("../../models/user");
 
 // TODO response 
 
+/**
+ * Check the request is come from an authenticated user
+ */
 module.exports.isAuthenticated = function isAuthenticated(req, res, next) {
 	if (req.isAuthenticated())
 		return next();
@@ -16,6 +19,10 @@ module.exports.isAuthenticated = function isAuthenticated(req, res, next) {
 	}
 };
 
+/**
+ * Try authenticate the requester user with API key.
+ * We search `apikey` field in `headers`, `query` and `body` 
+ */
 module.exports.tryAuthenticateWithApiKey = function tryAuthenticatedWithApiKey(req, res, next) {
 	if (!req.isAuthenticated()) {
 		// Try authenticate with API KEY
@@ -39,6 +46,10 @@ module.exports.tryAuthenticateWithApiKey = function tryAuthenticatedWithApiKey(r
 		next()
 };
 
+/**
+ * If not authenticated, we authenticate with API key.
+ * We search `apikey` field in `headers`, `query` and `body` 
+ */
 module.exports.isAuthenticatedOrApiKey = function isAuthenticated(req, res, next) {
 	if (req.isAuthenticated())
 		return next();
@@ -66,6 +77,9 @@ module.exports.isAuthenticatedOrApiKey = function isAuthenticated(req, res, next
 	}
 };
 
+/**
+ * Check the requester user has a role.
+ */
 module.exports.hasRole = function hasRole(roleRequired) {
 	if (!roleRequired)
 		throw new Error("Required role needs to be set");
@@ -80,10 +94,16 @@ module.exports.hasRole = function hasRole(roleRequired) {
 	};
 };
 
+/**
+ * Check the requester user is an administrator. (they has `admin` role)
+ */
 module.exports.hasAdminRole = function hasAdminRole() {
 	return module.exports.hasRole("admin");
 };
 
+/**
+ * Link a social account to an user account
+ */
 module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 
 	let req = opts.req;
@@ -150,6 +170,7 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 			// If come back email address from social provider, search user by email
 			User.findOne({email: email}, function(err, existingEmailUser) {
 				if (existingEmailUser) {
+					// We found the user, update the profile
 					let user = existingEmailUser;
 					user.socialLinks = user.socialLinks || {};
 					user.socialLinks[provider] = profile.id;
@@ -168,19 +189,22 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 					return;
 				}
 
+				// We don't find the user, it will be a signup
+
+				// Check the signup enabled
 				if (config.features.disableSignUp === true) {
 					req.flash("error", { msg: req.t("SignUpDisabledPleaseLogin") });
 					return done();
 				}
 
-				// Create a new user by social profile
+				// Create a new user according to social profile
 				let user = new User();
 				user.fullName = userData.name;
 				user.email = email;
 				user.username = email;
 				user.provider = provider;
-				user.verified = true;
-				user.passwordLess = true;
+				user.verified = true; // No need to verify a social signup
+				user.passwordLess = true; // No password for this account. He/she can login via social login or passwordless login
 
 				user.socialLinks = {};
 				user.socialLinks[provider] = profile.id;
