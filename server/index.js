@@ -35,6 +35,8 @@ app.listen(config.port, config.ip, function() {
 
 	logger.info("----------------------------------------------");
 
+	let Service = require("./core/services");
+	Service.printServicesInfo();
 });
 
 

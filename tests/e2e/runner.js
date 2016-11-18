@@ -3,11 +3,11 @@
 let path = require("path");
 
 // 1. start the server
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = "test";
 
 // Pass the port of server via environment
-var app = require("../load-server");
-process.env.APP_PORT = app._app.settings.port;
+let app = require("../load-server");
+process.env.APP_PORT = app._app.settings.port.trim();
 
 // 2. run the nightwatch test suite against it
 // to run in additional browsers:
@@ -18,26 +18,26 @@ process.env.APP_PORT = app._app.settings.port;
 // http://nightwatchjs.org/guide#settings-file
 
 let opts = process.argv.slice(2);
-if (opts.indexOf('--config') === -1) {
-	opts = opts.concat(['--config', 'tests/e2e/nightwatch.conf.js']);
+if (opts.indexOf("--config") === -1) {
+	opts = opts.concat(["--config", "tests/e2e/nightwatch.conf.js"]);
 }
-if (opts.indexOf('--env') === -1) {
-	opts = opts.concat(['--env', 'chrome']);
+if (opts.indexOf("--env") === -1) {
+	opts = opts.concat(["--env", "chrome"]);
 }
 
 // Clear reports folder
 let del = require("del");
 del.sync(path.join(__dirname, "reports", "**"));
 
-let spawn = require('cross-spawn');
-let runner = spawn('./node_modules/.bin/nightwatch', opts, { stdio: 'inherit' });
+let spawn = require("cross-spawn");
+let runner = spawn("./node_modules/.bin/nightwatch", opts, { stdio: "inherit" });
 
-runner.on('exit', function (code) {
+runner.on("exit", function (code) {
 	app.close();
 	process.exit(code);
 });
 
-runner.on('error', function (err) {
+runner.on("error", function (err) {
 	app.close();
 	throw err;
 });

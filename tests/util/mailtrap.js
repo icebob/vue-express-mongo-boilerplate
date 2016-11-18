@@ -1,13 +1,13 @@
 "use strict";
 
-var MAILTRAP_API = "73b2335b4810550097cec6291bc91c03";
-var MAILTRAP_INBOX = 46372;
+let MAILTRAP_API = "73b2335b4810550097cec6291bc91c03";
+let MAILTRAP_INBOX = 46372;
 
-var _ = require("lodash");
-var request = require('request');
+let _ = require("lodash");
+let request = require('request');
 
-var baseURL = "https://mailtrap.io/api/v1/";
-var headers = {
+let baseURL = "https://mailtrap.io/api/v1/";
+let headers = {
 	"Content-Type": "application/json",
 	"Api-Token": MAILTRAP_API
 };
@@ -15,7 +15,7 @@ var headers = {
 function getMessages(inboxID, email, done) {
 	inboxID = inboxID || MAILTRAP_INBOX;
 
-	var options = {
+	let options = {
 		method: "GET",
 		url: baseURL + "/inboxes/" + inboxID + "/messages",
 		headers: headers
@@ -28,9 +28,9 @@ function getMessages(inboxID, email, done) {
 		if (response.statusCode >= 400)
 			return done("Response error:" + response.statusCode + " " + response.statusMessage);
 
-		var messages = [];
+		let messages = [];
 
-		var result = JSON.parse(body);
+		let result = JSON.parse(body);
 
 		_.each(result, function(msg) {
 			if (email == null || msg.to_email == email)
@@ -69,7 +69,7 @@ function cleanInbox(inboxID, done) {
 				console.error(err);
 		};
 
-	var options = {
+	let options = {
 		method: "PATCH",
 		url: baseURL + "/inboxes/" + inboxID + "/clean",
 		headers: headers
@@ -94,7 +94,7 @@ function deleteMessage(inboxID, messageID, done) {
 				console.error(err);
 		};
 
-	var options = {
+	let options = {
 		method: "DELETE",
 		url: baseURL + "/inboxes/" + inboxID + "/messages/" + messageID,
 		headers: headers

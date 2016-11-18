@@ -7,13 +7,22 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Launch Program",
+			"name": "Launch in Dev mode",
 			"program": "${workspaceRoot}\\server\\index.js",
 			"cwd": "${workspaceRoot}",
 			"env": {
-				"PORT": "4000"
 			}
 		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Launch in Test mode",
+			"program": "${workspaceRoot}\\server\\index.js",
+			"cwd": "${workspaceRoot}",
+			"env": {
+				"NODE_ENV": "test"
+			}
+		},		
 		{
 			"type": "node",
 			"request": "attach",

@@ -11,7 +11,7 @@ if (!fs.existsSync(config.dataFolder)) {
 }
 
 // Show config in dev mode
-if (config.isDevMode()) {
+if (!config.isProductionMode()) {
 	logger.info("Loaded configuration:");
 	logger.info(config);
 	logger.info();

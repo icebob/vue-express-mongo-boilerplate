@@ -28,5 +28,4 @@ module.exports = {
 		flashInfo: ".flash .alert-success div"
 		
 	}
-
-}
+};

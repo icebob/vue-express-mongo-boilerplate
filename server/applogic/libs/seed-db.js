@@ -13,7 +13,7 @@ let Device 			= require("../modules/devices/models/device");
 let Post 			= require("../modules/posts/models/post");
 
 module.exports = function() {
-	Device.find({}).exec(function(err, docs) {
+	let devices = Device.find({}).exec().then((docs) => {
 		if (docs.length === 0) {
 			logger.warn("Load default Devices to DB...");
 
@@ -28,39 +28,39 @@ module.exports = function() {
 					lastCommunication: Date.now()
 				});
 
-				device.save(function(err) {
-					if (err) 
-						return logger.warn("Unable to create default devices!", err);
-				});
+				return device.save();
 			});
 		}
+	}).then(() => {
+		logger.info("Default devices created!");
 	});
 
-	Post.find({}).exec(function(err, docs) {
+	let posts = Post.find({}).exec(function(err, docs) {
 		if (docs.length === 0) {
 			logger.warn("Load default Posts to DB...");
 
 			User.find({}).lean().select("_id").exec((err, users) => {
+				if (users && users.length > 0) {
+					_.times(10, () => {
 
-				_.times(10, () => {
+						let fakePost = fakerator.entity.post();
 
-					let fakePost = fakerator.entity.post();
+						let post = new Post({
+							title: fakePost.title,
+							content: fakePost.content,
+							author: fakerator.random.arrayElement(users)._id
+						});
 
-					let post = new Post({
-						title: fakePost.title,
-						content: fakePost.content,
-						author: fakerator.random.arrayElement(users)._id
+						return post.save();
 					});
-
-					post.save(function(err) {
-						if (err) 
-							return logger.warn("Unable to create default posts!", err);
-					});
-				});
+				}
 
 			});
 
 		}
+	}).then(() => {
+		logger.info("Default posts created!");
 	});
 
+	return Promise.all([devices, posts]);
 };

@@ -1,9 +1,9 @@
 "use strict";
 
-let seleniumServer = require('selenium-server');
-let chromedriver = require('chromedriver');
+let seleniumServer = require("selenium-server");
+let chromedriver = require("chromedriver");
 
-let appPort = process.env.APP_PORT || process.env.PORT || 3000;
+let appPort = process.env.APP_PORT || process.env.PORT || 4000;
 
 // http://nightwatchjs.org/guide#settings-file
 // 
@@ -52,7 +52,7 @@ module.exports = {
 
 		"chrome": {
 			"desiredCapabilities": {
-				"browserName": "chrome",
+				"browserName": "chrome",				
 			}
 		},
 
@@ -62,4 +62,4 @@ module.exports = {
 			}
 		}
 	}
-}
+};

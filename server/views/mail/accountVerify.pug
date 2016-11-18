@@ -25,10 +25,10 @@ head
                         p
                           | Welcome to #{app.title}!  Here is a special link to activate your new account:
                         p
-                          a(href='#{validateLink}') Activate my account
+                          a(href=validateLink) Activate my account
                         p
                           | Thanks so much for using our services! If you have any questions, or suggestions, please feel free to email us here at&nbsp;
-                          a(href='mailto:#{app.contactEmail}') #{app.contactEmail}
+                          a(href='mailto' + app.contactEmail) #{app.contactEmail}
                           | .
                         p   - The #{app.title} team
                         //- ----------------------------------------------------------------------------------

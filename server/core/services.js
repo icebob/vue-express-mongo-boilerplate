@@ -16,6 +16,9 @@ let Context 		= require("./context");
 let auth			= require("./auth/helper");
 let response		= require("./response");
 
+let listEndpoints	= require("express-list-endpoints");
+let Table			= require("cli-table2");
+
 let GraphQLScalarType 	= require("graphql").GraphQLScalarType;
 let Kind				= require("graphql/language").Kind;
 
@@ -504,6 +507,12 @@ class Services extends EventEmitter {
 	 */
 	get(serviceName) {
 		return this.services[serviceName];
+	}
+
+
+	printServicesInfo() {
+		let endPoints = listEndpoints(this.app);
+		//logger.debug(endPoints);
 	}
 }
 

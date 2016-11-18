@@ -18,4 +18,4 @@ module.exports = {
 	elements: {
 		title: "#app h1"
 	}
-}
+};
