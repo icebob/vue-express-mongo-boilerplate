@@ -55,8 +55,10 @@ let UserSchema = new Schema({
 		type: String,
 		unique: true,
 		index: true,
+		lowercase: true,
 		required: "Please fill in a username",
-		trim: true
+		trim: true,
+		match: [/^[\w][\w\-\._]*[\w]$/, "Please fill a valid email address"]
 	},
 	password: {
 		type: String,
@@ -115,6 +117,15 @@ let UserSchema = new Schema({
 
 	lastLogin: {
 		type: Date
+	},
+
+	locale: {
+		type: String
+	},
+
+	status: {
+		type: Number,
+		default: 1
 	},
 	
 	metadata: {}
