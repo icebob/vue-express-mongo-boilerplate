@@ -57,9 +57,6 @@ class Services extends EventEmitter {
 		let addService = function(service) {
 			service.app = app;
 			service.db = db;
-			if (_.isFunction(service.init)) {
-				service.init(Context.CreateToServiceInit(service, app, db));
-			}
 			self.services[service.name] = service;
 		};
 
@@ -88,6 +85,13 @@ class Services extends EventEmitter {
 				});
 			}
 		}
+
+		// Call `init` of services
+		_.forIn(self.services, (service) => {
+			if (_.isFunction(service.init)) {
+				service.init(Context.CreateToServiceInit(service, app, db));
+			}
+		});
 	}
 
 	/**
@@ -128,6 +132,7 @@ class Services extends EventEmitter {
 					let handler = (req, res) => {
 						let ctx = Context.CreateFromREST(service, action, app, req, res);
 						logger.debug(`Request via REST '${service.namespace}/${action.name}'`, ctx.params);
+						console.time("REST request");
 						this.emit("request-rest", ctx);
 
 						Promise.resolve()
@@ -156,6 +161,10 @@ class Services extends EventEmitter {
 						.catch((err) => {
 							logger.error(err);
 							response.json(res, null, err);
+						})
+
+						.then(() => {
+							console.timeEnd("REST request");
 						});
 
 					};
