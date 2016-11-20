@@ -1,19 +1,21 @@
-var webpack = require('webpack');
-var path = require('path');
-var fs = require('fs');
-var _ = require("lodash");
+"use strict";
 
-var nodeModules = {};
-fs.readdirSync('node_modules')
+let webpack = require("webpack");
+let path = require("path");
+let fs = require("fs");
+let _ = require("lodash");
+
+let nodeModules = {};
+fs.readdirSync("node_modules")
 	.filter(function(x) {
-		return ['.bin'].indexOf(x) === -1;
+		return [".bin"].indexOf(x) === -1;
 	})
 	.forEach(function(mod) {
-		nodeModules[mod] = 'commonjs ' + mod;
+		nodeModules[mod] = "commonjs " + mod;
 	});
 
 module.exports = {
-	target: 'node',
+	target: "node",
 	node: {
 		console: false,
 		global: false,
@@ -23,27 +25,27 @@ module.exports = {
 		__dirname: true
 	},
 
-	entry: './server/index.js',
+	entry: "./server/index.js",
 
 	output: {
 		path: path.join(__dirname, "server"),
-		filename: 'bundle.js'
+		filename: "bundle.js"
 	},
 
 	externals: _.defaults(nodeModules, {
 		//"../../package.json": "commonjs ../package.json"
 	}),
 
-	devtool: 'sourcemap',
+	devtool: "sourcemap",
 
 	module: {
 		loaders: [
 			{ test: /\.json$/, loader: "json-loader" },
 
 			// ES6/7 syntax and JSX transpiling out of the box
-    		{ test: /\.js$/,	 loader: 'babel', 		exclude: [/node_modules/, /vendor/], query: {
-					presets: ['es2015', 'stage-0']
-				}	
+    		{ test: /\.js$/,	 loader: "babel", 		exclude: [/node_modules/, /vendor/], query: {
+			presets: ["es2015", "stage-0"]
+		}	
 			}
 
 		]
@@ -64,4 +66,4 @@ module.exports = {
 			mangle: true
 		})
 	]
-}
+};

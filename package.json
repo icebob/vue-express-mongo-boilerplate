@@ -132,6 +132,7 @@
     "eslint-friendly-formatter": "2.0.6",
     "eslint-loader": "1.6.1",
     "eslint-plugin-html": "1.6.0",
+    "extract-text-webpack-plugin": "1.0.1",
     "file-loader": "0.9.0",
     "graphql-tag": "0.1.17",
     "i18next-browser-languagedetector": "1.0.1",

@@ -1,15 +1,17 @@
-var path = require("path");
-var glob = require("glob");
-var webpack = require("webpack");
+"use strict";
 
-var precss = require("precss");
-var autoprefixer = require("autoprefixer");
+let path = require("path");
+let glob = require("glob");
+let webpack = require("webpack");
+
+let precss = require("precss");
+let autoprefixer = require("autoprefixer");
 
 module.exports = {
-	devtool: 'eval-source-map',
+	devtool: "eval-source-map",
 	entry: {
-		app: ['webpack-hot-middleware/client', "./client/app/main.js"],
-		frontend: ['webpack-hot-middleware/client', "./client/frontend/main.js"]
+		app: ["webpack-hot-middleware/client", "./client/app/main.js"],
+		frontend: ["webpack-hot-middleware/client", "./client/frontend/main.js"]
 	},
 	output: {
 		path: path.resolve(__dirname, "server", "public", "app"),
@@ -27,9 +29,9 @@ module.exports = {
 			{ test: /\.json$/,   loader: "json-loader" },
 
 			// ES6/7 syntax and JSX transpiling out of the box
-    		{ test: /\.js$/,	loader: 'babel', 		exclude: [/node_modules/, /vendor/], query: {
-					presets: ['es2015', 'stage-0']
-				}	
+    		{ test: /\.js$/,	loader: "babel", 		exclude: [/node_modules/, /vendor/], query: {
+			presets: ["es2015", "stage-0"]
+		}	
 			},
 
 			{ test: /\.vue$/,   loader: "vue" },
@@ -47,9 +49,9 @@ module.exports = {
 		]
 	},
 	resolve: {
-    	extensions: ['', '.vue', '.js', '.json'],
+    	extensions: ["", ".vue", ".js", ".json"],
     	alias: {
-    		'images': path.resolve(__dirname, 'client', 'images')
+    		"images": path.resolve(__dirname, "client", "images")
     	}
 	},
 	plugins: [
@@ -61,14 +63,14 @@ module.exports = {
 
 	postcss: function () {
 		return [
-			autoprefixer({ browsers: ['last 2 versions'] }), 
+			autoprefixer({ browsers: ["last 2 versions"] }), 
 			precss
 		];
 	},	
 
 	vue: {
 		autoprefixer: {
-			browsers: ['last 2 versions']
+			browsers: ["last 2 versions"]
 		}
 	}	
 };
