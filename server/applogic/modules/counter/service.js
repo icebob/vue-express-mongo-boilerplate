@@ -190,7 +190,7 @@ module.exports = {
 			counter: Int
 		`,
 
-		types: ``,
+		types: "",
 
 		mutation: `
 			counterCreate(value: Int!): Int

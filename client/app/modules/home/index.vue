@@ -750,7 +750,7 @@
 				let element = this.$el.querySelector(elType);
 				if (element) {
 					let style = window.getComputedStyle(element, null);
-					return style.fontFamily.split(",")[0] + ' ' + style.fontWeight + ', ' + style.fontSize;
+					return style.fontFamily.split(",")[0] + " " + style.fontWeight + ", " + style.fontSize;
 				}
 			}
 		}

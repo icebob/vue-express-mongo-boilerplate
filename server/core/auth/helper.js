@@ -43,7 +43,7 @@ module.exports.tryAuthenticateWithApiKey = function tryAuthenticatedWithApiKey(r
 			next();
 	}
 	else
-		next()
+		next();
 };
 
 /**

@@ -4,7 +4,7 @@ let MAILTRAP_API = "73b2335b4810550097cec6291bc91c03";
 let MAILTRAP_INBOX = 46372;
 
 let _ = require("lodash");
-let request = require('request');
+let request = require("request");
 
 let baseURL = "https://mailtrap.io/api/v1/";
 let headers = {
@@ -123,4 +123,4 @@ module.exports = {
 	getTokenFromMessage,
 	cleanInbox,
 	deleteMessage
-}
+};

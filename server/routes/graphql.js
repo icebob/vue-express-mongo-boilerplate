@@ -68,8 +68,8 @@ module.exports = function(app, db) {
 		};
 	}));
 
-	app.use('/graphiql', graphiqlExpress({
-		endpointURL: '/graphql',
+	app.use("/graphiql", graphiqlExpress({
+		endpointURL: "/graphql",
 	}));	
 
 };
