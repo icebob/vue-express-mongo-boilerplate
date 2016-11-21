@@ -16,7 +16,7 @@ module.exports = function() {
 			clientID: config.authKeys.github.clientID,
 			clientSecret: config.authKeys.github.clientSecret,
 			callbackURL: "/auth/github/callback",
-			scope: [ 'user:email' ],
+			scope: [ "user:email" ],
 			passReqToCallback: true
 		}, function(req, accessToken, refreshToken, profile, done) {
 			logger.info("Received profile: ", profile);

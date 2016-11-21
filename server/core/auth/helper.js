@@ -112,6 +112,7 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 	let profile = opts.profile;
 	let done = opts.done;
 	let provider = opts.provider;
+	let username =  opts.username;
 	let email = opts.email;
 	let userData = opts.userData;
 
@@ -158,6 +159,13 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 		User.findOne(search, function(err, existingUser) {
 
 			if (existingUser) {
+
+				// Check that the user is not disabled or deleted
+				if (existingUser.status !== 1) {
+					req.flash("error", { msg: req.t("UserDisabledOrDeleted")});
+					return done();
+				}
+				
 				return done(err, existingUser);
 			}
 
@@ -170,6 +178,13 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 			// If come back email address from social provider, search user by email
 			User.findOne({email: email}, function(err, existingEmailUser) {
 				if (existingEmailUser) {
+
+					// Check that the user is not disabled or deleted
+					if (existingEmailUser.status !== 1) {
+						req.flash("error", { msg: req.t("UserDisabledOrDeleted")});
+						return done();
+					}
+
 					// We found the user, update the profile
 					let user = existingEmailUser;
 					user.socialLinks = user.socialLinks || {};
@@ -201,7 +216,7 @@ module.exports.linkToSocialAccount = function linkToSocialAccount(opts) {
 				let user = new User();
 				user.fullName = userData.name;
 				user.email = email;
-				user.username = email;
+				user.username = email; // username will be the e-mail address if signup with a social account. Because maybe conflict other exist user's username
 				user.provider = provider;
 				user.verified = true; // No need to verify a social signup
 				user.passwordLess = true; // No password for this account. He/she can login via social login or passwordless login

@@ -81,6 +81,8 @@ fragment userFields on User {
   username
   roles
   verified
+	status
+	locale
   avatar
   lastLogin
 }

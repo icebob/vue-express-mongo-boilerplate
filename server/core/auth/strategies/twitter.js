@@ -29,6 +29,7 @@ module.exports = function() {
 
 				provider: "twitter",
 				email: `${profile.username}@twitter.com`,
+				username: profile.username,
 				userData: {
 					name: profile.displayName,
 					gender: null,

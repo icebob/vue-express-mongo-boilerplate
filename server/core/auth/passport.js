@@ -26,7 +26,16 @@ module.exports = function(app) {
 		User.findOne({
 			_id: id
 		}, "-password", function(err, user) {
-			return done(err, user);
+			if (err)
+				return done(err);
+			
+			// Check that the user is not disabled or deleted
+			if (user.status !== 1) {
+				return done(new Error(app.t("UserDisabledOrDeleted")));
+				// TODO remove session because in browser can't jump to login screen
+			}
+
+			return done(null, user);
 		});
 	});
 

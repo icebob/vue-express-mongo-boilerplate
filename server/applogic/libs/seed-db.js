@@ -41,7 +41,7 @@ module.exports = function() {
 
 			User.find({}).lean().select("_id").exec((err, users) => {
 				if (users && users.length > 0) {
-					_.times(10, () => {
+					_.times(0, () => {
 
 						let fakePost = fakerator.entity.post();
 

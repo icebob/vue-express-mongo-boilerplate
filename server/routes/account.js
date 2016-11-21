@@ -115,7 +115,7 @@ module.exports = function(app, db) {
 				}
 			},
 
-			function passwordless(token, done) {
+			function passwordlessToken(token, done) {
 				if (passwordless) {
 					crypto.randomBytes(25, function(err, buf) {
 						done(err, token, err ? null : buf.toString("hex"));
@@ -376,6 +376,12 @@ module.exports = function(app, db) {
 						return done("Email address " + req.body.email + " is not registered!");
 					}
 
+					// Check that the user is not disabled or deleted
+					if (user.status !== 1) {
+						req.flash("error", { msg: req.t("UserDisabledOrDeleted")});
+						return done(req.t("UserDisabledOrDeleted"));
+					}
+
 					user.resetPasswordToken = token;
 					user.resetPasswordExpires = Date.now() + 3600000; // expire in 1 hour
 					user.save(function(err) {
@@ -538,4 +544,34 @@ module.exports = function(app, db) {
 
 			});
 	});	
+
+	// Unlink social account
+	app.get("/unlink/:provider", function(req, res) {
+		if (!req.isAuthenticated())
+			return response.json(res, null, response.UNAUTHORIZED);
+
+		if (!req.params.provider || ["facebook", "twitter", "google", "github"].indexOf(req.params.provider) === -1)
+			return response.json(res, null, response.BAD_REQUEST, req.t("InvalidOAuthProvider"));
+
+		User
+			.findById(req.user.id)
+			.exec((err, user) => {
+				if (err) 
+					return response.json(res, null, response.SERVER_ERROR);
+
+				if (!user) {
+					return response.json(res, null, response.NOT_FOUND, req.t("InvalidUser"));
+				}
+
+				user.socialLinks[req.params.provider] = undefined;
+
+				user.save((err) => {
+					if (err) 
+						return response.json(res, null, response.SERVER_ERROR);
+
+					return response.json(res, user);
+				});
+
+			});		
+	});		
 };

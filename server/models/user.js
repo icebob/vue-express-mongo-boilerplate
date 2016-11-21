@@ -58,7 +58,7 @@ let UserSchema = new Schema({
 		lowercase: true,
 		required: "Please fill in a username",
 		trim: true,
-		match: [/^[\w][\w\-\._]*[\w]$/, "Please fill a valid email address"]
+		match: [/^[\w][\w\-\._\@]*[\w]$/, "Please fill a valid username"]
 	},
 	password: {
 		type: String,
@@ -76,7 +76,12 @@ let UserSchema = new Schema({
 		type: String,
 		"default": "local"
 	},
-	profile: {},	
+	profile: {
+		name: { type: String },
+		gender: { type: String },
+		picture: { type: String },
+		location: { type: String }		
+	},	
 	socialLinks: {
 		facebook: { type: String, unique: true, sparse: true },
 		twitter: { type: String, unique: true, sparse: true },

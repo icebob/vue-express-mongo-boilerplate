@@ -29,6 +29,12 @@ module.exports = function() {
 					message: req.t("PleaseActivateAccount")
 				});
 
+			// Check that the user is not disabled or deleted
+			if (user.status !== 1)
+				return done(null, false, {
+					message: req.t("UserDisabledOrDeleted")
+				});
+
 			if (user.passwordLess)
 				return done(null, false, {
 					message: req.t("PasswordlessAccountLeaveEmpty")

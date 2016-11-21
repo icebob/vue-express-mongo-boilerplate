@@ -121,6 +121,13 @@ module.exports = function(app, db) {
 							return done("Invalid username " + username);
 						}
 
+						// Check that the user is not disabled or deleted
+						if (user.status !== 1) {
+							req.flash("error", { msg: req.t("UserDisabledOrDeleted")});
+							return done(req.t("UserDisabledOrDeleted"));
+						}
+						
+
 						user.passwordLessToken = token;
 						//user.passwordLessTokenExpires = Date.now() + 3600000; // expire in 1 hour
 						user.save(function(err) {

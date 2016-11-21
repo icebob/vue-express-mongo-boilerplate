@@ -65,10 +65,12 @@
 	"AccountHasBeenLinked": "Fiók sikeresen összekapcsolva.",
 	"SocialMissingEmailAddress": "E-mail cím hiányzik. Kérlek regisztrálj be az oldalon!",
 	"SignUpDisabledPleaseLogin": "Regisztráció le van tiltva. Ha van fiókod, jelentkezz be!",
-	"UnknowAPIKey":"Ismeretlen API kulcs!",
-	"PleaseActivateAccount":"Kérlek aktiváld a fiókodat!",
-	"PasswordlessAccountLeaveEmpty":"Ez egy jelszómentes fiók. Hagyd üresen a jelszó mezőt.",
-	"InvalidPassword":"Hibás jelszó",
+	"UnknowAPIKey": "Ismeretlen API kulcs!",
+	"PleaseActivateAccount": "Kérlek aktiváld a fiókodat!",
+	"PasswordlessAccountLeaveEmpty": "Ez egy jelszómentes fiók. Hagyd üresen a jelszó mezőt.",
+	"InvalidPassword": "Hibás jelszó",
+	"UserDisabledOrDeleted": "Törölt vagy tiltott felhasználói fiók!",
+	"InvalidOAuthProvider": "Hibás OAuth szolgáltató!",
 
 	"UnknowUsernameOrEmail": "Ismeretlen felhasználónév vagy e-mail cím",
 

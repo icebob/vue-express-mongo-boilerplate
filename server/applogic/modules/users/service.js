@@ -63,8 +63,10 @@ module.exports = {
 				provider: String
 				roles: [String]
 				verified: Boolean
+				locale: String
 				avatar: String
 				lastLogin: Timestamp
+				status: Int
 			}
 		`,
 		// posts(limit: Int, offset: Int, sort: String): [Post]
@@ -109,6 +111,8 @@ fragment userFields on User {
   verified
   avatar
   lastLogin
+  locale
+  status
 }
 
 */

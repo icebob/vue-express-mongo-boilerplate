@@ -18,7 +18,7 @@ module.exports = function() {
 			callbackURL: "/auth/google/callback",
 			passReqToCallback: true
 		}, function(req, accessToken, refreshToken, profile, done) {
-			//logger.info("Received profile: ", profile);
+			// logger.info("Received profile: ", profile);
 
 			helper.linkToSocialAccount({
 				req, 
@@ -31,8 +31,8 @@ module.exports = function() {
 				email: profile.emails[0].value,
 				userData: {
 					name: profile.displayName,
-					gender: profile._json.gender,
-					picture: profile._json.image.url,
+					gender: profile.gender,
+					picture: profile.photos && profile.photos.length > 0 ? profile.photos[0].value.replace("sz=50", "sz=200") : null,
 					location: null
 				}
 			});

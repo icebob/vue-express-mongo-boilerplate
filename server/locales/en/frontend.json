@@ -68,10 +68,12 @@
 	"AccountHasBeenLinked": "Account has been linked.",
 	"SocialMissingEmailAddress": "Missing email address. Please signup manually!",
 	"SignUpDisabledPleaseLogin": "Sign up is disabled. Please login first, if you have an account!",
-	"UnknowAPIKey":"Unknow API key!",
-	"PleaseActivateAccount":"Please activate your account!",
-	"PasswordlessAccountLeaveEmpty":"This is a passwordless account! Please leave empty the password field.",
-	"InvalidPassword":"Invalid password",
+	"UnknowAPIKey": "Unknow API key!",
+	"PleaseActivateAccount": "Please activate your account!",
+	"PasswordlessAccountLeaveEmpty": "This is a passwordless account! Please leave empty the password field.",
+	"InvalidPassword": "Invalid password",
+	"UserDisabledOrDeleted": "Deleted or disabled user account!",
+	"InvalidOAuthProvider": "Invalid OAuth provider!",
 	
 	"UnknowUsernameOrEmail": "Unknow username or e-mail",
 
