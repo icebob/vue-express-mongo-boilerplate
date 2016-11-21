@@ -62,12 +62,6 @@ module.exports = function(app, db) {
 	authRouter.post("/local", function(req, res, next) {
 
 		req.assert("username", req.t("UsernameCannotBeEmpty")).notEmpty();
-		//req.assert('email', req.t("EmailIsNotValid")).isEmail();
-		//req.assert('email', req.t("EmailCannotBeEmpty")).notEmpty();
-		//req.sanitize('email').normalizeEmail({ remove_dots: false });
-
-		// Passwordless miatt
-		//req.assert('password', req.t("PasswordCannotBeEmpty")).notEmpty();
 
 		let errors = req.validationErrors();
 		if (errors) {
@@ -89,6 +83,7 @@ module.exports = function(app, db) {
 						return respond(req, res, "/login");
 					}
 
+					// Success authentication
 					// Update user's record with login time
 					req.user.lastLogin = Date.now();
 					req.user.save(function() {
@@ -129,7 +124,7 @@ module.exports = function(app, db) {
 						// Check that the user is not disabled or deleted
 						if (user.status !== 1) {
 							req.flash("error", { msg: req.t("UserDisabledOrDeleted")});
-							return done(req.t("UserDisabledOrDeleted"));
+							return done(`User '${username} is disabled or deleted!`);
 						}
 						
 

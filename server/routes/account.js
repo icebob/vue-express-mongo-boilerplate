@@ -375,7 +375,7 @@ module.exports = function(app, db) {
 				User.findOne({ email: req.body.email }, function(err, user) {
 					if (!user) {
 						req.flash("error", { msg: req.t("EmailNotAssociatedToAccount", req.body) });
-						return done("Email address " + req.body.email + " is not registered!");
+						return done(`Email address ${req.body.email} is not registered!`);
 					}
 
 					// Check that the user is not disabled or deleted
