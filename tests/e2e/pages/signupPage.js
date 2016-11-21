@@ -2,8 +2,12 @@
 
 let commands = {
 	signup(name, email, username, password, passwordless) {
+		this.getValue("@passwordLessCheck", function(result) {
+			console.info("Checkbox: ", result);
+		});
+
 		return this
-			.waitForElementVisible('@emailField', 10000)
+			.waitForElementVisible("@emailField", 10000)
 			.assert.containsText("@title", "SIGN UP")
 			.assert.elementPresent("@nameField")
 			.assert.elementPresent("@emailField")
@@ -14,7 +18,7 @@ let commands = {
 			.setValue("@emailField", email)
 			.setValue("@usernameField", username)
 			.setValue("@passwordField", password)
-			.setValue("@passwordLessCheck", passwordless)
+			.click("[for=\"passwordless\"]") // TODO
 			.makeScreenshot()
 			.click("@submitButton");
 	}

@@ -60,6 +60,7 @@ module.exports = function(app, db) {
 	// Logout
 	app.get("/logout", function(req, res) {
 		req.logout();
+		req.session.destroy();
 		res.redirect("/");
 	});
 
@@ -132,6 +133,7 @@ module.exports = function(app, db) {
 					email: req.body.email,
 					username: req.body.username,
 					password: password,
+					passwordLess: passwordless,
 					roles: [C.ROLE_USER],
 					provider: "local"
 				});
