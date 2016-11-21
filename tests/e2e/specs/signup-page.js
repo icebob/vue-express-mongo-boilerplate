@@ -8,7 +8,7 @@ let pauseTime = 100;
 let user = fakerator.entity.user();
 user.name = user.firstName + " " + user.lastName;
 
-describe.only("Test signup page with password", () => {
+describe("Test signup page with password", () => {
 
 	let loginPage;
 	let signupPage;
@@ -79,12 +79,8 @@ describe.only("Test signup page with password", () => {
 			.waitForElementVisible("@title")
 			.assert.urlEquals(homePage.url())
 			.assert.containsText("@title", "Style guide")
-			.makeScreenshot();
-
-		// Logout
-		browser
-			.pause(1000) // Wait for email received
-			.url(baseURL + "/logout");
+			.makeScreenshot()
+			.logout();
 	});	
 
 	it("should login with email & password", (browser) => {
@@ -98,13 +94,8 @@ describe.only("Test signup page with password", () => {
 			.waitForElementVisible("@title")
 			.assert.urlEquals(homePage.url())
 			.assert.containsText("@title", "Style guide")
-			.makeScreenshot();
-
-		// Logout
-		browser
-			.pause(1000) // Wait for email received
-			.url(baseURL + "/logout");
-
+			.makeScreenshot()
+			.logout();
 	});	
 
 	it("should login with username & password", (browser) => {
@@ -118,12 +109,8 @@ describe.only("Test signup page with password", () => {
 			.waitForElementVisible("@title")
 			.assert.urlEquals(homePage.url())
 			.assert.containsText("@title", "Style guide")
-			.makeScreenshot();
-
-		// Logout
-		browser
-			.pause(1000) // Wait for email received
-			.url(baseURL + "/logout");
+			.makeScreenshot()
+			.logout();
 
 	});			
 
