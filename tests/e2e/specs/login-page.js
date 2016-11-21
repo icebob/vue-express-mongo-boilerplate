@@ -128,7 +128,8 @@ describe("Test login page with passwordless", () => {
 			.waitForElementVisible("@title")
 			.assert.urlEquals(homePage.url())
 			.assert.containsText("@title", "Style guide")
-			.makeScreenshot();
+			.makeScreenshot()
+			.logout();
 
 	});	
 

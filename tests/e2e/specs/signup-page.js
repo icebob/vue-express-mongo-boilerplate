@@ -193,21 +193,85 @@ describe.only("Test signup page with passwordless mode", () => {
 			.api.pause(pauseTime)
 			.makeScreenshot();
 	});	
-	/*
-	it("should login with username & password", (browser) => {
+	
+	it("should login with username & w/o password", (browser) => {
 		loginPage.navigate()
-			.login(user.userName, user.password)
+			.login(user.userName, "")
+			.waitForElementPresent("@flashInfo")
+			.assert.elementPresent("@flashInfo")
 			.api.pause(pauseTime)
+			.assert.urlEquals(loginPage.url())
 			.makeScreenshot();
 
-		// Check the user redirected to main app
+		browser
+			.pause(1000) // Wait for email received
+			.perform(function(browser, done) {
+				console.log("Check mailbox...");
+
+				let re = /passwordless\/(\w+)/g;			
+				mailtrap.getTokenFromMessage(user.email, re, function(err, token, message) {
+					if (err) 
+						throw new Error(err);
+
+					// Delete message
+					mailtrap.deleteMessage(null, message.id);
+
+					//console.log("Open magic link: " + baseURL + "/passwordless/" + token);
+					browser.url(baseURL + "/passwordless/" + token);
+
+					return done();
+				});
+
+				return this;
+			})
+			.pause(pauseTime);
+
 		homePage
 			.waitForElementVisible("@title")
 			.assert.urlEquals(homePage.url())
 			.assert.containsText("@title", "Style guide")
 			.makeScreenshot()
 			.logout();
-
 	});			
-*/
+
+	it("should login with email & w/o password", (browser) => {
+		loginPage.navigate()
+			.login(user.email, "")
+			.waitForElementPresent("@flashInfo")
+			.assert.elementPresent("@flashInfo")
+			.api.pause(pauseTime)
+			.assert.urlEquals(loginPage.url())
+			.makeScreenshot();
+
+		browser
+			.pause(1000) // Wait for email received
+			.perform(function(browser, done) {
+				console.log("Check mailbox...");
+
+				let re = /passwordless\/(\w+)/g;			
+				mailtrap.getTokenFromMessage(user.email, re, function(err, token, message) {
+					if (err) 
+						throw new Error(err);
+
+					// Delete message
+					mailtrap.deleteMessage(null, message.id);
+
+					//console.log("Open magic link: " + baseURL + "/passwordless/" + token);
+					browser.url(baseURL + "/passwordless/" + token);
+
+					return done();
+				});
+
+				return this;
+			})
+			.pause(pauseTime);
+
+		homePage
+			.waitForElementVisible("@title")
+			.assert.urlEquals(homePage.url())
+			.assert.containsText("@title", "Style guide")
+			.makeScreenshot()
+			.logout();
+	});	
+
 });

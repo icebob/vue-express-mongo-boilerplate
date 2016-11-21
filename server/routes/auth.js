@@ -115,10 +115,15 @@ module.exports = function(app, db) {
 
 				function getUser(token, done) {
 					let username = req.body.username;
-					User.findOne({ username: username }, function(err, user) {
+					User.findOne({
+						$or: [ 
+							{ "username": username}, 
+							{ "email": username}
+						]
+					}, function(err, user) {
 						if (!user) {
 							req.flash("error", { msg: req.t("UsernameIsNotAssociated", { username: username}) });
-							return done("Invalid username " + username);
+							return done("Invalid username or email: " + username);
 						}
 
 						// Check that the user is not disabled or deleted
