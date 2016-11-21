@@ -8,7 +8,7 @@ let path 			= require("path");
 let chalk 			= require("chalk");
 
 /* global WEBPACK_BUNDLE */
-if (!WEBPACK_BUNDLE) require('require-webpack-compat')(module, require);
+if (!WEBPACK_BUNDLE) require("require-webpack-compat")(module, require);
 
 let User 			= require("../../models/user");
 
@@ -30,10 +30,8 @@ module.exports = function(app) {
 				return done(err);
 			
 			// Check that the user is not disabled or deleted
-			if (user.status !== 1) {
-				return done(new Error(app.t("UserDisabledOrDeleted")));
-				// TODO remove session because in browser can't jump to login screen
-			}
+			if (user.status !== 1)
+				return done(null, false);
 
 			return done(null, user);
 		});
