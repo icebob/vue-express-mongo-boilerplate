@@ -2,6 +2,7 @@
 
 let logger 			= require("./logger");
 let config 			= require("../config");
+let redis 			= require("./redis");
 
 let express 		= require("express");
 let http 			= require("http");

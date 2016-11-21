@@ -59,6 +59,14 @@ module.exports = {
 		}
 	},
 
+	redis: {
+		enabled: false,
+		uri: process.env.REDIS_URI || "redis://localhost:6379",
+		options: null
+	},
+
+	cacheTimeout: 5 * 60, // 5 mins
+
 	mailer: {
 		from: "noreply@vem-app.com"
 		/*

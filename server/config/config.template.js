@@ -37,6 +37,13 @@ module.exports = {
 		}
 	},
 
+	// Redis settings for caching
+	redis: {
+		enabled: false,
+		uri: process.env.REDIS_URI || "redis://localhost:6379",
+		options: null
+	},	
+
 	// Mail sending settings
 	mailer: {
 		//from: "noreply@vem-app.com",

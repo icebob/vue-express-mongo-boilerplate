@@ -29,6 +29,7 @@ app.listen(config.port, config.ip, function() {
 	logger.info("IP:\t\t" + config.ip);
 	logger.info("Port:\t\t" + config.port);
 	logger.info("Database:\t\t" + config.db.uri);
+	logger.info("Redis:\t\t" + (config.redis.enabled ? config.redis.uri : "Disabled"));
 	logger.info("");
 
 	require("./libs/sysinfo")();
@@ -36,7 +37,8 @@ app.listen(config.port, config.ip, function() {
 	logger.info("----------------------------------------------");
 
 	let Service = require("./core/services");
-	Service.printServicesInfo();
+	if (config.isDevMode)
+		Service.printServicesInfo();
 });
 
 

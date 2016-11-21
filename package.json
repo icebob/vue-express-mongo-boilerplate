@@ -94,6 +94,7 @@
     "passport-twitter": "1.0.4",
     "pretty-bytes": "4.0.2",
     "pug": "2.0.0-beta6",
+    "redis": "2.6.3",
     "require-webpack-compat": "3.0.0",
     "sass-loader": "3.2.1",
     "secret-utils": "2.0.0",

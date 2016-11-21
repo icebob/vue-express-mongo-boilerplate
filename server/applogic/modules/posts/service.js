@@ -22,19 +22,22 @@ module.exports = {
 	populateAuthorFields: "username fullName code email avatar",
 
 	actions: {
-		find(ctx) {
-			let filter = {};
+		find: {
+			cache: true,
+			handler(ctx) {
+				let filter = {};
 
-			if (ctx.params.filter == "my") 
-				filter.author = ctx.user.id;
+				if (ctx.params.filter == "my") 
+					filter.author = ctx.user.id;
 
-			let query = Post.find(filter);
+				let query = Post.find(filter);
 
-			query.populate("author", this.populateAuthorFields);
+				query.populate("author", this.populateAuthorFields);
 
-			return ctx.queryPageSort(query).exec().then( (docs) => {
-				return ctx.toJSON(docs);
-			});
+				return ctx.queryPageSort(query).exec().then( (docs) => {
+					return ctx.toJSON(docs);
+				});
+			}
 		},
 
 		// return a model by ID
@@ -246,6 +249,7 @@ module.exports = {
 
 	notifyModelChanges(ctx, type, json) {
 		ctx.notifyChanges(type, json, "user");
+		ctx.clearServiceCache();
 	},
 
 	init(ctx) {

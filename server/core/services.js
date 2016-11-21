@@ -147,9 +147,22 @@ class Services extends EventEmitter {
 							return ctx.checkPermission();
 						})
 
-						// Call the action handler
+						// Check in the cache
 						.then(() => {
-							return action.handler.call(service, ctx);
+							return ctx.getFromCache();
+						})
+
+						// Call the action handler
+						.then((json) => {
+							if (json != null) {
+								// Found in the cache!
+								return json;
+							}
+
+							return action.handler.call(service, ctx).then((json) => {
+								ctx.putToCache(json);
+								return json;
+							});
 						})
 
 						// Response the result
