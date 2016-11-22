@@ -59,7 +59,7 @@ class Cacher {
 	}
 
 	/**
-	 * Set data to cache by key
+	 * Save data to cache by key
 	 * 
 	 * @param {any} key
 	 * @param {any} data JSON object
@@ -92,9 +92,6 @@ class Cacher {
 
 	/**
 	 * Clean cache. Remove every key by prefix
-	 * 		http://stackoverflow.com/questions/4006324/how-to-atomically-delete-keys-matching-a-pattern-using-redis
-	 * alternative solution:
-	 * 		https://github.com/cayasso/cacheman-redis/blob/master/lib/index.js#L125
 	 * @param {any} match Match string for SCAN. Default is "*"
 	 * @returns {Promise}
 	 * 

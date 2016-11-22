@@ -49,7 +49,7 @@ class Cacher {
 	}
 
 	/**
-	 * Set data to cache by key
+	 * Save data to cache by key
 	 * 
 	 * @param {any} key
 	 * @param {any} data JSON object

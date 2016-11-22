@@ -58,9 +58,10 @@ class Services extends EventEmitter {
 		let addService = function(service) {
 			service.app = app;
 			service.db = db;
-			// config.redis.enabled ? "redis" : "memory"
-			service.cacher = new Cacher("memory", service.name, config.cacheTimeout);
-			service.cacher.clean();
+			if (config.cacheTimeout) {
+				service.cacher = new Cacher(config.redis.enabled ? "redis" : "memory", service.name, config.cacheTimeout);
+				service.cacher.clean();
+			}
 			self.services[service.name] = service;
 		};
 

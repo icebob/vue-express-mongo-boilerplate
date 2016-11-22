@@ -5,7 +5,6 @@ let config 		= require("../../../config");
 let C 	 		= require("../../../core/constants");
 
 let Post 		= require("./models/post");
-let User 		= require("../users/models/user");
 
 module.exports = {
 	name: "posts",
@@ -246,6 +245,7 @@ module.exports = {
 
 	init(ctx) {
 		// Fired when start the service
+		this.userService = ctx.services("users");
  
 		// Add custom error types
 		C.append([
@@ -299,19 +299,25 @@ module.exports = {
 
 			Post: {
 				author(post, args, context) {
-					return User.findById(post.author).exec();
+					/*let self = context.ctx.service.userService; 
+					return self.getByID(post.author);
+					*/
+					return post.author;
 				},
 
 				upVoters(post, args, context) {
-					return context.ctx.queryPageSort(User.find({ _id: { $in: post.upVoters} })).exec();
+					let self = context.ctx.service.userService; 
+					return self.getByID(post.upVoters);
 				},
 
 				downVoters(post, args, context) {
-					return context.ctx.queryPageSort(User.find({ _id: { $in: post.downVoters} })).exec();
+					let self = context.ctx.service.userService; 
+					return self.getByID(post.downVoters);
 				},
 
 				voters(post, args, context) {
-					return context.ctx.queryPageSort(User.find({ _id: { $in: post.upVoters.concat(post.downVoters) } })).exec();
+					let self = context.ctx.service.userService; 
+					return self.getByID(post.upVoters.concat(post.downVoters));
 				}
 
 			},
