@@ -1,12 +1,12 @@
 "use strict";
 
-let config    	= require("../config");
-let logger    	= require("../core/logger");
-let redis 		= require("../core/redis");
+let config    	= require("../../config");
+let logger    	= require("../logger");
+let redis 		= require("../redis");
 
 let _ 			= require("lodash");
 /**
- * Cache class. Use prefixes and TTL
+ * Cacher factory for Redis
  * 
  * @class Cacher
  */
@@ -22,6 +22,7 @@ class Cacher {
 	 * @memberOf Cacher
 	 */
 	constructor(prefix, ttl) {
+		logger.debug("Redis Cacher created. Prefix: " + prefix);
 		this.prefix = prefix ? prefix + ":" : "";
 		this.ttl = ttl;
 	}

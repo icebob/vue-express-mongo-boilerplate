@@ -1,5 +1,5 @@
 {
-	"ignore": ["client/**/*.*", "server/locales/**/*.*"],
+	"ignore": ["node_modules", ".git", "client/**/*.*", "server/locales/**/*.*"],
 
 	"__exec": "nodejs-dashboard node server/dev.js",
 
