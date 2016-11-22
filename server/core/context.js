@@ -593,14 +593,14 @@ class Context {
 	}
 
 	getFromCache() {
-		if (config.redis.enabled && config.cacheTimeout && this.action.cache) {
+		if (this.service.cacher && this.action.cache) {
 			return this.service.cacher.get(this.getCacheKey());
 		} else 
 			return Promise.resolve(null); 
 	}
 
 	putToCache(json) {
-		if (config.redis.enabled && config.cacheTimeout && this.action.cache) {
+		if (this.service.cacher && this.action.cache) {
 			this.service.cacher.set(this.getCacheKey(), json);
 			return Promise.resolve();
 		} else 
@@ -608,7 +608,7 @@ class Context {
 	}
 
 	clearCache() {
-		if (config.redis.enabled && config.cacheTimeout) {
+		if (this.service.cacher) {
 			logger.debug(`Clear service (${this.service.name}) cache...`);
 			this.service.cacher.clean();
 		} 

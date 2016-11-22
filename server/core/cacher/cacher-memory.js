@@ -24,7 +24,7 @@ class Cacher {
 	 * @memberOf Cacher
 	 */
 	constructor(prefix, ttl) {
-		logger.debug("Memory Cacher created. Prefix: " + prefix);
+		//logger.debug("Memory Cacher created. Prefix: " + prefix);
 
 		// Cache container
 		this.cache = {};

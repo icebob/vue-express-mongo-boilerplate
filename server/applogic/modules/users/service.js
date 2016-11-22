@@ -44,7 +44,7 @@ module.exports = {
 		}
 	},
 
-	// move to an abstract Service class
+	// TODO: move to an abstract Service class
 	getCacheKey(name, params) {
 		return (name ? name + ":" : "") + (params ? hash(params) : "");
 	},
