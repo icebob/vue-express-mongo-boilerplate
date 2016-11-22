@@ -41,8 +41,11 @@ module.exports = {
 		 *	via GraphQL: 
 		 *		query { counter }
 		 */
-		find(ctx) {
-			return Promise.resolve(store.counter);
+		find: {
+			cache: true,
+			handler(ctx) {
+				return Promise.resolve(store.counter);
+			}
 		},
 
 		/**
@@ -153,6 +156,9 @@ module.exports = {
 
 		// Send message to the role of service ('user')
 		// 		ctx.emit("changed", store.counter);	
+
+		// Clear cached values
+		ctx.clearCache();
 	},
 
 	/**

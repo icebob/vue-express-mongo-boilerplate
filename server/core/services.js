@@ -15,6 +15,7 @@ let C 				= require("./constants");
 let Context 		= require("./context");
 let auth			= require("./auth/helper");
 let response		= require("./response");
+let Cacher			= require("../libs/cacher");
 
 let listEndpoints	= require("express-list-endpoints");
 let Table			= require("cli-table2");
@@ -57,6 +58,7 @@ class Services extends EventEmitter {
 		let addService = function(service) {
 			service.app = app;
 			service.db = db;
+			service.cacher = new Cacher(service.name, config.cacheTimeout);
 			self.services[service.name] = service;
 		};
 

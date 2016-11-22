@@ -249,7 +249,7 @@ module.exports = {
 
 	notifyModelChanges(ctx, type, json) {
 		ctx.notifyChanges(type, json, "user");
-		ctx.clearServiceCache();
+		ctx.clearCache();
 	},
 
 	init(ctx) {

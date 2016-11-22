@@ -6,9 +6,9 @@ let response		= require("./response");
 
 let C 				= require("./constants");
 let Sockets   		= require("./sockets");
-let redis   		= require("./redis");
 
 let _ 				= require("lodash");
+let hash			= require("object-hash");
 
 let Services; // circular reference
 
@@ -577,84 +577,30 @@ class Context {
 	}
 
 	getCacheKey() {
-		let key = `${this.service.name}:${this.action.name}:`;
-		let params = [];
-		_.forIn(this.params, (value, key) => params.push(key + "=" + value));
-		key += params.join(";");
-
-		return key;
+		let paramsHash = hash(this.params);
+		return this.action.name + ":" + paramsHash;
 	}
 
 	getFromCache() {
 		if (config.redis.enabled && config.cacheTimeout && this.action.cache) {
-			return new Promise((resolve, reject) => {
-				redis.get(this.getCacheKey(), (err, reply) => {
-					if (err)
-						return reject(err);
-					
-					if (reply) {
-						try {
-							let json = JSON.parse(reply);
-							return resolve(json);							
-						} catch (err) {
-							logger.error("Redis result parse error!", err);
-						}
-					}
-					resolve(null);
-				});
-			});
+			return this.service.cacher.get(this.getCacheKey());
 		} else 
 			return Promise.resolve(null); 
 	}
 
 	putToCache(json) {
 		if (config.redis.enabled && config.cacheTimeout && this.action.cache) {
-			return new Promise((resolve, reject) => {
-				redis.setex(this.getCacheKey(), config.cacheTimeout, JSON.stringify(json), (err) => {
-					if (err)
-						return reject(err);
-					
-					resolve();
-				});
-			});
+			this.service.cacher.set(this.getCacheKey(), json);
+			return Promise.resolve();
 		} else 
 			return Promise.resolve(); 
 	}
 
-	clearServiceCache() {
+	clearCache() {
 		if (config.redis.enabled && config.cacheTimeout) {
-			// http://stackoverflow.com/questions/4006324/how-to-atomically-delete-keys-matching-a-pattern-using-redis
-
 			logger.debug(`Clear service (${this.service.name}) cache...`);
-			let key = this.service.name + ":*";
-			let scanDel = function (cursor, cb) {
-				redis.scan(cursor, "MATCH", key, "COUNT", 100, function(err, resp) {
-					if (err) return cb(err);
-					let nextCursor = parseInt(resp[0]);
-					let keys = resp[1];
-					// no next cursor and no keys to delete
-					if (!nextCursor && !keys.length) return cb(null);
-
-					redis.del(keys, function(err) {
-						if (err) return cb(err);
-						if (!nextCursor) return cb(null);
-						scanDel(nextCursor, cb);
-					});
-				});
-			};
-
-			//return Promise((resolve, reject) => {
-			scanDel(0, function(err) {
-				if (err)
-					//return reject(err);
-					console.error(err);
-				
-				//resolve();
-			});
-			//});
-
-		} //else 
-		//	return Promise.resolve(); 
+			this.service.cacher.clean();
+		} 
 	}
 }
 

@@ -19,13 +19,16 @@ module.exports = {
 	modelPropFilter: "code type address name description status lastCommunication createdAt updatedAt",
 	
 	actions: {
-		find(ctx) {
-			let filter = {};
+		find: {
+			cache: true,
+			handler(ctx) {
+				let filter = {};
 
-			let query = Device.find(filter);
-			return ctx.queryPageSort(query).exec().then( (docs) => {
-				return ctx.toJSON(docs);
-			});
+				let query = Device.find(filter);
+				return ctx.queryPageSort(query).exec().then( (docs) => {
+					return ctx.toJSON(docs);
+				});
+			}
 		},
 
 		// return a model by ID
@@ -155,6 +158,7 @@ module.exports = {
 
 	notifyModelChanges(ctx, type, json) {
 		ctx.notifyChanges(type, json, "user");
+		ctx.clearCache();
 	},
 
 	init(ctx) {

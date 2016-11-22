@@ -11,6 +11,7 @@
 			"program": "${workspaceRoot}\\server\\index.js",
 			"cwd": "${workspaceRoot}",
 			"env": {
+				"NODE_ENV": "development"
 			}
 		},
 		{

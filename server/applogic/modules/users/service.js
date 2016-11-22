@@ -21,10 +21,13 @@ module.exports = {
 	
 	actions: {
 		// return all model
-		find(ctx) {
-			return ctx.queryPageSort(User.find({})).exec().then( (docs) => {
-				return ctx.toJSON(docs);
-			});
+		find: {
+			cache: true,
+			handler(ctx) {
+				return ctx.queryPageSort(User.find({})).exec().then( (docs) => {
+					return ctx.toJSON(docs);
+				});
+			}
 		},
 
 		// return a model by ID
