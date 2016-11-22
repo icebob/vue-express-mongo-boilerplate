@@ -586,7 +586,7 @@ class Context {
 	isAdmin() {
 		return this.user && this.hasRole(C.ROLE_ADMIN);
 	}
-
+/*
 	getCacheKey() {
 		let paramsHash = hash(this.params);
 		return this.action.name + ":" + paramsHash;
@@ -612,7 +612,7 @@ class Context {
 			logger.debug(`Clear service (${this.service.name}) cache...`);
 			this.service.cacher.clean();
 		} 
-	}
+	}*/
 }
 
 module.exports = Context;

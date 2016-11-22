@@ -23,6 +23,8 @@ let Table			= require("cli-table2");
 let GraphQLScalarType 	= require("graphql").GraphQLScalarType;
 let Kind				= require("graphql/language").Kind;
 
+let BaseService			= require("./service.base");
+
 /* global WEBPACK_BUNDLE */
 if (!WEBPACK_BUNDLE) require("require-webpack-compat")(module, require);
 
@@ -55,7 +57,8 @@ class Services extends EventEmitter {
 		self.app = app;
 		self.db = db;
 
-		let addService = function(service) {
+		let addService = function(srv) {
+			let service = _.defaultsDeep({}, srv, BaseService);
 			service.app = app;
 			service.db = db;
 			if (config.cacheTimeout) {
@@ -140,6 +143,8 @@ class Services extends EventEmitter {
 						console.time("REST request");
 						this.emit("request-rest", ctx);
 
+						let cacheKey = service.getCacheKey(action.name, ctx.params);
+
 						Promise.resolve()
 
 						// Resolve model if ID provided
@@ -154,7 +159,7 @@ class Services extends EventEmitter {
 
 						// Check in the cache
 						.then(() => {
-							return ctx.getFromCache();
+							return service.getFromCache(cacheKey);
 						})
 
 						// Call the action handler
@@ -165,7 +170,7 @@ class Services extends EventEmitter {
 							}
 
 							return action.handler.call(service, ctx).then((json) => {
-								ctx.putToCache(json);
+								service.putToCache(cacheKey, json);
 								return json;
 							});
 						})
@@ -318,6 +323,7 @@ class Services extends EventEmitter {
 							logger.debug(`Request via WebSocket '${service.namespace}/${action.name}'`, ctx.params);
 							console.time("SOCKET request");
 							self.emit("request-socket", ctx);
+							let cacheKey = service.getCacheKey(action.name, ctx.params);
 							
 							Promise.resolve()
 
@@ -333,7 +339,7 @@ class Services extends EventEmitter {
 
 							// Check in the cache
 							.then(() => {
-								return ctx.getFromCache();
+								return service.getFromCache(cacheKey);
 							})
 
 							// Call the action handler
@@ -344,7 +350,7 @@ class Services extends EventEmitter {
 								}
 
 								return action.handler.call(service, ctx).then((json) => {
-									ctx.putToCache(json);
+									service.putToCache(cacheKey, json);
 									return json;
 								});
 							})
@@ -425,6 +431,7 @@ class Services extends EventEmitter {
 								logger.debug("Request via GraphQL", ctx.params, context.query);
 								console.time("GRAPHQL request");
 								self.emit("request-graphql", ctx);
+								let cacheKey = service.getCacheKey(action.name, ctx.params);
 								
 								return Promise.resolve()
 								
@@ -440,7 +447,7 @@ class Services extends EventEmitter {
 
 								// Check in the cache
 								.then(() => {
-									return ctx.getFromCache();
+									return service.getFromCache(cacheKey);
 								})
 
 								// Call the action handler
@@ -451,7 +458,7 @@ class Services extends EventEmitter {
 									}
 
 									return action.handler.call(service, ctx).then((json) => {
-										ctx.putToCache(json);
+										service.putToCache(cacheKey, json);
 										return json;
 									});
 								})

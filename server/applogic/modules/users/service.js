@@ -44,32 +44,6 @@ module.exports = {
 		}
 	},
 
-	// TODO: move to an abstract Service class
-	getCacheKey(name, params) {
-		return (name ? name + ":" : "") + (params ? hash(params) : "");
-	},
-
-	getFromCache(key) {
-		if (this.cacher) {
-			return this.cacher.get(key);
-		} else 
-			return Promise.resolve(null); 
-	},
-
-	putToCache(key, data) {
-		if (this.cacher) {
-			this.cacher.set(key, data);
-			return Promise.resolve();
-		} else 
-			return Promise.resolve(); 
-	},
-
-	clearCache() {
-		if (this.cacher) {
-			this.cacher.clean();
-		} 
-	},	
-
 	/**
 	 * Get user(s) by ID(s). The `id` can be a number or an array with IDs
 	 * @cacheable
@@ -88,9 +62,9 @@ module.exports = {
 			
 			let query;
 			if (_.isArray(id)) {
-				query = User.find({ _id: { $in: id} });
+				query = this.model.find({ _id: { $in: id} });
 			} else
-				query = User.findById(id);
+				query = this.model.findById(id);
 
 			return query.exec().then((data) => {
 				this.putToCache(key, data);
@@ -101,7 +75,7 @@ module.exports = {
 
 	// resolve model by ID		
 	modelResolver(ctx, code) {
-		let id = User.schema.methods.decodeID(code);
+		let id = this.model.schema.methods.decodeID(code);
 		if (id == null || id == "")
 			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("app:InvalidCode"));
 

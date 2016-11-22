@@ -158,7 +158,7 @@ module.exports = {
 		// 		ctx.emit("changed", store.counter);	
 
 		// Clear cached values
-		ctx.clearCache();
+		this.clearCache();
 	},
 
 	/**
@@ -172,7 +172,7 @@ module.exports = {
 	},
 
 	/**
-	 * Websocket option
+	 * Websocket options
 	 */
 	socket: {
 		// Namespace of socket
