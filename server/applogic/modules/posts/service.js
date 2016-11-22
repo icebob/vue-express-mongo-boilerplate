@@ -4,6 +4,8 @@ let logger 		= require("../../../core/logger");
 let config 		= require("../../../config");
 let C 	 		= require("../../../core/constants");
 
+let _			= require("lodash");
+
 let Post 		= require("./models/post");
 
 module.exports = {
@@ -14,7 +16,6 @@ module.exports = {
 	ws: true,
 	permission: C.PERM_LOGGEDIN,
 	model: Post,
-	idParamName: "code", // GET /posts/find?code=123
 
 	modelPropFilter: "code title content author votes downVoters upVoters views createdAt updatedAt",
 	
@@ -212,15 +213,15 @@ module.exports = {
 
 	// resolve model by ID		
 	modelResolver(ctx, code) {
-		let id = Post.schema.methods.decodeID(code);
+		let id = this.model.schema.methods.decodeID(code);
 		if (id == null || id == "")
 			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("app:InvalidCode"));
 
-		return Post.findById(id).exec().then( (doc) => {
+		return this.model.findById(id).exec().then( (doc) => {
 			if (!doc) 
-				return ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:DeviceNotFound"));
+				return ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:PostNotFound"));
 
-			return Post.populate(doc, { path: "author", select: this.populateAuthorFields});
+			return this.model.populate(doc, { path: "author", select: this.populateAuthorFields});
 		});		
 		
 	},

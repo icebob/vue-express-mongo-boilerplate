@@ -159,7 +159,10 @@ class Services extends EventEmitter {
 
 						// Check in the cache
 						.then(() => {
-							return service.getFromCache(cacheKey);
+							if (action.cache)
+								return service.getFromCache(cacheKey);
+								
+							return Promise.resolve();
 						})
 
 						// Call the action handler
@@ -170,7 +173,8 @@ class Services extends EventEmitter {
 							}
 
 							return action.handler.call(service, ctx).then((json) => {
-								service.putToCache(cacheKey, json);
+								if (action.cache)
+									service.putToCache(cacheKey, json);
 								return json;
 							});
 						})
@@ -339,7 +343,10 @@ class Services extends EventEmitter {
 
 							// Check in the cache
 							.then(() => {
-								return service.getFromCache(cacheKey);
+								if (action.cache)
+									return service.getFromCache(cacheKey);
+
+								return Promise.resolve();
 							})
 
 							// Call the action handler
@@ -350,7 +357,8 @@ class Services extends EventEmitter {
 								}
 
 								return action.handler.call(service, ctx).then((json) => {
-									service.putToCache(cacheKey, json);
+									if (action.cache)
+										service.putToCache(cacheKey, json);
 									return json;
 								});
 							})
@@ -447,7 +455,10 @@ class Services extends EventEmitter {
 
 								// Check in the cache
 								.then(() => {
-									return service.getFromCache(cacheKey);
+									if (action.cache)
+										return service.getFromCache(cacheKey);
+										
+									return Promise.resolve();
 								})
 
 								// Call the action handler
@@ -458,7 +469,8 @@ class Services extends EventEmitter {
 									}
 
 									return action.handler.call(service, ctx).then((json) => {
-										service.putToCache(cacheKey, json);
+										if (action.cache)
+											service.putToCache(cacheKey, json);
 										return json;
 									});
 								})

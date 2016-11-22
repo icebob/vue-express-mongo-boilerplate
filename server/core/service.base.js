@@ -25,7 +25,7 @@ module.exports = {
 	ws: true,
 
 	// Required permission for actions
-	permission: C.PERM_PUBLIC,
+	permission: C.PERM_LOGGEDIN,
 
 	model: null,
 

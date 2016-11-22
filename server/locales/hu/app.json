@@ -32,6 +32,8 @@
 
 	"DeviceNameCannotBeBlank": "Device name cannot be blank!",
 
+	"UserNotFound": "Felhasználó nem található!",
+
 	"ID": "ID",
 	"Type": "Típus",
 	"Address": "Cím",

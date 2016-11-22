@@ -6,7 +6,6 @@ let Sockets		= require("../../../core/sockets");
 let C 	 		= require("../../../core/constants");
 
 let _			= require("lodash");
-let hash		= require("object-hash");
 
 let User 		= require("./models/user");
 
@@ -18,7 +17,6 @@ module.exports = {
 	ws: true,
 	permission: C.PERM_LOGGEDIN,
 	model: User,
-	idParamName: "code", // GET /users/find?code=bD6kd
 
 	modelPropFilter: "code username fullName avatar lastLogin roles",
 	
@@ -45,8 +43,8 @@ module.exports = {
 	},
 
 	/**
-	 * Get user(s) by ID(s). The `id` can be a number or an array with IDs
-	 * @cacheable
+	 * Get model(s) by ID(s). The `id` can be a number or an array with IDs
+	 * @cached
 	 * 
 	 * @param {any} id
 	 * @returns
@@ -58,6 +56,7 @@ module.exports = {
 		let key = this.getCacheKey("model", id);
 		return this.getFromCache(key).then((data) => {
 			if (data)
+				// TODO represent Mongoose object
 				return data;
 			
 			let query;
@@ -67,6 +66,7 @@ module.exports = {
 				query = this.model.findById(id);
 
 			return query.exec().then((data) => {
+				// TODO convert to common object
 				this.putToCache(key, data);
 				return data;
 			});			

@@ -33,6 +33,8 @@
 
 	"DeviceNameCannotBeBlank": "Device name cannot be blank!",
 
+	"UserNotFound": "User not found!",
+
 	"ID": "ID",
 	"Type": "Type",
 	"Address": "Address",

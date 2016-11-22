@@ -14,7 +14,6 @@ module.exports = {
 	ws: true,
 	permission: C.PERM_LOGGEDIN,
 	model: Device,
-	idParamName: "code", // GET /devices/find?code=123
 	
 	modelPropFilter: "code type address name description status lastCommunication createdAt updatedAt",
 	
