@@ -59,6 +59,7 @@ class Services extends EventEmitter {
 			service.app = app;
 			service.db = db;
 			service.cacher = new Cacher(service.name, config.cacheTimeout);
+			service.cacher.clean();
 			self.services[service.name] = service;
 		};
 
@@ -313,6 +314,7 @@ class Services extends EventEmitter {
 						let handler = (data, callback) => {
 							let ctx = Context.CreateFromSocket(service, action, self.app, socket, data);
 							logger.debug(`Request via WebSocket '${service.namespace}/${action.name}'`, ctx.params);
+							console.time("SOCKET request");
 							self.emit("request-socket", ctx);
 							
 							Promise.resolve()
@@ -327,9 +329,22 @@ class Services extends EventEmitter {
 								return ctx.checkPermission();
 							})
 
-							// Call the action handler
+							// Check in the cache
 							.then(() => {
-								return action.handler.call(service, ctx);
+								return ctx.getFromCache();
+							})
+
+							// Call the action handler
+							.then((json) => {
+								if (json != null) {
+									// Found in the cache!
+									return json;
+								}
+
+								return action.handler.call(service, ctx).then((json) => {
+									ctx.putToCache(json);
+									return json;
+								});
 							})
 
 							// Response the result
@@ -345,6 +360,10 @@ class Services extends EventEmitter {
 								if (_.isFunction(callback)) {
 									callback(response.json(null, null, err));
 								}
+							})
+
+							.then(() => {
+								console.timeEnd("SOCKET request");
 							});
 
 						};
@@ -402,6 +421,7 @@ class Services extends EventEmitter {
 							
 								let ctx = Context.CreateFromGraphQL(service, action, root, args, context);
 								logger.debug("Request via GraphQL", ctx.params, context.query);
+								console.time("GRAPHQL request");
 								self.emit("request-graphql", ctx);
 								
 								return Promise.resolve()
@@ -416,17 +436,33 @@ class Services extends EventEmitter {
 									return ctx.checkPermission();
 								})
 
-								// Call the action handler
+								// Check in the cache
 								.then(() => {
-									return action.handler.call(service, ctx);
+									return ctx.getFromCache();
 								})
-								/*.then((json) => {
-									logger.debug("GraphQL response:", json)
-								})*/
+
+								// Call the action handler
+								.then((json) => {
+									if (json != null) {
+										// Found in the cache!
+										return json;
+									}
+
+									return action.handler.call(service, ctx).then((json) => {
+										ctx.putToCache(json);
+										return json;
+									});
+								})
+
 								.catch((err) => {
 									logger.error(err);
 									throw err;
-								});
+								})
+
+								.then((json) => {
+									console.timeEnd("GRAPHQL request");
+									return json;
+								});								
 							};
 
 							resolvers[name] = handler;

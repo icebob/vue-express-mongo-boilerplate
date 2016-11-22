@@ -88,10 +88,6 @@ module.exports = {
 
 				this.validateParams(ctx);
 
-				if (ctx.model.author.id != ctx.user.id) {
-					return ctx.errorBadRequest(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, ctx.t("app:OnlyAuthorEditPost"));
-				}
-
 				if (ctx.params.title != null)
 					ctx.model.title = ctx.params.title;
 
@@ -116,10 +112,6 @@ module.exports = {
 			handler(ctx) {
 				if (!ctx.model)
 					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:PostNotFound"));
-
-				if (ctx.model.author.id != ctx.user.id) {
-					return ctx.errorBadRequest(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, ctx.t("app:OnlyAuthorDeletePost"));
-				}
 
 				return Post.remove({ _id: ctx.model.id })
 					.then(() => {
@@ -240,7 +232,7 @@ module.exports = {
 			if (!ctx.model)
 				ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("PostNotFound"));
 
-			if (ctx.model.author.id == ctx.user.id) 
+			if (ctx.model.author.id == ctx.user.id || ctx.hasRole(C.ROLE_ADMIN)) 
 				resolve();
 			else
 				reject();

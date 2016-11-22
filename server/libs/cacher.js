@@ -52,6 +52,7 @@ class Cacher {
 	 * 
 	 * @param {any} key
 	 * @param {any} data JSON object
+	 * @returns {Promise}
 	 * 
 	 * @memberOf Cacher
 	 */
@@ -70,12 +71,14 @@ class Cacher {
 					logger.error("Redis `set` error!", err);
 			});
 		}
+		return Promise.resolve();
 	}
 
 	/**
 	 * Delete a key from cache
 	 * 
 	 * @param {any} key
+	 * @returns {Promise}
 	 * 
 	 * @memberOf Cacher
 	 */
@@ -84,18 +87,23 @@ class Cacher {
 			if (err)
 				logger.error("Redis `del` error!", err);
 		});
+		return Promise.resolve();
 	}
 
 	/**
 	 * Clean cache. Remove every key by prefix
-	 * // http://stackoverflow.com/questions/4006324/how-to-atomically-delete-keys-matching-a-pattern-using-redis
+	 * 		http://stackoverflow.com/questions/4006324/how-to-atomically-delete-keys-matching-a-pattern-using-redis
+	 * alternative solution:
+	 * 		https://github.com/cayasso/cacheman-redis/blob/master/lib/index.js#L125
+	 * @param {any} match Match string for SCAN. Default is "*"
+	 * @returns {Promise}
 	 * 
 	 * @memberOf Cacher
 	 */
-	clean() {
+	clean(match) {
 		let self = this;
 		let scanDel = function (cursor, cb) {
-			redis.scan(cursor, "MATCH", self.prefix + "*", "COUNT", 100, function(err, resp) {
+			redis.scan(cursor, "MATCH", self.prefix + (match || "*"), "COUNT", 100, function(err, resp) {
 				if (err) return cb(err);
 				let nextCursor = parseInt(resp[0]);
 				let keys = resp[1];
@@ -119,6 +127,7 @@ class Cacher {
 			//resolve();
 		});
 
+		return Promise.resolve();
 	}
 
 }

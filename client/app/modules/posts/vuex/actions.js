@@ -30,7 +30,7 @@ export const updateRow = function(store, model) {
 };
 
 export const removeRow = function(store, model) {
-	service.rest("remove", model).then((data) => {
+	service.rest("remove", { code: model.code }).then((data) => {
 		removed(store, data);
 	}).catch((err) => {
 		toastr.error(err.message);

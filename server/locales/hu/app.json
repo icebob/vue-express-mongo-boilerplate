@@ -11,6 +11,16 @@
 	"Clone": "Klónozás",
 	"Delete": "Törlés",
 
+	"PostTitleCannotBeEmpty": "A bejegyzés címe nem lehet üres!",
+	"PostContentCannotBeEmpty": "A bejegyzés tartalma nem lehet üres!",
+	"PostNotFound": "Bejegyzés nem található!",
+	"InvalidPostID": "Hibás bejegyzés azonosító!",
+
+	"YouHaveAlreadyVotedThisPost": "Már szavaztál erre a bejegyzésre!",
+	"OnlyAuthorEditPost": "Csak a szerző módosíthatja a bejegyzést!",
+	"OnlyAuthorDeletePost": "Csak a szerző törölheti a bejegyzést!",
+	"YouAreNotTheOwner": "Nem te vagy a tulajdonos!",
+
 	"DeviceAdded": "Eszköz hozzáadva",
 	"DeviceUpdated": "Eszköz módosítva",
 	"DeviceDeleted": "Eszköz törölve",

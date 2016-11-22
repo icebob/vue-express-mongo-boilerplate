@@ -210,7 +210,7 @@ class Context {
 		.then(() => {
 			if (permission == C.PERM_OWNER && _.isFunction(this.service.ownerChecker)) {
 				return this.service.ownerChecker(this).catch((err) => {
-					this.errorForbidden(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, err ? err.message || err : this.t("YouAreNotTheOwner"));
+					this.errorForbidden(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, err ? err.message || err : this.t("app:YouAreNotTheOwner"));
 				});
 			}
 		});
@@ -574,6 +574,17 @@ class Context {
 	 */
 	hasRole(role) {
 		return this.user && this.user.roles.indexOf(role) != -1;
+	}
+
+	/**
+	 * Check the requester user is an admin (has "admin" role)
+	 * 
+	 * @returns {boolean}
+	 * 
+	 * @memberOf Context
+	 */
+	isAdmin() {
+		return this.user && this.hasRole(C.ROLE_ADMIN);
 	}
 
 	getCacheKey() {

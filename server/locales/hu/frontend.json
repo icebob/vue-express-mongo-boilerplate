@@ -81,15 +81,6 @@
 	"mailSubjectPasswordChanged": "✔ Jelszavad megváltozott a {{app.title}} oldalon",
 	"emailSentWithMagicLink": "A levelet elküldtük a {{email}} címre egy bejelentkezési linkkel. Ha nem érkezne meg az üzenet, kérjük ellenőrizd a levélszemét mappát is.",
 	"emailSentVerifyLink": "Kérjük ellenőrizd e-mail fiókodat. Köszönjük, hogy regisztráltál az oldalunkra!",
-	"emailSentPasswordResetLink": "A levelet elküldtük a {{email}} címre a további teendőkkel.",
+	"emailSentPasswordResetLink": "A levelet elküldtük a {{email}} címre a további teendőkkel."
 
-
-	"PostTitleCannotBeEmpty": "A bejegyzés címe nem lehet üres!",
-	"PostContentCannotBeEmpty": "A bejegyzés tartalma nem lehet üres!",
-	"PostNotFound": "Bejegyzés nem található!",
-	"InvalidPostID": "Hibás bejegyzés azonosító!",
-
-	"YouHaveAlreadyVotedThisPost": "Már szavaztál erre a bejegyzésre!",
-	"OnlyAuthorEditPost": "Csak a szerző módosíthatja a bejegyzést!",
-	"OnlyAuthorDeletePost": "Csak a szerző törölheti a bejegyzést!"
 }
