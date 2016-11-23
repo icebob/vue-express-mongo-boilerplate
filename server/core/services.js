@@ -15,7 +15,6 @@ let C 				= require("./constants");
 let Context 		= require("./context");
 let auth			= require("./auth/helper");
 let response		= require("./response");
-let Cacher			= require("./cacher");
 
 let listEndpoints	= require("express-list-endpoints");
 let Table			= require("cli-table2");
@@ -23,7 +22,7 @@ let Table			= require("cli-table2");
 let GraphQLScalarType 	= require("graphql").GraphQLScalarType;
 let Kind				= require("graphql/language").Kind;
 
-let BaseService			= require("./service.base");
+let Service			= require("./service");
 
 /* global WEBPACK_BUNDLE */
 if (!WEBPACK_BUNDLE) require("require-webpack-compat")(module, require);
@@ -57,14 +56,8 @@ class Services extends EventEmitter {
 		self.app = app;
 		self.db = db;
 
-		let addService = function(srv) {
-			let service = _.defaultsDeep({}, srv, BaseService);
-			service.app = app;
-			service.db = db;
-			if (config.cacheTimeout) {
-				service.cacher = new Cacher(config.redis.enabled ? "redis" : "memory", service.name, config.cacheTimeout);
-				service.cacher.clean();
-			}
+		let addService = function(serviceSchema) {
+			let service = new Service(serviceSchema, app, db);
 			self.services[service.name] = service;
 		};
 
@@ -96,8 +89,8 @@ class Services extends EventEmitter {
 
 		// Call `init` of services
 		_.forIn(self.services, (service) => {
-			if (_.isFunction(service.init)) {
-				service.init(Context.CreateToServiceInit(service, app, db));
+			if (_.isFunction(service.$schema.init)) {
+				service.$schema.init.call(service, Context.CreateToServiceInit(service));
 			}
 		});
 	}
@@ -112,7 +105,7 @@ class Services extends EventEmitter {
 
 		//logger.info("Register routes ", this.services);
 		_.forIn(this.services, (service, name) => {
-			if (service.rest !== false && service.actions) {
+			if (service.$settings.rest !== false && service.actions) {
 
 				let router = express.Router();
 
@@ -123,15 +116,10 @@ class Services extends EventEmitter {
 
 				let lastRoutes = [];
 
-				_.forIn(service.actions, (action, name) => {
+				_.forIn(service.actions, (actionFunc, name) => {
 
-					// Handle shorthand action defs
-					if (_.isFunction(action)) {
-						action = {
-							handler: action
-						};
-					}
-					action.name = action.name || name;
+					let action = actionFunc.settings;
+					action.handler = actionFunc;
 
 					if (!_.isFunction(action.handler))
 						throw new Error(`Missing handler function in '${name}' action in '${service.name}' service!`);
@@ -172,7 +160,7 @@ class Services extends EventEmitter {
 								return json;
 							}
 
-							return action.handler.call(service, ctx).then((json) => {
+							return action.handler(ctx).then((json) => {
 								if (action.cache)
 									service.putToCache(cacheKey, json);
 								return json;
@@ -307,15 +295,10 @@ class Services extends EventEmitter {
 						service.socket.afterConnection.call(service, socket, io);
 					}
 
-					_.forIn(service.actions, (action, name) => {
+					_.forIn(service.actions, (actionFunc, name) => {
 
-						// Handle shorthand action defs
-						if (_.isFunction(action)) {
-							action = {
-								handler: action
-							};
-						}
-						action.name = action.name || name;
+						let action = actionFunc.settings;
+						action.handler = actionFunc;
 
 						if (!_.isFunction(action.handler))
 							throw new Error(`Missing handler function in '${name}' action in '${service.name}' service!`);
@@ -412,8 +395,9 @@ class Services extends EventEmitter {
 		};
 
 		_.forIn(this.services, (service, name) => {
-			if (service.graphql !== false && _.isObject(service.graphql)) {
-				service.graphql.resolvers = service.graphql.resolvers || {};
+			if (service.$settings.graphql !== false && _.isObject(service.$schema.graphql)) {
+				let graphQL = service.$schema.graphql; 
+				graphQL.resolvers = graphQL.resolvers || {};
 
 				let processResolvers = function(resolvers) {
 					_.forIn(resolvers, (resolver, name) => {
@@ -422,15 +406,10 @@ class Services extends EventEmitter {
 
 							let handler = (root, args, context) => {
 
-								let action = service.actions[resolver];
+								let actionFunc = service.actions[resolver];
 
-								// Handle shorthand action defs
-								if (_.isFunction(action)) {
-									action = {
-										handler: action
-									};
-								}
-								action.name = action.name || name;							
+								let action = actionFunc.settings;
+								action.handler = actionFunc;
 
 								if (!_.isFunction(action.handler))
 									throw new Error(`Missing handler function in '${name}' action in '${service.name}' service!`);
@@ -493,22 +472,23 @@ class Services extends EventEmitter {
 					});
 				};
 
-				if (service.graphql.resolvers.Query)
-					processResolvers(service.graphql.resolvers.Query);
+				if (graphQL.resolvers.Query)
+					processResolvers(graphQL.resolvers.Query);
 
-				if (service.graphql.resolvers.Mutation)
-					processResolvers(service.graphql.resolvers.Mutation);
+				if (graphQL.resolvers.Mutation)
+					processResolvers(graphQL.resolvers.Mutation);
 
-
-				schemas.queries.push(service.graphql.query);
-				schemas.types.push(service.graphql.types);
-				schemas.mutations.push(service.graphql.mutation);
-				schemas.resolvers.push(service.graphql.resolvers);
+				schemas.queries.push(graphQL.query);
+				schemas.types.push(graphQL.types);
+				schemas.mutations.push(graphQL.mutation);
+				schemas.resolvers.push(graphQL.resolvers);
 			}
 
 		});
 
 		// Merge Type Definitons
+
+		if (schemas.queries.length == 0) return null;
 
 		let mergedSchema = `
 
@@ -525,8 +505,8 @@ class Services extends EventEmitter {
 			}
 
 			schema {
-			query: Query
-			mutation: Mutation
+				query: Query
+				mutation: Mutation
 			}
 		`;
 

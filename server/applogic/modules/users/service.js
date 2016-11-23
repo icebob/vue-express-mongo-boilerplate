@@ -10,15 +10,19 @@ let _			= require("lodash");
 let User 		= require("./models/user");
 
 module.exports = {
-	name: "users",
-	version: 1,
-	namespace: "users",
-	rest: true,
-	ws: true,
-	permission: C.PERM_LOGGEDIN,
-	model: User,
+	settings: {
+		name: "users",
+		version: 1,
+		namespace: "users",
+		rest: true,
+		ws: true,
+		graphql: true,
+		permission: C.PERM_LOGGEDIN,
+		role: "user",
+		model: User,
 
-	modelPropFilter: "code username fullName avatar lastLogin roles",
+		modelPropFilter: "code username fullName avatar lastLogin roles",
+	},
 	
 	actions: {
 		// return all model
@@ -42,40 +46,42 @@ module.exports = {
 		}
 	},
 
-	/**
-	 * Get model(s) by ID(s). The `id` can be a number or an array with IDs
-	 * @cached
-	 * 
-	 * @param {any} id
-	 * @returns
-	 */
-	getByID(id) {
-		if (id == null || (_.isArray(id) && id.length == 0))
-			return Promise.resolve();
+	methods: {
+		/**
+		 * Get model(s) by ID(s). The `id` can be a number or an array with IDs
+		 * @cached
+		 * 
+		 * @param {any} id
+		 * @returns
+		 */
+		getByID(id) {
+			if (id == null || (_.isArray(id) && id.length == 0))
+				return Promise.resolve();
 
-		let key = this.getCacheKey("model", id);
-		return this.getFromCache(key).then((data) => {
-			if (data)
-				// TODO represent Mongoose object
-				return data;
-			
-			let query;
-			if (_.isArray(id)) {
-				query = this.model.find({ _id: { $in: id} });
-			} else
-				query = this.model.findById(id);
+			let key = this.getCacheKey("model", id);
+			return this.getFromCache(key).then((data) => {
+				if (data)
+					// TODO represent Mongoose object
+					return data;
+				
+				let query;
+				if (_.isArray(id)) {
+					query = this.model.find({ _id: { $in: id} });
+				} else
+					query = this.model.findById(id);
 
-			return query.exec().then((data) => {
-				// TODO convert to common object
-				this.putToCache(key, data);
-				return data;
+				return query.exec().then((data) => {
+					// TODO convert to common object
+					this.putToCache(key, data);
+					return data;
+				});			
 			});			
-		});			
+		}
 	},
 
 	// resolve model by ID		
 	modelResolver(ctx, code) {
-		let id = this.model.schema.methods.decodeID(code);
+		let id = User.schema.methods.decodeID(code);
 		if (id == null || id == "")
 			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("app:InvalidCode"));
 

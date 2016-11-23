@@ -9,17 +9,21 @@ let _			= require("lodash");
 let Post 		= require("./models/post");
 
 module.exports = {
-	name: "posts",
-	version: 1,
-	namespace: "posts",
-	rest: true,
-	ws: true,
-	permission: C.PERM_LOGGEDIN,
-	model: Post,
+	settings: {
+		name: "posts",
+		version: 1,
+		namespace: "posts",
+		rest: true,
+		ws: true,
+		graphql: true,
+		permission: C.PERM_LOGGEDIN,
+		role: "user",
+		model: Post,
 
-	modelPropFilter: "code title content author votes downVoters upVoters views createdAt updatedAt",
-	
-	populateAuthorFields: "username fullName code email avatar",
+		modelPropFilter: "code title content author votes downVoters upVoters views createdAt updatedAt",
+		
+		populateAuthorFields: "username fullName code email avatar",
+	},
 
 	actions: {
 		find: {
@@ -32,7 +36,7 @@ module.exports = {
 
 				let query = Post.find(filter);
 
-				query.populate("author", this.populateAuthorFields);
+				query.populate("author", this.$settings.populateAuthorFields);
 
 				return ctx.queryPageSort(query).exec().then( (docs) => {
 					return ctx.toJSON(docs);
@@ -67,7 +71,7 @@ module.exports = {
 
 				return post.save()
 					.then((doc) => {
-						return Post.populate(doc, { path: "author", select: this.populateAuthorFields});
+						return Post.populate(doc, { path: "author", select: this.$settings.populateAuthorFields});
 					})
 					.then((doc) => {
 						return ctx.toJSON(doc);
@@ -146,7 +150,7 @@ module.exports = {
 
 			}).then((doc) => {
 				// Populate author
-				return Post.populate(doc, { path: "author", select: this.populateAuthorFields});
+				return Post.populate(doc, { path: "author", select: this.$settings.populateAuthorFields});
 
 			}).then((doc) => {
 				// Send back the response
@@ -178,7 +182,7 @@ module.exports = {
 
 			}).then((doc) => {
 				// Populate author
-				return Post.populate(doc, { path: "author", select: this.populateAuthorFields});
+				return Post.populate(doc, { path: "author", select: this.$settings.populateAuthorFields});
 
 			}).then((doc) => {
 				// Send back the response
@@ -193,40 +197,54 @@ module.exports = {
 
 	},
 
+	methods: {
+		/**
+		 * Validate params of context.
+		 * We will call it in `create` and `update` actions
+		 * 
+		 * @param {Context} ctx 			context of request
+		 * @param {boolean} strictMode 		strictMode. If true, need to exists the required parameters
+		 */
+		validateParams(ctx, strictMode) {
+			if (strictMode || ctx.hasParam("title"))
+				ctx.validateParam("title").trim().notEmpty(ctx.t("app:PostTitleCannotBeEmpty")).end();
+
+			if (strictMode || ctx.hasParam("content"))
+				ctx.validateParam("content").trim().notEmpty(ctx.t("app:PostContentCannotBeEmpty")).end();
+			
+			if (ctx.hasValidationErrors())
+				throw ctx.errorBadRequest(C.ERR_VALIDATION_ERROR, ctx.validationErrors);			
+		}
+
+	},
+
 	/**
-	 * Validate params of context.
-	 * We will call it in `create` and `update` actions
+	 * Resolve model by `code` param
 	 * 
-	 * @param {Context} ctx 			context of request
-	 * @param {boolean} strictMode 		strictMode. If true, need to exists the required parameters
-	 */
-	validateParams(ctx, strictMode) {
-		if (strictMode || ctx.hasParam("title"))
-			ctx.validateParam("title").trim().notEmpty(ctx.t("app:PostTitleCannotBeEmpty")).end();
-
-		if (strictMode || ctx.hasParam("content"))
-			ctx.validateParam("content").trim().notEmpty(ctx.t("app:PostContentCannotBeEmpty")).end();
-		
-		if (ctx.hasValidationErrors())
-			throw ctx.errorBadRequest(C.ERR_VALIDATION_ERROR, ctx.validationErrors);			
-	},	
-
-	// resolve model by ID		
+	 * @param {any} ctx		Context of request
+	 * @param {any} code	Code of the model
+	 * @returns	{Promise}
+	 */	
 	modelResolver(ctx, code) {
-		let id = this.model.schema.methods.decodeID(code);
+		let id = Post.schema.methods.decodeID(code);
 		if (id == null || id == "")
 			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("app:InvalidCode"));
 
-		return this.model.findById(id).exec().then( (doc) => {
+		return Post.findById(id).exec().then( (doc) => {
 			if (!doc) 
 				return ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:PostNotFound"));
 
-			return this.model.populate(doc, { path: "author", select: this.populateAuthorFields});
+			return Post.populate(doc, { path: "author", select: this.$settings.populateAuthorFields});
 		});		
 		
 	},
 
-	// Check the owner of model
+	/**
+	 * Check the owner of model
+	 * 
+	 * @param {any} ctx	Context of request
+	 * @returns	{Promise}
+	 */
 	ownerChecker(ctx) {
 		return new Promise((resolve, reject) => {
 			if (!ctx.model)
@@ -237,11 +255,6 @@ module.exports = {
 			else
 				reject();
 		});
-	},
-
-	notifyModelChanges(ctx, type, json) {
-		ctx.notifyChanges(type, json, "user");
-		this.clearCache();
 	},
 
 	init(ctx) {
@@ -300,10 +313,10 @@ module.exports = {
 
 			Post: {
 				author(post, args, context) {
-					/*let self = context.ctx.service.userService; 
+					let self = context.ctx.service.userService; 
 					return self.getByID(post.author);
-					*/
-					return post.author;
+					
+					//return post.author;
 				},
 
 				upVoters(post, args, context) {

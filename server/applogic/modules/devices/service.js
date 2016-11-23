@@ -7,15 +7,19 @@ let C 	 		= require("../../../core/constants");
 let Device 		= require("./models/device");
 
 module.exports = {
-	name: "devices",
-	version: 1,
-	namespace: "devices",
-	rest: true,
-	ws: true,
-	permission: C.PERM_LOGGEDIN,
-	model: Device,
-	
-	modelPropFilter: "code type address name description status lastCommunication createdAt updatedAt",
+	settings: {
+		name: "devices",
+		version: 1,
+		namespace: "devices",
+		rest: true,
+		ws: true,
+		graphql: true,
+		permission: C.PERM_LOGGEDIN,
+		role: "user",
+		model: Device,
+		
+		modelPropFilter: "code type address name description status lastCommunication createdAt updatedAt"
+	},
 	
 	actions: {
 		find: {
@@ -124,26 +128,28 @@ module.exports = {
 
 	},
 	
-	/**
-	 * Validate params of context.
-	 * We will call it in `create` and `update` actions
-	 * 
-	 * @param {Context} ctx 			context of request
-	 * @param {boolean} strictMode 		strictMode. If true, need to exists the required parameters
-	 */
-	validateParams(ctx, strictMode) {
-		if (strictMode || ctx.hasParam("name"))
-			ctx.validateParam("name").trim().notEmpty(ctx.t("app:DeviceNameCannotBeBlank")).end();
+	methods: {
+		/**
+		 * Validate params of context.
+		 * We will call it in `create` and `update` actions
+		 * 
+		 * @param {Context} ctx 			context of request
+		 * @param {boolean} strictMode 		strictMode. If true, need to exists the required parameters
+		 */
+		validateParams(ctx, strictMode) {
+			if (strictMode || ctx.hasParam("name"))
+				ctx.validateParam("name").trim().notEmpty(ctx.t("app:DeviceNameCannotBeBlank")).end();
 
-		if (strictMode || ctx.hasParam("status"))
-			ctx.validateParam("status").isNumber();
+			if (strictMode || ctx.hasParam("status"))
+				ctx.validateParam("status").isNumber();
 
-		ctx.validateParam("description").trim().end();
-		ctx.validateParam("address").trim().end();
-		ctx.validateParam("type").trim().end();
+			ctx.validateParam("description").trim().end();
+			ctx.validateParam("address").trim().end();
+			ctx.validateParam("type").trim().end();
 
-		if (ctx.hasValidationErrors())
-			throw ctx.errorBadRequest(C.ERR_VALIDATION_ERROR, ctx.validationErrors);			
+			if (ctx.hasValidationErrors())
+				throw ctx.errorBadRequest(C.ERR_VALIDATION_ERROR, ctx.validationErrors);			
+		}
 	},	
 
 	// resolve model by ID		
@@ -153,11 +159,6 @@ module.exports = {
 			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("app:InvalidCode"));
 
 		return Device.findById(id).exec();
-	},
-
-	notifyModelChanges(ctx, type, json) {
-		ctx.notifyChanges(type, json, "user");
-		this.clearCache();
 	},
 
 	init(ctx) {

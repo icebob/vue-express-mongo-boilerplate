@@ -7,24 +7,25 @@ let C 	 		= require("../../../core/constants");
 let store 		= require("./memstore");
 
 module.exports = {
+	settings: {
+		// Name of service
+		name: "counter",
 
-	// Name of service
-	name: "counter",
+		// Version (for versioned API)
+		version: 1,
 
-	// Version (for versioned API)
-	version: 1,
+		// Namespace for rest and websocket requests
+		namespace: "counter",
 
-	// Namespace for rest and websocket requests
-	namespace: "counter",
+		// Enable calling via REST
+		rest: true,
 
-	// Enable calling via REST
-	rest: true,
+		// Enable calling via websocket
+		ws: true,
 
-	// Enable calling via websocket
-	ws: true,
-
-	// Required permission for actions
-	permission: C.PERM_LOGGEDIN,
+		// Required permission for actions
+		permission: C.PERM_LOGGEDIN
+	},
 
 	// Actions of service
 	actions: {
@@ -129,38 +130,40 @@ module.exports = {
 
 	},
 
-	/**
-	 * Change the counter value
-	 * @param  {Context} ctx   Context of request
-	 * @param  {Number} value  New value
-	 * @return {Promise}       Promise with the counter value
-	 */
-	changeCounter(ctx, value) {
-		store.counter = value;
-		logger.info(ctx.user.username + " changed the counter to ", store.counter);
-		this.notifyChanged(ctx);
+	methods: {
+		/**
+		 * Change the counter value
+		 * @param  {Context} ctx   Context of request
+		 * @param  {Number} value  New value
+		 * @return {Promise}       Promise with the counter value
+		 */
+		changeCounter(ctx, value) {
+			store.counter = value;
+			logger.info(ctx.user.username + " changed the counter to ", store.counter);
+			this.notifyChanged(ctx);
 
-		return Promise.resolve(store.counter);
+			return Promise.resolve(store.counter);
+		},
+
+		/**
+		 * Notificate the connected users
+		 * @param  {Context} ctx   Context of request
+		 */
+		notifyChanged(ctx) {
+			// Send message to everyone
+			ctx.broadcast("changed", store.counter);	
+			
+			// Send message to the requested user
+			// 		ctx.emitUser("changed", store.counter);	
+
+			// Send message to the role of service ('user')
+			// 		ctx.emit("changed", store.counter);	
+
+			// Clear cached values
+			this.clearCache();
+		}
 	},
-
-	/**
-	 * Notificate the connected users
-	 * @param  {Context} ctx   Context of request
-	 */
-	notifyChanged(ctx) {
-		// Send message to everyone
-		ctx.broadcast("changed", store.counter);	
-		
-		// Send message to the requested user
-		// 		ctx.emitUser("changed", store.counter);	
-
-		// Send message to the role of service ('user')
-		// 		ctx.emit("changed", store.counter);	
-
-		// Clear cached values
-		this.clearCache();
-	},
-
+	
 	/**
 	 * Initialize this service. It will be called when server load this service.
 	 * The `ctx` contains the references of `app` and `db`

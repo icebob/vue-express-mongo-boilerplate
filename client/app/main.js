@@ -1,5 +1,7 @@
 "use strict";
 
+require("es6-promise").polyfill();
+
 import style from "../scss/style.scss";
 import Vue from "vue";
 import VueRouter from "vue-router";

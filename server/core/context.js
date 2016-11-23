@@ -130,10 +130,10 @@ class Context {
 	 * @param {any} db
 	 * @returns
 	 */
-	static CreateToServiceInit(service, app, db) {
+	static CreateToServiceInit(service) {
 		let ctx = new Context(service);
 		ctx.provider = "";
-		ctx.app = app;
+		ctx.app = service.$app;
 
 		return ctx;
 	}
@@ -160,13 +160,13 @@ class Context {
 	 * @returns
 	 */
 	resolveModel() {
-		if (_.isFunction(this.service.modelResolver)) {
-			let idParamName = this.service.idParamName || "id";
+		if (_.isFunction(this.service.$schema.modelResolver)) {
+			let idParamName = this.service.$settings.idParamName || "id";
 
 			let id = this.params[idParamName];
 
 			if (id != null) {
-				return this.service.modelResolver(this, id).then( (model) => {
+				return this.service.$schema.modelResolver.call(this.service, this, id).then( (model) => {
 					this.model = model;
 					return model;
 				});
@@ -182,7 +182,7 @@ class Context {
 	 * @returns
 	 */
 	checkPermission() {
-		let permission = this.action.permission || this.service.permission || C.PERM_LOGGEDIN;
+		let permission = this.action.permission || this.service.$settings.permission || C.PERM_LOGGEDIN;
 
 		if (permission == C.PERM_PUBLIC)
 			return Promise.resolve();
@@ -208,8 +208,8 @@ class Context {
 
 		// check owner
 		.then(() => {
-			if (permission == C.PERM_OWNER && _.isFunction(this.service.ownerChecker)) {
-				return this.service.ownerChecker(this).catch((err) => {
+			if (permission == C.PERM_OWNER && _.isFunction(this.service.$schema.ownerChecker)) {
+				return this.service.$schema.ownerChecker(this).catch((err) => {
 					this.errorForbidden(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, err ? err.message || err : this.t("app:YouAreNotTheOwner"));
 				});
 			}
@@ -261,7 +261,7 @@ class Context {
 	 */
 	emit(cmd, data, role) {
 		if (!role)
-			role = this.service.role;
+			role = this.service.$settings.role;
 		
 		// If not definied we will send a broadcast
 		if (!role) {
@@ -495,7 +495,7 @@ class Context {
 			docs = this.model;
 
 		if (propFilter == null) {
-			propFilter = this.service.modelPropFilter;
+			propFilter = this.service.$settings.modelPropFilter;
 		}
 
 		if (_.isString(propFilter)) 
@@ -586,33 +586,7 @@ class Context {
 	isAdmin() {
 		return this.user && this.hasRole(C.ROLE_ADMIN);
 	}
-/*
-	getCacheKey() {
-		let paramsHash = hash(this.params);
-		return this.action.name + ":" + paramsHash;
-	}
 
-	getFromCache() {
-		if (this.service.cacher && this.action.cache) {
-			return this.service.cacher.get(this.getCacheKey());
-		} else 
-			return Promise.resolve(null); 
-	}
-
-	putToCache(json) {
-		if (this.service.cacher && this.action.cache) {
-			this.service.cacher.set(this.getCacheKey(), json);
-			return Promise.resolve();
-		} else 
-			return Promise.resolve(); 
-	}
-
-	clearCache() {
-		if (this.service.cacher) {
-			logger.debug(`Clear service (${this.service.name}) cache...`);
-			this.service.cacher.clean();
-		} 
-	}*/
 }
 
 module.exports = Context;

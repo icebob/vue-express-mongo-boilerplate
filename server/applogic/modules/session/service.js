@@ -2,35 +2,39 @@
 
 let logger 		= require("../../../core/logger");
 let config 		= require("../../../config");
-let C 	 			= require("../../../core/constants");
+let C 	 		= require("../../../core/constants");
 
-let _ 				= require("lodash");
+let _ 			= require("lodash");
 
 let Sockets		= require("../../../core/sockets");
-let User 			= require("../users/models/user");
+let User 		= require("../users/models/user");
 
 module.exports = {
-	name: "session",
-	version: 1,
-	namespace: "session",
-	rest: true,
-	ws: true,
-	permission: C.PERM_LOGGEDIN,
-	
-	userModelPropFilter: "code username fullName avatar lastLogin roles",
+	settings: {
+		name: "session",
+		version: 1,
+		namespace: "session",
+		rest: true,
+		ws: true,
+		graphql: true,
+		permission: C.PERM_LOGGEDIN,
+		role: "user",
+		
+		userModelPropFilter: "code username fullName avatar lastLogin roles"
+	},
 
 	actions: {
 		// return my User model
 		me(ctx) {
 			return Promise.resolve(ctx.user).then( (doc) => {
-				return ctx.toJSON(doc, this.userModelPropFilter);
+				return ctx.toJSON(doc, this.$settings.userModelPropFilter);
 			});
 		},
 
 		// return all online users
 		onlineUsers(ctx) {
 			return Promise.resolve().then(() => {
-				return ctx.toJSON(_.map(Sockets.userSockets, (s) => s.request.user), this.userModelPropFilter);
+				return ctx.toJSON(_.map(Sockets.userSockets, (s) => s.request.user), this.$settings.userModelPropFilter);
 			});
 		}
 	},
