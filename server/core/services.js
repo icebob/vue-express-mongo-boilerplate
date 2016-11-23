@@ -112,7 +112,7 @@ class Services extends EventEmitter {
 				// Trying authenticate with API key
 				router.use(auth.tryAuthenticateWithApiKey);
 
-				let idParamName = service.idParamName || "id";
+				let idParamName = service.$settings.idParamName || "id";
 
 				let lastRoutes = [];
 
