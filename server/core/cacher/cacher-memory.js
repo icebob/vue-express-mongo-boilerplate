@@ -51,8 +51,11 @@ class Cacher {
 		return new Promise((resolve, reject) => {
 			logger.debug("Cacher: Get from cache by key:", key);
 			let item = this.cache[this.prefix + key];
-			if (item) 
+			if (item) { 
 				resolve(item.data);
+				// Update expire time (hold in the cache if we are using it)
+				item.expire = Date.now() + this.ttl * 1000;
+			}
 			else 
 				resolve(null);
 		});
