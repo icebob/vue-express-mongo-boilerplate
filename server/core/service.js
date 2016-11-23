@@ -59,23 +59,49 @@ class Service {
 			//self.$cacher.clean();
 		}
 		
+		// Wrap the handler function to implement caching feature
+		let cachingWrapper = function(action, handler) {
+			return function(ctx) {
+				let cacheKey = self.getCacheKey(action.name, ctx.params);
+
+				return self.getFromCache(cacheKey)
+				.then((cachedJSON) => {
+					if (cachedJSON != null) {
+						// Found in the cache!
+						return cachedJSON;
+					}
+
+					return handler(ctx).then((json) => {
+						self.putToCache(cacheKey, json);
+						return json;
+					});					
+				});
+			}
+		};
+
 		// Handle actions
 		if (schema.actions && _.isObject(schema.actions)) {
 			self.actions = {};
 			_.forIn(schema.actions, (action, name) => {
 				if (_.isFunction(action)) {
-					self.actions[name] = action.bind(self);
-					self.actions[name].settings = {
+					// Change action function to action object
+					action = {
+						handler: action,
 						name: name
 					};
-				} else if (_.isObject(action)) {
-					if (_.isFunction(action.handler)) {
-						self.actions[name] = action.handler.bind(self);
-					}
-					self.actions[name].settings = action;
-					self.actions[name].settings.name = self.actions[name].settings.name || name;
-					delete self.actions[name].settings.handler;
 				}
+
+				if (_.isFunction(action.handler)) {
+					let func = action.handler.bind(self);
+					if (action.cache)
+						func = cachingWrapper(action, func);
+
+					self.actions[name] = func;
+				}
+				self.actions[name].settings = action;
+				self.actions[name].settings.name = self.actions[name].settings.name || name;
+				delete self.actions[name].settings.handler;
+
 			});
 		}
 
