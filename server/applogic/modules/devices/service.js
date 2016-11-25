@@ -16,7 +16,7 @@ module.exports = {
 		graphql: true,
 		permission: C.PERM_LOGGEDIN,
 		role: "user",
-		model: Device,
+		collection: Device,
 		
 		modelPropFilter: "code type address name description status lastCommunication createdAt updatedAt"
 	},
@@ -29,7 +29,7 @@ module.exports = {
 
 				let query = Device.find(filter);
 				return ctx.queryPageSort(query).exec().then( (docs) => {
-					return ctx.toJSON(docs);
+					return this.toJSON(docs);
 				});
 			}
 		},
@@ -41,7 +41,7 @@ module.exports = {
 					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:DeviceNotFound"));
 
 				return Device.findByIdAndUpdate(ctx.model.id).exec().then( (doc) => {
-					return ctx.toJSON(doc);
+					return this.toJSON(doc);
 				});
 			}
 		},
@@ -63,7 +63,7 @@ module.exports = {
 						return Device.populate(doc, { path: "author", select: this.populateAuthorFields});
 					})
 					.then((doc) => {
-						return ctx.toJSON(doc);
+						return this.toJSON(doc);
 					})
 					.then((json) => {
 						this.notifyModelChanges(ctx, "created", json);
@@ -97,7 +97,7 @@ module.exports = {
 
 				return ctx.model.save()
 					.then((doc) => {
-						return ctx.toJSON(doc);
+						return this.toJSON(doc);
 					})
 					.then((json) => {
 
@@ -115,7 +115,7 @@ module.exports = {
 
 				return Device.remove({ _id: ctx.model.id })
 					.then(() => {
-						return ctx.toJSON();
+						return this.toJSON();
 					})
 					.then((json) => {
 

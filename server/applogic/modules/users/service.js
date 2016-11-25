@@ -19,9 +19,9 @@ module.exports = {
 		graphql: true,
 		permission: C.PERM_LOGGEDIN,
 		role: "user",
-		model: User,
+		collection: User,
 
-		modelPropFilter: "code username fullName avatar lastLogin roles",
+		modelPropFilter: "code username fullName avatar lastLogin roles"
 	},
 	
 	actions: {
@@ -47,36 +47,6 @@ module.exports = {
 	},
 
 	methods: {
-		/**
-		 * Get model(s) by ID(s). The `id` can be a number or an array with IDs
-		 * @cached
-		 * 
-		 * @param {any} id
-		 * @returns
-		 */
-		getByID(id) {
-			if (id == null || (_.isArray(id) && id.length == 0))
-				return Promise.resolve();
-
-			let key = this.getCacheKey("model", id);
-			return this.getFromCache(key).then((data) => {
-				if (data)
-					// TODO represent Mongoose object
-					return data;
-				
-				let query;
-				if (_.isArray(id)) {
-					query = this.model.find({ _id: { $in: id} });
-				} else
-					query = this.model.findById(id);
-
-				return query.exec().then((data) => {
-					// TODO convert to common object
-					this.putToCache(key, data);
-					return data;
-				});			
-			});			
-		}
 	},
 
 	// resolve model by ID		

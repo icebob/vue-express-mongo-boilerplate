@@ -18,11 +18,15 @@ module.exports = {
 		graphql: true,
 		permission: C.PERM_LOGGEDIN,
 		role: "user",
-		model: Post,
+		collection: Post,
 
 		modelPropFilter: "code title content author votes downVoters upVoters views createdAt updatedAt",
 		
-		populateAuthorFields: "username fullName code email avatar",
+		modelPopulates: {
+			"author": "users",
+			"upVoters": "users",
+			"downVoters": "users"
+		}
 	},
 
 	actions: {
@@ -36,23 +40,30 @@ module.exports = {
 
 				let query = Post.find(filter);
 
-				query.populate("author", this.$settings.populateAuthorFields);
+				//query.populate("author", this.$settings.populateAuthorFields);
 
 				return ctx.queryPageSort(query).exec().then( (docs) => {
-					return ctx.toJSON(docs);
+					return this.toJSON(docs);
+				})
+				.then((json) => {
+					return this.populateModels(json);
 				});
 			}
 		},
 
 		// return a model by ID
 		get: {
+			cache: true,
 			permission: C.PERM_PUBLIC,
 			handler(ctx) {
 				if (!ctx.model)
 					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:PostNotFound"));
 
-				return Post.findByIdAndUpdate(ctx.model.id, { $inc: { views: 1 } }).exec().then( (doc) => {
-					return ctx.toJSON(doc);
+				return Post.findByIdAndUpdate(ctx.modelID, { $inc: { views: 1 } }).exec().then( (doc) => {
+					return this.toJSON(doc);
+				})
+				.then((json) => {
+					return this.populateModels(json);
 				});
 			}
 		},
@@ -70,17 +81,19 @@ module.exports = {
 				});
 
 				return post.save()
-					.then((doc) => {
-						return Post.populate(doc, { path: "author", select: this.$settings.populateAuthorFields});
-					})
-					.then((doc) => {
-						return ctx.toJSON(doc);
-					})
-					.then((json) => {
-						this.notifyModelChanges(ctx, "created", json);
-
-						return json;
-					});								
+				.then((doc) => {
+					return Post.populate(doc, { path: "author", select: this.$settings.populateAuthorFields});
+				})
+				.then((doc) => {
+					return this.toJSON(doc);
+				})
+				.then((json) => {
+					return this.populateModels(json);
+				})
+				.then((json) => {
+					this.notifyModelChanges(ctx, "created", json);
+					return json;
+				});								
 			}
 		},
 
@@ -92,22 +105,26 @@ module.exports = {
 
 				this.validateParams(ctx);
 
-				if (ctx.params.title != null)
-					ctx.model.title = ctx.params.title;
+				return this.collection.findById(ctx.modelID).exec()
+				.then((doc) => {
+					if (ctx.params.title != null)
+						doc.title = ctx.params.title;
 
-				if (ctx.params.content != null)
-					ctx.model.content = ctx.params.content;
+					if (ctx.params.content != null)
+						doc.content = ctx.params.content;
 
-				return ctx.model.save()
-					.then((doc) => {
-						return ctx.toJSON(doc);
-					})
-					.then((json) => {
-
-						this.notifyModelChanges(ctx, "updated", json);
-
-						return json;
-					});								
+					return doc.save();
+				})
+				.then((doc) => {
+					return this.toJSON(doc);
+				})
+				.then((json) => {
+					return this.populateModels(json);
+				})
+				.then((json) => {
+					this.notifyModelChanges(ctx, "updated", json);
+					return json;
+				});								
 			}
 		},
 
@@ -117,16 +134,14 @@ module.exports = {
 				if (!ctx.model)
 					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:PostNotFound"));
 
-				return Post.remove({ _id: ctx.model.id })
-					.then(() => {
-						return ctx.toJSON();
-					})
-					.then((json) => {
-
-						this.notifyModelChanges(ctx, "removed", json);
-
-						return json;
-					});		
+				return Post.remove({ _id: ctx.modelID })
+				.then(() => {
+					return ctx.model;
+				})
+				.then((json) => {
+					this.notifyModelChanges(ctx, "removed", json);
+					return json;
+				});		
 			}
 		},
 
@@ -134,30 +149,31 @@ module.exports = {
 			if (!ctx.model)
 				return Promise.reject(new Error(ctx.t("app:PostNotFound")));
 
-			return Promise.resolve().then(() => {		
+			return this.collection.findById(ctx.modelID).exec()
+			.then((doc) => {		
 				// Check user is on upVoters
-				if (ctx.model.upVoters.indexOf(ctx.user.id) !== -1) 
+				if (doc.upVoters.indexOf(ctx.user.id) !== -1) 
 					throw ctx.errorBadRequest(C.ERR_ALREADY_VOTED, ctx.t("app:YouHaveAlreadyVotedThisPost"));
-
-			}).then(() => {
+				return doc;
+			})
+			.then((doc) => {
 				// Remove user from downVoters if it is on the list
-				if (ctx.model.downVoters.indexOf(ctx.user.id) !== -1) 
-					return Post.findByIdAndUpdate(ctx.model.id, { $pull: { downVoters: ctx.user.id }, $inc: { votes: 1 } }, { "new": true });
-
-			}).then(() => {
+				if (doc.downVoters.indexOf(ctx.user.id) !== -1) 
+					return Post.findByIdAndUpdate(doc.id, { $pull: { downVoters: ctx.user.id }, $inc: { votes: 1 } }, { "new": true });
+				return doc;
+			})
+			.then((doc) => {
 				// Add user to upVoters
-				return Post.findByIdAndUpdate(ctx.model.id, { $addToSet: { upVoters: ctx.user.id } , $inc: { votes: 1 }}, { "new": true });
-
-			}).then((doc) => {
-				// Populate author
-				return Post.populate(doc, { path: "author", select: this.$settings.populateAuthorFields});
-
-			}).then((doc) => {
-				// Send back the response
-				let json = ctx.toJSON(doc);
-
+				return Post.findByIdAndUpdate(doc.id, { $addToSet: { upVoters: ctx.user.id } , $inc: { votes: 1 }}, { "new": true });
+			})
+			.then((doc) => {
+				return this.toJSON(doc);
+			})
+			.then((json) => {
+				return this.populateModels(json);
+			})
+			.then((json) => {
 				this.notifyModelChanges(ctx, "updated", json);
-
 				return json;
 			});
 		},
@@ -166,30 +182,31 @@ module.exports = {
 			if (!ctx.model)
 				return Promise.reject(new Error(ctx.t("app:PostNotFound")));
 
-			return Promise.resolve().then(() => {		
+			return this.collection.findById(ctx.modelID).exec()
+			.then((doc) => {
 				// Check user is on downVoters
-				if (ctx.model.downVoters.indexOf(ctx.user.id) !== -1) 
+				if (doc.downVoters.indexOf(ctx.user.id) !== -1) 
 					throw ctx.errorBadRequest(C.ERR_ALREADY_VOTED, ctx.t("app:YouHaveAlreadyVotedThisPost"));
-
-			}).then(() => {
+				return doc;
+			})
+			.then((doc) => {
 				// Remove user from upVoters if it is on the list
-				if (ctx.model.upVoters.indexOf(ctx.user.id) !== -1) 
-					return Post.findByIdAndUpdate(ctx.model.id, { $pull: { upVoters: ctx.user.id }, $inc: { votes: -1 } }, { "new": true });
-
-			}).then(() => {
+				if (doc.upVoters.indexOf(ctx.user.id) !== -1) 
+					return Post.findByIdAndUpdate(doc.id, { $pull: { upVoters: ctx.user.id }, $inc: { votes: -1 } }, { "new": true });
+				return doc;
+			})
+			.then((doc) => {
 				// Add user to downVoters
-				return Post.findByIdAndUpdate(ctx.model.id, { $addToSet: { downVoters: ctx.user.id } , $inc: { votes: -1 }}, { "new": true });
-
-			}).then((doc) => {
-				// Populate author
-				return Post.populate(doc, { path: "author", select: this.$settings.populateAuthorFields});
-
-			}).then((doc) => {
-				// Send back the response
-				let json = ctx.toJSON(doc);
-
+				return Post.findByIdAndUpdate(doc.id, { $addToSet: { downVoters: ctx.user.id } , $inc: { votes: -1 }}, { "new": true });
+			})
+			.then((doc) => {
+				return this.toJSON(doc);
+			})
+			.then((json) => {
+				return this.populateModels(json);
+			})
+			.then((json) => {
 				this.notifyModelChanges(ctx, "updated", json);
-
 				return json;
 			});
 
@@ -224,7 +241,7 @@ module.exports = {
 	 * @param {any} ctx		Context of request
 	 * @param {any} code	Code of the model
 	 * @returns	{Promise}
-	 */	
+	 */	/*
 	modelResolver(ctx, code) {
 		let id = Post.schema.methods.decodeID(code);
 		if (id == null || id == "")
@@ -235,9 +252,10 @@ module.exports = {
 				return ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:PostNotFound"));
 
 			return Post.populate(doc, { path: "author", select: this.$settings.populateAuthorFields});
-		});		
-		
-	},
+		});
+
+		return this.getByID(id);
+	},*/
 
 	/**
 	 * Check the owner of model
@@ -287,7 +305,6 @@ module.exports = {
 				content: String
 				author: User!
 				views: Int
-				voters(limit: Int, offset: Int, sort: String): [User]
 				upVoters(limit: Int, offset: Int, sort: String): [User]
 				downVoters(limit: Int, offset: Int, sort: String): [User]
 				votes: Int,
@@ -309,31 +326,6 @@ module.exports = {
 			Query: {
 				posts: "find",
 				post: "get"
-			},
-
-			Post: {
-				author(post, args, context) {
-					let self = context.ctx.service.userService; 
-					return self.getByID(post.author);
-					
-					//return post.author;
-				},
-
-				upVoters(post, args, context) {
-					let self = context.ctx.service.userService; 
-					return self.getByID(post.upVoters);
-				},
-
-				downVoters(post, args, context) {
-					let self = context.ctx.service.userService; 
-					return self.getByID(post.downVoters);
-				},
-
-				voters(post, args, context) {
-					let self = context.ctx.service.userService; 
-					return self.getByID(post.upVoters.concat(post.downVoters));
-				}
-
 			},
 
 			Mutation: {
@@ -414,7 +406,13 @@ fragment postFields on Post {
     }
     views
     votes
-  	voters {
+  	upVoters {
+  	  code
+  	  fullName
+  	  username
+  	  avatar
+  	}
+  	downVoters {
   	  code
   	  fullName
   	  username

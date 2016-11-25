@@ -32,7 +32,8 @@ class Context {
 		this.user = null; // logged in user
 		this.socket = null; // socket from socket.io session
 		this.params = []; // params from ExpressJS REST or websocket or GraphQL args
-		this.model = null; // model from `modelResolvers`
+		this.model = null; // model from `modelResolvers` (This is a plain JSON object, not a Mongo doc!)
+		this.modelID = null; // `id` of model from `modelResolvers`
 		this.provider = "internal"; // `internal`, `rest`, `socket` or `graphql`
 
 		this.validationErrors = [];
@@ -160,13 +161,13 @@ class Context {
 	 * @returns
 	 */
 	resolveModel() {
-		if (_.isFunction(this.service.$schema.modelResolver)) {
+		if (_.isFunction(this.service.modelResolver)) {
 			let idParamName = this.service.$settings.idParamName || "id";
 
 			let id = this.params[idParamName];
 
 			if (id != null) {
-				return this.service.$schema.modelResolver.call(this.service, this, id).then( (model) => {
+				return this.service.modelResolver.call(this.service, this, id).then( (model) => {
 					this.model = model;
 					return model;
 				});
@@ -482,6 +483,7 @@ class Context {
 	 * @param {String} 	propFilter	Filter properties of model. It is a space-separated string 
 	 * @returns						JSON object/array
 	 */
+	/*
 	toJSON(docs, propFilter) {
 		let func = function(doc) {
 			let json = doc.toJSON();
@@ -506,7 +508,7 @@ class Context {
 		} else if (_.isObject(docs)) {
 			return func(docs);
 		}
-	}
+	}*/
 
 	
 	/**
@@ -527,7 +529,7 @@ class Context {
 
 		if (this.user) {
 			let userService = this.services("users");
-			response.user = this.toJSON(this.user, "code username fullName avatar lastLogin roles");
+			response.user = userService.toJSON(this.user);
 		}
 		this.emit(type, response, role);	
 	}

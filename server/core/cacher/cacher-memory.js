@@ -49,9 +49,9 @@ class Cacher {
 	 */
 	get(key) {
 		return new Promise((resolve, reject) => {
-			logger.debug("Cacher: Get from cache by key:", key);
 			let item = this.cache[this.prefix + key];
 			if (item) { 
+				logger.debug(`[Cacher] GET ${this.prefix}${key}`);
 				resolve(item.data);
 				// Update expire time (hold in the cache if we are using it)
 				item.expire = Date.now() + this.ttl * 1000;
@@ -75,7 +75,7 @@ class Cacher {
 			data: data,
 			expire: Date.now() + this.ttl * 1000
 		};
-		logger.debug("Cacher: Set to cache by key:", key);
+		logger.debug(`[Cacher] SET ${this.prefix}${key}`);
 		return Promise.resolve();
 	}
 
@@ -89,7 +89,7 @@ class Cacher {
 	 */
 	del(key) {
 		delete this.cache[this.prefix + key];
-		logger.debug("Cacher: Delete from cache by key:", key);
+		logger.debug(`[Cacher] DEL ${this.prefix}${key}`);
 		return Promise.resolve();
 	}
 
@@ -102,7 +102,7 @@ class Cacher {
 	 */
 	clean(match) {
 		// TODO: match not supported yet
-		logger.debug("Cacher: Clear all entries from cache.");
+		logger.debug(`[Cacher] CLEAR ${this.prefix}*`);
 		this.cache = {};
 		return Promise.resolve();
 	}
@@ -115,7 +115,7 @@ class Cacher {
 			let item = this.cache[key];
 
 			if (item.expire && item.expire < now) {
-				logger.debug(`Cacher: Item '${key} is expired!`);
+				logger.debug(`[Cacher] EXPIRED ${this.prefix}${key}`);
 				delete self.cache[key];
 			}
 		});
