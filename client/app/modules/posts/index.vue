@@ -157,6 +157,16 @@
 					toast.success(this._("PostNameUpdated", res), this._("PostUpdated"));
 				},
 
+				voted(res) {
+					this.updated(res.data);
+					toast.success(this._("PostNameVoted", res), this._("PostUpdated"));
+				},
+
+				unvoted(res) {
+					this.updated(res.data);
+					toast.success(this._("PostNameUnvoted", res), this._("PostUpdated"));
+				},
+
 				/**
 				 * Post removed
 				 * @param  {Object} res Post object

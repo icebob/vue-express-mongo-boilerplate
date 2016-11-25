@@ -31,32 +31,25 @@ module.exports = {
 			handler(ctx) {
 				return ctx.queryPageSort(User.find({})).exec().then( (docs) => {
 					return ctx.toJSON(docs);
+				})
+				.then((json) => {
+					return this.populateModels(json);					
 				});
 			}
 		},
 
 		// return a model by ID
-		get(ctx) {
-			if (!ctx.model)
-				throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:UserNotFound"));
-
-			return Promise.resolve(ctx.model).then( (doc) => {
-				return ctx.toJSON(doc);
-			});
+		get: {
+			cache: true,
+			handler(ctx) {
+				ctx.assertModelIsExist(ctx.t("app:UserNotFound"));
+				return Promise.resolve(ctx.model);
+			}
 		}
 	},
 
 	methods: {
 	},
-
-	// resolve model by ID		
-	modelResolver(ctx, code) {
-		let id = User.schema.methods.decodeID(code);
-		if (id == null || id == "")
-			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("app:InvalidCode"));
-
-		return this.getByID(id);		
-	},	
 
 	graphql: {
 

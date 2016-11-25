@@ -74,6 +74,8 @@
 	"PostNameAdded": "Post '{{data.title}}' added by {{user.fullName}}!",
 	"PostNameUpdated": "Post '{{data.title}}' updated by {{user.fullName}}!",
 	"PostNameDeleted": "Post '{{data.title}}' deleted by {{user.fullName}}!",
+	"PostNameVoted": "Post '{{data.title}}' voted by {{user.fullName}}!",
+	"PostNameUnvoted": "Post '{{data.title}}' unvoted by {{user.fullName}}!",
 
 	"InvalidCode": "Invalid code!",
 

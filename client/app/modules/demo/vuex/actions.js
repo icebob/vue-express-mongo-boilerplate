@@ -9,11 +9,15 @@ export const getValue = function ({ dispatch }) {
 };
 
 export const increment = function ({ dispatch }) {
-	this.$service.emit("increment");
+	this.$service.emit("increment").then((newValue) => {
+		dispatch(CHANGED_VALUE, newValue);	
+	});
 };
 
 export const decrement = function ({ dispatch }) {
-	this.$service.emit("decrement");
+	this.$service.emit("decrement").then((newValue) => {
+		dispatch(CHANGED_VALUE, newValue);	
+	});
 };
 
 export const changedValue = function ({ dispatch }, newValue) {

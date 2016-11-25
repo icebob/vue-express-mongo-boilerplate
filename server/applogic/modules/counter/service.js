@@ -140,27 +140,9 @@ module.exports = {
 		changeCounter(ctx, value) {
 			store.counter = value;
 			logger.info(ctx.user.username + " changed the counter to ", store.counter);
-			this.notifyChanged(ctx);
+			this.notifyModelChanges(ctx, "changed", store.counter);
 
 			return Promise.resolve(store.counter);
-		},
-
-		/**
-		 * Notificate the connected users
-		 * @param  {Context} ctx   Context of request
-		 */
-		notifyChanged(ctx) {
-			// Send message to everyone
-			ctx.broadcast("changed", store.counter);	
-			
-			// Send message to the requested user
-			// 		ctx.emitUser("changed", store.counter);	
-
-			// Send message to the role of service ('user')
-			// 		ctx.emit("changed", store.counter);	
-
-			// Clear cached values
-			this.clearCache();
 		}
 	},
 	

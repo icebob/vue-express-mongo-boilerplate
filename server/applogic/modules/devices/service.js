@@ -4,6 +4,8 @@ let logger 		= require("../../../core/logger");
 let config 		= require("../../../config");
 let C 	 		= require("../../../core/constants");
 
+let _			= require("lodash");
+
 let Device 		= require("./models/device");
 
 module.exports = {
@@ -36,94 +38,84 @@ module.exports = {
 
 		// return a model by ID
 		get: {
+			cache: true,
 			handler(ctx) {
-				if (!ctx.model)
-					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:DeviceNotFound"));
-
-				return Device.findByIdAndUpdate(ctx.model.id).exec().then( (doc) => {
-					return this.toJSON(doc);
-				});
+				ctx.assertModelIsExist(ctx.t("app:DeviceNotFound"));
+				return Promise.resolve(ctx.model);
 			}
 		},
 
-		create: {
-			handler(ctx) {
-				this.validateParams(ctx, true);
-				
-				let device = new Device({
-					address: ctx.params.address,
-					type: ctx.params.type,
-					name: ctx.params.name,
-					description: ctx.params.description,
-					status: ctx.params.status
-				});
+		create(ctx) {
+			this.validateParams(ctx, true);
+			
+			let device = new Device({
+				address: ctx.params.address,
+				type: ctx.params.type,
+				name: ctx.params.name,
+				description: ctx.params.description,
+				status: ctx.params.status
+			});
 
-				return device.save()
-					.then((doc) => {
-						return Device.populate(doc, { path: "author", select: this.populateAuthorFields});
-					})
-					.then((doc) => {
-						return this.toJSON(doc);
-					})
-					.then((json) => {
-						this.notifyModelChanges(ctx, "created", json);
-
-						return json;
-					});								
-			}
+			return device.save()
+			.then((doc) => {
+				return this.toJSON(doc);
+			})
+			.then((json) => {
+				return this.populateModels(json);
+			})
+			.then((json) => {
+				this.notifyModelChanges(ctx, "created", json);
+				return json;
+			});	
 		},
 
-		update: {
-			handler(ctx) {
-				if (!ctx.model)
-					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:DeviceNotFound"));
+		update(ctx) {
+			ctx.assertModelIsExist(ctx.t("app:DeviceNotFound"));
+			this.validateParams(ctx);
 
-				this.validateParams(ctx);
+			return this.collection.findById(ctx.modelID).exec()
+			.then((doc) => {
 
 				if (ctx.params.address != null)
-					ctx.model.address = ctx.params.address;
+					doc.address = ctx.params.address;
 
 				if (ctx.params.type != null)
-					ctx.model.type = ctx.params.type;
+					doc.type = ctx.params.type;
 
 				if (ctx.params.name != null)
-					ctx.model.name = ctx.params.name;
+					doc.name = ctx.params.name;
 
 				if (ctx.params.description != null)
-					ctx.model.description = ctx.params.description;
+					doc.description = ctx.params.description;
 
 				if (ctx.params.status != null)
-					ctx.model.status = ctx.params.status;
+					doc.status = ctx.params.status;
 
-				return ctx.model.save()
-					.then((doc) => {
-						return this.toJSON(doc);
-					})
-					.then((json) => {
-
-						this.notifyModelChanges(ctx, "updated", json);
-
-						return json;
-					});								
-			}
+				return doc.save();
+			})
+			.then((doc) => {
+				return this.toJSON(doc);
+			})
+			.then((json) => {
+				return this.populateModels(json);
+			})
+			.then((json) => {
+				this.notifyModelChanges(ctx, "updated", json);
+				return json;
+			});								
 		},
 
-		remove: {
-			handler(ctx) {
-				if (!ctx.model)
-					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:DeviceNotFound"));
+		remove(ctx) {
+			ctx.assertModelIsExist(ctx.t("app:DeviceNotFound"));
 
-				return Device.remove({ _id: ctx.model.id })
-					.then(() => {
-						return this.toJSON();
-					})
-					.then((json) => {
-
-						this.notifyModelChanges(ctx, "removed", json);
-
-						return json;
-					});		
-			}
+			return Device.remove({ _id: ctx.modelID })
+			.then(() => {
+				return ctx.model;
+			})
+			.then((json) => {
+				this.notifyModelChanges(ctx, "removed", json);
+				return json;
+			});		
 		}
 
 	},
@@ -151,15 +143,6 @@ module.exports = {
 				throw ctx.errorBadRequest(C.ERR_VALIDATION_ERROR, ctx.validationErrors);			
 		}
 	},	
-
-	// resolve model by ID		
-	modelResolver(ctx, code) {
-		let id = Device.schema.methods.decodeID(code);
-		if (id == null || id == "")
-			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("app:InvalidCode"));
-
-		return Device.findById(id).exec();
-	},
 
 	init(ctx) {
 		// Fired when start the service

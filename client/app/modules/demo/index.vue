@@ -65,9 +65,9 @@
 				 * Counter value is changed
 				 * @param  {Number} msg Value of counter
 				 */
-				changed(msg) {
-					console.log("New counter value: " + msg);
-					this.changedValue(msg);
+				changed(res) {
+					console.log("Counter changed to " + res.data + (res.user ? " by " + res.user.fullName : ""));
+					this.changedValue(res.data);
 				}
 			}
 		},

@@ -67,7 +67,6 @@ module.exports = {
 
 		create: {
 			handler(ctx) {
-
 				this.validateParams(ctx, true);
 
 				let post = new Post({
@@ -162,7 +161,7 @@ module.exports = {
 				return this.populateModels(json);
 			})
 			.then((json) => {
-				this.notifyModelChanges(ctx, "updated", json);
+				this.notifyModelChanges(ctx, "voted", json);
 				return json;
 			});
 		},
@@ -194,7 +193,7 @@ module.exports = {
 				return this.populateModels(json);
 			})
 			.then((json) => {
-				this.notifyModelChanges(ctx, "updated", json);
+				this.notifyModelChanges(ctx, "unvoted", json);
 				return json;
 			});
 
@@ -224,28 +223,6 @@ module.exports = {
 	},
 
 	/**
-	 * Resolve model by `code` param
-	 * 
-	 * @param {any} ctx		Context of request
-	 * @param {any} code	Code of the model
-	 * @returns	{Promise}
-	 */	/*
-	modelResolver(ctx, code) {
-		let id = Post.schema.methods.decodeID(code);
-		if (id == null || id == "")
-			return ctx.errorBadRequest(C.ERR_INVALID_CODE, ctx.t("app:InvalidCode"));
-
-		return Post.findById(id).exec().then( (doc) => {
-			if (!doc) 
-				return ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:PostNotFound"));
-
-			return Post.populate(doc, { path: "author", select: this.$settings.populateAuthorFields});
-		});
-
-		return this.getByID(id);
-	},*/
-
-	/**
 	 * Check the owner of model
 	 * 
 	 * @param {any} ctx	Context of request
@@ -255,7 +232,7 @@ module.exports = {
 		return new Promise((resolve, reject) => {
 			ctx.assertModelIsExist(ctx.t("app:PostNotFound"));
 
-			if (ctx.model.author.id == ctx.user.id || ctx.isAdmin()) 
+			if (ctx.model.author.code == ctx.user.code || ctx.isAdmin()) 
 				resolve();
 			else
 				reject();

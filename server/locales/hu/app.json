@@ -73,6 +73,8 @@
 	"PostNameAdded": "{{user.fullName}} létrehozta a(z) '{{data.title}}' bejegyzést!",
 	"PostNameUpdated": "{{user.fullName}} módosította a(z) '{{data.title}}' bejegyzést!",
 	"PostNameDeleted": "{{user.fullName}} törölte a(z) '{{data.title}}' bejegyzést!",
+	"PostNameVoted": "{{user.fullName}} szavazott a(z) '{{data.title}}' bejegyzésre!",
+	"PostNameUnvoted": "{{user.fullName}} törölte a szavazatát a(z) '{{data.title}}' bejegyzésről!",
 
 	"InvalidCode": "Invalid code!",
 
