@@ -62,17 +62,16 @@ class Cacher {
 			data = JSON.stringify(data);
 
 		if (this.ttl) {
-			redis.setex(this.prefix + key, this.ttl, data, (err) => {
+			return redis.setex(this.prefix + key, this.ttl, data);/*, (err) => {
 				if (err)
 					logger.error("Redis `setex` error!", err);
-			});
+			});*/
 		} else {
-			redis.set(this.prefix + key, data, (err) => {
+			return redis.set(this.prefix + key, data);/*, (err) => {
 				if (err)
 					logger.error("Redis `set` error!", err);
-			});
+			});*/
 		}
-		return Promise.resolve();
 	}
 
 	/**

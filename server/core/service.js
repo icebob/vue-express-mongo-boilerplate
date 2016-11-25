@@ -308,8 +308,7 @@ class Service {
 	 */
 	putToCache(key, data) {
 		if (this.$cacher) {
-			this.$cacher.set(key, data);
-			return Promise.resolve();
+			return this.$cacher.set(key, data);
 		} else 
 			return Promise.resolve(); 
 	}
@@ -319,8 +318,9 @@ class Service {
 	 */
 	clearCache() {
 		if (this.$cacher) {
-			this.$cacher.clean();
+			return this.$cacher.clean();
 		} 
+		return Promise.resolve();
 	}	
 
 	/**
