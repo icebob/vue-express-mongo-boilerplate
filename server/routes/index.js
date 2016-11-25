@@ -16,14 +16,19 @@ module.exports = function(app, db) {
 			res.render("index");
 	});
 
+	// Handle health check routes
+	require("./health")(app, db);
+
 	// Handle account routes
 	require("./account")(app, db);
 
 	// Handle Auth routes
 	require("./auth")(app, db);
 
-	// Load applogic routes
-	require("../applogic/routeHandlers")(app, db);
+	// Load services routes
+	//require("../applogic/routeHandlers")(app, db);
+	let services = require("../core/services");
+	services.registerRoutes(app, db);
 
 	// Handle Graphql request
 	require("./graphql")(app, db);

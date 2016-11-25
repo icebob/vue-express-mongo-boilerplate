@@ -3,18 +3,18 @@
 let config 	= require("../config");
 let logger 	= require("../core/logger");
 
-let secrets 	= require("../core/secrets");
+let C 			= require("../core/constants");
 let tokgen 		= require("../libs/tokgen");
 
-let crypto = require("crypto");
-let async = require("async");
-let passport = require("passport");
-let express = require("express");
+let crypto 		= require("crypto");
+let async 		= require("async");
+let passport 	= require("passport");
+let express 	= require("express");
 
-let response = require("../core/response");
-let mailer = require("../libs/mailer");
+let response 	= require("../core/response");
+let mailer 		= require("../libs/mailer");
 
-let User = require("../models/user");
+let User 		= require("../models/user");
 
 /**
  * Check what social API are configured. We only show
@@ -24,17 +24,17 @@ function checkAvailableSocialAuth() {
 	// set social options
 	let social = {};
 
-	if (secrets.apiKeys) {
-		if (secrets.apiKeys.google && secrets.apiKeys.google.clientID)
+	if (config.authKeys) {
+		if (config.authKeys.google && config.authKeys.google.clientID)
 			social.google = true;
 
-		if (secrets.apiKeys.facebook && secrets.apiKeys.facebook.clientID)
+		if (config.authKeys.facebook && config.authKeys.facebook.clientID)
 			social.facebook = true;
 
-		if (secrets.apiKeys.github && secrets.apiKeys.github.clientID)
+		if (config.authKeys.github && config.authKeys.github.clientID)
 			social.github = true;
 
-		if (secrets.apiKeys.twitter && secrets.apiKeys.twitter.clientID)
+		if (config.authKeys.twitter && config.authKeys.twitter.clientID)
 			social.twitter = true;
 	}
 
@@ -60,12 +60,13 @@ module.exports = function(app, db) {
 	// Logout
 	app.get("/logout", function(req, res) {
 		req.logout();
+		req.session.destroy();
 		res.redirect("/");
 	});
 
 	// Sign-up
 	app.get("/signup", function(req, res) {
-		if (config.disableSignUp === true)
+		if (config.features.disableSignUp === true)
 			return res.redirect("/login");
 
 		res.render("account/signup", {
@@ -76,7 +77,7 @@ module.exports = function(app, db) {
 
 	// User registration
 	app.post("/signup", function(req, res) {
-		if (config.disableSignUp === true)
+		if (config.features.disableSignUp === true)
 			return res.redirect("/");
 
 		req.assert("name", req.t("NameCannotBeEmpty")).notEmpty();
@@ -106,7 +107,7 @@ module.exports = function(app, db) {
 		async.waterfall([
 
 			function generateVerificationToken(done) {
-				if (config.verificationRequired) {
+				if (config.features.verificationRequired) {
 					crypto.randomBytes(25, function(err, buf) {
 						done(err, err ? null : buf.toString("hex"));
 					});
@@ -115,7 +116,7 @@ module.exports = function(app, db) {
 				}
 			},
 
-			function passwordless(token, done) {
+			function passwordlessToken(token, done) {
 				if (passwordless) {
 					crypto.randomBytes(25, function(err, buf) {
 						done(err, token, err ? null : buf.toString("hex"));
@@ -132,7 +133,8 @@ module.exports = function(app, db) {
 					email: req.body.email,
 					username: req.body.username,
 					password: password,
-					roles: ["user"],
+					passwordLess: passwordless,
+					roles: [C.ROLE_USER],
 					provider: "local"
 				});
 
@@ -373,7 +375,13 @@ module.exports = function(app, db) {
 				User.findOne({ email: req.body.email }, function(err, user) {
 					if (!user) {
 						req.flash("error", { msg: req.t("EmailNotAssociatedToAccount", req.body) });
-						return done("Email address " + req.body.email + " is not registered!");
+						return done(`Email address ${req.body.email} is not registered!`);
+					}
+
+					// Check that the user is not disabled or deleted
+					if (user.status !== 1) {
+						req.flash("error", { msg: req.t("UserDisabledOrDeleted")});
+						return done(req.t("UserDisabledOrDeleted"));
 					}
 
 					user.resetPasswordToken = token;
@@ -538,4 +546,34 @@ module.exports = function(app, db) {
 
 			});
 	});	
+
+	// Unlink social account
+	app.get("/unlink/:provider", function(req, res) {
+		if (!req.isAuthenticated())
+			return response.json(res, null, response.UNAUTHORIZED);
+
+		if (!req.params.provider || ["facebook", "twitter", "google", "github"].indexOf(req.params.provider) === -1)
+			return response.json(res, null, response.BAD_REQUEST, req.t("InvalidOAuthProvider"));
+
+		User
+			.findById(req.user.id)
+			.exec((err, user) => {
+				if (err) 
+					return response.json(res, null, response.SERVER_ERROR);
+
+				if (!user) {
+					return response.json(res, null, response.NOT_FOUND, req.t("InvalidUser"));
+				}
+
+				user.socialLinks[req.params.provider] = undefined;
+
+				user.save((err) => {
+					if (err) 
+						return response.json(res, null, response.SERVER_ERROR);
+
+					return response.json(res, user);
+				});
+
+			});		
+	});		
 };

@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 	.container
 		h2.title {{ "Demo" | i18n }}
 
@@ -17,17 +17,12 @@
 </template>
 
 <script>
-	import MixinsIO from "../../core/mixins/io";
-
 	import * as actions from "./vuex/actions";
 	import * as getters from "./vuex/getters";
 
-	export default {
-		/**
-		 * Create websocket connection to '/counter' namespace
-		 */
-		mixins: [ MixinsIO("/counter") ],
+	import Service from "../../core/service";
 
+	export default {
 		/**
 		 * Set Vuex actions & getters
 		 */
@@ -46,7 +41,6 @@
 			 */
 			inc() {
 				this.increment();
-				this.$socket.emit("changed", this.count);
 			},
 
 			/**
@@ -54,23 +48,35 @@
 			 */
 			dec() {
 				this.decrement();
-				this.$socket.emit("changed", this.count);
 			}
 		},
 
 		/**
 		 * Socket handlers. Every property is an event handler
 		 */
-		sockets: {
+		socket: {
 
-			/**
-			 * Counter value is changed
-			 * @param  {Number} msg Value of counter
-			 */
-			changed(msg) {
-				console.log("New counter value: " + msg);
-				this.changeValue(msg);
+			prefix: "/counter/",
+
+			//namespace: "/counter",
+
+			events: {
+				/**
+				 * Counter value is changed
+				 * @param  {Number} msg Value of counter
+				 */
+				changed(res) {
+					console.log("Counter changed to " + res.data + (res.user ? " by " + res.user.fullName : ""));
+					this.changedValue(res.data);
+				}
 			}
+		},
+
+		created() {
+			this.$service = new Service("counter", this); 
+			
+			// Get the latest value of counter
+			this.getValue(); 
 		}
 	};
 

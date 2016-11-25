@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 	.logo
 		a.nav-item(href="#")
 			span 

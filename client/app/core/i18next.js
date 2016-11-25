@@ -34,11 +34,26 @@ function install(Vue, callback, options = {}) {
 
 				// allow cross domain requests
 				crossDomain: false
-
 			},
 
 			detection: {
-				order: ["querystring", "htmlTag", "navigator"]
+				order: ["querystring", "cookie", "htmlTag", "navigator"]
+				/*
+				// keys or params to lookup language from
+				lookupQuerystring: 'lng',
+				lookupCookie: 'i18next',
+				lookupLocalStorage: 'i18nextLng',
+
+				// cache user language on
+				caches: ['localStorage', 'cookie']
+
+				// optional expire and domain for set cookie
+				cookieMinutes: 10,
+				cookieDomain: 'myDomain',
+
+				// optional htmlTag with lang attribute, the default is:
+				htmlTag: document.documentElement
+				*/
 			}
 
 		}), (err, t) => {

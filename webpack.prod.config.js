@@ -1,11 +1,13 @@
-var path = require("path");
-var glob = require("glob");
-var webpack = require("webpack");
+"use strict";
 
-var precss = require("precss");
-var autoprefixer = require("autoprefixer");
+let path = require("path");
+let glob = require("glob");
+let webpack = require("webpack");
 
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+let precss = require("precss");
+let autoprefixer = require("autoprefixer");
+
+let ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
 	entry: {
@@ -25,14 +27,14 @@ module.exports = {
 			{ test: /\.css$/,    loader: "style!css" },
 
 			//{ test: /\.scss$/, loaders: ["style", "css", "sass"] },
-			{ test: /\.scss$/, loader: ExtractTextPlugin.extract('style-loader', ['css-loader', 'postcss-loader', 'sass-loader'])},
+			{ test: /\.scss$/, loader: ExtractTextPlugin.extract("style-loader", ["css-loader", "postcss-loader", "sass-loader"])},
 
 			{ test: /\.json$/,    loader: "json-loader" },
 
 			// ES6/7 syntax and JSX transpiling out of the box
-    		{ test: /\.js$/,	 loader: 'babel', 		exclude: [/node_modules/, /vendor/], query: {
-					presets: ['es2015', 'stage-0']
-				}	
+    		{ test: /\.js$/,	 loader: "babel", 		exclude: [/node_modules/, /vendor/], query: {
+			presets: ["es2015", "stage-0"]
+		}	
 			},
 
 			{ test: /\.vue$/,    loader: "vue" },
@@ -50,9 +52,9 @@ module.exports = {
 		]
 	},
 	resolve: {
-    	extensions: ['', '.vue', '.js', '.json'],
+    	extensions: ["", ".vue", ".js", ".json"],
     	alias: {
-    		'images': path.resolve(__dirname, 'client', 'images')
+    		"images": path.resolve(__dirname, "client", "images")
     	}
 	},
 	plugins: [
@@ -65,24 +67,24 @@ module.exports = {
 		//new StatsPlugin('stats.json'),
 		new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
-        }),
+			compress: {
+	warnings: false
+}
+		}),
 
-        new ExtractTextPlugin('styles/[name].css')
+		new ExtractTextPlugin("styles/[name].css")
 	],
 
 	postcss: function () {
 		return [
-			autoprefixer({ browsers: ['last 2 versions'] }), 
+			autoprefixer({ browsers: ["last 2 versions"] }), 
 			precss
 		];
 	},	
 
 	vue: {
 		autoprefixer: {
-			browsers: ['last 2 versions']
+			browsers: ["last 2 versions"]
 		}
 	}	
 };

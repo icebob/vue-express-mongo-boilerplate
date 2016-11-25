@@ -7,7 +7,8 @@ let passport 		= require("passport");
 let path 			= require("path");
 let chalk 			= require("chalk");
 
-if (!WEBPACK_BUNDLE) require('require-webpack-compat')(module, require);
+/* global WEBPACK_BUNDLE */
+if (!WEBPACK_BUNDLE) require("require-webpack-compat")(module, require);
 
 let User 			= require("../../models/user");
 
@@ -25,7 +26,14 @@ module.exports = function(app) {
 		User.findOne({
 			_id: id
 		}, "-password", function(err, user) {
-			return done(err, user);
+			if (err)
+				return done(err);
+			
+			// Check that the user is not disabled or deleted
+			if (user.status !== 1)
+				return done(null, false);
+
+			return done(null, user);
 		});
 	});
 
@@ -39,7 +47,7 @@ module.exports = function(app) {
 			strategy();
 
 			return strategy;
-		})
+		});
 	}
-	var modules = requireAll(require.context("./strategies", true, /\.js$/));
+	let modules = requireAll(require.context("./strategies", true, /\.js$/));
 };

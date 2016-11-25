@@ -2,4 +2,4 @@
 
 module.exports.command = function(page) {
 	return page;
-}
+};

@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 	div
 		page-header(:toggle-sidebar="toggleSidebar")
 
@@ -13,8 +13,7 @@
 
 <script>
 	import Vue from "vue";
-	import MixinsIO from "./mixins/io";
-	import store from "../store";
+	import store from "../core/store";
 
 	import PageHeader from "./components/header/index";
 	import Sidebar from "./components/sidebar/index";
@@ -22,12 +21,14 @@
 	import * as actions from "../modules/session/vuex/actions";
 	import * as getters from "../modules/session/vuex/getters";
 
+	import Service from "./service";
+
 	export default {
 
 		/**
 		 * Create websocket connection to the root namespace
 		 */		
-		mixins: [ MixinsIO() ],
+		//mixins: [ MixinsIO() ],
 
 		/**
 		 * Load sub-components
@@ -39,6 +40,8 @@
 
 		/**
 		 * Create app data object
+		 * 
+		 * TODO: move to vuex state
 		 */
 		data() {
 			return {
@@ -70,21 +73,30 @@
 		/**
 		 * Socket handlers. Every property is an event handler
 		 */
-		sockets: {
+		socket: {
 
-			/**
-			 * Send welcome message after connect
-			 */
-			connect() {
-				if (this.wsReconnecting)
-					// Reload browser if connection established after disconnect
-					window.location.reload(true);
-				else
-					this.$socket.emit("welcome", "Hello! " + navigator.userAgent);
-			},
+			events: {
+				/**
+				 * Send welcome message after connect
+				 */
+				connect() {
+					console.log("Websocket connected to " + this.$socket.nsp);
 
-			disconnect() {
-				this.wsReconnecting = true;
+					if (this.wsReconnecting)
+						// Reload browser if connection established after disconnect
+						window.location.reload(true);
+					else
+						this.$socket.emit("welcome", "Hello! " + navigator.userAgent);
+				},
+
+				disconnect() {
+					console.log("Websocket disconnected from " + this.$socket.nsp);
+					this.wsReconnecting = true;
+				},
+
+				error(err) {
+					console.error("Websocket error!", err);
+				}
 			}
 		},
 
@@ -102,7 +114,6 @@
 				while (i--)
 					this.update(children[i]);
 			},
-
 
 			toggleSidebar() {
 				this.miniSidebar = !this.miniSidebar;
@@ -123,6 +134,12 @@
 			window.app = this;
 
 			this.getSessionUser();
+
+			// debug
+			window.postService = new Service("posts", this);
+			window.counterService = new Service("counter", this);
+			window.deviceService = new Service("device", this);
+			
 		}
 	};
 </script>

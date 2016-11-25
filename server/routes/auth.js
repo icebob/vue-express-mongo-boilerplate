@@ -26,7 +26,7 @@ let Response 	= require("../core/response");
  * @param  {String} redirect redirect site URL.
  * @param  {Object} err      Error object.
  */
-function response(req, res, redirect, err) {
+function respond(req, res, redirect, err) {
 	if (req.accepts("json") && !req.accepts("html")) {
 
 		let flash = req.flash();
@@ -44,8 +44,15 @@ function response(req, res, redirect, err) {
 		}
 
 	}
-	else if (redirect)
+	else if (redirect) {
+		// Redirect to the original url
+		if (req.session.returnTo) {
+			redirect = req.session.returnTo;
+			delete req.session.returnTo;
+		}
+
 		res.redirect(redirect);
+	}
 }
 
 module.exports = function(app, db) {
@@ -55,17 +62,11 @@ module.exports = function(app, db) {
 	authRouter.post("/local", function(req, res, next) {
 
 		req.assert("username", req.t("UsernameCannotBeEmpty")).notEmpty();
-		//req.assert('email', req.t("EmailIsNotValid")).isEmail();
-		//req.assert('email', req.t("EmailCannotBeEmpty")).notEmpty();
-		//req.sanitize('email').normalizeEmail({ remove_dots: false });
-
-		// Passwordless miatt
-		//req.assert('password', req.t("PasswordCannotBeEmpty")).notEmpty();
 
 		let errors = req.validationErrors();
 		if (errors) {
 			req.flash("error", errors);
-			return response(req, res, "/login", Response.BAD_REQUEST);
+			return respond(req, res, "/login", Response.BAD_REQUEST);
 		}
 
 		if (req.body.password) {
@@ -73,22 +74,24 @@ module.exports = function(app, db) {
 			passport.authenticate("local", function(err, user, info) { 
 				if (!user) {
 					req.flash("error", { msg: info.message });
-					return response(req, res, "/login");
+					return respond(req, res, "/login");
 				}
 
 				req.login(user, function(err) {
 					if (err) {
 						req.flash("error", { msg: err });
-						return response(req, res, "/login");
+						return respond(req, res, "/login");
 					}
 
+					// Success authentication
 					// Update user's record with login time
 					req.user.lastLogin = Date.now();
 					req.user.save(function() {
 						// Remove sensitive data before login
 						req.user.password = undefined;
 						req.user.salt = undefined;
-						response(req, res, "/");
+
+						respond(req, res, "/");
 					});
 
 				});
@@ -107,11 +110,23 @@ module.exports = function(app, db) {
 
 				function getUser(token, done) {
 					let username = req.body.username;
-					User.findOne({ username: username }, function(err, user) {
+					User.findOne({
+						$or: [ 
+							{ "username": username}, 
+							{ "email": username}
+						]
+					}, function(err, user) {
 						if (!user) {
 							req.flash("error", { msg: req.t("UsernameIsNotAssociated", { username: username}) });
-							return done("Invalid username " + username);
+							return done("Invalid username or email: " + username);
 						}
+
+						// Check that the user is not disabled or deleted
+						if (user.status !== 1) {
+							req.flash("error", { msg: req.t("UserDisabledOrDeleted")});
+							return done(`User '${username} is disabled or deleted!`);
+						}
+						
 
 						user.passwordLessToken = token;
 						//user.passwordLessTokenExpires = Date.now() + 3600000; // expire in 1 hour
@@ -147,7 +162,7 @@ module.exports = function(app, db) {
 					logger.error(err);
 				}
 
-				response(req, res, "back");
+				respond(req, res, "back");
 			});
 		}
 

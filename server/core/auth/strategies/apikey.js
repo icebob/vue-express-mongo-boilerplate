@@ -24,6 +24,12 @@ module.exports = function() {
 					message: req.t("PleaseActivateAccount")
 				});
 
+			// Check that the user is not disabled or deleted
+			if (user.status !== 1)
+				return done(null, false, {
+					message: req.t("UserDisabledOrDeleted")
+				});
+
 			return done(null, user);		
 		});
 	}));

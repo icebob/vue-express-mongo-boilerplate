@@ -10,10 +10,14 @@ let fakerator		= require("fakerator")();
 let User 			= require("../models/user");
 
 module.exports = function() {
-	User.find({}).exec(function(err, docs) {
-		let admin, test;
+	/**
+	 * Create default `admin` and `test` users
+	 */
+	return User.find({}).exec().then((docs) => {
 		if (docs.length === 0) {
 			logger.warn("Load default Users to DB...");
+
+			let users = [];
 
 			let admin = new User({
 				fullName: "Administrator",
@@ -24,32 +28,30 @@ module.exports = function() {
 				roles: ["admin", "user"],
 				verified: true
 			});
+			users.push(admin.save());
 
-			admin.save(function(err) {
-				if (err) 
-					return logger.warn("Unable to create default admin user!");
+			let test = new User({
+				fullName: "Test User",
+				email: "test@boilerplate-app.com",
+				username: "test",
+				password: "test1234",
+				provider: "local",
+				roles: ["user"],
+				verified: true,
+				apiKey: tokgen()
+			});
+			
+			users.push(test.save());
 
-				let test = new User({
-					fullName: "Test User",
-					email: "test@boilerplate-app.com",
-					username: "test",
-					password: "test1234",
-					provider: "local",
-					roles: ["user"],
-					verified: true,
-					apiKey: tokgen()
-				});
-				
-				test.save(function() {
-					if (err) 
-						return logger.warn("Unable to create default admin user!");
-					
-					logger.info("Default users created!");
-				});
-
+			return Promise.all(users).then(() => {
+				logger.warn("Default users created!");
 			});
 		}
-	});
-
-	require("../applogic/libs/seed-db")();
+	}).catch((err) => {
+		logger.warning(err.message);
+	}).then(() => {
+		return require("../applogic/libs/seed-db")();
+	}).then(() => {
+		logger.debug("Seeding done!");
+	});	
 };

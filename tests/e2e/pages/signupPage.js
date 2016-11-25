@@ -2,8 +2,8 @@
 
 let commands = {
 	signup(name, email, username, password, passwordless) {
-		return this
-			.waitForElementVisible('@emailField', 10000)
+		let res = this
+			.waitForElementVisible("@emailField", 10000)
 			.assert.containsText("@title", "SIGN UP")
 			.assert.elementPresent("@nameField")
 			.assert.elementPresent("@emailField")
@@ -13,8 +13,12 @@ let commands = {
 			.setValue("@nameField", name)
 			.setValue("@emailField", email)
 			.setValue("@usernameField", username)
-			.setValue("@passwordField", password)
-			.setValue("@passwordLessCheck", passwordless)
+			.setValue("@passwordField", password);
+
+		if (passwordless)
+			res = res.click("[for=\"passwordless\"]");
+		
+		return res
 			.makeScreenshot()
 			.click("@submitButton");
 	}
@@ -40,4 +44,4 @@ module.exports = {
 		flashInfo: ".flash .alert-success div"
 	}
 
-}
+};

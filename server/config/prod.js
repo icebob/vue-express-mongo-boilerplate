@@ -1,19 +1,16 @@
 "use strict";
 
-let pkg = require("../../package.json");
+let pkg 	= require("../../package.json");
 
 module.exports = {
-	app: {},
-	
-	ip: process.env.NODE_IP || "127.0.0.1",
-	port: process.env.NODE_PORT || 3000,
+	app: {
+	},
 
 	db: {
 		uri: process.env.MONGO_URI || "mongodb://localhost/" + pkg.config.dbName,
 		options: {
-			user: "",
-			pass: ""
+			user: process.env.MONGO_USERNAME || "",
+			pass: process.env.MONGO_PASSWORD || ""
 		}
 	}
-
 };

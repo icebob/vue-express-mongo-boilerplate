@@ -61,11 +61,11 @@ DeviceSchema.plugin(autoIncrement.plugin, {
 
 DeviceSchema.methods.encodeID = function() {
 	return hashids.encodeHex(this._id);
-}
+};
 
 DeviceSchema.methods.decodeID = function(code) {
 	return hashids.decodeHex(code);
-}
+};
 
 let Device = mongoose.model("Device", DeviceSchema);
 

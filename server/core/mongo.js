@@ -30,6 +30,11 @@ module.exports = function() {
 			return logger.error(err);
 		});
 
+		/*
+			Maybe change to 
+				https://github.com/icebob/mongoose-autoincrement
+
+		 */
 		autoIncrement.initialize(db);		
 
 		mongoose.connection.once("open", function mongoAfterOpen() {
@@ -38,13 +43,15 @@ module.exports = function() {
 
 			if (config.isTestMode()) {
 				logger.warn("Drop test database...");
-				mongoose.connection.db.dropDatabase();
-				//autoIncrement.initialize(db);		
+				//mongoose.connection.db.dropDatabase((err) => {
+				//	autoIncrement.initialize(db);
+				require("./seed-db")();		
+				//);
 			}
-
-
-			if (!config.isProduction) {
-				require("./seed-db")();
+			else {
+				if (!config.isProduction) {
+					require("./seed-db")();	
+				}
 			}
 		});
 

@@ -2,24 +2,30 @@
 
 let logger 	= require("../../logger");
 let config 	= require("../../../config");
-let secrets = require("../../secrets");
 let helper 	= require("../helper");
 
 let passport 		= require("passport");
-let GoogleStrategy  = require("passport-github").Strategy;
+let GithubStrategy  = require("passport-github").Strategy;
 let User 			= require("../../../models/user");
 
 // https://github.com/settings/applications/new
 module.exports = function() {
-	if (secrets.apiKeys && secrets.apiKeys.github && secrets.apiKeys.github.clientID) {
+	if (config.authKeys.github.clientID && config.authKeys.github.clientSecret) {
 
-		passport.use("github", new GoogleStrategy({
-			clientID: secrets.apiKeys.github.clientID,
-			clientSecret: secrets.apiKeys.github.clientSecret,
+		passport.use("github", new GithubStrategy({
+			clientID: config.authKeys.github.clientID,
+			clientSecret: config.authKeys.github.clientSecret,
 			callbackURL: "/auth/github/callback",
+			scope: [ "user:email" ],
 			passReqToCallback: true
 		}, function(req, accessToken, refreshToken, profile, done) {
-			//logger.info("Received profile: ", profile);
+			logger.info("Received profile: ", profile);
+
+			let email;
+			if (profile.emails && profile.emails.length > 0) {
+				email = profile.emails.find((email) => { return email.primary; });
+				if (!email) email = profile.emails[0];
+			}
 
 			helper.linkToSocialAccount({
 				req, 
@@ -29,7 +35,8 @@ module.exports = function() {
 				done,
 
 				provider: "github",
-				email: profile._json.email,
+				username: profile.username,
+				email: email ? email.value : null,
 				userData: {
 					name: profile.displayName,
 					gender: null,

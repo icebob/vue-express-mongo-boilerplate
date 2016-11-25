@@ -1,10 +1,8 @@
 import Vue from "vue";
-import { ADD_MESSAGE, ADD_NOTIFICATION, SET_USER, SEARCH } from "./types";
-
-const BASE_URL = "/session";
+import { NAMESPACE, ADD_MESSAGE, ADD_NOTIFICATION, SET_USER, SEARCH } from "./types";
 
 export const getSessionUser = ({ dispatch }) => {
-	Vue.http.get(BASE_URL + "/me").then((response) => {
+	Vue.http.get(NAMESPACE + "/me").then((response) => {
 		let res = response.json();
 		if (res.status == 200)
 			dispatch(SET_USER, res.data);

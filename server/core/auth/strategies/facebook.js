@@ -2,7 +2,6 @@
 
 let logger 	= require("../../logger");
 let config 	= require("../../../config");
-let secrets = require("../../secrets");
 let helper 	= require("../helper");
 
 let passport 			= require("passport");
@@ -11,11 +10,11 @@ let User 				= require("../../../models/user");
 
 // https://developers.facebook.com/apps/
 module.exports = function() {
-	if (secrets.apiKeys && secrets.apiKeys.facebook && secrets.apiKeys.facebook.clientID) {
+	if (config.authKeys.facebook.clientID && config.authKeys.facebook.clientSecret) {
 
 		passport.use("facebook", new FacebookStrategy({
-			clientID: secrets.apiKeys.facebook.clientID,
-			clientSecret: secrets.apiKeys.facebook.clientSecret,
+			clientID: config.authKeys.facebook.clientID,
+			clientSecret: config.authKeys.facebook.clientSecret,
 			callbackURL: "/auth/facebook/callback",
 			profileFields: ["name", "email", "link", "locale", "timezone"],
 			passReqToCallback: true

@@ -2,7 +2,7 @@
 
 let logger 			= require("./logger");
 let config 			= require("../config");
-let secrets 		= require("./secrets");
+let redis 			= require("./redis");
 
 let express 		= require("express");
 let http 			= require("http");
@@ -32,6 +32,11 @@ let i18nextFs 		= require("i18next-node-fs-backend");
 
 let serverFolder = path.normalize(path.join(config.rootPath, "server"));
 
+/**
+ * Initialize local variables
+ * 
+ * @param {any} app
+ */
 function initLocalVariables(app) {
 	// Setting application local variables
 	app.locals.app = config.app;
@@ -43,16 +48,22 @@ function initLocalVariables(app) {
 	});
 
 	app.locals.year = moment().format("YYYY");
-	app.locals.disableSignUp = config.disableSignUp || false;
+	app.locals.features = config.features;
 }
 
+/**
+ * Initialize middlewares
+ * 
+ * @param {any} app
+ */
 function initMiddleware(app) {
 	// Should be placed before express.static
 	app.use(compress({
 		filter: function(req, res) {
 			return /json|text|javascript|css/.test(res.getHeader("Content-Type"));
 		},
-		level: 3
+		level: 3,
+		threshold: 512
 	}));
 
 	// Configure express app
@@ -108,6 +119,11 @@ function initMiddleware(app) {
 	}
 }
 
+/**
+ * Initialize i18next module for localization
+ * 
+ * @param {any} app
+ */
 function initI18N(app) {
 
 	let conf = {
@@ -141,6 +157,7 @@ function initI18N(app) {
 		.use(i18nextFs)
 		.use(i18nextExpress.LanguageDetector)
 		.init(conf, function(err, t) {
+			app.t = t;
 			if (err)
 				logger.warn(err);
 		});
@@ -166,10 +183,15 @@ function initI18N(app) {
 	app.post("/locales/add/:lng/:ns", i18nextExpress.missingKeyHandler(i18next));		
 }
 
+/**
+ * Initialize view engine (pug)
+ * 
+ * @param {any} app
+ */
 function initViewEngine(app) {
 	// Set view folder
 	app.set("views", path.join(serverFolder, "views"));
-	app.set("view engine", "jade");
+	app.set("view engine", "pug");
 
 	// Environment dependent middleware
 	if (config.isDevMode()) {
@@ -189,12 +211,18 @@ function initViewEngine(app) {
 	}
 }
 
+/**
+ * Initialize session handler (mongo-store)
+ * 
+ * @param {any} app
+ * @param {any} db
+ */
 function initSession(app, db) {
 	// Express MongoDB session storage
 	app.use(session({
 		saveUninitialized: true,
-		resave: true,
-		secret: secrets.sessionSecret,
+		resave: false,
+		secret: config.sessionSecret,
 		store: new MongoStore({
 			mongooseConnection: db.connection,
 			collection: config.sessions.collection,
@@ -205,6 +233,11 @@ function initSession(app, db) {
 	}));
 }
 
+/**
+ * Initiliaze Helmet security module
+ * 
+ * @param {any} app
+ */
 function initHelmetHeaders(app) {
 	// Use helmet to secure Express headers
 	app.use(helmet.xssFilter());
@@ -214,6 +247,11 @@ function initHelmetHeaders(app) {
 	app.use(helmet.hidePoweredBy());
 }
 
+/**
+ * Initialize authentication & CSRF
+ * 
+ * @param {any} app
+ */
 function initAuth(app) {
 	// Init auth
 	require("./auth/passport")(app);
@@ -234,6 +272,12 @@ function initAuth(app) {
 	}
 }
 
+/**
+ * Initialize Webpack hot reload module.
+ * 	Note: Only in development mode 
+ * 
+ * @param {any} app
+ */
 function initWebpack(app) {
 	// Webpack middleware in development mode
 	if (!config.isProductionMode()) {
@@ -286,12 +330,16 @@ module.exports = function(db) {
 	// Init webpack devserver & hot reload module
 	initWebpack(app);
 
-	// Load routes
-	require("../routes")(app, db);
+	// Load services
+	let services = require("./services");
+	services.loadServices(app, db);
 
 	// Load socket.io server
-	let server = require("./socket").init(app, db);
+	let server = require("./sockets").init(app, db);
 	server._app = app;
+
+	// Load routes
+	require("../routes")(app, db);
 
 	return server;
 };

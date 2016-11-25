@@ -1,0 +1,69 @@
+extends ../layout
+
+block styles
+	// Site stylesheet
+	link(rel='stylesheet', href='/app/styles/frontend.css')
+
+block content
+	.center-container
+		.panel
+			.bg
+			.bg-overlay
+			.content
+				form(action='/auth/local', method='POST')
+					input(type="hidden", name="_csrf" value=_csrf)
+
+					header= t("Login")
+					.form-group
+						label(for='username')= t("UsernameOrEmail")
+						input(type='text', name='username', id='username', placeholder=t("YourUsernameOrEmailAddress"))
+						.hint
+					.form-group
+						label(for='password')= t("PasswordSC")
+						input(type='password', name='password', id='password', placeholder=t("Password"))
+						.hint= t("PasswordlessLoginHint")
+
+					.flash
+						if messages.error
+							.alert.alert-danger
+								for error in messages.error
+									div= error.msg
+						if messages.info
+							.alert.alert-success
+								for info in messages.info
+									div= info.msg
+
+					if messages.error
+						.forgot
+							a(href='/forgot')= t("ForgotYourPassword")
+
+					.form-group
+						button.signup(type='submit')= t("Login")
+
+					if socialAuth
+						.or
+							span= t("or")
+
+						.socials
+							if socialAuth.facebook
+								a.group.facebook(href="/auth/facebook", title=t("LoginFacebook") )
+									i.fa.fa-facebook
+							if socialAuth.google
+								a.group.google(href="/auth/google", title=t("LoginGoogle"))
+									i.fa.fa-google-plus
+							if socialAuth.twitter
+								a.group.twitter(href="/auth/twitter", title=t("LoginTwitter"))
+									i.fa.fa-twitter
+							if socialAuth.github
+								a.group.github(href="/auth/github", title=t("LoginGithub"))
+									i.fa.fa-github
+
+					if features.disableSignUp !== true
+						hr
+						.alreadyLink
+							span= t("DontHaveAnAccount")
+							a(href='/signup')= t("SignUp")
+
+block scripts
+	script(src='/app/frontend.js')
+					

@@ -1,14 +1,25 @@
 import Vue from "vue";
-import { INCREMENT, DECREMENT, CHANGE_VALUE } from "./types";
+import { NAMESPACE, CHANGED_VALUE } from "./types";
 
-export const increment = ({ dispatch }) => {
-	dispatch(INCREMENT);
+export const getValue = function ({ dispatch }) {
+	this.$service.emit("find").then( (data) => {
+		console.log("Counter current value: ", data);
+		dispatch(CHANGED_VALUE, data);
+	});
 };
 
-export const decrement = ({ dispatch }) => {
-	dispatch(DECREMENT);
+export const increment = function ({ dispatch }) {
+	this.$service.emit("increment").then((newValue) => {
+		dispatch(CHANGED_VALUE, newValue);	
+	});
 };
 
-export const changeValue = ({ dispatch }, newValue) => {
-	dispatch(CHANGE_VALUE, newValue);
+export const decrement = function ({ dispatch }) {
+	this.$service.emit("decrement").then((newValue) => {
+		dispatch(CHANGED_VALUE, newValue);	
+	});
+};
+
+export const changedValue = function ({ dispatch }, newValue) {
+	dispatch(CHANGED_VALUE, newValue);
 };

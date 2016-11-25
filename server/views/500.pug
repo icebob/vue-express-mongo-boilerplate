@@ -1,0 +1,10 @@
+extends layout
+
+block content
+	.error500
+		h1 Server error
+		h2 Message: #{error.message}
+
+		p 
+			| #{ t("GoBackTo") } 
+			a(href="/")= t("homepage")		

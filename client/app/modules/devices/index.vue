@@ -1,29 +1,29 @@
-<template lang="jade">
+<template lang="pug">
 	admin-page(:schema="schema", :selected="selected", :rows="rows")
 </template>
 
 <script>
+/*
+https://dev-blog.apollodata.com/use-apollo-in-your-vuejs-app-89812429d8b2#.epkgpe2xz
+https://github.com/Akryum/vue-apollo
+
+*/
+
 	import Vue from "vue";
 	import AdminPage from "../../core/DefaultAdminPage.vue";
 	import schema from "./schema";
 	import toast from "../../core/toastr";
 
-	import MixinsIO from "../../core/mixins/io";
-
-	import gql from "graphql-tag";
+	/*import gql from "graphql-tag";
 	window["gql"] = gql;
 
 	import ApolloClient, { createNetworkInterface } from "apollo-client";
+	*/
 
 	import * as actions from "./vuex/actions";
 	import * as getters from "./vuex/getters";
 
 	export default {
-		/**
-		 * Create websocket connection to '/devices' namespace
-		 */
-		mixins: [ MixinsIO("/devices") ],
-
 		components: {
 			AdminPage: AdminPage
 		},
@@ -61,39 +61,37 @@
 		/**
 		 * Socket handlers. Every property is an event handler
 		 */
-		sockets: {
+		socket: {
 
-			/**
-			 * New device added
-			 * @param  {Object} row Device object
-			 */
-			new(row) {
-				console.log("New device: ", row);
-				this.rowAdded(row);
+			prefix: "/devices/",
 
-				toast.success(this._("DeviceNameAdded", row), this._("DeviceAdded"));
-			},
+			events: {
+				/**
+				 * New device added
+				 * @param  {Object} res Device object
+				 */
+				created(res) {
+					this.created(res.data);
+					toast.success(this._("DeviceNameAdded", res), this._("DeviceAdded"));
+				},
 
-			/**
-			 * Device updated
-			 * @param  {Object} row Device object
-			 */
-			update(row) {
-				console.log("Update device: ", row);
-				this.rowChanged(row);
+				/**
+				 * Device updated
+				 * @param  {Object} res Device object
+				 */
+				updated(res) {
+					this.updated(res.data);
+					toast.success(this._("DeviceNameUpdated", res), this._("DeviceUpdated"));
+				},
 
-				toast.success(this._("DeviceNameUpdated", row), this._("DeviceUpdated"));
-			},
-
-			/**
-			 * Device removed
-			 * @param  {Object} row Device object
-			 */
-			remove(row) {
-				console.log("Remove device: ", row);
-				this.rowRemoved(row);	
-
-				toast.success(this._("DeviceNameDeleted", row), this._("DeviceDeleted"));
+				/**
+				 * Device removed
+				 * @param  {Object} res Response object
+				 */
+				removed(res) {
+					this.removed(res.data);	
+					toast.success(this._("DeviceNameDeleted", res), this._("DeviceDeleted"));
+				}
 			}
 		},		
 
@@ -104,7 +102,7 @@
 			// Download rows for the page
 			this.downloadRows();
 
-
+			/*
 			const networkInterface = createNetworkInterface("/graphql");
 
 			networkInterface.use([{
@@ -147,6 +145,7 @@
 			}).catch( (error) => {
 				console.error("There was an error sending the query", error);
 			});
+			*/
 		}
 	};
 </script>

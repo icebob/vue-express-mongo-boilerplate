@@ -16,4 +16,4 @@ module.exports.command = function(title) {
 
 	this.saveScreenshot(filePath);
 	return this;
-}
+};

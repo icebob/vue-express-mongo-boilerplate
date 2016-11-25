@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 	.messages-dropdown(:class="{ 'visible': visible }")
 		.panel
 			.header 

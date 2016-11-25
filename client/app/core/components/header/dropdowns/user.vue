@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 	ul.dropdown-menu.user-menu(:class="{ 'visible': visible }")
 		li
 			a(href='#')

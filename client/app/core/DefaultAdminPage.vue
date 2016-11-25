@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 	.container
 		h3.title {{ schema.title }}
 

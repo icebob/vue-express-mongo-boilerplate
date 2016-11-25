@@ -1,15 +1,15 @@
 {
-	"ignore": ["node_modules", ".git", "client/**/*.*"],
+	"ignore": ["node_modules", ".git", "client/**/*.*", "server/locales/**/*.*"],
 
-	"exec": "nodejs-dashboard node server/dev.js",
+	"__exec": "nodejs-dashboard node server/dev.js",
 
 	"verbose": false,
 
 	"watch": [
 		"server",
-		"secrets.json",
+		"config.js",
 		"webpack.*.config.js"
 	],
 
-	"ext": "js, json"
+	"ext": "js json"
 }

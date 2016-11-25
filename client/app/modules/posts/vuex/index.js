@@ -7,26 +7,28 @@ const state = {
 };
 
 const mutations = {
-	[LOAD] (state, posts) {
+	[LOAD] (state, models) {
 		state.rows.splice(0);
-		state.rows.push(...posts);
+		state.rows.push(...models);
 	},
 
-	[ADD] (state, post) {
-		state.rows.push(post);
+	[ADD] (state, model) {
+		let found = find(state.rows, (item) => item.code == model.code);
+		if (!found)
+			state.rows.push(model);
 	},
 
-	[UPDATE] (state, post) {
+	[UPDATE] (state, model) {
 		each(state.rows, (item) => {
-			if (item.id == post.id) {
-				assign(item, post);
+			if (item.code == model.code) {
+				assign(item, model);
 			}
 		});
 	},
 
-	[REMOVE] (state, post) {
-		// We need find the exact object, because post may come via websocket
-		let found = find(state.rows, (item) => item.id == post.id);
+	[REMOVE] (state, model) {
+		// We need find the exact object, because model may come via websocket
+		let found = find(state.rows, (item) => item.code == model.code);
 
 		if (found) {
 			state.rows.$remove(found);

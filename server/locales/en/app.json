@@ -11,13 +11,30 @@
 	"Clone": "Clone",
 	"Delete": "Delete",
 
+	"PostTitleCannotBeEmpty": "Post title cannot be blank!",
+	"PostContentCannotBeEmpty": "Post content cannot be blank!",
+	"PostNotFound": "Post not found!",
+	"InvalidPostID": "Invalid Post ID!",
+
+	"YouHaveAlreadyVotedThisPost": "You have already voted this post!",
+	"YouHaveNotVotedThisPostYet": "You have not voted this post yet!",
+	"OnlyAuthorEditPost": "Only the author can edit this post!",
+	"OnlyAuthorDeletePost": "Only the author can delete this post!",
+	"YouAreNotTheOwner": "You are not the owner!",
+	
+
 	"DeviceAdded": "Device added",
 	"DeviceUpdated": "Device updated",
 	"DeviceDeleted": "Device deleted",
+	"DeviceNotFound": "Device not found!",
 
-	"DeviceNameAdded": "Device '{{name}}' added!",
-	"DeviceNameUpdated": "Device '{{name}}' updated!",
-	"DeviceNameDeleted": "Device '{{name}}' deleted!",
+	"DeviceNameAdded": "Device '{{data.name}}' added by {{user.fullName}}!",
+	"DeviceNameUpdated": "Device '{{data.name}}' updated by {{user.fullName}}!",
+	"DeviceNameDeleted": "Device '{{data.name}}' deleted by {{user.fullName}}!",
+
+	"DeviceNameCannotBeBlank": "Device name cannot be blank!",
+
+	"UserNotFound": "User not found!",
 
 	"ID": "ID",
 	"Type": "Type",
@@ -55,9 +72,13 @@
 	"PostUpdated": "Post updated",
 	"PostDeleted": "Post deleted",
 
-	"PostNameAdded": "Post '{{title}}' added!",
-	"PostNameUpdated": "Post '{{title}}' updated!",
-	"PostNameDeleted": "Post '{{title}}' deleted!",
+	"PostNameAdded": "Post '{{data.title}}' added by {{user.fullName}}!",
+	"PostNameUpdated": "Post '{{data.title}}' updated by {{user.fullName}}!",
+	"PostNameDeleted": "Post '{{data.title}}' deleted by {{user.fullName}}!",
+	"PostNameVoted": "Post '{{data.title}}' voted by {{user.fullName}}!",
+	"PostNameUnvoted": "Post '{{data.title}}' unvoted by {{user.fullName}}!",
+
+	"InvalidCode": "Invalid code!",
 
 	"Demo": "Demo",
 
