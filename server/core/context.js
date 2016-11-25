@@ -178,6 +178,21 @@ class Context {
 	}
 
 	/**
+	 * Check the ctx.model exists. If not we throw a BAD_REQUEST exception
+	 * 
+	 * @param {any} errorMessage
+	 * @returns
+	 * 
+	 * @memberOf Context
+	 */
+	assertModelIsExist(errorMessage) {
+		if (!this.model)
+			throw this.errorBadRequest(C.ERR_MODEL_NOT_FOUND, errorMessage);
+
+		return true;
+	}
+
+	/**
 	 * Check permission of request
 	 * 
 	 * @returns
@@ -199,7 +214,7 @@ class Context {
 
 		// check role
 		.then(() => {
-			if (permission == C.PERM_ADMIN && this.user.roles.indexOf(C.ROLE_ADMIN) == -1) {
+			if (permission == C.PERM_ADMIN && this.isAdmin()) {
 				this.errorForbidden();
 			}
 			else if (permission == C.PERM_USER && this.user.roles.indexOf(C.ROLE_USER) == -1) {
@@ -211,7 +226,10 @@ class Context {
 		.then(() => {
 			if (permission == C.PERM_OWNER && _.isFunction(this.service.$schema.ownerChecker)) {
 				return this.service.$schema.ownerChecker(this).catch((err) => {
-					this.errorForbidden(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, err ? err.message || err : this.t("app:YouAreNotTheOwner"));
+					if (_.isObject(err))
+						throw err;
+					else
+						this.errorForbidden(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, this.t("app:YouAreNotTheOwner"));
 				});
 			}
 		});

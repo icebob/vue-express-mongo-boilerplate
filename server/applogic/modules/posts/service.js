@@ -40,8 +40,6 @@ module.exports = {
 
 				let query = Post.find(filter);
 
-				//query.populate("author", this.$settings.populateAuthorFields);
-
 				return ctx.queryPageSort(query).exec().then( (docs) => {
 					return this.toJSON(docs);
 				})
@@ -53,11 +51,10 @@ module.exports = {
 
 		// return a model by ID
 		get: {
-			cache: true,
+			cache: true, // if true, we don't increment the views!
 			permission: C.PERM_PUBLIC,
 			handler(ctx) {
-				if (!ctx.model)
-					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:PostNotFound"));
+				ctx.assertModelIsExist(ctx.t("app:PostNotFound"));
 
 				return Post.findByIdAndUpdate(ctx.modelID, { $inc: { views: 1 } }).exec().then( (doc) => {
 					return this.toJSON(doc);
@@ -69,7 +66,6 @@ module.exports = {
 		},
 
 		create: {
-			//permission: C.PERM_ADMIN,
 			handler(ctx) {
 
 				this.validateParams(ctx, true);
@@ -81,9 +77,6 @@ module.exports = {
 				});
 
 				return post.save()
-				.then((doc) => {
-					return Post.populate(doc, { path: "author", select: this.$settings.populateAuthorFields});
-				})
 				.then((doc) => {
 					return this.toJSON(doc);
 				})
@@ -100,9 +93,7 @@ module.exports = {
 		update: {
 			permission: C.PERM_OWNER,
 			handler(ctx) {
-				if (!ctx.model)
-					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:PostNotFound"));
-
+				ctx.assertModelIsExist(ctx.t("app:PostNotFound"));
 				this.validateParams(ctx);
 
 				return this.collection.findById(ctx.modelID).exec()
@@ -131,8 +122,7 @@ module.exports = {
 		remove: {
 			permission: C.PERM_OWNER,
 			handler(ctx) {
-				if (!ctx.model)
-					throw ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("app:PostNotFound"));
+				ctx.assertModelIsExist(ctx.t("app:PostNotFound"));
 
 				return Post.remove({ _id: ctx.modelID })
 				.then(() => {
@@ -146,8 +136,7 @@ module.exports = {
 		},
 
 		upVote(ctx) {
-			if (!ctx.model)
-				return Promise.reject(new Error(ctx.t("app:PostNotFound")));
+			ctx.assertModelIsExist(ctx.t("app:PostNotFound"));
 
 			return this.collection.findById(ctx.modelID).exec()
 			.then((doc) => {		
@@ -179,8 +168,7 @@ module.exports = {
 		},
 
 		downVote(ctx) {
-			if (!ctx.model)
-				return Promise.reject(new Error(ctx.t("app:PostNotFound")));
+			ctx.assertModelIsExist(ctx.t("app:PostNotFound"));
 
 			return this.collection.findById(ctx.modelID).exec()
 			.then((doc) => {
@@ -265,10 +253,9 @@ module.exports = {
 	 */
 	ownerChecker(ctx) {
 		return new Promise((resolve, reject) => {
-			if (!ctx.model)
-				ctx.errorBadRequest(C.ERR_MODEL_NOT_FOUND, ctx.t("PostNotFound"));
+			ctx.assertModelIsExist(ctx.t("app:PostNotFound"));
 
-			if (ctx.model.author.id == ctx.user.id || ctx.hasRole(C.ROLE_ADMIN)) 
+			if (ctx.model.author.id == ctx.user.id || ctx.isAdmin()) 
 				resolve();
 			else
 				reject();

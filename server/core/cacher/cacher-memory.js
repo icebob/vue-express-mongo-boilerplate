@@ -115,7 +115,7 @@ class Cacher {
 			let item = this.cache[key];
 
 			if (item.expire && item.expire < now) {
-				logger.debug(`[Cacher] EXPIRED ${this.prefix}${key}`);
+				logger.debug(`[Cacher] EXPIRED ${key}`);
 				delete self.cache[key];
 			}
 		});
