@@ -31,12 +31,10 @@
 					.media-left
 						img.avatar(:src="post.author.avatar")
 
-						.votes
+						.votes(:class="{ voted: iVoted(post) }")
 							.count.text-center {{ post.votes }}
-							.thumb.up(@click="upVote(post)")
+							.thumb.text-center(@click="toggleVote(post)")
 								i.fa.fa-thumbs-o-up
-							.thumb.down(@click="downVote(post)")
-								i.fa.fa-thumbs-o-down
 					.media-content
 						h3 {{ post.title }}
 
@@ -48,6 +46,9 @@
 									i.fa.fa-pencil
 								a(:title="_('DeletePost')", @click="deletePost(post)")
 									i.fa.fa-trash
+							.voters.left(:title="_('Voters')")
+								template(v-for="voter in lastVoters(post)")
+									img(:src="voter.avatar", :title="voter.fullName + ' (' + voter.username + ')'")
 							.right
 								small.text-muted {{ ago(post) }}
 
@@ -60,13 +61,9 @@
 	import { cloneDeep } from "lodash";
 	import { validators, schema as schemaUtils } from "vue-form-generator";
 
-	/*import gql from 'graphql-tag';
-	window['gql'] = gql;
-
-	import ApolloClient, { createNetworkInterface } from "apollo-client";*/
-
 	import * as actions from "./vuex/actions";
 	import * as getters from "./vuex/getters";
+	import { me as sessionMe } from "../session/vuex/getters";
 
 	export default {
 		filters: {
@@ -179,6 +176,26 @@
 		},	
 
 		methods: {
+			iVoted(post) {
+				let me = sessionMe(this.$store.state);
+				return _.find(post.voters, (user) => user.code == me.code) != null;
+			},
+
+			toggleVote(post) {
+				if (this.iVoted(post))
+					this.unVote(post);
+				else 
+					this.vote(post);
+			},
+
+			lastVoters(post, count = 5) {
+				if (post.voters && post.voters.length > 0) {
+					let voters = _.clone(post.voters).reverse().slice(0, 5);
+					return voters;
+				}
+				return [];
+			},
+
 			orderPosts(a, b) {
 				switch(this.sort) {
 				case "hot": return a.votes - b.votes;
@@ -266,49 +283,6 @@
 		 */
 		created() {
 			this.getPosts();
-			/*
-			const networkInterface = createNetworkInterface('/graphql');
-
-			networkInterface.use([{
-				applyMiddleware(req, next) {
-					// Send to back the session ID
-					req.options.credentials = "same-origin";
-					next();
-				}
-			}]);
-
-			let client = new ApolloClient({
-				networkInterface
-			});
-
-			client.query({
-				query: gql`
-					query getDevice($deviceID: Int!) { 
-						device(id: $deviceID) {
-							code
-							name
-							description
-							address
-							type
-							status
-							lastCommunication
-						}
-					}
-				`, 
-				variables: {
-					deviceID: 22
-				},
-				forceFetch: false
-			}).then( (result) => {
-				if (result.errors)
-					return console.error("Got some GraphQL execution errors!", result.errors);
-
-				if (result.data) {
-					console.log(result.data);
-				}
-			}).catch( (error) => {
-				console.error("There was an error sending the query", error);
-			});*/
 		}
 	};
 </script>
@@ -362,10 +336,8 @@
 				}
 
 				.thumb {
-					display: inline-block;
 					cursor: pointer;
-					margin: 0 6px;
-					font-size: 1.2em;
+					font-size: 2.0em;
 
 					&:hover {
 						color: $headerTextColor;
@@ -373,7 +345,27 @@
 
 				}
 
+				&.voted {
+					.thumb {
+						color: $successColor;
+
+						&:hover {
+							color: lighten($successColor, 10%);
+						}
+					}
+				}
+
 			} // .votes
+
+			.voters {
+				margin: 0 1em;
+				img {
+					margin: 0 0.4em;
+					width: 32px;
+					height: 32px;
+					border-radius: $avatarRadius;
+				}
+			}
 
 			.media-content {				
 				overflow-x: auto;

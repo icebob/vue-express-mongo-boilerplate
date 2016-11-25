@@ -20,12 +20,11 @@ module.exports = {
 		role: "user",
 		collection: Post,
 
-		modelPropFilter: "code title content author votes downVoters upVoters views createdAt updatedAt",
+		modelPropFilter: "code title content author votes voters views createdAt updatedAt",
 		
 		modelPopulates: {
 			"author": "users",
-			"upVoters": "users",
-			"downVoters": "users"
+			"voters": "users"
 		}
 	},
 
@@ -134,25 +133,19 @@ module.exports = {
 			}
 		},
 
-		upVote(ctx) {
+		vote(ctx) {
 			ctx.assertModelIsExist(ctx.t("app:PostNotFound"));
 
 			return this.collection.findById(ctx.modelID).exec()
 			.then((doc) => {		
-				// Check user is on upVoters
-				if (doc.upVoters.indexOf(ctx.user.id) !== -1) 
+				// Check user is on voters
+				if (doc.voters.indexOf(ctx.user.id) !== -1) 
 					throw ctx.errorBadRequest(C.ERR_ALREADY_VOTED, ctx.t("app:YouHaveAlreadyVotedThisPost"));
 				return doc;
 			})
 			.then((doc) => {
-				// Remove user from downVoters if it is on the list
-				if (doc.downVoters.indexOf(ctx.user.id) !== -1) 
-					return Post.findByIdAndUpdate(doc.id, { $pull: { downVoters: ctx.user.id }, $inc: { votes: 1 } }, { "new": true });
-				return doc;
-			})
-			.then((doc) => {
-				// Add user to upVoters
-				return Post.findByIdAndUpdate(doc.id, { $addToSet: { upVoters: ctx.user.id } , $inc: { votes: 1 }}, { "new": true });
+				// Add user to voters
+				return Post.findByIdAndUpdate(doc.id, { $addToSet: { voters: ctx.user.id } , $inc: { votes: 1 }}, { "new": true });
 			})
 			.then((doc) => {
 				return this.toJSON(doc);
@@ -166,25 +159,19 @@ module.exports = {
 			});
 		},
 
-		downVote(ctx) {
+		unvote(ctx) {
 			ctx.assertModelIsExist(ctx.t("app:PostNotFound"));
 
 			return this.collection.findById(ctx.modelID).exec()
 			.then((doc) => {
-				// Check user is on downVoters
-				if (doc.downVoters.indexOf(ctx.user.id) !== -1) 
-					throw ctx.errorBadRequest(C.ERR_ALREADY_VOTED, ctx.t("app:YouHaveAlreadyVotedThisPost"));
+				// Check user is on voters
+				if (doc.voters.indexOf(ctx.user.id) == -1) 
+					throw ctx.errorBadRequest(C.ERR_NOT_VOTED_YET, ctx.t("app:YouHaveNotVotedThisPostYet"));
 				return doc;
 			})
 			.then((doc) => {
-				// Remove user from upVoters if it is on the list
-				if (doc.upVoters.indexOf(ctx.user.id) !== -1) 
-					return Post.findByIdAndUpdate(doc.id, { $pull: { upVoters: ctx.user.id }, $inc: { votes: -1 } }, { "new": true });
-				return doc;
-			})
-			.then((doc) => {
-				// Add user to downVoters
-				return Post.findByIdAndUpdate(doc.id, { $addToSet: { downVoters: ctx.user.id } , $inc: { votes: -1 }}, { "new": true });
+				// Remove user from voters
+				return Post.findByIdAndUpdate(doc.id, { $pull: { voters: ctx.user.id } , $inc: { votes: -1 }}, { "new": true });
 			})
 			.then((doc) => {
 				return this.toJSON(doc);
@@ -245,7 +232,8 @@ module.exports = {
  
 		// Add custom error types
 		C.append([
-			"ALREADY_VOTED"
+			"ALREADY_VOTED",
+			"NOT_VOTED_YET"
 		], "ERR");
 	},
 
@@ -269,9 +257,8 @@ module.exports = {
 				content: String
 				author: User!
 				views: Int
-				upVoters(limit: Int, offset: Int, sort: String): [User]
-				downVoters(limit: Int, offset: Int, sort: String): [User]
 				votes: Int,
+				voters(limit: Int, offset: Int, sort: String): [User]
 				createdAt: Timestamp
 				updatedAt: Timestamp
 			}
@@ -282,8 +269,8 @@ module.exports = {
 			postUpdate(code: String!, title: String, content: String): Post
 			postRemove(code: String!): Post
 
-			postUpVote(code: String!): Post
-			postDownVote(code: String!): Post
+			postVote(code: String!): Post
+			postUnvote(code: String!): Post
 		`,
 
 		resolvers: {
@@ -296,8 +283,8 @@ module.exports = {
 				postCreate: "create",
 				postUpdate: "update",
 				postRemove: "remove",
-				postUpVote: "upVote",
-				postDownVote: "downVote",
+				postVote: "vote",
+				postUnvote: "unvote"
 			}
 		}
 	}
@@ -335,16 +322,16 @@ mutation updatePost($code: String!) {
   }
 }
 
-# upVote to the post
-mutation upVotePost($code: String!) {
-  postUpVote(code: $code) {
+# vote the post
+mutation votePost($code: String!) {
+  postVote(code: $code) {
     ...postFields
   }
 }
 
-# upVote to the post
-mutation downVotePost($code: String!) {
-  postDownVote(code: $code) {
+# unvote the post
+mutation unVotePost($code: String!) {
+  postUnvote(code: $code) {
     ...postFields
   }
 }
@@ -370,13 +357,7 @@ fragment postFields on Post {
     }
     views
     votes
-  	upVoters {
-  	  code
-  	  fullName
-  	  username
-  	  avatar
-  	}
-  	downVoters {
+  	voters {
   	  code
   	  fullName
   	  username

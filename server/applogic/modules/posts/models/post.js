@@ -40,12 +40,10 @@ let PostSchema = new Schema({
 		type: Number,
 		default: 0
 	},
-	upVoters: {
-		type: [Number]
-	},
-	downVoters: {
-		type: [Number]
-	},
+	voters: [{
+		type: Number,
+		ref: "User"
+	}],
 	votes: {
 		type: Number,
 		default: 0

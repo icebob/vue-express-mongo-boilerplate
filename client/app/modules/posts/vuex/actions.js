@@ -1,7 +1,7 @@
 import Vue from "vue";
 import toastr from "../../../core/toastr";
 import Service from "../../../core/service";
-import { NAMESPACE, LOAD, ADD, UPDATE, UPVOTE, DOWNVOTE, REMOVE } from "./types";
+import { NAMESPACE, LOAD, ADD, UPDATE, VOTE, UNVOTE, REMOVE } from "./types";
 
 let service = new Service("posts"); 
 
@@ -37,16 +37,16 @@ export const removeRow = function(store, model) {
 	});
 };
 
-export const upVote = function(store, model) {
-	service.rest("upVote", { code: model.code }).then((data) => {
+export const vote = function(store, model) {
+	service.rest("vote", { code: model.code }).then((data) => {
 		updated(store, data);
 	}).catch((err) => {
 		toastr.error(err.message);
 	});
 };
 
-export const downVote = function(store, model) {
-	service.rest("downVote", { code: model.code }).then((data) => {
+export const unVote = function(store, model) {
+	service.rest("unvote", { code: model.code }).then((data) => {
 		updated(store, data);
 	}).catch((err) => {
 		toastr.error(err.message);

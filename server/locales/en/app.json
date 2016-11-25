@@ -17,6 +17,7 @@
 	"InvalidPostID": "Invalid Post ID!",
 
 	"YouHaveAlreadyVotedThisPost": "You have already voted this post!",
+	"YouHaveNotVotedThisPostYet": "You have not voted this post yet!",
 	"OnlyAuthorEditPost": "Only the author can edit this post!",
 	"OnlyAuthorDeletePost": "Only the author can delete this post!",
 	"YouAreNotTheOwner": "You are not the owner!",

@@ -7,5 +7,5 @@ export const ADD 			= MODULE + "ADD";
 export const UPDATE			= MODULE + "UPDATE";
 export const REMOVE			= MODULE + "REMOVE";
 
-export const UPVOTE			= MODULE + "UPVOTE";
-export const DOWNVOTE		= MODULE + "DOWNVOTE";
+export const VOTE			= MODULE + "VOTE";
+export const UNVOTE			= MODULE + "UNVOTE";
