@@ -54,6 +54,8 @@ module.exports = function() {
 						return post.save().then(() => {
 							logger.info("Default posts created!");
 						});
+
+						// TODO make voters
 					});
 				}
 
