@@ -147,10 +147,15 @@ class Context {
 	 * 
 	 * @memberOf Context
 	 */
-	copy(params) {
+	copy(params, appendParams) {
 		let newCtx = _.defaults(new Context(this.service), this);
 		newCtx.provider = "internal";
-		newCtx.params = _.defaults(this.params, params);
+		
+		if (appendParams === true)
+			newCtx.params = _.defaults(this.params, params);
+		else
+			newCtx.params = params;
+
 		return newCtx;
 	}
 	

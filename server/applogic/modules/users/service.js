@@ -30,7 +30,7 @@ module.exports = {
 			cache: true,
 			handler(ctx) {
 				return ctx.queryPageSort(User.find({})).exec().then( (docs) => {
-					return ctx.toJSON(docs);
+					return this.toJSON(docs);
 				})
 				.then((json) => {
 					return this.populateModels(json);					
@@ -70,10 +70,10 @@ module.exports = {
 				locale: String
 				avatar: String
 				lastLogin: Timestamp
-				status: Int
+
+				posts(limit: Int, offset: Int, sort: String): [Post]
 			}
-		`,
-		// posts(limit: Int, offset: Int, sort: String): [Post]
+		`,		
 
 		mutation: `
 		`,
@@ -82,6 +82,15 @@ module.exports = {
 			Query: {
 				users: "find",
 				user: "get"
+			},
+
+			User: {
+				posts(user, args, context) {
+					let ctx = context.ctx;
+					let postService = ctx.services("posts");
+					if (postService)
+						return postService.actions.find(ctx.copy(Object.assign(args, { user: user.code })));
+				}
 			}
 		}
 	}
@@ -90,6 +99,7 @@ module.exports = {
 
 /*
 ## GraphiQL test ##
+
 
 # Find all users
 query getUsers {
@@ -100,7 +110,7 @@ query getUsers {
 
 # Get a user
 query getUser {
-  user(code: "jQalr8wqZo") {
+  user(code: "O5rNl5Bwnd") {
     ...userFields
   }
 }
@@ -116,7 +126,11 @@ fragment userFields on User {
   avatar
   lastLogin
   locale
-  status
+  
+  posts(sort: "-createdAt") {
+    code
+    title
+  }
 }
 
 */

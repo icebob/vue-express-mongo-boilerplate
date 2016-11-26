@@ -276,6 +276,34 @@ class Service {
 	}
 
 	/**
+	 * Decode `code` value to `ID`
+	 * 
+	 * @param {any} code
+	 * @returns {String} id
+	 * 
+	 * @memberOf Service
+	 */
+	decodeID(code) {
+		if (_.isFunction(this.collection.schema.methods["decodeID"]))
+			return this.collection.schema.methods.decodeID(code);
+		throw new Error(`'decodeID' method not implemented in '${this.name}' service!`);		
+	}
+
+	/**
+	 * Encode `id` to `code` value
+	 * 
+	 * @param {any} id
+	 * @returns {String} code
+	 * 
+	 * @memberOf Service
+	 */
+	encodeID(id) {
+		if (_.isFunction(this.collection.schema.methods["encodeID"]))
+			return this.collection.schema.methods.encodeID(id);
+		throw new Error(`'encodeID' method not implemented in '${this.name}' service!`);		
+	}
+
+	/**
 	 * Generate a hash key for caching from action name & params
 	 * 
 	 * @param {any} name	name of action
@@ -334,6 +362,18 @@ class Service {
 		// Clear cached values
 		this.clearCache();
 	}		
+
+	/**
+	 * Get a service by name of service
+	 * 
+	 * @param {any} serviceName
+	 * @returns {Service}
+	 * 
+	 * @memberOf Context	
+	 */
+	services(serviceName) {
+		return Services.get(serviceName);
+	}
 
 }
 

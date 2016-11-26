@@ -36,6 +36,11 @@ module.exports = {
 
 				if (ctx.params.filter == "my") 
 					filter.author = ctx.user.id;
+				else if (ctx.params.user != null) { 
+					let userService = ctx.services("users");
+					if (userService)
+						filter.author = userService.decodeID(ctx.params.user);
+				}
 
 				let query = Post.find(filter);
 
