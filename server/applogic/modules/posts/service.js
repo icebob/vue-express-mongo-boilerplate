@@ -23,8 +23,8 @@ module.exports = {
 		modelPropFilter: "code title content author votes voters views createdAt updatedAt",
 		
 		modelPopulates: {
-			"author": "users",
-			"voters": "users"
+			"author": "persons",
+			"voters": "persons"
 		}
 	},
 
@@ -36,10 +36,8 @@ module.exports = {
 
 				if (ctx.params.filter == "my") 
 					filter.author = ctx.user.id;
-				else if (ctx.params.user != null) { 
-					let userService = ctx.services("users");
-					if (userService)
-						filter.author = userService.decodeID(ctx.params.user);
+				else if (ctx.params.author != null) { 
+					filter.author = this.personService.decodeID(ctx.params.author);
 				}
 
 				let query = Post.find(filter);
@@ -233,7 +231,7 @@ module.exports = {
 
 	init(ctx) {
 		// Fired when start the service
-		this.userService = ctx.services("users");
+		this.personService = ctx.services("persons");
  
 		// Add custom error types
 		C.append([
@@ -260,10 +258,10 @@ module.exports = {
 				code: String!
 				title: String
 				content: String
-				author: User!
+				author: Person!
 				views: Int
 				votes: Int,
-				voters(limit: Int, offset: Int, sort: String): [User]
+				voters(limit: Int, offset: Int, sort: String): [Person]
 				createdAt: Timestamp
 				updatedAt: Timestamp
 			}

@@ -11,9 +11,9 @@ let User 		= require("./models/user");
 
 module.exports = {
 	settings: {
-		name: "users",
+		name: "persons",
 		version: 1,
-		namespace: "users",
+		namespace: "persons",
 		rest: true,
 		ws: true,
 		graphql: true,
@@ -26,7 +26,7 @@ module.exports = {
 	
 	actions: {
 		// return all model
-		find: {
+		/*find: {
 			cache: true,
 			handler(ctx) {
 				return ctx.queryPageSort(User.find({})).exec().then( (docs) => {
@@ -36,7 +36,7 @@ module.exports = {
 					return this.populateModels(json);					
 				});
 			}
-		},
+		},*/
 
 		// return a model by ID
 		get: {
@@ -54,12 +54,12 @@ module.exports = {
 	graphql: {
 
 		query: `
-			users(limit: Int, offset: Int, sort: String): [User]
-			user(code: String): User
+			# users(limit: Int, offset: Int, sort: String): [Person]
+			person(code: String): Person
 		`,
 
 		types: `
-			type User {
+			type Person {
 				code: String!
 				fullName: String
 				email: String
@@ -80,16 +80,16 @@ module.exports = {
 
 		resolvers: {
 			Query: {
-				users: "find",
-				user: "get"
+				//users: "find",
+				person: "get"
 			},
 
-			User: {
-				posts(user, args, context) {
+			Person: {
+				posts(person, args, context) {
 					let ctx = context.ctx;
 					let postService = ctx.services("posts");
 					if (postService)
-						return postService.actions.find(ctx.copy(Object.assign(args, { user: user.code })));
+						return postService.actions.find(ctx.copy(Object.assign(args, { author: person.code })));
 				}
 			}
 		}
@@ -100,24 +100,16 @@ module.exports = {
 /*
 ## GraphiQL test ##
 
-
-# Find all users
-query getUsers {
-  users(sort: "-lastLogin", limit: 3) {
-    ...userFields
-  }
-}
-
-# Get a user
-query getUser {
-  user(code: "O5rNl5Bwnd") {
-    ...userFields
+# Get a person
+query getPerson {
+  person(code: "O5rNl5Bwnd") {
+    ...personFields
   }
 }
 
 
-fragment userFields on User {
-	code
+fragment personFields on Person {
+  code
   fullName
   email
   username

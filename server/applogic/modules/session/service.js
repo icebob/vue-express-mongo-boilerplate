@@ -2,14 +2,13 @@
 
 let logger 		= require("../../../core/logger");
 let config 		= require("../../../config");
-let C 	 		= require("../../../core/constants");
+let C 	 			= require("../../../core/constants");
 
-let _ 			= require("lodash");
+let _ 				= require("lodash");
 
 let Sockets		= require("../../../core/sockets");
-let User 		= require("../users/models/user");
 
-let userService;
+let personService;
 
 module.exports = {
 	settings: {
@@ -28,27 +27,27 @@ module.exports = {
 		// return my User model
 		me(ctx) {
 			return Promise.resolve(ctx.user).then( (doc) => {
-				return userService.toJSON(doc);
+				return personService.toJSON(doc);
 			});
 		},
 
 		// return all online users
 		onlineUsers(ctx) {
 			return Promise.resolve().then(() => {
-				return userService.toJSON(_.map(Sockets.userSockets, (s) => s.request.user));
+				return personService.toJSON(_.map(Sockets.userSockets, (s) => s.request.user));
 			});
 		}
 	},
 
 	init(ctx) {
-		userService = this.services("users");
+		personService = this.services("persons");
 	},
 
 	graphql: {
 
 		query: `
-			me: User
-			onlineUsers: [User]
+			me: Person
+			onlineUsers: [Person]
 		`,
 
 		mutation: `
@@ -70,7 +69,7 @@ module.exports = {
 # Get my account
 query me {
   me {
-    ...userFields
+    ...personFields
   }
 }
 
@@ -78,12 +77,12 @@ query me {
 # Get list of online users
 query getOnlineUser {
   onlineUsers {
-    ...userFields
+    ...personFields
   }
 }
 
 
-fragment userFields on User {
+fragment personFields on Person {
   code
   fullName
   email
@@ -93,6 +92,11 @@ fragment userFields on User {
   avatar
   lastLogin
   locale
+  
+  posts(sort: "-createdAt") {
+    code
+    title
+  }
 }
 
 */

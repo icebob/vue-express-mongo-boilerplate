@@ -551,8 +551,8 @@ class Context {
 		};
 
 		if (this.user) {
-			let userService = this.services("users");
-			response.user = userService.toJSON(this.user);
+			let personService = this.services("persons");
+			response.user = personService.toJSON(this.user);
 		}
 		this.emit(type, response, role);	
 	}
