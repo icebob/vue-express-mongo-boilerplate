@@ -1,7 +1,7 @@
 <template lang="pug">
 	ul.dropdown-menu.user-menu(:class="{ 'visible': visible }")
 		li
-			a(href='#')
+			a(v-link="'/profile'")
 				.icon
 					i.fa.fa-user
 				| {{ "MyAccount" | i18n }}

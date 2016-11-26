@@ -23,7 +23,6 @@ Vue.use(VueFormGenerator);
 Vue.use(VueWebsocket);
 
 //Vue.http.headers.common['X-CSRF-TOKEN'] = $('input[name="csrf"]').val();
-Vue.http.headers.common["Accept"] = "application/json";
 
 Vue.config.debug = true;
 
