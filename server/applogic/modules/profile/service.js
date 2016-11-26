@@ -2,7 +2,6 @@
 
 let logger 		= require("../../../core/logger");
 let config 		= require("../../../config");
-let Sockets		= require("../../../core/sockets");
 let C 	 		= require("../../../core/constants");
 
 let _			= require("lodash");
@@ -11,9 +10,9 @@ let User 		= require("./models/user");
 
 module.exports = {
 	settings: {
-		name: "persons",
+		name: "profile",
 		version: 1,
-		namespace: "persons",
+		namespace: "profile",
 		rest: true,
 		ws: true,
 		graphql: true,
@@ -21,29 +20,20 @@ module.exports = {
 		role: "user",
 		collection: User,
 
-		modelPropFilter: "code username fullName avatar lastLogin roles"
+		modelPropFilter: "code username fullName email avatar passwordLess provider profile socialLinks roles apiKey lastLogin locale status createdAt updatedAt"
 	},
 	
 	actions: {
-		// return all model
-		/*find: {
-			cache: true,
-			handler(ctx) {
-				return ctx.queryPageSort(User.find({})).exec().then( (docs) => {
-					return this.toJSON(docs);
-				})
-				.then((json) => {
-					return this.populateModels(json);					
-				});
-			}
-		},*/
-
-		// return a model by ID
+		// return myself profile
 		get: {
 			cache: true,
 			handler(ctx) {
-				ctx.assertModelIsExist(ctx.t("app:UserNotFound"));
-				return Promise.resolve(ctx.model);
+				return User.findById(User.schema.methods.decodeID(ctx.user.code)).exec().then( (doc) => {
+					return this.toJSON(doc);
+				})
+				.then((json) => {
+					return this.populateModels(json);
+				});
 			}
 		}
 	},
@@ -54,20 +44,42 @@ module.exports = {
 	graphql: {
 
 		query: `
-			# users(limit: Int, offset: Int, sort: String): [Person]
-			person(code: String): Person
+			profile: Profile
 		`,
 
 		types: `
-			type Person {
+			type Profile {
 				code: String!
 				fullName: String
+				email: String
 				username: String
+				passwordLess: Boolean
+				provider: String
+				profile: SocialProfile
+				socialLinks: SocialLinks
 				roles: [String]
+				verified: Boolean
+				apiKey: String
+				locale: String
 				avatar: String
+				createdAt: Timestamp
+				updatedAt: Timestamp
 				lastLogin: Timestamp
+				status: Boolean
+			}
 
-				posts(limit: Int, offset: Int, sort: String): [Post]
+			type SocialProfile {
+				name: String
+				gender: String
+				picture: String
+				location: String
+			}
+
+			type SocialLinks {
+				facebook: String
+				twitter: String
+				google: String
+				github: String
 			}
 		`,		
 
@@ -76,17 +88,7 @@ module.exports = {
 
 		resolvers: {
 			Query: {
-				//users: "find",
-				person: "get"
-			},
-
-			Person: {
-				posts(person, args, context) {
-					let ctx = context.ctx;
-					let postService = ctx.services("posts");
-					if (postService)
-						return postService.actions.find(ctx.copy(Object.assign(args, { author: person.code })));
-				}
+				profile: "get"
 			}
 		}
 	}
@@ -107,10 +109,13 @@ query getPerson {
 fragment personFields on Person {
   code
   fullName
+  email
   username
   roles
+  verified
   avatar
   lastLogin
+  locale
   
   posts(sort: "-createdAt") {
     code

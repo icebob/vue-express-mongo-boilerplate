@@ -2,7 +2,7 @@
 	.container
 		h2.title {{ "Profile" | i18n }}
 
-		h3 {{ profile | json }}
+		pre {{{ profile | prettyJSON }}}
 
 </template>
 
