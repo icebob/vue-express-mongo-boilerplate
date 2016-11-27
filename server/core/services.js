@@ -167,10 +167,19 @@ class Services extends EventEmitter {
 
 					};
 
-					// Register handler to all method types
-					// So you can call the /api/namespace/action with any request method.
-					router.all("/" + name, handler);
-					router.all("/" + name + "/:" + idParamName, handler);
+					// Register handler to GET and POST method types
+					// So you can call the /api/namespace/action with these request methods.
+					//
+					// 		GET  /api/namespace/vote?id=123
+					// 		POST /api/namespace/vote?id=123
+					router.get("/" + name, handler);
+					router.post("/" + name, handler);
+
+					// You can call with ID in the path 
+					// 		GET  /api/namespace/123/vote
+					// 		POST /api/namespace/123/vote
+					router.get("/:" + idParamName + "/" + name, handler);
+					router.post("/:" + idParamName + "/" + name, handler);
 
 					// Create default RESTful handlers
 					switch (name) {
@@ -187,7 +196,7 @@ class Services extends EventEmitter {
 					// 	or 
 					// 		GET /api/namespace/123
 					case "get": {
-						//router.get("/:" + idParamName, handler);	
+						// router.get("/:" + idParamName, handler);	
 						lastRoutes.push({ method: "get", path: "/:" + idParamName, handler: handler });
 						break;
 					}
@@ -195,7 +204,7 @@ class Services extends EventEmitter {
 					// You can call the `create` action with 
 					// 		POST /api/namespace/
 					case "create": {
-						//router.post("/:" + idParamName, handler);	
+						// router.post("/:" + idParamName, handler);	
 						lastRoutes.push({ method: "post", path: "/:" + idParamName, handler: handler });
 						router.post("/", handler);	
 						break;
@@ -210,9 +219,9 @@ class Services extends EventEmitter {
 					// 	or 
 					// 		PATCH /api/namespace/123
 					case "update": {
-						//router.put("/:" + idParamName, handler);	
+						// router.put("/:" + idParamName, handler);	
 						lastRoutes.push({ method: "put", path: "/:" + idParamName, handler: handler });
-						//router.patch("/:" + idParamName, handler);	
+						// router.patch("/:" + idParamName, handler);	
 						lastRoutes.push({ method: "patch", path: "/:" + idParamName, handler: handler });
 
 						router.put("/", handler);	
@@ -225,7 +234,7 @@ class Services extends EventEmitter {
 					// 	or 
 					// 		DELETE /api/namespace/123
 					case "remove": {
-						//router.delete("/:" + idParamName, handler);	
+						// router.delete("/:" + idParamName, handler);	
 						lastRoutes.push({ method: "delete", path: "/:" + idParamName, handler: handler });
 						router.delete("/", handler);	
 						break;
@@ -233,11 +242,12 @@ class Services extends EventEmitter {
 					}
 
 				});
-
+				
 				// Register '/:code' routes 
 				lastRoutes.forEach((item) => {
 					router[item.method](item.path, item.handler);
 				});
+				
 
 				// Register router to namespace
 				app.use("/api/" + service.namespace, router);
