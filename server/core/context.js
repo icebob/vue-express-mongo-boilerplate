@@ -24,6 +24,8 @@ class Context {
 	 */
 	constructor(service) {
 		this.id = tokgen(); 
+		this.createdAt = Date.now(); // TODO: HF timer
+
 		this.service = service; // service instance
 		this.io = service.io; // namespace IO
 		this.app = null; // ExpressJS app
@@ -161,11 +163,23 @@ class Context {
 		return newCtx;
 	}
 	
+	/**
+	 * Return the response time in milliseconds
+	 * 
+	 * @returns {Number}
+	 * 
+	 * @memberOf Context	
+	 */
+	responseTime() {
+		return Date.now() - this.createdAt;
+	}
 
 	/**
 	 * Resolve model from request by id/code
 	 * 
 	 * @returns
+	 * 
+	 * @memberOf Context	
 	 */
 	resolveModel() {
 		if (_.isFunction(this.service.modelResolver)) {
@@ -203,6 +217,8 @@ class Context {
 	 * Check permission of request
 	 * 
 	 * @returns
+	 * 
+	 * @memberOf Context	
 	 */
 	checkPermission() {
 		let permission = this.action.permission || this.service.$settings.permission || C.PERM_LOGGEDIN;
@@ -248,6 +264,8 @@ class Context {
 	 * 
 	 * @param {any} cmd		command of message
 	 * @param {any} data	data of message
+	 * 
+	 * @memberOf Context	
 	 */
 	broadcast(cmd, data) {
 		if (this.io) {
@@ -262,6 +280,8 @@ class Context {
 	 * 
 	 * @param {any} cmd		command of message
 	 * @param {any} data	data of message
+	 * 
+	 * @memberOf Context	
 	 */
 	emitUser(cmd, data) {
 		if (!this.socket && this.user) {
@@ -284,6 +304,8 @@ class Context {
 	 * @param {any} data	data of message
 	 * @param {any} role	If the `role` is not specified, we use the role of service
 	 * @returns
+	 * 
+	 * @memberOf Context	
 	 */
 	emit(cmd, data, role) {
 		if (!role)
@@ -325,6 +347,8 @@ class Context {
 	 * 
 	 * @param {any} name
 	 * @returns {boolean}
+	 * 
+	 * @memberOf Context	
 	 */
 	hasParam(name, errorMessage) {
 		return this.params[name] != null;
@@ -336,6 +360,8 @@ class Context {
 	 * @param {any} name
 	 * @param {any} errorMessage
 	 * @returns
+	 * 
+	 * @memberOf Context	
 	 */
 	validateParam(name, errorMessage) {
 		let self = this;
@@ -444,6 +470,8 @@ class Context {
 	 * Check has validation errors
 	 * 
 	 * @returns
+	 * 
+	 * @memberOf Context	
 	 */
 	hasValidationErrors() {
 		return this.validationErrors.length > 0;
@@ -454,6 +482,8 @@ class Context {
 	 * 
 	 * @param {any} type 	type of error
 	 * @param {any} msg		message of error (localized)
+	 * 
+	 * @memberOf Context	
 	 */
 	errorBadRequest(type, msg) {
 		let err = new Error(msg);
@@ -471,6 +501,8 @@ class Context {
 	 * 
 	 * @param {any} type 	type of error
 	 * @param {any} msg		message of error (localized)
+	 * 
+	 * @memberOf Context	
 	 */
 	errorForbidden(type, msg) {
 		let err = new Error(msg);
@@ -488,6 +520,8 @@ class Context {
 	 * 
 	 * @param {any} type 	type of error
 	 * @param {any} msg		message of error (localized)
+	 * 
+	 * @memberOf Context	
 	 */
 	errorUnauthorized(type, msg) {
 		let err = new Error(msg);
@@ -499,41 +533,6 @@ class Context {
 
 		throw err;
 	}
-
-	/**
-	 * Convert the `docs` MongoDB model to JSON object.
-	 * With `skipFields` can be filter the properties
-	 * 
-	 * @param {any} 	docs		MongoDB document(s)
-	 * @param {String} 	propFilter	Filter properties of model. It is a space-separated string 
-	 * @returns						JSON object/array
-	 */
-	/*
-	toJSON(docs, propFilter) {
-		let func = function(doc) {
-			let json = doc.toJSON();
-			if (propFilter != null)
-				return _.pick(json, propFilter);
-			else
-				return json;
-		};
-
-		if (docs == null) 
-			docs = this.model;
-
-		if (propFilter == null) {
-			propFilter = this.service.$settings.modelPropFilter;
-		}
-
-		if (_.isString(propFilter)) 
-			propFilter = propFilter.split(" ");
-
-		if (_.isArray(docs)) {
-			return _.map(docs, (doc) => func(doc, propFilter));
-		} else if (_.isObject(docs)) {
-			return func(docs);
-		}
-	}*/
 
 	
 	/**
@@ -568,6 +567,8 @@ class Context {
 	 * 
 	 * @param  {query} query Mongo query object
 	 * @return {query}
+	 * 
+	 * @memberOf Context	
 	 */
 	queryPageSort(query) {
 		if (this.params) {
@@ -588,6 +589,8 @@ class Context {
 	 * 
 	 * @param {any} role
 	 * @returns
+	 * 
+	 * @memberOf Context	
 	 */
 	isAuthenticated(role) {
 		return this.user != null;
@@ -598,6 +601,8 @@ class Context {
 	 * 
 	 * @param {any} role		required role
 	 * @returns
+	 * 
+	 * @memberOf Context	
 	 */
 	hasRole(role) {
 		return this.user && this.user.roles.indexOf(role) != -1;

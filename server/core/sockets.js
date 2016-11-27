@@ -14,6 +14,8 @@ let	socketio 		= require("socket.io");
 let	session 		= require("express-session");
 let	MongoStore 		= require("connect-mongo")(session);
 
+let Services; // circular references
+
 let self = {
 	/**
 	 * IO server instance
@@ -157,10 +159,15 @@ let self = {
 
 		// Add an event listener to the 'connection' event
 		io.on("connection", function (socket) {
+			if (!Services)
+				Services = require("./services");
+				
+			Services.emit("socket:connect", socket);
 			self.addOnlineUser(socket);
 			logger.debug("WS client connected to namespace " + (io.name || "root") + "! User: " + socket.request.user.username);
 
 			socket.on("disconnect", function() {
+				Services.emit("socket:connect", socket);
 				self.removeSocket(socket);
 				logger.debug("WS client disconnected from namespace " + (io.name || "root") + "!");
 			});

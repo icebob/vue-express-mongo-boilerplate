@@ -129,7 +129,7 @@ class Services extends EventEmitter {
 						let ctx = Context.CreateFromREST(service, action, app, req, res);
 						logger.debug(`Request via REST '${service.namespace}/${action.name}' (ID: ${ctx.id})`, ctx.params);
 						console.time("REST request");
-						this.emit("request-rest", ctx);
+						self.emit("request", ctx);
 
 						let cacheKey = service.getCacheKey(action.name, ctx.params);
 
@@ -162,7 +162,9 @@ class Services extends EventEmitter {
 						})
 
 						.then(() => {
+							self.emit("response", ctx);
 							console.timeEnd("REST request");
+							//logger.debug("Response time:", ctx.responseTime(), "ms");
 						});
 
 					};
@@ -302,7 +304,7 @@ class Services extends EventEmitter {
 							let ctx = Context.CreateFromSocket(service, action, self.app, socket, data);
 							logger.debug(`Request via WebSocket '${service.namespace}/${action.name}'`, ctx.params);
 							console.time("SOCKET request");
-							self.emit("request-socket", ctx);
+							self.emit("request", ctx);
 							let cacheKey = service.getCacheKey(action.name, ctx.params);
 							
 							Promise.resolve()
@@ -338,6 +340,7 @@ class Services extends EventEmitter {
 							})
 
 							.then(() => {
+								self.emit("response", ctx);
 								console.timeEnd("SOCKET request");
 							});
 
@@ -393,7 +396,7 @@ class Services extends EventEmitter {
 								let ctx = Context.CreateFromGraphQL(service, action, root, args, context);
 								logger.debug("Request via GraphQL", ctx.params, context.query);
 								console.time("GRAPHQL request");
-								self.emit("request-graphql", ctx);
+								self.emit("request", ctx);
 								let cacheKey = service.getCacheKey(action.name, ctx.params);
 								
 								return Promise.resolve()
@@ -419,6 +422,7 @@ class Services extends EventEmitter {
 								})
 
 								.then((json) => {
+									self.emit("response", ctx);
 									console.timeEnd("GRAPHQL request");
 									return json;
 								});								
