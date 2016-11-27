@@ -3,6 +3,7 @@
 let logger 			= require("./logger");
 let config 			= require("../config");
 let response		= require("./response");
+let tokgen			= require("../libs/tokgen");
 
 let C 				= require("./constants");
 let Sockets   		= require("./sockets");
@@ -21,7 +22,8 @@ class Context {
 	 * 
 	 * @param {any} called service
 	 */
-	constructor(service) { 
+	constructor(service) {
+		this.id = tokgen(); 
 		this.service = service; // service instance
 		this.io = service.io; // namespace IO
 		this.app = null; // ExpressJS app

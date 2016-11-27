@@ -127,7 +127,7 @@ class Services extends EventEmitter {
 					// Make the request handler for action
 					let handler = (req, res) => {
 						let ctx = Context.CreateFromREST(service, action, app, req, res);
-						logger.debug(`Request via REST '${service.namespace}/${action.name}'`, ctx.params);
+						logger.debug(`Request via REST '${service.namespace}/${action.name}' (ID: ${ctx.id})`, ctx.params);
 						console.time("REST request");
 						this.emit("request-rest", ctx);
 
