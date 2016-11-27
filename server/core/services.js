@@ -152,6 +152,7 @@ class Services extends EventEmitter {
 
 						// Response the result
 						.then((json) => {
+							res.append("Request-Id", ctx.id);
 							response.json(res, json);
 						})
 
