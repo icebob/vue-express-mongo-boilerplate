@@ -19,10 +19,22 @@ let exception = function(msg) {
 };
 
 class Service {
+
+	/**
+	 * Creates an instance of Service.
+	 * 
+	 * @param {any} schema
+	 * @param {any} app
+	 * @param {any} db
+	 * 
+	 * @memberOf Service
+	 */
 	constructor(schema, app, db) {
 		let self = this;
 		schema = schema || {};
 		self.$schema = schema; 
+		self.$app = app;
+		self.$db = db;
 
 		if (!Services) 
 			Services = require("./services");		
@@ -44,18 +56,19 @@ class Service {
 		});
 		self.$settings = settings;
 
+		// Common properties
 		self.name = settings.name;
 		self.version = settings.version;
 		self.namespace = settings.namespace;
 		self.collection = settings.collection;
 
+		// Assert properties
 		if (!self.name)
 			exception(`No name of service '${self.name}'! Please set in settings of service schema!`);
-		//if (!settings.self.namespace)
-		//	exception(`No namespace of service '${self.name}'! Please set in settings of service schema!`);	
 
-		self.$app = app;
-		self.$db = db;
+		if (!self.namespace && (settings.rest || settings.ws || settings.graphql))
+			exception(`No namespace of service '${self.name}'! Please set in settings of service schema!`);	
+
 
 		// Handle caching option
 		if (config.cacheTimeout) {
@@ -117,7 +130,7 @@ class Service {
 					warn(`Invalid method name '${name}' in '${self.name}' service! Skipping...`);
 					return;
 				}
-				if (["toJSON", "getByID"].indexOf(name) != -1) {
+				if (["toJSON", "getByID", "modelResolver"].indexOf(name) != -1) {
 					warn(`This method name '${name}' is prohibited under 'methods' object. If you want to override the built-in method, please declare in the root of service schema! Skipping...`);
 					return;
 				}
@@ -144,6 +157,8 @@ class Service {
 	 * @param {any} 	docs		MongoDB document(s)
 	 * @param {String} 	propFilter	Filter properties of model. It is a space-separated `String` or an `Array`
 	 * @returns						JSON object/array
+	 * 
+	 * @memberOf Service
 	 */
 	toJSON(docs, propFilter) {
 		let func = function(doc) {
@@ -220,6 +235,7 @@ class Service {
 		let cacheKey = config.cacheTimeout ? this.getCacheKey("model", id) : null;
 
 		return Promise.resolve().then(() => {
+			// Try to read from cache
 			if (cacheKey)
 				return this.getFromCache(cacheKey);
 			else
@@ -242,6 +258,7 @@ class Service {
 				return this.populateModels(json);
 			})
 			.then((json) => {
+				// Save to cache
 				if (cacheKey)
 					this.putToCache(cacheKey, json);
 
@@ -304,7 +321,9 @@ class Service {
 	}
 
 	/**
-	 * Generate a hash key for caching from action name & params
+	 * Generate a cache key for caching from action name & hashed parameters
+	 * E.g: 
+	 * 		find:8de264844d01ab32078eb71762fdfda646a15cb4
 	 * 
 	 * @param {any} name	name of action
 	 * @param {any} params	params of request
@@ -353,11 +372,18 @@ class Service {
 
 	/**
 	 * Notificate the connected users if the model changed
-	 * @param  {Context} ctx   Context of request
+	 * 
+	 * @param {any} ctx		Request context
+	 * @param {any} type	Type of changes (created, updated, deleted...etc)
+	 * @param {any} json	JSON payload
+	 * 
+	 * @memberOf Service
 	 */
 	notifyModelChanges(ctx, type, json) {
 		// Send notification via socket
 		ctx.notifyChanges(type, json, this.$settings.role);
+
+		Services.emit(this.name + ":" + type, { ctx: ctx, payload: json });
 
 		// Clear cached values
 		this.clearCache();
@@ -369,7 +395,7 @@ class Service {
 	 * @param {any} serviceName
 	 * @returns {Service}
 	 * 
-	 * @memberOf Context	
+	 * @memberOf Service	
 	 */
 	services(serviceName) {
 		return Services.get(serviceName);
