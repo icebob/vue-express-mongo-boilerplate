@@ -214,7 +214,7 @@
 
 			loadMore() {
 				// Load more rows for the page
-				this.getRows();
+				this.getRows(true);
 			},
 
 			setSort(sort) {

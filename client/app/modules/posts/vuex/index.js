@@ -1,5 +1,5 @@
 import { 
-	LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE, 
+	LOAD, LOAD_MORE, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE, 
 	CLEAR, NO_MORE_ITEMS, 
 	CHANGE_SORT, CHANGE_VIEWMODE 
 } from "./types";
@@ -16,12 +16,17 @@ const state = {
 
 const mutations = {
 	[LOAD] (state, models) {
+		state.rows.splice(0);
+		state.rows.push(...models);
+		state.offset = state.rows.length;
+	},
+
+	[LOAD_MORE] (state, models) {
 		state.rows.push(...models);
 		state.offset = state.rows.length;
 	},
 
 	[CLEAR] (state) {
-		state.rows.splice(0);
 		state.offset = 0;
 		state.hasMore = true;
 	},
