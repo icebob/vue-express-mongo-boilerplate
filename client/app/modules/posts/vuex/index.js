@@ -1,16 +1,39 @@
-import { LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE, NO_MORE_ITEMS } from "./types";
+import { 
+	LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE, 
+	CLEAR, NO_MORE_ITEMS, 
+	CHANGE_SORT, CHANGE_VIEWMODE 
+} from "./types";
 
 import { each, find, assign, remove, isArray } from "lodash";
 
 const state = {
 	rows: [],
-	hasMore: true
+	offset: 0,
+	hasMore: true,
+	sort: "-votes",
+	viewMode: "all"
 };
 
 const mutations = {
 	[LOAD] (state, models) {
-		//state.rows.splice(0);
 		state.rows.push(...models);
+		state.offset = state.rows.length;
+	},
+
+	[CLEAR] (state) {
+		state.rows.splice(0);
+		state.offset = 0;
+		state.hasMore = true;
+	},
+
+	[CHANGE_SORT] (state, sort) {
+		state.sort = sort;
+		mutations[CLEAR](state);
+	},
+
+	[CHANGE_VIEWMODE] (state, mode) {
+		state.viewMode = mode;
+		mutations[CLEAR](state);
 	},
 
 	[NO_MORE_ITEMS] (state) {

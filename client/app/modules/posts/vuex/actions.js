@@ -1,12 +1,13 @@
 import Vue from "vue";
 import toastr from "../../../core/toastr";
 import Service from "../../../core/service";
-import { NAMESPACE, LOAD, ADD, UPDATE, VOTE, UNVOTE, REMOVE, NO_MORE_ITEMS } from "./types";
+import { NAMESPACE, LOAD, ADD, UPDATE, VOTE, UNVOTE, REMOVE, NO_MORE_ITEMS, CHANGE_SORT, CHANGE_VIEWMODE } from "./types";
 
 let service = new Service("posts"); 
 
-export const getRows = function (store, filter, sort) {
-	service.rest("find", { filter, sort, limit: 10, offset: store.state.posts.rows.length }).then((data) => {
+export const getRows = function (store) {
+	let state = store.state.posts;
+	service.rest("find", { filter: state.viewMode, sort: state.sort, limit: 10, offset: state.offset }).then((data) => {
 		if (data.length == 0)
 			store.dispatch(NO_MORE_ITEMS);
 		else
@@ -14,6 +15,16 @@ export const getRows = function (store, filter, sort) {
 	}).catch((err) => {
 		toastr.error(err.message);
 	});
+};
+
+export const changeSort = function(store, sort) {
+	store.dispatch(CHANGE_SORT, sort);
+	getRows(store);
+};
+
+export const changeViewMode = function(store, viewMode) {
+	store.dispatch(CHANGE_VIEWMODE, viewMode);
+	getRows(store);
 };
 
 export const saveRow = function(store, model) {

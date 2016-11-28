@@ -83,9 +83,6 @@
 		 */
 		data() {
 			return {
-				sort: "-votes",
-				viewMode: "all",
-
 				showForm: false,
 				isNewPost: false,
 				model: null,
@@ -206,14 +203,6 @@
 				return [];
 			},
 
-			orderPosts(a, b) {
-				switch(this.sort) {
-				case "hot": return a.votes - b.votes;
-				case "mostviewed": return a.views - b.views;
-				case "new": return b.createdAt - a.createdAt;
-				}
-			},
-
 			createdAgo(post) {
 				return this._("CreatedAgoByName", { ago: Vue.filter("ago")(post.createdAt), name: post.author.fullName } );
 			},
@@ -223,24 +212,17 @@
 					return this._("EditedAgo", { ago: Vue.filter("ago")(post.editedAt) } );
 			},
 
-			getPosts() {
-				// Download rows for the page
-				this.getRows(this.viewMode, this.sort);
-			},
-
 			loadMore() {
 				// Load more rows for the page
-				this.getRows(this.viewMode, this.sort);
+				this.getRows();
 			},
 
 			setSort(sort) {
-				this.sort = sort;
-				this.getPosts();
+				this.changeSort(sort);
 			},
 
 			setViewMode(mode) {
-				this.viewMode = mode;
-				this.getPosts();
+				this.changeViewMode(mode);
 			},
 
 			newPost() {
@@ -302,7 +284,7 @@
 		 * Call if the component is created
 		 */
 		created() {
-			this.getPosts();
+			this.getRows();
 		}
 	};
 </script>
