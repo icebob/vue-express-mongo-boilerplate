@@ -17,7 +17,7 @@ module.exports = function() {
 		if (docs.length === 0) {
 			logger.warn("Load default Devices to DB...");
 
-			_.times(5, () => {
+			_.times(36, () => {
 
 				let device = new Device({
 					address: fakerator.internet.ip(),
@@ -41,9 +41,9 @@ module.exports = function() {
 
 			User.find({}).lean().select("_id").exec((err, users) => {
 				if (users && users.length > 0) {
-					_.times(10, () => {
+					_.times(60, () => {
 
-						let fakePost = fakerator.entity.post();
+						let fakePost = fakerator.entity.post(fakerator.random.number(2,1));
 
 						let post = new Post({
 							title: fakePost.title,
