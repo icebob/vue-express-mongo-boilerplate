@@ -4,7 +4,7 @@ let path 	= require("path");
 let fs 		= require("fs");
 let _ 		= require("lodash");
 let chalk	= require("chalk");
-let secretUtils		= require("secret-utils");
+let tokgen	= require("../libs/tokgen");
 
 global.rootPath = path.normalize(path.join(__dirname, "..", ".."));
 console.log("process.argv: " + process.argv);
@@ -53,8 +53,8 @@ try {
 		let compiled = _.template(template);
 
 		let changes = {
-			hashSecret: secretUtils.url64(32),
-			sessionSecret: secretUtils.url64(32)
+			hashSecret: tokgen(),
+			sessionSecret: tokgen()
 		};
 
 		fs.writeFileSync(extConfigFile, compiled(changes));

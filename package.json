@@ -98,7 +98,6 @@
     "pug": "2.0.0-beta6",
     "require-webpack-compat": "3.0.0",
     "sass-loader": "3.2.1",
-    "secret-utils": "2.0.0",
     "serve-favicon": "2.3.2",
     "slug": "0.9.1",
     "snyk": "1.20.0",
