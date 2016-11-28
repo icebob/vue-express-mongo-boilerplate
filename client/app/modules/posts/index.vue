@@ -50,8 +50,16 @@
 								template(v-for="voter in lastVoters(post)")
 									img(:src="voter.avatar", :title="voter.fullName + ' (' + voter.username + ')'")
 							.right
-								small.text-muted {{ ago(post) }}
+								template(v-if="post.updatedAt && post.updatedAt != post.createdAt")
+									small.text-muted {{ updatedAgo(post) }}
+									br
+								small.text-muted {{ createdAgo(post) }}
 
+		.loadMore.text-center(v-if="hasMore")
+			button.button.outline(@click="loadMore") {{ _("LoadMore") }}
+		.noMore.text-center(v-if="!hasMore")
+			span.text-muted You reached the end of the list.
+		hr
 </template>
 
 <script>
@@ -140,10 +148,12 @@
 				 * New device added
 				 * @param  {Object} res Device object
 				 */
+				/*
+				We don't use it because we don't know we need to add it to the page (filter, sort..etc)
 				created(res) {
 					this.created(res.data);
 					toast.success(this._("PostNameAdded", res), this._("PostAdded"));
-				},
+				},*/
 
 				/**
 				 * Post updated
@@ -204,13 +214,23 @@
 				}
 			},
 
-			ago(post) {
+			createdAgo(post) {
 				return this._("CreatedAgoByName", { ago: Vue.filter("ago")(post.createdAt), name: post.author.fullName } );
+			},
+
+			updatedAgo(post) {
+				if (post.updatedAt)
+					return this._("UpdatedAgo", { ago: Vue.filter("ago")(post.updatedAt) } );
 			},
 
 			getPosts() {
 				// Download rows for the page
-				this.downloadRows(this.viewMode, this.sort);
+				this.getRows(this.viewMode, this.sort);
+			},
+
+			loadMore() {
+				// Load more rows for the page
+				this.getRows(this.viewMode, this.sort);
 			},
 
 			setSort(sort) {

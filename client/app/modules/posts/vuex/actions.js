@@ -1,13 +1,16 @@
 import Vue from "vue";
 import toastr from "../../../core/toastr";
 import Service from "../../../core/service";
-import { NAMESPACE, LOAD, ADD, UPDATE, VOTE, UNVOTE, REMOVE } from "./types";
+import { NAMESPACE, LOAD, ADD, UPDATE, VOTE, UNVOTE, REMOVE, NO_MORE_ITEMS } from "./types";
 
 let service = new Service("posts"); 
 
-export const downloadRows = function ({ dispatch }, filter, sort) {
-	service.rest("find", { filter, sort }).then((data) => {
-		dispatch(LOAD, data);
+export const getRows = function (store, filter, sort) {
+	service.rest("find", { filter, sort, limit: 10, offset: store.state.posts.rows.length }).then((data) => {
+		if (data.length == 0)
+			store.dispatch(NO_MORE_ITEMS);
+		else
+			store.dispatch(LOAD, data);
 	}).catch((err) => {
 		toastr.error(err.message);
 	});

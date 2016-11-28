@@ -1,15 +1,20 @@
-import { LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE } from "./types";
+import { LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE, NO_MORE_ITEMS } from "./types";
 
 import { each, find, assign, remove, isArray } from "lodash";
 
 const state = {
-	rows: []
+	rows: [],
+	hasMore: true
 };
 
 const mutations = {
 	[LOAD] (state, models) {
-		state.rows.splice(0);
+		//state.rows.splice(0);
 		state.rows.push(...models);
+	},
+
+	[NO_MORE_ITEMS] (state) {
+		state.hasMore = false;
 	},
 
 	[ADD] (state, model) {

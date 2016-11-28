@@ -58,7 +58,12 @@
 	"AllPosts": "Minden bejegyzés",	
 	"MyPosts": "Saját bejegyzések",	
 	"ViewsCount": " Megtekintések: {{count}}",	
-	"CreatedAgoByName": "Létrehozta {{name}} {{ago}}",	
+	"CreatedAgoByName": "Létrehozta {{name}} {{ago}}",
+	"UpdatedAgo": "Módosítva {{ago}}",	
+    "Voters": "Szavazók",
+    "LoadMore": "Mutass többet...",
+	
+		
 	"EditPost": "Bejegyzés szerkesztése",	
 	"DeletePost": "Bejegyzés törlése",	
 	"Title": "Cím",	
