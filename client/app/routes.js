@@ -1,5 +1,5 @@
 import Home from "./modules/home";
-import Demo from "./modules/demo";
+import Counter from "./modules/counter";
 import Devices from "./modules/devices";
 import Posts from "./modules/posts";
 import Profile from "./modules/profile";
@@ -14,8 +14,8 @@ module.exports = {
 		component: Posts
 	},
 
-	"/demo": {
-		component: Demo
+	"/counter": {
+		component: Counter
 	},	
 
 	"/profile": {

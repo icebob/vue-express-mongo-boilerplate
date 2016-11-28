@@ -10,7 +10,7 @@
 						span.label {{ "Home" | i18n }}
 
 				li(v-link-active)
-					a(v-link="'/demo'", :title="_('Demo')")
+					a(v-link="'/counter'", :title="_('Demo')")
 						span.icon
 							i.fa.fa-tasks
 						span.label {{ "Demo" | i18n }}
