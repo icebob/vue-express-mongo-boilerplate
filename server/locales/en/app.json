@@ -61,7 +61,7 @@
 	"MyPosts": "My posts",	
 	"ViewsCount": " Views: {{count}}",	
 	"CreatedAgoByName": "Created {{ago}} by {{name}}",	
-	"UpdatedAgo": "Updated {{ago}}",	
+	"EditedAgo": "Edited {{ago}}",	
 	"EditPost": "Edit post",	
 	"DeletePost": "Delete post",	
 	"Title": "Title",	

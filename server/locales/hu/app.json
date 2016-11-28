@@ -59,7 +59,7 @@
 	"MyPosts": "Saját bejegyzések",	
 	"ViewsCount": " Megtekintések: {{count}}",	
 	"CreatedAgoByName": "Létrehozta {{name}} {{ago}}",
-	"UpdatedAgo": "Módosítva {{ago}}",	
+	"EditedAgo": "Szerkesztve {{ago}}",	
     "Voters": "Szavazók",
     "LoadMore": "Mutass többet...",
 	

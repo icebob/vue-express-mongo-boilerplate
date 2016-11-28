@@ -20,7 +20,7 @@ module.exports = {
 		role: "user",
 		collection: Post,
 
-		modelPropFilter: "code title content author votes voters views createdAt updatedAt",
+		modelPropFilter: "code title content author votes voters views createdAt editedAt",
 		
 		modelPopulates: {
 			"author": "persons",
@@ -104,7 +104,8 @@ module.exports = {
 
 					if (ctx.params.content != null)
 						doc.content = ctx.params.content;
-
+					
+					doc.editedAt = Date.now();
 					return doc.save();
 				})
 				.then((doc) => {
@@ -263,7 +264,7 @@ module.exports = {
 				votes: Int,
 				voters(limit: Int, offset: Int, sort: String): [Person]
 				createdAt: Timestamp
-				updatedAt: Timestamp
+				createdAt: Timestamp
 			}
 		`,
 

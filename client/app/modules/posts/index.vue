@@ -49,9 +49,9 @@
 							.voters.left(:title="_('Voters')")
 								template(v-for="voter in lastVoters(post)")
 									img(:src="voter.avatar", :title="voter.fullName + ' (' + voter.username + ')'")
-							.right
-								template(v-if="post.updatedAt && post.updatedAt != post.createdAt")
-									small.text-muted {{ updatedAgo(post) }}
+							.right.text-right
+								template(v-if="post.editedAt")
+									small.text-muted {{ editedAgo(post) }}
 									br
 								small.text-muted {{ createdAgo(post) }}
 
@@ -218,9 +218,9 @@
 				return this._("CreatedAgoByName", { ago: Vue.filter("ago")(post.createdAt), name: post.author.fullName } );
 			},
 
-			updatedAgo(post) {
-				if (post.updatedAt)
-					return this._("UpdatedAgo", { ago: Vue.filter("ago")(post.updatedAt) } );
+			editedAgo(post) {
+				if (post.editedAt)
+					return this._("EditedAgo", { ago: Vue.filter("ago")(post.editedAt) } );
 			},
 
 			getPosts() {
