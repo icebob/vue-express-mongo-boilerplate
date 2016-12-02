@@ -1,16 +1,16 @@
 "use strict";
 
 const 
-	cluster = require('cluster'),
+	cluster = require("cluster"),
 	stopSignals = [
-		'SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
-		'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'
+		"SIGHUP", "SIGINT", "SIGQUIT", "SIGILL", "SIGTRAP", "SIGABRT",
+		"SIGBUS", "SIGFPE", "SIGUSR1", "SIGSEGV", "SIGUSR2", "SIGTERM"
 	],
-	production = process.env.NODE_ENV == 'production';
+	production = process.env.NODE_ENV == "production";
 
 let stopping = false;
 
-cluster.on('disconnect', function(worker) {
+cluster.on("disconnect", function(worker) {
 	if (production) {
 		if (!stopping)
 			cluster.fork();
@@ -30,11 +30,11 @@ if (cluster.isMaster) {
 				console.log(`Got ${signal}, stopping workers...`);
 				stopping = true;
 				cluster.disconnect(function () {
-					console.log('All workers stopped, exiting.');
+					console.log("All workers stopped, exiting.");
 					process.exit(0);
 				});
 			});
 		});
 	}
 } else
-	require('./server/index.js');
+	require("./server/index.js");
