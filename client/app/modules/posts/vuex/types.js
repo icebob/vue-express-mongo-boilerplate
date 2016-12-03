@@ -8,6 +8,7 @@ export const ADD 			= MODULE + "ADD";
 export const UPDATE			= MODULE + "UPDATE";
 export const REMOVE			= MODULE + "REMOVE";
 
+export const FETCHING		= MODULE + "FETCHING";
 export const NO_MORE_ITEMS	= MODULE + "NO_MORE_ITEMS";
 export const CLEAR 			= MODULE + "CLEAR";
 

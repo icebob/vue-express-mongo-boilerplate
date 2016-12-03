@@ -1,6 +1,6 @@
 import { 
 	LOAD, LOAD_MORE, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE, 
-	CLEAR, NO_MORE_ITEMS, 
+	CLEAR, NO_MORE_ITEMS, FETCHING,
 	CHANGE_SORT, CHANGE_VIEWMODE 
 } from "./types";
 
@@ -10,6 +10,7 @@ const state = {
 	rows: [],
 	offset: 0,
 	hasMore: true,
+	fetching: false,
 	sort: "-votes",
 	viewMode: "all"
 };
@@ -30,6 +31,10 @@ const mutations = {
 		state.offset = 0;
 		state.hasMore = true;
 	},
+
+	[FETCHING] (state, status) {
+		state.fetching = status;
+	},	
 
 	[CHANGE_SORT] (state, sort) {
 		state.sort = sort;

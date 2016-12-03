@@ -6,6 +6,10 @@ export function hasMore(state) {
 	return state.posts.hasMore;
 }
 
+export function fetching(state) {
+	return state.posts.fetching;
+}
+
 export function sort(state) {
 	return state.posts.sort;
 }

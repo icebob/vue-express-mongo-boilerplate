@@ -56,7 +56,7 @@
 								small.text-muted {{ createdAgo(post) }}
 
 		.loadMore.text-center(v-if="hasMore")
-			button.button.outline(@click="loadMore") {{ _("LoadMore") }}
+			button.button.outline(@click="loadMore", :class="{ 'loading': fetching }") {{ _("LoadMore") }}
 		.noMore.text-center(v-if="!hasMore")
 			span.text-muted You reached the end of the list.
 		hr
@@ -293,6 +293,10 @@
 
 	@import "../../../scss/themes/blurred/variables";
 	@import "../../../scss/common/mixins";
+
+	.container {
+		padding-bottom: 1rem;
+	}
 
 	.header {
 		margin: 1rem;
