@@ -26,6 +26,14 @@ module.exports = function() {
 		});
 
 		mongoose.connection.on("error", function mongoConnectionError(err) {
+			if (err.message.code === "ETIMEDOUT") {
+				logger.warn("Mongo connection timeout!", err);
+				setTimeout(() => {
+					mongoose.connect(config.db.uri, config.db.options);
+				}, 1000);
+				return;
+			}
+
 			logger.error("Could not connect to MongoDB!");
 			return logger.error(err);
 		});
