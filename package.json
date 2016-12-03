@@ -18,7 +18,8 @@
     "ci": "cross-env NODE_ENV=test nodemon --exec \"mocha --require babel-core/register --reporter dot --watch tests/unit\" tests/unit",
     "lint": "eslint --ext=.js,.vue client server",
     "lint:fix": "eslint --fix --ext=.js,.vue client server",
-    "snyk-protect": "snyk protect"
+    "snyk-protect": "snyk protect",
+    "typings": "typings install"
   },
   "repository": {
     "type": "git",
@@ -152,6 +153,7 @@
     "style-loader": "0.13.1",
     "tiny-lr": "0.2.1",
     "toastr": "2.1.2",
+    "typings": "2.0.0",
     "url-loader": "0.5.7",
     "uuid": "2.0.3",
     "vue": "1.0.26",

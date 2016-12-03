@@ -68,8 +68,8 @@ module.exports = {
 		new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.UglifyJsPlugin({
 			compress: {
-	warnings: false
-}
+				warnings: false
+			}
 		}),
 
 		new ExtractTextPlugin("styles/[name].css")

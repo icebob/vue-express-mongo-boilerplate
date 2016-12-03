@@ -60,3 +60,6 @@ config.json
 
 # Data folder
 data
+
+# Typings definitions
+typings

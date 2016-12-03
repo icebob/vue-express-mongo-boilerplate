@@ -1,0 +1,22 @@
+{
+  "globalDependencies": {
+    "axios": "registry:dt/axios#0.9.1+20161016142654",
+    "chai": "registry:dt/chai#3.4.0+20160601211834",
+    "express": "registry:dt/express#4.0.0+20160708185218",
+    "graphql": "registry:dt/graphql#0.7.0+20161028160137",
+    "i18next": "registry:dt/i18next#2.3.4+20161107200623",
+    "ioredis": "registry:dt/ioredis#0.0.0+20161012141933",
+    "lodash": "registry:dt/lodash#4.14.0+20161110215204",
+    "moment": "registry:dt/moment#2.11.1+20161010105546",
+    "mongoose": "registry:dt/mongoose#4.7.0+20161202023106",
+    "node": "registry:dt/node#6.0.0+20161121110008",
+    "passport": "registry:dt/passport#0.2.0+20161028150851",
+    "request": "registry:dt/request#0.0.0+20161116202412",
+    "sinon": "registry:dt/sinon#1.16.0+20160924120326",
+    "socket.io": "registry:dt/socket.io#1.4.4+20160909205835",
+    "toastr": "registry:dt/toastr#2.1.3+20161117180135",
+    "vue": "registry:dt/vue#1.0.21+20160929090511",
+    "vue-router": "registry:dt/vue-router#0.7.10+20160316155526",
+    "winston": "registry:dt/winston#0.0.0+20161108133445"
+  }
+}
