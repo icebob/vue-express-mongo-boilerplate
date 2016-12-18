@@ -110,7 +110,7 @@
     "winston-logentries": "2.0.0",
     "winston-loggly-bulk": "1.3.4",
     "winston-logsene": "1.2.1",
-    "winston-logzio": "1.0.1",
+    "winston-logzio": "1.0.2",
     "winston-papertrail": "1.0.4"
   },
   "devDependencies": {
