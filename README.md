@@ -9,13 +9,13 @@
 
 **This project is under heavy development!!!**
 
-This is a VueJS webapp boilerplate project with ExpressJS + Mongo server.
+This is a VueJS webapp boilerplate project with ExpressJS + Mongo server. Not an out-of-box webapp.
 
 Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/hackathon-starter](https://github.com/sahat/hackathon-starter)
 
 *This is just my personal boilerplate, it may or may not be a good fit for your project(s).*
 
-### [Live Demo](http://vemapp.e-paper.space/)
+### [Live Demo](http://vemapp.e-paper.space/) (login: test/test1234)
 
 ## Features
 **Server-side**
