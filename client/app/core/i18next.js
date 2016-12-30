@@ -88,6 +88,6 @@ function install(Vue, callback, options = {}) {
 	};
 }
 
-module.exports = {
+export default {
 	install
 };

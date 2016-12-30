@@ -282,7 +282,7 @@ function initWebpack(app) {
 	// Webpack middleware in development mode
 	if (!config.isProductionMode()) {
 		let webpack	 = require("webpack");
-		let wpConfig = require("../../webpack.dev.config");
+		let wpConfig = require("../../build/webpack.dev.config");
 
 		let compiler = webpack(wpConfig);
 		let devMiddleware = require('webpack-dev-middleware'); // eslint-disable-line

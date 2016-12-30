@@ -1,5 +1,3 @@
-import _ from "lodash";
-import Vue from "vue";
 import moment from "moment";
 //import prettyBytes from 'pretty-bytes';
 
@@ -42,10 +40,11 @@ let filters = {
 
 };
 
-module.exports = {
+export default {
 	filters,
 
 	install(Vue) {
-		_.each(filters, (func, name) => Vue.filter(name, func));
+		let keys = Object.keys(filters);
+		keys.forEach(name => Vue.filter(name, filters[name]));
 	}
 };
