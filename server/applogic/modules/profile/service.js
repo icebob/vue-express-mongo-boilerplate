@@ -24,9 +24,9 @@ module.exports = {
 	},
 	
 	actions: {
-		// return myself profile
+		// return my profile with all properties
 		get: {
-			cache: true,
+			cache: false, // can't be cached, because it is unique for every account
 			handler(ctx) {
 				return User.findById(User.schema.methods.decodeID(ctx.user.code)).exec().then( (doc) => {
 					return this.toJSON(doc);

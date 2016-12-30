@@ -28,7 +28,7 @@
 						span.value {{ profile.createdAt | ago }}							
 
 				hr.full
-		pre(v-html="profile | prettyJSON")
+		pre(v-html="this.$options.filters.prettyJSON(profile)")
 
 </template>
 
