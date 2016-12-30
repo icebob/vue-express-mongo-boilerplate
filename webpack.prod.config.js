@@ -13,7 +13,7 @@ module.exports = {
 	entry: {
 		app: ["./client/app/main.js"],
 		frontend: ["./client/frontend/main.js"]
-		//vendor: glob.sync("./src/vendor/**/*.js")
+			//vendor: glob.sync("./src/vendor/**/*.js")
 	},
 	output: {
 		path: path.resolve(__dirname, "server", "public", "app"),
@@ -22,57 +22,119 @@ module.exports = {
 		chunkFilename: "[chunkhash].js"
 	},
 	module: {
-		loaders: [
-			{ test: /\.css$/,   loader: "style!css" },
-			{ test: /\.scss$/,  loader: ExtractTextPlugin.extract("style-loader", ["css-loader", "postcss-loader", "sass-loader"])},
-
-			{ test: /\.json$/,  loader: "json-loader" },
-
-			// ES6/7 syntax and JSX transpiling out of the box
-			{ test: /\.js$/,	loader: "babel", 		exclude: [/node_modules/, /vendor/] },
-
-			{ test: /\.vue$/,   loader: "vue" },
-
-			{ test: /\.gif$/, 	loader: "url-loader?name=images/[name]-[hash:6].[ext]&limit=100000" },
-			{ test: /\.png$/, 	loader: "url-loader?name=images/[name]-[hash:6].[ext]&limit=100000" },
-			{ test: /\.jpg$/, 	loader: "file-loader?name=images/[name]-[hash:6].[ext]" },		
-
+		rules: [{
+				test: /\.css$/,
+				loaders: ["style-loader", "css-loader"]
+			}, {
+				test: /\.scss$/,
+				loader: ExtractTextPlugin.extract({
+					fallbackLoader: "style-loader",
+					loader: [{
+						loader: "css-loader",
+						options: {
+							modules: true
+						}
+					}, {
+						loader: "postcss-loader",
+						options: {
+							plugins: [
+								require("autoprefixer")({
+									browsers: ["last 2 versions"]
+								}),
+								precss
+							]
+						}
+					}, {
+						loader: "sass-loader"
+					}]
+				})
+			}, {
+				test: /\.js$/,
+				loader: "babel-loader",
+				exclude: [/node_modules/, /vendor/]
+			}, {
+				test: /\.vue$/,
+				loader: "vue-loader",
+				options: {
+					postcss: [
+						require("autoprefixer")({
+							browsers: ["last 2 versions"]
+						}),
+						precss
+					]
+				}
+			}, {
+				test: /\.gif$/,
+				loader: "url-loader",
+				options: {
+					name: "images/[name]-[hash:6].[ext]",
+					limit: 100000
+				}
+			}, {
+				test: /\.png$/,
+				loader: "url-loader",
+				options: {
+					name: "images/[name]-[hash:6].[ext]",
+					limit: 100000
+				}
+			}, {
+				test: /\.jpg$/,
+				loader: "file-loader",
+				options: {
+					name: "images/[name]-[hash:6].[ext]"
+				}
+			},
 			// required for font-awesome icons
-			{ test: /\.(woff2?|svg)$/, loader: "url-loader?limit=10000&prefix=font/" },
-			{ test: /\.(ttf|eot)$/, loader: "file-loader?prefix=font/" }
+			{
+				test: /\.(woff2?|svg)$/,
+				loader: "url-loader",
+				options: {
+					limit: 10000,
+					prefix: "font/"
+				}
+			}, {
+				test: /\.(ttf|eot)$/,
+				loader: "file-loader",
+				options: {
+					prefix: "font/"
+				}
+			}
 		]
 	},
 	resolve: {
-		extensions: ["", ".vue", ".js", ".json"],
+		extensions: [".vue", ".js", ".json"],
 		alias: {
 			"images": path.resolve(__dirname, "client", "images"),
 			"vue$": "vue/dist/vue.common.js"
 		}
 	},
 	plugins: [
-		new webpack.DefinePlugin({
-			"process.env": {
-				// This has effect on the react lib size
-				"NODE_ENV": JSON.stringify("production")
-			}
-		}),
-		//new StatsPlugin('stats.json'),
-		new webpack.optimize.DedupePlugin(),
-		new webpack.optimize.UglifyJsPlugin({
-			compress: {
-				warnings: false
-			}
-		}),
-
-		new ExtractTextPlugin("styles/[name].css")
-	],
-
-	vue: {
-		postcss: [
-			require("autoprefixer")({
-				browsers: ["last 2 versions"]
+			new webpack.DefinePlugin({
+				"process.env": {
+					// This has effect on the react lib size
+					"NODE_ENV": JSON.stringify("production")
+				}
 			}),
-			precss
+			//new StatsPlugin('stats.json'),
+			new webpack.optimize.UglifyJsPlugin({
+				compress: {
+					warnings: false
+				}
+			}),
+			new webpack.LoaderOptionsPlugin({
+				minimize: true
+			}),
+
+			new ExtractTextPlugin("styles/[name].css")
 		]
-	}	
+		/*
+		vue: {
+			postcss: [
+				require("autoprefixer")({
+					browsers: ["last 2 versions"]
+				}),
+				precss
+			]
+		}
+		*/
 };

@@ -9,16 +9,19 @@ let autoprefixer = require("autoprefixer");
 
 module.exports = {
 	devtool: "#inline-source-map",
+	
 	entry: {
 		app: ["webpack-hot-middleware/client", "./client/app/main.js"],
 		frontend: ["webpack-hot-middleware/client", "./client/frontend/main.js"]
 	},
+
 	output: {
 		path: path.resolve(__dirname, "server", "public", "app"),
 		publicPath: "/app/",
 		filename: "[name].js",
 		chunkFilename: "[chunkhash].js"
 	},
+
 	module: {
 		rules: [
 			{ test: /\.css$/,   loaders: ["style-loader", "css-loader"] },
@@ -39,6 +42,7 @@ module.exports = {
 			{ test: /\.(ttf|eot)$/, loader: "file-loader", options: { prefix: "font/" } }
 		]
 	},
+
 	resolve: {
 		extensions: [".vue", ".js", ".json"],
 		alias: {
@@ -46,6 +50,11 @@ module.exports = {
 			"vue$": "vue/dist/vue.common.js"
 		}
 	},
+
+	performance: {
+		hints: false
+	},
+
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoErrorsPlugin()
