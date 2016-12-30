@@ -17,10 +17,9 @@
 	import PageHeader from "./components/header/index";
 	import Sidebar from "./components/sidebar/index";
 
-	import * as actions from "../modules/session/vuex/actions";
-	import * as getters from "../modules/session/vuex/getters";
-
 	import Service from "./service";
+
+	import { mapActions, mapGetters } from "vuex";
 
 	export default {
 
@@ -48,14 +47,6 @@
 				miniSidebar: false
 			};
 		},
-
-		/**
-		 * Set Vuex actions & getters
-		 */
-		vuex: {
-			getters,
-			actions
-		},		
 
 		watch: {
 			$lng() {
@@ -95,6 +86,10 @@
 		},
 
 		methods: {
+			...mapActions([
+				"getSessionUser"
+			]),
+
 			update: function(vm) {
 				if (vm == null)
 					return;

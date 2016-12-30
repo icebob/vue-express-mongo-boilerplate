@@ -6,28 +6,28 @@ import { NAMESPACE, LOAD, LOAD_MORE, ADD, UPDATE, VOTE, UNVOTE, REMOVE,
 
 let service = new Service("posts"); 
 
-export const getRows = function (store, loadMore) {
-	let state = store.state.posts;
-	store.dispatch(FETCHING, true);
-	return service.rest("find", { filter: state.viewMode, sort: state.sort, limit: 10, offset: state.offset }).then((data) => {
+export const getRows = function ({commit, state}, loadMore) {
+	let posts = state.posts;
+	commit(FETCHING, true);
+	return service.rest("find", { filter: posts.viewMode, sort: posts.sort, limit: 10, offset: posts.offset }).then((data) => {
 		if (data.length == 0)
-			store.dispatch(NO_MORE_ITEMS);
+			commit(NO_MORE_ITEMS);
 		else
-			store.dispatch(loadMore ? LOAD_MORE : LOAD, data);
+			commit(loadMore ? LOAD_MORE : LOAD, data);
 	}).catch((err) => {
 		toastr.error(err.message);
 	}).then(() => {
-		store.dispatch(FETCHING, false);		
+		commit(FETCHING, false);		
 	});
 };
 
 export const changeSort = function(store, sort) {
-	store.dispatch(CHANGE_SORT, sort);
+	store.commit(CHANGE_SORT, sort);
 	getRows(store);
 };
 
 export const changeViewMode = function(store, viewMode) {
-	store.dispatch(CHANGE_VIEWMODE, viewMode);
+	store.commit(CHANGE_VIEWMODE, viewMode);
 	getRows(store);
 };
 
@@ -71,14 +71,14 @@ export const unVote = function(store, model) {
 	});
 };
 
-export const created = function({ dispatch }, model) {
-	dispatch(ADD, model);
+export const created = function({ commit }, model) {
+	commit(ADD, model);
 };
 
-export const updated = function({ dispatch }, model) {
-	dispatch(UPDATE, model);
+export const updated = function({ commit }, model) {
+	commit(UPDATE, model);
 };
 
-export const removed = function({ dispatch }, model) {
-	dispatch(REMOVE, model);
+export const removed = function({ commit }, model) {
+	commit(REMOVE, model);
 };

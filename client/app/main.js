@@ -4,7 +4,7 @@ require("es6-promise").polyfill();
 
 import "../scss/style.scss";
 import Vue from "vue";
-import VueAnimatedList from "vue-animated-list";
+//import VueAnimatedList from "vue-animated-list";
 import Filters from "./core/filters";
 import VueI18Next from "./core/i18next.js";
 import VueFormGenerator from "vue-form-generator";
@@ -16,7 +16,7 @@ import App from "./core/App";
 
 Vue.use(Filters);
 
-Vue.use(VueAnimatedList);
+//Vue.use(VueAnimatedList);
 Vue.use(VueFormGenerator);
 Vue.use(VueWebsocket);
 

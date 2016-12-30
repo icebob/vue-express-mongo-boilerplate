@@ -8,7 +8,7 @@
 
 		search-box.left(:model.sync="search")
 
-		user-box.right(:toggle="toggleUserMenu", :expanded="expandedUserMenu")
+		user-box.right
 
 </template>
 
