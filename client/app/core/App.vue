@@ -13,7 +13,6 @@
 
 <script>
 	import Vue from "vue";
-	import store from "../core/store";
 
 	import PageHeader from "./components/header/index";
 	import Sidebar from "./components/sidebar/index";
@@ -64,11 +63,6 @@
 				this.update(this);
 			}
 		},
-
-		/**
-		 * Set the vuex store object
-		 */
-		store: store,
 
 		/**
 		 * Socket handlers. Every property is an event handler

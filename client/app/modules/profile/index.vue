@@ -28,7 +28,7 @@
 						span.value {{ profile.createdAt | ago }}							
 
 				hr.full
-		pre {{{ profile | prettyJSON }}}
+		pre(v-html="profile | prettyJSON")
 
 </template>
 
