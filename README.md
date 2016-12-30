@@ -19,7 +19,7 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 
 ## Features
 **Server-side**
-* [x] **[Node.JS](https://nodejs.org)**
+* [x] **[Node.JS](https://nodejs.org)** v6.x.x
 * [x] **[Express](https://github.com/expressjs/express)**
 * [x] [MongoDB](https://www.mongodb.com/) with [Mongoose](https://github.com/Automattic/mongoose)
 * [x] [NodeMailer](https://github.com/nodemailer/nodemailer) with SMTP, MailGun or SendGrid
@@ -29,16 +29,17 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 * [x] **[GraphQL](http://graphql.org/)** with [Apollo stack](http://www.apollostack.com/)
 * [x] [i18next](http://i18next.com/) as the internationalization ecosystem
 * [x] **[HTTP/2 Server Push](https://en.wikipedia.org/wiki/HTTP/2_Server_Push)** with [netjet](https://github.com/cloudflare/netjet)
-* [x] Bundled server-side code with [Webpack](https://webpack.github.io/)
+* [x] Bundled server-side code with [Webpack 2](https://webpack.github.io/)
 
 **Client-side**
-* [x] **[VueJS](https://github.com/vuejs/vue)**
+* [x] **[VueJS 2.x](https://github.com/vuejs/vue)**
 * [x] [Vuex](https://github.com/vuejs/vuex)
 * [x] [Vue-router](https://github.com/vuejs/vue-router)
-* [x] [Vue-resource](https://github.com/vuejs/vue-resource)
+* [x] [axios](https://github.com/mzabriskie/axios)
 * [x] **[socket.io](https://github.com/socketio/socket.io) connection with namespaces & authorization**
+* [x] [vue-websocket](https://github.com/icebob/vue-websocket)
 * [x] [Jade](https://github.com/pugjs/pug)
-* [x] **[Webpack](https://github.com/webpack/webpack)**
+* [x] **[Webpack 2](https://github.com/webpack/webpack)**
 * [x] [SCSS](http://sass-lang.com/)
 * [x] [PostCSS](https://github.com/postcss/postcss) with precss and autoprefixer
 * [x] [Babel](https://babeljs.io/)
@@ -47,6 +48,7 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 	* Social signup/login with Facebook, Google, Twitter and Github
 	* API key authentication for REST API calls
 * [x] [Toastr](https://github.com/CodeSeven/toastr)
+* [x] [vue-form-generator](https://github.com/icebob/vue-form-generator)
 
 **Supported remote logging services**
 * [x] [Papertrail](https://papertrailapp.com/)
@@ -57,9 +59,17 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 * [x] [Logz.io](http://logz.io/)
 
 ## Usage
+Install dependencies
+```
+$ npm install
+```
+or
+```
+yarn
+```
+
 For development
 ```bash
-$ npm install nodemon -g
 $ npm run dev
 ```
 
@@ -74,6 +84,7 @@ $ npm start
 ```
 
 ## Screenshots
+
 ### Login screen
 ![Login screen](https://cloud.githubusercontent.com/assets/306521/20032026/e2241716-a381-11e6-8ec2-4e0263308762.png)
 ### Index page after login
@@ -83,6 +94,7 @@ $ npm start
 
 ## Directory structure
 ```txt
++---build
 +---client
 |   +---app
 |   |   +---core
@@ -101,7 +113,6 @@ $ npm start
 +---logs
 +---server
 |   |   bundle.js
-|   |   bundle.js.map
 |   |   dev.js
 |   |   index.js
 |   +---applogic
@@ -146,7 +157,7 @@ If you want to export bundled version copy these folders & files to the new plac
 	- views
 	- bundle.js
 - package.json
-- secrects.json (optional)
+- config.js (optional)
 
 Before start, you have to install production dependencies with npm: `npm install --production`
 
