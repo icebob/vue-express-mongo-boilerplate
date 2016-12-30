@@ -4,14 +4,14 @@
 			tr
 				th.selector(v-if="schema.multiSelect", width="20px" @click="selectAll") 
 					i.fa.fa-square-o
-				th.sortable(v-for="col in schema.columns", :width="col.width || 'auto'", @click="orderBy(col)", :class="{ sorted: col.field == order.field, 'desc': col.field == order.field && order.direction == -1 }") {{ col.title }}
+				th.sortable(v-for="col in schema.columns", :width="col.width || 'auto'", @click="changeSort(col)", :class="{ sorted: col.field == order.field, 'desc': col.field == order.field && order.direction == -1 }") {{ col.title }}
 		
 		tbody
 			tr(v-for="row in filteredOrderedRows", @click="select($event, row)", :class="getRowClasses(row)")
 				td.selector(v-if="schema.multiSelect", width="20px", @click.stop.prevent="select($event, row, true)") 
 					i.fa.fa-square-o
 				td(v-for="col in schema.columns", :class="getCellClasses(row, col)") 
-					template(v-html="getCellValue(this, row, col) | tableFormatter")
+					span(v-html="getCellValue(row, col)")
 					span.labels(v-if="col.labels != null")
 						.label(v-for="label in col.labels(row)", :class="'label-' + label.type") {{ label.caption }}
 		tfoot
@@ -22,8 +22,7 @@
 </template>
 
 <script>
-	import {each, isArray, isFunction, isNil, defaults, orderBy, includes} from "lodash";
-
+	import {each, isArray, isFunction, isNil, defaults, orderBy, includes, get} from "lodash";
 
 	export default {
 
@@ -47,32 +46,7 @@
 					});
 				}
 
-				return orderBy(items, this.order.field, this.order.direction)
-			}
-		},
-
-		filters: {
-			/**
-			 * Format the cell value by schema
-			 *
-			 * You can add custom formatter func in schema.table.columns. It can be also an array of functions.
-			 * 
-			 * @param  {*} 		value Value of cell
-			 * @return {String}       Formatted string
-			 */
-			tableFormatter: function(value) {
-				if (isNil(value)) return;
-				let formatter = this.col.formatter;
-				if (formatter) {
-					if (isArray(formatter)) {
-						each(formatter, (fmt) => {
-							value = fmt(value, this.row, this.col);
-						});
-					} else if (isFunction(formatter))
-						value = formatter(value, this.row, this.col);
-				}
-
-				return value;
+				return orderBy(items, this.order.field, this.order.direction == 1 ? "asc" : "desc");
 			}
 		},
 
@@ -83,19 +57,44 @@
 			 * has a get() method, it will call it, otherwise, get 
 			 * the value from the row property
 			 * 
-			 * @param  {Object} self 	Iterator object
+			 * @param  {Object} row 	Row object
+			 * @param  {Object} col 	Column definition
 			 * @return {*}      		Cell value
 			 */
-			getCellValue(self) {
-				let col = self.col;
+			getCellValue(row, col) {
 				let value;
 				if (!col.field && isFunction(col.get))
-					value = col.get(self.row);
+					value = col.get(row);
 				else 
-					value = self.$get("row." + self.col.field);
+					value = get(row, col.field);
 				
-				return value;
+				return this.tableFormatter(row, col, value);
 			},
+
+			/**
+			 * Format the cell value by schema
+			 *
+			 * You can add custom formatter func in schema.table.columns. It can be also an array of functions.
+			 * 
+			 * @param  {Object} row 	Row object
+			 * @param  {Object} col 	Column definition
+			 * @param  {*} 		value Value of cell
+			 * @return {String}       Formatted string
+			 */
+			tableFormatter(row, col, value) {
+				if (isNil(value)) return;
+				let formatter = col.formatter;
+				if (formatter) {
+					if (isArray(formatter)) {
+						each(formatter, (fmt) => {
+							value = fmt(value, row, col);
+						});
+					} else if (isFunction(formatter))
+						value = formatter(value, row, col);
+				}
+
+				return value;
+			},		
 
 			/**
 			 * Get classes for row. Handle the selected row.
@@ -138,7 +137,7 @@
 			 * @param  {Object} col Column schema
 			 * @return {[type]}     [description]
 			 */
-			orderBy(col) {
+			changeSort(col) {
 				if (col.field) {
 					if (this.order.field == col.field) {
 						this.order.direction *= -1;

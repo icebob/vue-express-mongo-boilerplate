@@ -20,6 +20,10 @@ export const getRows = function ({commit, state}, loadMore) {
 	});
 };
 
+export const loadMoreRows = function(context) {
+	return getRows(context, true);
+};
+
 export const changeSort = function(store, sort) {
 	store.commit(CHANGE_SORT, sort);
 	getRows(store);

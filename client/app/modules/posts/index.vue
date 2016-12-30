@@ -4,9 +4,9 @@
 
 		.header.flex.row.justify-space-between
 			.group.sort
-				a.link(@click="setSort('-votes')", :class="{ active: sort == '-votes' }") {{ _("Hot") }}
-				a.link(@click="setSort('-views')", :class="{ active: sort == '-views' }") {{ _("MostViewed") }}
-				a.link(@click="setSort('-createdAt')", :class="{ active: sort == '-createdAt' }") {{ _("New") }}
+				a.link(@click="changeSort('-votes')", :class="{ active: sort == '-votes' }") {{ _("Hot") }}
+				a.link(@click="changeSort('-views')", :class="{ active: sort == '-views' }") {{ _("MostViewed") }}
+				a.link(@click="changeSort('-createdAt')", :class="{ active: sort == '-createdAt' }") {{ _("New") }}
 
 			button.button.primary(@click="newPost")
 				span.icon
@@ -14,8 +14,8 @@
 				span {{ _("NewPost") }}
 
 			.group.filter
-				a.link(@click="setViewMode('all')", :class="{ active: viewMode == 'all' }") {{ _("AllPosts") }}
-				a.link(@click="setViewMode('my')", :class="{ active: viewMode == 'my' }") {{ _("MyPosts") }}
+				a.link(@click="changeViewMode('all')", :class="{ active: viewMode == 'all' }") {{ _("AllPosts") }}
+				a.link(@click="changeViewMode('my')", :class="{ active: viewMode == 'my' }") {{ _("MyPosts") }}
 
 		.postForm(v-if="showForm")
 			vue-form-generator(:schema='schema', :model='model', :options='{}', :multiple="false", ref="form", :is-new-model="isNewPost")
@@ -56,7 +56,7 @@
 								small.text-muted {{ createdAgo(post) }}
 
 		.loadMore.text-center(v-if="hasMore")
-			button.button.outline(@click="loadMore", :class="{ 'loading': fetching }") {{ _("LoadMore") }}
+			button.button.outline(@click="loadMoreRows", :class="{ 'loading': fetching }") {{ _("LoadMore") }}
 		.noMore.text-center(v-if="!hasMore")
 			span.text-muted You reached the end of the list.
 		hr
@@ -79,7 +79,9 @@
 			"fetching",
 			"sort",
 			"viewMode",
-			"me"
+			"me",
+			"updated",
+			"removed"
 		]),
 
 		/**
@@ -168,6 +170,7 @@
 		methods: {
 			...mapActions([
 				"getRows",
+				"loadMoreRows",
 				"changeSort",
 				"changeViewMode",
 				"vote",
@@ -207,19 +210,6 @@
 			editedAgo(post) {
 				if (post.editedAt)
 					return this._("EditedAgo", { ago: Vue.filter("ago")(post.editedAt) } );
-			},
-
-			loadMore() {
-				// Load more rows for the page
-				this.getRows(true);
-			},
-
-			setSort(sort) {
-				this.changeSort(sort);
-			},
-
-			setViewMode(mode) {
-				this.changeViewMode(mode);
 			},
 
 			newPost() {
