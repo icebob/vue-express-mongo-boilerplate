@@ -8,7 +8,7 @@ let precss = require("precss");
 let autoprefixer = require("autoprefixer");
 
 module.exports = {
-	devtool: "inline-source-map",
+	devtool: "#inline-source-map",
 	entry: {
 		app: ["webpack-hot-middleware/client", "./client/app/main.js"],
 		frontend: ["webpack-hot-middleware/client", "./client/frontend/main.js"]
@@ -20,29 +20,27 @@ module.exports = {
 		chunkFilename: "[chunkhash].js"
 	},
 	module: {
-		loaders: [
-			{ test: /\.css$/,   loader: "style!css" },
+		rules: [
+			{ test: /\.css$/,   loaders: ["style-loader", "css-loader"] },
 
-			{ test: /\.scss$/, 	loaders: ["style", "css", "postcss", "sass"] },
-
-			{ test: /\.json$/,   loader: "json-loader" },
+			{ test: /\.scss$/, 	loaders: ["style-loader", "css-loader", "postcss-loader", "sass-loader"] },
 
 			// ES6/7 syntax and JSX transpiling out of the box
-			{ test: /\.js$/,	loader: "babel", 		exclude: [/node_modules/, /vendor/] },
+			{ test: /\.js$/,	loader: "babel-loader",	exclude: [/node_modules/, /vendor/] },
 
-			{ test: /\.vue$/,   loader: "vue" },
+			{ test: /\.vue$/,   loader: "vue-loader" },
 
-			{ test: /\.gif$/, 	loader: "url-loader?name=images/[name]-[hash:6].[ext]&limit=100000" },
-			{ test: /\.png$/, 	loader: "url-loader?name=images/[name]-[hash:6].[ext]&limit=100000" },
-			{ test: /\.jpg$/, 	loader: "file-loader?name=images/[name]-[hash:6].[ext]" },		
+			{ test: /\.gif$/, 	loader: "url-loader", options: { name: "images/[name]-[hash:6].[ext]", limit: 100000 } },
+			{ test: /\.png$/, 	loader: "url-loader", options: { name: "images/[name]-[hash:6].[ext]", limit: 100000 } },
+			{ test: /\.jpg$/, 	loader: "file-loader", options: { name: "images/[name]-[hash:6].[ext]" } },		
 
 			// required for font-awesome icons
-			{ test: /\.(woff2?|svg)$/, loader: "url-loader?limit=10000&prefix=font/" },
-			{ test: /\.(ttf|eot)$/, loader: "file-loader?prefix=font/" }
+			{ test: /\.(woff2?|svg)$/, loader: "url-loader", options: { limit: 10000, prefix: "font/" } },
+			{ test: /\.(ttf|eot)$/, loader: "file-loader", options: { prefix: "font/" } }
 		]
 	},
 	resolve: {
-		extensions: ["", ".vue", ".js", ".json"],
+		extensions: [".vue", ".js", ".json"],
 		alias: {
 			"images": path.resolve(__dirname, "client", "images"),
 			"vue$": "vue/dist/vue.common.js"
@@ -51,10 +49,8 @@ module.exports = {
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoErrorsPlugin()
-
-		//new ExtractTextPlugin("[name].css")
-	],
-
+	]
+	/*
 	vue: {
 		postcss: [
 			require("autoprefixer")({
@@ -63,4 +59,5 @@ module.exports = {
 			precss
 		]
 	}	
+	*/
 };
