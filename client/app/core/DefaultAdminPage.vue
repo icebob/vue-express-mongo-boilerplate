@@ -15,7 +15,7 @@
 			vue-form-generator(:schema='schema.form', :model='model', :options='options', :multiple="selected.length > 1", ref="form", :is-new-model="isNewModel")
 
 			.errors.text-center
-				div.alert.alert-danger(v-for="item in validationErrors", track-by="$index") {{ item.field.label }}: 
+				div.alert.alert-danger(v-for="(item, index) in validationErrors", :key="index") {{ item.field.label }}: 
 					strong {{ item.error }}
 
 			.buttons.flex.justify-space-around
@@ -28,8 +28,6 @@
 				button.button.danger(@click="deleteModel", :disabled="!enabledDelete")
 					i.icon.fa.fa-trash 
 					| {{ schema.resources.deleteCaption || _("Delete") }}
-
-			// pre {{{ model | prettyJSON }}}
 
 </template>
 

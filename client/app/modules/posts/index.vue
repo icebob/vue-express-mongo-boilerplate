@@ -25,8 +25,8 @@
 				button.button(@click="cancelPost") {{ _("Cancel") }}
 
 
-		ul.posts
-			li(v-for="post of posts", transition="post", track-by="code")
+		transition-group.posts(name="post", tag="ul")
+			li(v-for="post of posts", :key="post.code")
 				article.media
 					.media-left
 						img.avatar(:src="post.author.avatar")
@@ -377,7 +377,7 @@
 
 
 	/* Transition styles */
-
+/*
 	.post-transition {
 		transition: opacity .5s ease;
 	}
@@ -388,9 +388,9 @@
 
 	.post-leave {
 		opacity: 0;
-		position: absolute !important; /* important for removal move to work */
+		position: absolute !important;
 	}
-
+*/
 	.post-move {
 		transition: transform .5s cubic-bezier(.55,0,.1,1);
 	}

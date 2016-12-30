@@ -109,12 +109,6 @@
 			}
 		},
 
-		events: {
-			"search"(text) {
-				console.log("Search: ", text);
-			}
-		},
-
 		/**
 		 * Application created
 		 */

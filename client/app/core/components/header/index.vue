@@ -6,7 +6,7 @@
 		.menu-toggle.left(@click="toggleSidebar()")
 			i.fa.fa-bars
 
-		search-box.left(:model.sync="search")
+		search-box.left
 
 		user-box.right
 
@@ -25,7 +25,6 @@
 		},
 
 		props: [
-			"search",
 			"toggleSidebar"
 		]
 

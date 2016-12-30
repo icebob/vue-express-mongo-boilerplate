@@ -26,7 +26,7 @@ const mutations = {
 		} else {
 			if (multiSelect === true) {
 				if (state.selected.indexOf(row) != -1)
-					state.selected.$remove(row);
+					state.selected = state.selected.filter(item => item != row);
 				else
 					state.selected.push(row);
 
