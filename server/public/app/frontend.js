@@ -1,1 +1,34 @@
-!function(n){function t(r){if(e[r])return e[r].exports;var o=e[r]={i:r,l:!1,exports:{}};return n[r].call(o.exports,o,o.exports,t),o.l=!0,o.exports}var e={};return t.m=n,t.c=e,t.i=function(n){return n},t.d=function(n,e,r){t.o(n,e)||Object.defineProperty(n,e,{configurable:!1,enumerable:!0,get:r})},t.n=function(n){var e=n&&n.__esModule?function(){return n.default}:function(){return n};return t.d(e,"a",e),e},t.o=function(n,t){return Object.prototype.hasOwnProperty.call(n,t)},t.p="/app/",t(t.s=399)}({193:function(n,t,e){"use strict";function r(n){return n&&n.__esModule?n:{default:n}}var o=e(279);r(o),console.log("Frontend loaded!")},279:function(n,t){},399:function(n,t,e){n.exports=e(193)}});
+webpackJsonp([1],{
+
+/***/ 201:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _frontend = __webpack_require__(287);
+
+var _frontend2 = _interopRequireDefault(_frontend);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+console.log("Frontend loaded!");
+
+/***/ },
+
+/***/ 287:
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ },
+
+/***/ 401:
+/***/ function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(201);
+
+
+/***/ }
+
+},[401]);

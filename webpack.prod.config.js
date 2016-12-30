@@ -4,16 +4,38 @@ let path = require("path");
 let glob = require("glob");
 let webpack = require("webpack");
 
-let precss = require("precss");
-let autoprefixer = require("autoprefixer");
-
+let StatsPlugin = require("stats-webpack-plugin");
 let ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+let postcssConfig = {
+	plugins: [
+		require("autoprefixer")({
+			browsers: ["last 3 versions"]
+		}),
+		require("precss")
+	]
+};
 
 module.exports = {
 	entry: {
 		app: ["./client/app/main.js"],
+		vendor: [
+			"es6-promise",
+			"vue",
+			"vue-router",
+			"vuex",
+			"lodash",
+			"moment",
+			"jquery",
+			"axios",
+			"toastr",
+			"vue-form-generator",
+			"vue-websocket",
+			"apollo-client",
+			"graphql-tag",
+			"i18next"
+		],
 		frontend: ["./client/frontend/main.js"]
-			//vendor: glob.sync("./src/vendor/**/*.js")
 	},
 	output: {
 		path: path.resolve(__dirname, "server", "public", "app"),
@@ -36,14 +58,7 @@ module.exports = {
 						}
 					}, {
 						loader: "postcss-loader",
-						options: {
-							plugins: [
-								require("autoprefixer")({
-									browsers: ["last 2 versions"]
-								}),
-								precss
-							]
-						}
+						options: postcssConfig
 					}, {
 						loader: "sass-loader"
 					}]
@@ -56,12 +71,7 @@ module.exports = {
 				test: /\.vue$/,
 				loader: "vue-loader",
 				options: {
-					postcss: [
-						require("autoprefixer")({
-							browsers: ["last 2 versions"]
-						}),
-						precss
-					],
+					postcss: postcssConfig.plugins,
 					loaders: {
 						sass: ExtractTextPlugin.extract({
 							fallbackLoader: "vue-style-loader",
@@ -72,14 +82,7 @@ module.exports = {
 								}
 							}, {
 								loader: "postcss-loader",
-								options: {
-									plugins: [
-										require("autoprefixer")({
-											browsers: ["last 2 versions"]
-										}),
-										precss
-									]
-								}
+								options: postcssConfig
 							}, {
 								loader: "sass-loader"
 							}]
@@ -91,14 +94,14 @@ module.exports = {
 				loader: "url-loader",
 				options: {
 					name: "images/[name]-[hash:6].[ext]",
-					limit: 100000
+					limit: 10000
 				}
 			}, {
 				test: /\.png$/,
 				loader: "url-loader",
 				options: {
 					name: "images/[name]-[hash:6].[ext]",
-					limit: 100000
+					limit: 10000
 				}
 			}, {
 				test: /\.jpg$/,
@@ -126,6 +129,7 @@ module.exports = {
 	},
 	resolve: {
 		extensions: [".vue", ".js", ".json"],
+		mainFiles: ["index"],
 		alias: {
 			"images": path.resolve(__dirname, "client", "images"),
 			"vue$": "vue/dist/vue.common.js"
@@ -137,16 +141,24 @@ module.exports = {
 				"NODE_ENV": JSON.stringify("production")
 			}
 		}),
+		// extract vendor chunks for better caching
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vendor"
+		}),		
 		//new StatsPlugin('stats.json'),
-		new webpack.optimize.UglifyJsPlugin({
+		/*new webpack.optimize.UglifyJsPlugin({
 			compress: {
 				warnings: false
 			}
 		}),
 		new webpack.LoaderOptionsPlugin({
 			minimize: true
-		}),
+		}),*/
 
-		new ExtractTextPlugin("styles/[name].css")
+		new ExtractTextPlugin("styles/[name].css"),
+		/*new StatsPlugin(path.resolve(__dirname, "stats.json"), {
+			chunkModules: true
+			//exclude: [/node_modules[\\\/]react/]
+		})*/
 	]
 };

@@ -4,14 +4,36 @@ let path = require("path");
 let glob = require("glob");
 let webpack = require("webpack");
 
-let precss = require("precss");
-let autoprefixer = require("autoprefixer");
+let postcssConfig = {
+	plugins: [
+		require("autoprefixer")({
+			browsers: ["last 3 versions"]
+		}),
+		require("precss")
+	]
+};
 
 module.exports = {
 	devtool: "#inline-source-map",
 
 	entry: {
 		app: ["webpack-hot-middleware/client", "./client/app/main.js"],
+		vendor: [
+			"es6-promise",
+			"vue",
+			"vue-router",
+			"vuex",
+			"lodash",
+			"moment",
+			"jquery",
+			"axios",
+			"toastr",
+			"vue-form-generator",
+			"vue-websocket",
+			"apollo-client",
+			"graphql-tag",
+			"i18next"
+		],
 		frontend: ["webpack-hot-middleware/client", "./client/frontend/main.js"]
 	},
 
@@ -23,6 +45,7 @@ module.exports = {
 	},
 
 	module: {
+		noParse: /es6-promise\.js$/, // avoid webpack shimming process
 		rules: [
 			{
 				test: /\.css$/,
@@ -45,12 +68,7 @@ module.exports = {
 				test: /\.vue$/,
 				loader: "vue-loader",
 				options: {
-					postcss: [
-						require("autoprefixer")({
-							browsers: ["last 2 versions"]
-						}),
-						precss
-					]
+					postcss: postcssConfig.plugins
 				}
 			},
 
@@ -59,14 +77,14 @@ module.exports = {
 				loader: "url-loader",
 				options: {
 					name: "images/[name]-[hash:6].[ext]",
-					limit: 100000
+					limit: 10000
 				}
 			}, {
 				test: /\.png$/,
 				loader: "url-loader",
 				options: {
 					name: "images/[name]-[hash:6].[ext]",
-					limit: 100000
+					limit: 10000
 				}
 			}, {
 				test: /\.jpg$/,
@@ -96,6 +114,7 @@ module.exports = {
 
 	resolve: {
 		extensions: [".vue", ".js", ".json"],
+		mainFiles: ["index"],
 		alias: {
 			"images": path.resolve(__dirname, "client", "images"),
 			"vue$": "vue/dist/vue.common.js"

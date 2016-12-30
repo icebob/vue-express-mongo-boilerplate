@@ -1,13 +1,12 @@
 "use strict";
 
-require("es6-promise").polyfill();
+require("es6-promise/auto");
 
 import Vue from "vue";
 
 import axios from "axios";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-//import VueAnimatedList from "vue-animated-list";
 import Filters from "./core/filters";
 import VueI18Next from "./core/i18next.js";
 import VueFormGenerator from "vue-form-generator";
