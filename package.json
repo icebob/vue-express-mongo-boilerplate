@@ -5,8 +5,8 @@
   "description": "Express NodeJS application server boilerplate with Mongo and VueJS",
   "main": "server/index.js",
   "scripts": {
-    "build": "webpack --progress --colors --config webpack.prod.config.js",
-    "build:server": "webpack --progress --colors --config webpack.server.config.js",
+    "build": "webpack --progress --colors --config build/webpack.prod.config.js",
+    "build:server": "webpack --progress --colors --config build/webpack.server.config.js",
     "dev": "cross-env NODE_ENV=development nodemon --debug",
     "start": "cross-env NODE_ENV=production node server/index.js",
     "start:bundle": "cross-env NODE_ENV=production node server/bundle.js",
@@ -168,7 +168,8 @@
     "webpack": "v2.2.0-rc.3",
     "webpack-dev-middleware": "1.9.0",
     "webpack-dev-server": "2.2.0-rc.0",
-    "webpack-hot-middleware": "2.14.0"
+    "webpack-hot-middleware": "2.14.0",
+    "webpack-merge": "2.0.0"
   },
   "snyk": true
 }

@@ -28,7 +28,7 @@ module.exports = {
 	entry: "./server/index.js",
 
 	output: {
-		path: path.join(__dirname, "server"),
+		path: path.join(__dirname, "..", "server"),
 		filename: "bundle.js"
 	},
 
