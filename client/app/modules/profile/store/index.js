@@ -1,11 +1,9 @@
-import { SET } from "./types";
-
 const state = {
 	profile: {}
 };
 
 const mutations = {
-	[SET] (state, profile) {
+	["UPDATE"] (state, profile) {
 		state.profile = profile;
 	}
 };

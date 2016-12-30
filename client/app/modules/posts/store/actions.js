@@ -1,8 +1,10 @@
 import Vue from "vue";
 import toastr from "../../../core/toastr";
 import Service from "../../../core/service";
-import { NAMESPACE, LOAD, LOAD_MORE, ADD, UPDATE, VOTE, UNVOTE, REMOVE, 
+import { LOAD, LOAD_MORE, ADD, UPDATE, VOTE, UNVOTE, REMOVE, 
 	NO_MORE_ITEMS, FETCHING, CHANGE_SORT, CHANGE_VIEWMODE } from "./types";
+
+export const NAMESPACE	 	= "/api/posts";
 
 let service = new Service("posts"); 
 
