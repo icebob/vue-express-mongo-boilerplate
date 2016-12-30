@@ -47,7 +47,13 @@ try {
 	if (!fs.existsSync(extConfigFile)) {
 		console.warn(chalk.yellow.bold("External production configuration not found!. Create a default `config.js` file..."));
 
-		let template = fs.readFileSync(path.join(__dirname,  "config.template.js"));
+		let template;
+		/* global WEBPACK_BUNDLE */
+		if (WEBPACK_BUNDLE) {
+			template = require("raw-loader!./config.template.js");
+		} else {
+			template = fs.readFileSync(path.join(__dirname,  "config.template.js"));
+		}
 
 		_.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
 		let compiled = _.template(template);
@@ -62,12 +68,16 @@ try {
 		console.warn(chalk.green.bold("The `config.js` file created! Please update the settings in the file!"));		
 	}
 	
-	externalConfig = require(extConfigFile);
+	if (WEBPACK_BUNDLE) {
+		externalConfig = require("../../config.js");
+	} else {
+		externalConfig = require(extConfigFile);
+	}
 
 } catch (error) {
 	console.warn(chalk.red.bold("\r\n=============================================="));
 	console.warn(chalk.red.bold("  Unable to load external `config.js` file!"));
-	console.warn(chalk.red.bold("  " + error));
+	console.warn(chalk.red.bold(" ", error));
 	//console.warn(chalk.red.bold(error.stack));
 	console.warn(chalk.red.bold("==============================================\r\n"));
 	process.exit(1);

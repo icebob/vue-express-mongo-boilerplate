@@ -145,6 +145,7 @@
     "nightwatch": "0.9.11",
     "postcss-loader": "0.11.0",
     "precss": "1.4.0",
+    "raw-loader": "0.5.1",
     "request": "2.79.0",
     "sass-loader": "3.2.1",
     "selenium-server": "2.53.1",
