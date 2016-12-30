@@ -31,11 +31,15 @@
 	import NotificationsDropdown from "./dropdowns/notifications";
 	import MessagesDropdown from "./dropdowns/messages";
 
-	import * as actions from "../../../modules/session/vuex/actions";
-	import * as getters from "../../../modules/session/vuex/getters";
-
+	import { mapActions, mapGetters } from "vuex";
 
 	export default {
+		computed: mapGetters("session", [
+			"me",
+			"notifications",
+			"messages"
+		]),
+
 		components: {
 			UserDropdown,
 			NotificationsDropdown,
@@ -49,14 +53,6 @@
 				expandedMessages: false
 			};
 		},
-
-		/**
-		 * Set Vuex actions & getters
-		 */
-		vuex: {
-			getters,
-			actions
-		},	
 
 		methods: {
 

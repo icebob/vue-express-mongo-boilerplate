@@ -17,24 +17,31 @@
 </template>
 
 <script>
-	import * as actions from "./vuex/actions";
-	import * as getters from "./vuex/getters";
+	import { mapActions, mapGetters } from "vuex";
 
 	import Service from "../../core/service";
 
 	export default {
 		/**
-		 * Set Vuex actions & getters
+		 * Computed getters
 		 */
-		vuex: {
-			getters,
-			actions
-		},	
+		 computed: mapGetters("counter", [
+			 "count"
+		 ]),
 
 		/**
 		 * Page methods
 		 */
 		methods: {
+			/**
+			 * Actions from store
+			 */
+			...mapActions("counter", [
+				"getValue",
+				"increment",
+				"decrement",
+				"changedValue"
+			]),
 
 			/**
 			 * Increment counter

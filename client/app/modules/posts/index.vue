@@ -4,9 +4,9 @@
 
 		.header.flex.row.justify-space-between
 			.group.sort
-				a.link(@click="setSort('-votes')", :class="{ active: sort == '-votes' }") {{ _("Hot") }}
-				a.link(@click="setSort('-views')", :class="{ active: sort == '-views' }") {{ _("MostViewed") }}
-				a.link(@click="setSort('-createdAt')", :class="{ active: sort == '-createdAt' }") {{ _("New") }}
+				a.link(@click="changeSort('-votes')", :class="{ active: sort == '-votes' }") {{ _("Hot") }}
+				a.link(@click="changeSort('-views')", :class="{ active: sort == '-views' }") {{ _("MostViewed") }}
+				a.link(@click="changeSort('-createdAt')", :class="{ active: sort == '-createdAt' }") {{ _("New") }}
 
 			button.button.primary(@click="newPost")
 				span.icon
@@ -14,19 +14,19 @@
 				span {{ _("NewPost") }}
 
 			.group.filter
-				a.link(@click="setViewMode('all')", :class="{ active: viewMode == 'all' }") {{ _("AllPosts") }}
-				a.link(@click="setViewMode('my')", :class="{ active: viewMode == 'my' }") {{ _("MyPosts") }}
+				a.link(@click="changeViewMode('all')", :class="{ active: viewMode == 'all' }") {{ _("AllPosts") }}
+				a.link(@click="changeViewMode('my')", :class="{ active: viewMode == 'my' }") {{ _("MyPosts") }}
 
 		.postForm(v-if="showForm")
-			vue-form-generator(:schema='schema', :model='model', :options='{}', :multiple="false", v-ref:form, :is-new-model="isNewPost")
+			vue-form-generator(:schema='schema', :model='model', :options='{}', :multiple="false", ref="form", :is-new-model="isNewPost")
 
 			.group.buttons
 				button.button.primary(@click="savePost") {{ _("Save") }}
 				button.button(@click="cancelPost") {{ _("Cancel") }}
 
 
-		ul.posts
-			li(v-for="post of rows", transition="post", track-by="code")
+		transition-group.posts(name="post", tag="ul")
+			li(v-for="post of posts", :key="post.code")
 				article.media
 					.media-left
 						img.avatar(:src="post.author.avatar")
@@ -38,7 +38,7 @@
 					.media-content
 						h3 {{ post.title }}
 
-						p.content(v-html="post.content | marked")
+						p.content(v-html="markdown(post.content)")
 						hr.full
 						.row
 							.functions.left
@@ -56,7 +56,7 @@
 								small.text-muted {{ createdAgo(post) }}
 
 		.loadMore.text-center(v-if="hasMore")
-			button.button.outline(@click="loadMore", :class="{ 'loading': fetching }") {{ _("LoadMore") }}
+			button.button.outline(@click="loadMoreRows", :class="{ 'loading': fetching }") {{ _("LoadMore") }}
 		.noMore.text-center(v-if="!hasMore")
 			span.text-muted You reached the end of the list.
 		hr
@@ -69,13 +69,21 @@
 	import { cloneDeep } from "lodash";
 	import { validators, schema as schemaUtils } from "vue-form-generator";
 
-	import * as actions from "./vuex/actions";
-	import * as getters from "./vuex/getters";
-	import { me as sessionMe } from "../session/vuex/getters";
+	import { mapGetters, mapActions } from "vuex";
 
 	export default {
-		filters: {
-			marked
+
+		computed: {
+			...mapGetters("posts", [
+				"posts",
+				"hasMore",
+				"fetching",
+				"sort",
+				"viewMode"
+			]),
+			...mapGetters("session", [
+				"me"
+			])
 		},
 
 		/**
@@ -110,27 +118,6 @@
 					]
 				}
 			};
-		},
-
-		/**
-		 * Set Vuex actions & getters
-		 */
-		vuex: {
-			getters,
-			actions
-		},		
-
-		/**
-		 * Route handlers
-		 */
-		route: {
-			activate() {
-
-			},
-
-			data(transition) {
-				
-			}
 		},
 
 		/**
@@ -183,9 +170,26 @@
 		},	
 
 		methods: {
+			...mapActions("posts", [
+				"getRows",
+				"loadMoreRows",
+				"changeSort",
+				"changeViewMode",
+				"vote",
+				"unVote",
+				"saveRow",
+				"updateRow",
+				"removeRow",
+				"updated",
+				"removed"
+			]),
+
+			markdown(content) {
+				return marked(content);
+			},
+
 			iVoted(post) {
-				let me = sessionMe(this.$store.state);
-				return _.find(post.voters, (user) => user.code == me.code) != null;
+				return _.find(post.voters, (user) => user.code == this.me.code) != null;
 			},
 
 			toggleVote(post) {
@@ -210,19 +214,6 @@
 			editedAgo(post) {
 				if (post.editedAt)
 					return this._("EditedAgo", { ago: Vue.filter("ago")(post.editedAt) } );
-			},
-
-			loadMore() {
-				// Load more rows for the page
-				this.getRows(true);
-			},
-
-			setSort(sort) {
-				this.changeSort(sort);
-			},
-
-			setViewMode(mode) {
-				this.changeViewMode(mode);
 			},
 
 			newPost() {
@@ -386,7 +377,7 @@
 
 
 	/* Transition styles */
-
+/*
 	.post-transition {
 		transition: opacity .5s ease;
 	}
@@ -397,9 +388,9 @@
 
 	.post-leave {
 		opacity: 0;
-		position: absolute !important; /* important for removal move to work */
+		position: absolute !important;
 	}
-
+*/
 	.post-move {
 		transition: transform .5s cubic-bezier(.55,0,.1,1);
 	}

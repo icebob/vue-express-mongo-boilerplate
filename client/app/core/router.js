@@ -1,17 +1,25 @@
+"use strict";
+
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import routes from "../routes";
+import Home from "../modules/home";
+import Counter from "../modules/counter";
+import Devices from "../modules/devices";
+import Posts from "../modules/posts";
+import Profile from "../modules/profile";
 
-module.exports = function() {
+Vue.use(VueRouter);
 
-	Vue.use(VueRouter);
-
-	let router = new VueRouter({
-		linkActiveClass: "active"
-	});
-
-	router.map(routes);
-
-	return router;
-};
+export default new VueRouter({
+	mode: "hash",
+	routes: [
+		{ path: "/", component: Home },
+		{ path: "/devices", component: Devices },
+		{ path: "/posts", component: Posts },
+		{ path: "/counter", component: Counter },	
+		{ path: "/profile", component: Profile }
+		// { path: "/users", component: User, meta: { needRole: "admin" } },
+		//{ path: "*", component: NotFound }
+	]
+});

@@ -1,11 +1,11 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import session from "../modules/session/vuex";
-import devices from "../modules/devices/vuex";
-import posts from "../modules/posts/vuex";
-import counter from "../modules/counter/vuex";
-import profile from "../modules/profile/vuex";
+import session from "../modules/session/store";
+import devices from "../modules/devices/store";
+import posts from "../modules/posts/store";
+import counter from "../modules/counter/store";
+import profile from "../modules/profile/store";
 
 Vue.use(Vuex);
 

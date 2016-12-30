@@ -4,35 +4,40 @@ require("es6-promise").polyfill();
 
 import "../scss/style.scss";
 import Vue from "vue";
-import VueRouter from "vue-router";
-import VueResource from "vue-resource";
-import VueAnimatedList from "vue-animated-list";
+
+import axios from "axios";
+axios.defaults.headers.post["Content-Type"] = "application/json";
+
+//import VueAnimatedList from "vue-animated-list";
 import Filters from "./core/filters";
 import VueI18Next from "./core/i18next.js";
 import VueFormGenerator from "vue-form-generator";
 import VueWebsocket from "vue-websocket";
 
+import store from "./core/store";
 import App from "./core/App";
+
 
 Vue.use(Filters);
 
-Vue.use(VueRouter);
-Vue.use(VueResource);
-Vue.use(VueAnimatedList);
+//Vue.use(VueAnimatedList);
 Vue.use(VueFormGenerator);
 Vue.use(VueWebsocket);
 
 //Vue.http.headers.common['X-CSRF-TOKEN'] = $('input[name="csrf"]').val();
 
-Vue.config.debug = true;
-
-
 // Register i18next localization module. We need to 
 // wait it before start the application!
 Vue.use(VueI18Next, (i18next) => {
+	let router = require("./core/router").default; // Load only after i18next initialized
 
-	let router = require("./core/router")();
-
-	router.start(App, "#app");
-
+	new Vue({
+		el: "#app",
+		components: {
+			App
+		},
+		router,
+		store,
+		render: h => h("app")
+	});
 });

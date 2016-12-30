@@ -1,15 +1,15 @@
 export function me(state) {
-	return state.session.user;
+	return state.user;
 }
 
 export function notifications(state) {
-	return state.session.notifications;
+	return state.notifications;
 }
 
 export function messages(state) {
-	return state.session.messages;
+	return state.messages;
 }
 
 export function searchText(state) {
-	return state.session.searchText;
+	return state.searchText;
 }

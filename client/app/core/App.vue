@@ -13,15 +13,13 @@
 
 <script>
 	import Vue from "vue";
-	import store from "../core/store";
 
 	import PageHeader from "./components/header/index";
 	import Sidebar from "./components/sidebar/index";
 
-	import * as actions from "../modules/session/vuex/actions";
-	import * as getters from "../modules/session/vuex/getters";
-
 	import Service from "./service";
+
+	import { mapActions, mapGetters } from "vuex";
 
 	export default {
 
@@ -50,25 +48,12 @@
 			};
 		},
 
-		/**
-		 * Set Vuex actions & getters
-		 */
-		vuex: {
-			getters,
-			actions
-		},		
-
 		watch: {
 			$lng() {
 				console.log("Language updated");
 				this.update(this);
 			}
 		},
-
-		/**
-		 * Set the vuex store object
-		 */
-		store: store,
 
 		/**
 		 * Socket handlers. Every property is an event handler
@@ -101,6 +86,10 @@
 		},
 
 		methods: {
+			...mapActions("session", [
+				"getSessionUser"
+			]),
+
 			update: function(vm) {
 				if (vm == null)
 					return;
@@ -117,12 +106,6 @@
 
 			toggleSidebar() {
 				this.miniSidebar = !this.miniSidebar;
-			}
-		},
-
-		events: {
-			"search"(text) {
-				console.log("Search: ", text);
 			}
 		},
 

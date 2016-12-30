@@ -8,7 +8,7 @@ let precss = require("precss");
 let autoprefixer = require("autoprefixer");
 
 module.exports = {
-	devtool: "eval-source-map",
+	devtool: "inline-source-map",
 	entry: {
 		app: ["webpack-hot-middleware/client", "./client/app/main.js"],
 		frontend: ["webpack-hot-middleware/client", "./client/frontend/main.js"]
@@ -21,7 +21,6 @@ module.exports = {
 	},
 	module: {
 		loaders: [
-			// required to write "require('./style.css')"
 			{ test: /\.css$/,   loader: "style!css" },
 
 			{ test: /\.scss$/, 	loaders: ["style", "css", "postcss", "sass"] },
@@ -29,10 +28,7 @@ module.exports = {
 			{ test: /\.json$/,   loader: "json-loader" },
 
 			// ES6/7 syntax and JSX transpiling out of the box
-    		{ test: /\.js$/,	loader: "babel", 		exclude: [/node_modules/, /vendor/], query: {
-			presets: ["es2015", "stage-0"]
-		}	
-			},
+			{ test: /\.js$/,	loader: "babel", 		exclude: [/node_modules/, /vendor/] },
 
 			{ test: /\.vue$/,   loader: "vue" },
 
@@ -40,19 +36,17 @@ module.exports = {
 			{ test: /\.png$/, 	loader: "url-loader?name=images/[name]-[hash:6].[ext]&limit=100000" },
 			{ test: /\.jpg$/, 	loader: "file-loader?name=images/[name]-[hash:6].[ext]" },		
 
-			// required for bootstrap icons
-			{ test: /\.woff$/,  loader: "url-loader?prefix=font/&limit=5000&mimetype=application/font-woff" },
-			{ test: /\.ttf$/,   loader: "file-loader?prefix=font/" },
-			{ test: /\.eot$/,   loader: "file-loader?prefix=font/" },
-			{ test: /\.svg$/,   loader: "file-loader?prefix=font/" }
-
+			// required for font-awesome icons
+			{ test: /\.(woff2?|svg)$/, loader: "url-loader?limit=10000&prefix=font/" },
+			{ test: /\.(ttf|eot)$/, loader: "file-loader?prefix=font/" }
 		]
 	},
 	resolve: {
-    	extensions: ["", ".vue", ".js", ".json"],
-    	alias: {
-    		"images": path.resolve(__dirname, "client", "images")
-    	}
+		extensions: ["", ".vue", ".js", ".json"],
+		alias: {
+			"images": path.resolve(__dirname, "client", "images"),
+			"vue$": "vue/dist/vue.common.js"
+		}
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
@@ -61,16 +55,12 @@ module.exports = {
 		//new ExtractTextPlugin("[name].css")
 	],
 
-	postcss: function () {
-		return [
-			autoprefixer({ browsers: ["last 2 versions"] }), 
-			precss
-		];
-	},	
-
 	vue: {
-		autoprefixer: {
-			browsers: ["last 2 versions"]
-		}
+		postcss: [
+			require("autoprefixer")({
+				browsers: ["last 2 versions"]
+			}),
+			precss
+		]
 	}	
 };

@@ -1,25 +1,18 @@
 <template lang="pug">
 	.search-box
 		i.fa.fa-search
-		input(type="search", v-model="text", placeholder="{{ 'Search3dots' | i18n }}")
+		input(type="search", v-model="text", :placeholder="_('Search3dots')")
 
 </template>
 
 <script>
-	import { searching } from "../../../modules/session/vuex/actions";
-	import { searchText } from "../../../modules/session/vuex/getters";
+	import { mapGetters, mapActions } from "vuex";
 
 	export default {
-		vuex: {
-			getters: {
-				searchText
-			},
-			actions: {
-				searching
-			}
-		},
-
 		computed: {
+			...mapGetters("session", [
+				"searchText"
+			]),
 			text: {
 				get() {
 					return this.searchText;
@@ -29,6 +22,12 @@
 					this.searching(value);
 				}
 			}
+		},
+
+		methods: {
+			...mapActions("session", [
+				"searching"
+			])
 		}
 	};
 	

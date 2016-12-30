@@ -26,7 +26,7 @@ const mutations = {
 		} else {
 			if (multiSelect === true) {
 				if (state.selected.indexOf(row) != -1)
-					state.selected.$remove(row);
+					state.selected = state.selected.filter(item => item != row);
 				else
 					state.selected.push(row);
 
@@ -49,17 +49,17 @@ const mutations = {
 	},
 
 	[REMOVE] (state, model) {
-		// We need find the exact object, because model may come via websocket
-		let found = find(state.rows, (item) => item.code == model.code);
-
-		if (found) {
-			state.rows.$remove(found);
-		}
+		state.rows = state.rows.filter(item => item.code != model.code);
 	}	
 };
 
+import * as getters from "./getters";
+import * as actions from "./actions";
 
 export default {
+	namespaced: true,
 	state,
+	getters,
+	actions,
 	mutations
 };

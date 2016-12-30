@@ -77,8 +77,8 @@ function install(Vue, callback, options = {}) {
 
 	// Register as a directive
 	Vue.directive("i18n", {
-		bind: function() {
-			this.el.innerHTML = i18next.t(this.expression);
+		bind: function(el, binding, vnode) {
+			el.innerHTML = i18next.t(binding.expression);
 		}
 	});	
 

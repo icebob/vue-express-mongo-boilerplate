@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import IO from "socket.io-client";
 import gql from "graphql-tag";
 import ApolloClient, { createNetworkInterface } from "apollo-client";
 
@@ -17,15 +17,6 @@ const apolloClient = new ApolloClient({
 	networkInterface
 });
 
-/*
-networkInterface.use([{
-	applyMiddleware(req, next) {
-		// Send to back the session ID
-		req.options.credentials = "same-origin";
-		next();
-	}
-}]);*/
-
 export default class Service {
 	
 	/**
@@ -36,8 +27,12 @@ export default class Service {
 	 * 
 	 * @memberOf Service
 	 */
-	constructor(namespace, vm) {
-		this.vm = vm;
+	constructor(namespace, vm, socketOpts) {
+		if (vm)
+			this.socket = vm.$socket;
+		else
+			this.socket = IO(socketOpts);
+
 		this.namespace = namespace;
 		this.axios = axios.create({
 			baseURL: `/api/${namespace}/`,
@@ -86,7 +81,7 @@ export default class Service {
 	emit(action, params) {
 		return new Promise((resolve, reject) => {
 
-			this.vm.$socket.emit(`/${this.namespace}/${action}`, params, (response) => {
+			this.socket.emit(`/${this.namespace}/${action}`, params, (response) => {
 
 				//console.log("Response: ", response);
 				if (response && response.status == 200)

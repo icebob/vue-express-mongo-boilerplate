@@ -28,23 +28,24 @@
 						span.value {{ profile.createdAt | ago }}							
 
 				hr.full
-		pre {{{ profile | prettyJSON }}}
+		pre(v-html="this.$options.filters.prettyJSON(profile)")
 
 </template>
 
 <script>
-	import * as actions from "./vuex/actions";
-	import * as getters from "./vuex/getters";
-
 	import Service from "../../core/service";
 
+	import { mapGetters, mapActions } from "vuex";
+
 	export default {
-		vuex: {
-			getters,
-			actions
-		},	
+		computed: mapGetters("profile", [
+			"profile"
+		]),
 
 		methods: {
+			...mapActions("profile", [
+				"getProfile"
+			])
 		},
 
 		created() {
