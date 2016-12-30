@@ -79,9 +79,7 @@
 			"fetching",
 			"sort",
 			"viewMode",
-			"me",
-			"updated",
-			"removed"
+			"me"
 		]),
 
 		/**
@@ -177,7 +175,9 @@
 				"unVote",
 				"saveRow",
 				"updateRow",
-				"removeRow"
+				"removeRow",
+				"updated",
+				"removed"
 			]),
 
 			markdown(content) {

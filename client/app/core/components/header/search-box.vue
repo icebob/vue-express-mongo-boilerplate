@@ -6,17 +6,13 @@
 </template>
 
 <script>
-	export default {
-		/*vuex: {
-			getters: {
-				searchText
-			},
-			actions: {
-				searching
-			}
-		},
+	import { mapGetters, mapActions } from "vuex";
 
+	export default {
 		computed: {
+			...mapGetters([
+				"searchText"
+			]),
 			text: {
 				get() {
 					return this.searchText;
@@ -26,9 +22,12 @@
 					this.searching(value);
 				}
 			}
-		}*/
-		data() {
-			return { text: ""}
+		},
+
+		methods: {
+			...mapActions([
+				"searching"
+			])
 		}
 	};
 	

@@ -4,6 +4,10 @@ require("es6-promise").polyfill();
 
 import "../scss/style.scss";
 import Vue from "vue";
+
+import axios from "axios";
+axios.defaults.headers.post["Content-Type"] = "application/json";
+
 //import VueAnimatedList from "vue-animated-list";
 import Filters from "./core/filters";
 import VueI18Next from "./core/i18next.js";
@@ -12,6 +16,7 @@ import VueWebsocket from "vue-websocket";
 
 import store from "./core/store";
 import App from "./core/App";
+
 
 Vue.use(Filters);
 

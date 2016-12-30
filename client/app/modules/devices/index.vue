@@ -83,7 +83,12 @@ https://github.com/Akryum/vue-apollo
 				"downloadRows",
 				"created",
 				"updated",
-				"removedas"
+				"removed",
+				"selectRow",
+				"clearSelection",
+				"saveRow",
+				"updateRow",
+				"removeRow"
 			])
 		},
 

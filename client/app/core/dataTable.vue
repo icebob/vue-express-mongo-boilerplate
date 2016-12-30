@@ -22,7 +22,22 @@
 </template>
 
 <script>
-	import {each, isArray, isFunction, isNil, defaults, orderBy, includes, get} from "lodash";
+	import {each, isObject, isArray, isFunction, isNil,  isString, defaults, orderBy, includes, get} from "lodash";
+
+	function searchInObject(obj, text) {
+		text = text.toLowerCase();
+		let values = Object.values(obj);
+		let res = values.filter(val => {
+			if (isObject(val)) {
+				return searchInObject(val, text);
+			} else if (isArray(val)) {
+				return val.filter(item => searchInObject(item, text));
+			} else if (isString(val)) {
+				return val.toLowerCase().indexOf(text) != -1
+			}
+		});
+		return res.length > 0;
+	}
 
 	export default {
 
@@ -42,7 +57,7 @@
 				if (this.search) {
 					let search = this.search.toLowerCase();
 					items = this.rows.filter(function (row) {
-						return includes(row, search)
+						return searchInObject(row, search)
 					});
 				}
 

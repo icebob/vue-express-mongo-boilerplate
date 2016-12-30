@@ -53,7 +53,7 @@ const mutations = {
 	[ADD] (state, model) {
 		let found = find(state.rows, (item) => item.code == model.code);
 		if (!found)
-			state.rows.push(model);
+			state.rows.unshift(model);
 	},
 
 	[UPDATE] (state, model) {
@@ -65,12 +65,7 @@ const mutations = {
 	},
 
 	[REMOVE] (state, model) {
-		// We need find the exact object, because model may come via websocket
-		let found = find(state.rows, (item) => item.code == model.code);
-
-		if (found) {
-			state.rows.$remove(found);
-		}
+		state.rows = state.rows.filter(item => item.code != model.code);
 	}	
 };
 
