@@ -61,7 +61,30 @@ module.exports = {
 							browsers: ["last 2 versions"]
 						}),
 						precss
-					]
+					],
+					loaders: {
+						sass: ExtractTextPlugin.extract({
+							fallbackLoader: "vue-style-loader",
+							loader: [{
+								loader: "css-loader",
+								options: {
+									modules: true
+								}
+							}, {
+								loader: "postcss-loader",
+								options: {
+									plugins: [
+										require("autoprefixer")({
+											browsers: ["last 2 versions"]
+										}),
+										precss
+									]
+								}
+							}, {
+								loader: "sass-loader"
+							}]
+						})
+					}
 				}
 			}, {
 				test: /\.gif$/,
@@ -109,32 +132,21 @@ module.exports = {
 		}
 	},
 	plugins: [
-			new webpack.DefinePlugin({
-				"process.env": {
-					// This has effect on the react lib size
-					"NODE_ENV": JSON.stringify("production")
-				}
-			}),
-			//new StatsPlugin('stats.json'),
-			new webpack.optimize.UglifyJsPlugin({
-				compress: {
-					warnings: false
-				}
-			}),
-			new webpack.LoaderOptionsPlugin({
-				minimize: true
-			}),
+		new webpack.DefinePlugin({
+			"process.env": {
+				"NODE_ENV": JSON.stringify("production")
+			}
+		}),
+		//new StatsPlugin('stats.json'),
+		new webpack.optimize.UglifyJsPlugin({
+			compress: {
+				warnings: false
+			}
+		}),
+		new webpack.LoaderOptionsPlugin({
+			minimize: true
+		}),
 
-			new ExtractTextPlugin("styles/[name].css")
-		]
-		/*
-		vue: {
-			postcss: [
-				require("autoprefixer")({
-					browsers: ["last 2 versions"]
-				}),
-				precss
-			]
-		}
-		*/
+		new ExtractTextPlugin("styles/[name].css")
+	]
 };

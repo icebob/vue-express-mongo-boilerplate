@@ -9,7 +9,7 @@ let autoprefixer = require("autoprefixer");
 
 module.exports = {
 	devtool: "#inline-source-map",
-	
+
 	entry: {
 		app: ["webpack-hot-middleware/client", "./client/app/main.js"],
 		frontend: ["webpack-hot-middleware/client", "./client/frontend/main.js"]
@@ -24,22 +24,73 @@ module.exports = {
 
 	module: {
 		rules: [
-			{ test: /\.css$/,   loaders: ["style-loader", "css-loader"] },
+			{
+				test: /\.css$/,
+				loaders: ["style-loader", "css-loader"]
+			},
 
-			{ test: /\.scss$/, 	loaders: ["style-loader", "css-loader", "postcss-loader", "sass-loader"] },
+			{
+				test: /\.scss$/,
+				loaders: ["style-loader", "css-loader", "postcss-loader", "sass-loader"]
+			},
 
 			// ES6/7 syntax and JSX transpiling out of the box
-			{ test: /\.js$/,	loader: "babel-loader",	exclude: [/node_modules/, /vendor/] },
+			{
+				test: /\.js$/,
+				loader: "babel-loader",
+				exclude: [/node_modules/, /vendor/]
+			},
 
-			{ test: /\.vue$/,   loader: "vue-loader" },
+			{
+				test: /\.vue$/,
+				loader: "vue-loader",
+				options: {
+					postcss: [
+						require("autoprefixer")({
+							browsers: ["last 2 versions"]
+						}),
+						precss
+					]
+				}
+			},
 
-			{ test: /\.gif$/, 	loader: "url-loader", options: { name: "images/[name]-[hash:6].[ext]", limit: 100000 } },
-			{ test: /\.png$/, 	loader: "url-loader", options: { name: "images/[name]-[hash:6].[ext]", limit: 100000 } },
-			{ test: /\.jpg$/, 	loader: "file-loader", options: { name: "images/[name]-[hash:6].[ext]" } },		
+			{
+				test: /\.gif$/,
+				loader: "url-loader",
+				options: {
+					name: "images/[name]-[hash:6].[ext]",
+					limit: 100000
+				}
+			}, {
+				test: /\.png$/,
+				loader: "url-loader",
+				options: {
+					name: "images/[name]-[hash:6].[ext]",
+					limit: 100000
+				}
+			}, {
+				test: /\.jpg$/,
+				loader: "file-loader",
+				options: {
+					name: "images/[name]-[hash:6].[ext]"
+				}
+			},
 
 			// required for font-awesome icons
-			{ test: /\.(woff2?|svg)$/, loader: "url-loader", options: { limit: 10000, prefix: "font/" } },
-			{ test: /\.(ttf|eot)$/, loader: "file-loader", options: { prefix: "font/" } }
+			{
+				test: /\.(woff2?|svg)$/,
+				loader: "url-loader",
+				options: {
+					limit: 10000,
+					prefix: "font/"
+				}
+			}, {
+				test: /\.(ttf|eot)$/,
+				loader: "file-loader",
+				options: {
+					prefix: "font/"
+				}
+			}
 		]
 	},
 
@@ -59,14 +110,4 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoErrorsPlugin()
 	]
-	/*
-	vue: {
-		postcss: [
-			require("autoprefixer")({
-				browsers: ["last 2 versions"]
-			}),
-			precss
-		]
-	}	
-	*/
 };

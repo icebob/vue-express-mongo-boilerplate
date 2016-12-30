@@ -2,7 +2,6 @@
 
 require("es6-promise").polyfill();
 
-import "../scss/style.scss";
 import Vue from "vue";
 
 import axios from "axios";

@@ -128,4 +128,6 @@
 </script>
 
 <style lang="sass">
+	@import "../../scss/style.scss";
+
 </style>
