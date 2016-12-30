@@ -1,3 +1,3 @@
 export function profile(state) {
-	return state.profile.profile;
+	return state.profile;
 }

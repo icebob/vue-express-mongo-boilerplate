@@ -1,21 +1,25 @@
 import Vue from "vue";
 import { NAMESPACE, CHANGED_VALUE } from "./types";
 
-export const getValue = function ({ commit }) {
-	this.$service.emit("find").then( (data) => {
+import Service from "../../../core/service";
+
+let service = new Service("counter", this); 
+
+export const getValue = function (ctx) {
+	service.emit("find").then( (data) => {
 		console.log("Counter current value: ", data);
-		commit(CHANGED_VALUE, data);
+		ctx.commit(CHANGED_VALUE, data);
 	});
 };
 
 export const increment = function ({ commit }) {
-	this.$service.emit("increment").then((newValue) => {
+	service.emit("increment").then((newValue) => {
 		commit(CHANGED_VALUE, newValue);	
 	});
 };
 
 export const decrement = function ({ commit }) {
-	this.$service.emit("decrement").then((newValue) => {
+	service.emit("decrement").then((newValue) => {
 		commit(CHANGED_VALUE, newValue);	
 	});
 };

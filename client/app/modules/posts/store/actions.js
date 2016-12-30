@@ -7,9 +7,8 @@ import { NAMESPACE, LOAD, LOAD_MORE, ADD, UPDATE, VOTE, UNVOTE, REMOVE,
 let service = new Service("posts"); 
 
 export const getRows = function ({commit, state}, loadMore) {
-	let posts = state.posts;
 	commit(FETCHING, true);
-	return service.rest("find", { filter: posts.viewMode, sort: posts.sort, limit: 10, offset: posts.offset }).then((data) => {
+	return service.rest("find", { filter: state.viewMode, sort: state.sort, limit: 10, offset: state.offset }).then((data) => {
 		if (data.length == 0)
 			commit(NO_MORE_ITEMS);
 		else

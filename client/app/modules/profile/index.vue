@@ -33,18 +33,19 @@
 </template>
 
 <script>
-	import * as actions from "./vuex/actions";
-	import * as getters from "./vuex/getters";
-
 	import Service from "../../core/service";
 
+	import { mapGetters, mapActions } from "vuex";
+
 	export default {
-		vuex: {
-			getters,
-			actions
-		},	
+		computed: mapGetters([
+			"profile"
+		]),
 
 		methods: {
+			...mapActions([
+				"getProfile"
+			])
 		},
 
 		created() {

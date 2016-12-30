@@ -18,7 +18,7 @@
 				a.link(@click="setViewMode('my')", :class="{ active: viewMode == 'my' }") {{ _("MyPosts") }}
 
 		.postForm(v-if="showForm")
-			vue-form-generator(:schema='schema', :model='model', :options='{}', :multiple="false", v-ref:form, :is-new-model="isNewPost")
+			vue-form-generator(:schema='schema', :model='model', :options='{}', :multiple="false", ref="form", :is-new-model="isNewPost")
 
 			.group.buttons
 				button.button.primary(@click="savePost") {{ _("Save") }}
@@ -26,7 +26,7 @@
 
 
 		ul.posts
-			li(v-for="post of rows", transition="post", track-by="code")
+			li(v-for="post of posts", transition="post", track-by="code")
 				article.media
 					.media-left
 						img.avatar(:src="post.author.avatar")
@@ -38,7 +38,7 @@
 					.media-content
 						h3 {{ post.title }}
 
-						p.content(v-html="post.content | marked")
+						p.content(v-html="markdown(post.content)")
 						hr.full
 						.row
 							.functions.left
@@ -69,14 +69,18 @@
 	import { cloneDeep } from "lodash";
 	import { validators, schema as schemaUtils } from "vue-form-generator";
 
-	import * as actions from "./vuex/actions";
-	import * as getters from "./vuex/getters";
-	import { me as sessionMe } from "../session/vuex/getters";
+	import { mapGetters, mapActions } from "vuex";
 
 	export default {
-		filters: {
-			marked
-		},
+
+		computed: mapGetters([
+			"posts",
+			"hasMore",
+			"fetching",
+			"sort",
+			"viewMode",
+			"me"
+		]),
 
 		/**
 		 * Set page schema as data property
@@ -111,14 +115,6 @@
 				}
 			};
 		},
-
-		/**
-		 * Set Vuex actions & getters
-		 */
-		vuex: {
-			getters,
-			actions
-		},		
 
 		/**
 		 * Socket handlers. Every property is an event handler
@@ -170,9 +166,23 @@
 		},	
 
 		methods: {
+			...mapActions([
+				"getRows",
+				"changeSort",
+				"changeViewMode",
+				"vote",
+				"unVote",
+				"saveRow",
+				"updateRow",
+				"removeRow"
+			]),
+
+			markdown(content) {
+				return marked(content);
+			},
+
 			iVoted(post) {
-				let me = sessionMe(this.$store.state);
-				return _.find(post.voters, (user) => user.code == me.code) != null;
+				return _.find(post.voters, (user) => user.code == this.me.code) != null;
 			},
 
 			toggleVote(post) {

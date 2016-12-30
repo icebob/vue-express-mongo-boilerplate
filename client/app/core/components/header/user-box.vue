@@ -35,7 +35,9 @@
 
 	export default {
 		computed: mapGetters([
-			"me"
+			"me",
+			"notifications",
+			"messages"
 		]),
 
 		components: {

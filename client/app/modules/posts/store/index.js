@@ -74,8 +74,12 @@ const mutations = {
 	}	
 };
 
+import * as getters from "./getters";
+import * as actions from "./actions";
 
 export default {
 	state,
+	getters,
+	actions,
 	mutations
 };

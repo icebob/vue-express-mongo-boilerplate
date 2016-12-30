@@ -8,7 +8,7 @@ let precss = require("precss");
 let autoprefixer = require("autoprefixer");
 
 module.exports = {
-	devtool: "eval-source-map",
+	devtool: "inline-source-map",
 	entry: {
 		app: ["webpack-hot-middleware/client", "./client/app/main.js"],
 		frontend: ["webpack-hot-middleware/client", "./client/frontend/main.js"]

@@ -4,14 +4,14 @@
 			tr
 				th.selector(v-if="schema.multiSelect", width="20px" @click="selectAll") 
 					i.fa.fa-square-o
-				th.sortable(v-for="col in schema.columns", width="{{ col.width || 'auto' }}", @click="orderBy(col)", :class="{ sorted: col.field == order.field, 'desc': col.field == order.field && order.direction == -1 }") {{ col.title }}
+				th.sortable(v-for="col in schema.columns", :width="col.width || 'auto'", @click="orderBy(col)", :class="{ sorted: col.field == order.field, 'desc': col.field == order.field && order.direction == -1 }") {{ col.title }}
 		
 		tbody
-			tr(v-for="row in rows | filterBy search | orderBy order.field order.direction", @click="select($event, row)", :class="getRowClasses(row)")
+			tr(v-for="row in filteredOrderedRows", @click="select($event, row)", :class="getRowClasses(row)")
 				td.selector(v-if="schema.multiSelect", width="20px", @click.stop.prevent="select($event, row, true)") 
 					i.fa.fa-square-o
 				td(v-for="col in schema.columns", :class="getCellClasses(row, col)") 
-					| {{{ getCellValue(this, row, col) | tableFormatter }}}
+					template(v-html="getCellValue(this, row, col) | tableFormatter")
 					span.labels(v-if="col.labels != null")
 						.label(v-for="label in col.labels(row)", :class="'label-' + label.type") {{ label.caption }}
 		tfoot
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-	import {each, isArray, isFunction, isNil, defaults} from "lodash";
+	import {each, isArray, isFunction, isNil, defaults, orderBy, includes} from "lodash";
 
 
 	export default {
@@ -36,6 +36,20 @@
 			"selectAll",
 			"search"
 		],
+
+		computed: {
+			filteredOrderedRows() {
+				let items = this.rows;
+				if (this.search) {
+					let search = this.search.toLowerCase();
+					items = this.rows.filter(function (row) {
+						return includes(row, search)
+					});
+				}
+
+				return orderBy(items, this.order.field, this.order.direction)
+			}
+		},
 
 		filters: {
 			/**

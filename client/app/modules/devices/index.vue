@@ -1,5 +1,5 @@
 <template lang="pug">
-	admin-page(:schema="schema", :selected="selected", :rows="rows")
+	admin-page(:schema="schema", :selected="selected", :rows="devices")
 </template>
 
 <script>
@@ -20,13 +20,17 @@ https://github.com/Akryum/vue-apollo
 	import ApolloClient, { createNetworkInterface } from "apollo-client";
 	*/
 
-	import * as actions from "./vuex/actions";
-	import * as getters from "./vuex/getters";
+	import { mapGetters, mapActions } from "vuex";
 
 	export default {
 		components: {
 			AdminPage: AdminPage
 		},
+
+		computed: mapGetters([
+			"devices",
+			"selected"
+		]),
 
 		/**
 		 * Set page schema as data property
@@ -36,14 +40,6 @@ https://github.com/Akryum/vue-apollo
 				schema
 			};
 		},
-
-		/**
-		 * Set Vuex actions & getters
-		 */
-		vuex: {
-			getters,
-			actions
-		},		
 
 		/**
 		 * Socket handlers. Every property is an event handler
@@ -81,6 +77,15 @@ https://github.com/Akryum/vue-apollo
 				}
 			}
 		},		
+
+		methods: {
+			...mapActions([
+				"downloadRows",
+				"created",
+				"updated",
+				"removedas"
+			])
+		},
 
 		/**
 		 * Call if the component is created

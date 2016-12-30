@@ -6,16 +6,16 @@
 			.left(v-if="enabledNew")
 				button.button.is-primary(@click="newModel")
 					i.icon.fa.fa-plus 
-					| {{ schema.resources.addCaption || "Add"}}
+					| {{ schema.resources.addCaption || _("Add") }}
 			.right {{ _("SelectedOfAll", { selected: selected.length, all: rows.length } ) }}
 
 		data-table(:schema="schema.table", :rows="rows", :order="order", :search="search", :selected="selected", :select="select", :select-all="selectAll")
 
 		.form(v-if="model")
-			vue-form-generator(:schema='schema.form', :model='model', :options='options', :multiple="selected.length > 1", v-ref:form, :is-new-model="isNewModel")
+			vue-form-generator(:schema='schema.form', :model='model', :options='options', :multiple="selected.length > 1", ref="form", :is-new-model="isNewModel")
 
 			.errors.text-center
-				div.alert.alert-danger(v-for="item in validationErrors", track-by="$index") {{ item.field.label}}: 
+				div.alert.alert-danger(v-for="item in validationErrors", track-by="$index") {{ item.field.label }}: 
 					strong {{ item.error }}
 
 			.buttons.flex.justify-space-around
@@ -38,9 +38,9 @@
 	import { schema as schemaUtils } from "vue-form-generator";
 	import DataTable from "./dataTable.vue";
 
-	import { searchText } from "../modules/session/vuex/getters";
-
 	import { each, find, cloneDeep, isFunction } from "lodash";
+
+	import { mapGetters, mapActions } from "vuex";
 
 	export default {
 
@@ -66,13 +66,11 @@
 			};
 		},
 
-		vuex: {
-			getters: {
-				search: searchText
-			}
-		},
-
 		computed: {
+			...mapGetters({
+				search: "searchText"
+			}),
+
 			options() 		{ return this.schema.options || {};	},
 
 			enabledNew() 	{ return (this.options.enableNewButton !== false); },

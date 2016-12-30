@@ -11,7 +11,6 @@ import VueFormGenerator from "vue-form-generator";
 import VueWebsocket from "vue-websocket";
 
 import store from "./core/store";
-import router from "./core/router";
 import App from "./core/App";
 
 Vue.use(Filters);
@@ -25,6 +24,8 @@ Vue.use(VueWebsocket);
 // Register i18next localization module. We need to 
 // wait it before start the application!
 Vue.use(VueI18Next, (i18next) => {
+	let router = require("./core/router").default; // Load only after i18next initialized
+
 	new Vue({
 		el: "#app",
 		components: {
