@@ -73,14 +73,18 @@
 
 	export default {
 
-		computed: mapGetters([
-			"posts",
-			"hasMore",
-			"fetching",
-			"sort",
-			"viewMode",
-			"me"
-		]),
+		computed: {
+			...mapGetters("posts", [
+				"posts",
+				"hasMore",
+				"fetching",
+				"sort",
+				"viewMode"
+			]),
+			...mapGetters("session", [
+				"me"
+			])
+		},
 
 		/**
 		 * Set page schema as data property
@@ -166,7 +170,7 @@
 		},	
 
 		methods: {
-			...mapActions([
+			...mapActions("posts", [
 				"getRows",
 				"loadMoreRows",
 				"changeSort",

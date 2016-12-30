@@ -67,7 +67,7 @@
 		},
 
 		computed: {
-			...mapGetters({
+			...mapGetters("session", {
 				search: "searchText"
 			}),
 

@@ -25,7 +25,7 @@
 		/**
 		 * Computed getters
 		 */
-		 computed: mapGetters([
+		 computed: mapGetters("counter", [
 			 "count"
 		 ]),
 
@@ -36,7 +36,7 @@
 			/**
 			 * Actions from store
 			 */
-			...mapActions([
+			...mapActions("counter", [
 				"getValue",
 				"increment",
 				"decrement",

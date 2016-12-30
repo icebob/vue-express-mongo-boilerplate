@@ -86,7 +86,7 @@
 		},
 
 		methods: {
-			...mapActions([
+			...mapActions("session", [
 				"getSessionUser"
 			]),
 

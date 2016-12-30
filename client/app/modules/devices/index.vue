@@ -3,31 +3,20 @@
 </template>
 
 <script>
-/*
-https://dev-blog.apollodata.com/use-apollo-in-your-vuejs-app-89812429d8b2#.epkgpe2xz
-https://github.com/Akryum/vue-apollo
-
-*/
-
 	import Vue from "vue";
 	import AdminPage from "../../core/DefaultAdminPage.vue";
 	import schema from "./schema";
 	import toast from "../../core/toastr";
 
-	/*import gql from "graphql-tag";
-	window["gql"] = gql;
-
-	import ApolloClient, { createNetworkInterface } from "apollo-client";
-	*/
-
 	import { mapGetters, mapActions } from "vuex";
 
 	export default {
+		
 		components: {
 			AdminPage: AdminPage
 		},
 
-		computed: mapGetters([
+		computed: mapGetters("devices", [
 			"devices",
 			"selected"
 		]),
@@ -79,7 +68,7 @@ https://github.com/Akryum/vue-apollo
 		},		
 
 		methods: {
-			...mapActions([
+			...mapActions("devices", [
 				"downloadRows",
 				"created",
 				"updated",
@@ -98,51 +87,6 @@ https://github.com/Akryum/vue-apollo
 		created() {
 			// Download rows for the page
 			this.downloadRows();
-
-			/*
-			const networkInterface = createNetworkInterface("/graphql");
-
-			networkInterface.use([{
-				applyMiddleware(req, next) {
-					// Send to back the session ID
-					req.options.credentials = "same-origin";
-					next();
-				}
-			}]);
-
-			let client = new ApolloClient({
-				networkInterface
-			});
-
-			client.query({
-				query: gql`
-					query getDevice($deviceID: Int!) { 
-						device(id: $deviceID) {
-							code
-							name
-							description
-							address
-							type
-							status
-							lastCommunication
-						}
-					}
-				`, 
-				variables: {
-					deviceID: 22
-				},
-				forceFetch: false
-			}).then( (result) => {
-				if (result.errors)
-					return console.error("Got some GraphQL execution errors!", result.errors);
-
-				if (result.data) {
-					console.log(result.data);
-				}
-			}).catch( (error) => {
-				console.error("There was an error sending the query", error);
-			});
-			*/
 		}
 	};
 </script>

@@ -17,15 +17,6 @@ const apolloClient = new ApolloClient({
 	networkInterface
 });
 
-/*
-networkInterface.use([{
-	applyMiddleware(req, next) {
-		// Send to back the session ID
-		req.options.credentials = "same-origin";
-		next();
-	}
-}]);*/
-
 export default class Service {
 	
 	/**

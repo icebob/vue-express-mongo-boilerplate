@@ -34,7 +34,7 @@
 	import { mapActions, mapGetters } from "vuex";
 
 	export default {
-		computed: mapGetters([
+		computed: mapGetters("session", [
 			"me",
 			"notifications",
 			"messages"

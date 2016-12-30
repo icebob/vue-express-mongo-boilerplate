@@ -10,7 +10,7 @@
 
 	export default {
 		computed: {
-			...mapGetters([
+			...mapGetters("session", [
 				"searchText"
 			]),
 			text: {
@@ -25,7 +25,7 @@
 		},
 
 		methods: {
-			...mapActions([
+			...mapActions("session", [
 				"searching"
 			])
 		}

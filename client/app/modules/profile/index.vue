@@ -38,12 +38,12 @@
 	import { mapGetters, mapActions } from "vuex";
 
 	export default {
-		computed: mapGetters([
+		computed: mapGetters("profile", [
 			"profile"
 		]),
 
 		methods: {
-			...mapActions([
+			...mapActions("profile", [
 				"getProfile"
 			])
 		},
