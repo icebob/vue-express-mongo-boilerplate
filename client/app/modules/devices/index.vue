@@ -46,19 +46,6 @@ https://github.com/Akryum/vue-apollo
 		},		
 
 		/**
-		 * Route handlers
-		 */
-		route: {
-			activate() {
-
-			},
-
-			data(transition) {
-				
-			}
-		},
-
-		/**
 		 * Socket handlers. Every property is an event handler
 		 */
 		socket: {
