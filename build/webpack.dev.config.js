@@ -3,8 +3,6 @@
 let path = require("path");
 let webpack = require("webpack");
 
-let moduleConfig = require("./modules.config");
-
 let merge = require("webpack-merge");
 let baseWpConfig = require("./webpack.base.config");
 
@@ -22,10 +20,7 @@ module.exports = merge(baseWpConfig, {
 			},
 			{
 				test: /\.vue$/,
-				loader: "vue-loader",
-				options: {
-					postcss: moduleConfig.postcss.plugins
-				}
+				loader: "vue-loader"
 			}			
 		]
 	},

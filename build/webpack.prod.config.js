@@ -5,7 +5,6 @@ let webpack = require("webpack");
 
 let merge = require("webpack-merge");
 let baseWpConfig = require("./webpack.base.config");
-let moduleConfig = require("./modules.config");
 //let StatsPlugin = require("stats-webpack-plugin");
 let ExtractTextPlugin = require("extract-text-webpack-plugin");
 
@@ -22,8 +21,7 @@ module.exports = merge(baseWpConfig, {
 							modules: true
 						}
 					}, {
-						loader: "postcss-loader",
-						options: moduleConfig.postcss
+						loader: "postcss-loader"
 					}, {
 						loader: "sass-loader"
 					}]
@@ -32,7 +30,6 @@ module.exports = merge(baseWpConfig, {
 				test: /\.vue$/,
 				loader: "vue-loader",
 				options: {
-					postcss: moduleConfig.postcss.plugins,
 					loaders: {
 						sass: ExtractTextPlugin.extract({
 							fallbackLoader: "vue-style-loader",
@@ -42,8 +39,7 @@ module.exports = merge(baseWpConfig, {
 									modules: true
 								}
 							}, {
-								loader: "postcss-loader",
-								options: moduleConfig.postcss
+								loader: "postcss-loader"
 							}, {
 								loader: "sass-loader"
 							}]
@@ -79,5 +75,3 @@ module.exports = merge(baseWpConfig, {
 		})*/
 	]
 });
-
-console.log(module.exports.module.rules);
