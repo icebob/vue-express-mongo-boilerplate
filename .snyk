@@ -1,11 +1,15 @@
-version: v1.5.0
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.7.0
 ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
 patch:
   'npm:request:20160119':
     - winston-loggly-bulk > node-loggly-bulk > request:
         patched: '2016-11-05T16:53:47.533Z'
     - winston-loggly-bulk > node-loggly-bulk > request:
         patched: '2016-11-05T17:17:21.252Z'
+    - winston-loggly-bulk > node-loggly-bulk > request:
+        patched: '2016-12-31T13:30:56.839Z'
   'npm:tough-cookie:20160722':
     - winston-loggly-bulk > node-loggly-bulk > request > tough-cookie:
         patched: '2016-11-05T16:53:47.533Z'
@@ -15,6 +19,8 @@ patch:
         patched: '2016-11-05T17:17:21.252Z'
     - winston-logzio > logzio-nodejs > request > tough-cookie:
         patched: '2016-11-05T17:17:21.252Z'
+    - winston-loggly-bulk > node-loggly-bulk > request > tough-cookie:
+        patched: '2016-12-31T13:30:56.839Z'
   'npm:uglify-js:20151024':
     - jade > transformers > uglify-js:
         patched: '2016-11-05T16:53:47.533Z'
