@@ -1,5 +1,7 @@
 # vue-express-mongo-boilerplate #
 [![Known Vulnerabilities](https://snyk.io/test/github/icebob/vue-express-mongo-boilerplate/badge.svg)](https://snyk.io/test/github/icebob/vue-express-mongo-boilerplate)
+![VueJS 2](https://img.shields.io/badge/vuejs-2.1.8-green.svg)
+![Webpack 2](https://img.shields.io/badge/webpack-2.2.0-green.svg)
 
 <img src="http://vuejs.org/images/logo.png" width="50">
 <img src="https://coligo.io/images/express.svg" width="100">
