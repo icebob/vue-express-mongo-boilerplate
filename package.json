@@ -19,7 +19,8 @@
     "lint": "eslint --ext=.js,.vue client server",
     "lint:fix": "eslint --fix --ext=.js,.vue client server",
     "snyk-protect": "snyk protect",
-    "typings": "typings install"
+    "typings": "typings install",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -100,7 +101,7 @@
     "require-webpack-compat": "3.0.0",
     "serve-favicon": "2.3.2",
     "slug": "0.9.1",
-    "snyk": "1.22.1",
+    "snyk": "^1.22.1",
     "socket.io": "1.7.2",
     "socket.io-client": "1.7.2",
     "uuid-token-generator": "0.5.0",
