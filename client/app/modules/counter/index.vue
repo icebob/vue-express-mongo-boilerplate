@@ -11,7 +11,7 @@
 		br
 		button.button.warning(@click="dec") 
 			span
-				i.fa.fa-arrow-up 
+				i.fa.fa-arrow-up  
 			span {{ "Decrement" | i18n }}
 
 </template>

@@ -242,6 +242,7 @@ function initHelmetHeaders(app) {
 	// Use helmet to secure Express headers
 	app.use(helmet.xssFilter());
 	app.use(helmet.noSniff());
+	app.use(helmet.frameguard());
 	app.use(helmet.ieNoOpen());
 	app.use(crossdomain());
 	app.use(helmet.hidePoweredBy());

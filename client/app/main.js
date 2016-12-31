@@ -15,10 +15,8 @@ import VueWebsocket from "vue-websocket";
 import store from "./core/store";
 import App from "./core/App";
 
-
 Vue.use(Filters);
 
-//Vue.use(VueAnimatedList);
 Vue.use(VueFormGenerator);
 Vue.use(VueWebsocket);
 
