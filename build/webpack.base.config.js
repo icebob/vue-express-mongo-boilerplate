@@ -8,7 +8,7 @@ module.exports = {
 
 	entry: {
 		app: ["./client/app/main.js"],
-		vendor: [
+		/*vendor: [
 			"es6-promise",
 			"vue",
 			"vue-router",
@@ -23,7 +23,7 @@ module.exports = {
 			"apollo-client",
 			"graphql-tag",
 			"i18next"
-		],
+		],*/
 		frontend: ["./client/frontend/main.js"]
 	},
 
@@ -103,5 +103,18 @@ module.exports = {
 	},
 
 	plugins: [
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vendor",
+			minChunks: function (module, count) {
+				// any required modules inside node_modules are extracted to vendor
+				return (
+					module.resource &&
+					/\.js$/.test(module.resource) &&
+					module.resource.indexOf(
+						path.join(__dirname, '../node_modules')
+					) === 0
+				);
+			}
+		})		
 	]
 };

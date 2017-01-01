@@ -8,9 +8,14 @@ let nodemailer 	= require("nodemailer");
 let htmlToText 	= require("nodemailer-html-to-text").htmlToText;
 
 module.exports = {
-	settings: {
-		name: "mailer",
-		internal: true
+	name: "mailer",
+	actions: {
+		send(ctx) {
+			let { recipients, subject, body } = ctx.params;
+			return this.send(recipients, subject, body)
+				.then(info => ctx.result(info))
+				.catch(err => ctx.result(err));
+		}
 	},
 
 	methods: {

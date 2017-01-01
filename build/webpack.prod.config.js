@@ -8,46 +8,37 @@ let baseWpConfig = require("./webpack.base.config");
 //let StatsPlugin = require("stats-webpack-plugin");
 let ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+let extractLoaders = [{
+	loader: "css-loader",
+	options: {
+		modules: true
+	}
+}, {
+	loader: "postcss-loader"
+}, {
+	loader: "sass-loader"
+}];
+
 module.exports = merge(baseWpConfig, {
 	module: {
-		rules: [
-			{
-				test: /\.scss$/,
-				loader: ExtractTextPlugin.extract({
-					fallbackLoader: "style-loader",
-					loader: [{
-						loader: "css-loader",
-						options: {
-							modules: true
-						}
-					}, {
-						loader: "postcss-loader"
-					}, {
-						loader: "sass-loader"
-					}]
-				})
-			}, {
-				test: /\.vue$/,
-				loader: "vue-loader",
-				options: {
-					loaders: {
-						sass: ExtractTextPlugin.extract({
-							fallbackLoader: "vue-style-loader",
-							loader: [{
-								loader: "css-loader",
-								options: {
-									modules: true
-								}
-							}, {
-								loader: "postcss-loader"
-							}, {
-								loader: "sass-loader"
-							}]
-						})
-					}
+		rules: [{
+			test: /\.scss$/,
+			loader: ExtractTextPlugin.extract({
+				fallbackLoader: "style-loader",
+				loader: extractLoaders
+			})
+		}, {
+			test: /\.vue$/,
+			loader: "vue-loader",
+			options: {
+				loaders: {
+					sass: ExtractTextPlugin.extract({
+						fallbackLoader: "vue-style-loader",
+						loader: extractLoaders
+					})
 				}
 			}
-		]
+		}]
 	},
 	plugins: [
 		new webpack.DefinePlugin({
@@ -55,9 +46,6 @@ module.exports = merge(baseWpConfig, {
 				"NODE_ENV": JSON.stringify("production")
 			}
 		}),
-		new webpack.optimize.CommonsChunkPlugin({
-			name: "vendor"
-		}),		
 		new webpack.optimize.UglifyJsPlugin({
 			compress: {
 				warnings: false
