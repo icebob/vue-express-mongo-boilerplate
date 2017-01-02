@@ -14,21 +14,7 @@ logger.info();
 logger.info(chalk.bold("Application root path: ") + global.rootPath);
 
 let init		= require("./core/init");
-let db 			= require("./core/mongo")();
 let broker		= require("./core/broker");
 broker.start();
-let app 		= require("./core/express")(db);
 
 require("./libs/gracefulExit");
-
-app.listen(config.port, config.ip, function() {
-
-	require("./libs/sysinfo")();
-
-	let Service = require("./core/services");
-	if (config.isDevMode)
-		Service.printServicesInfo();
-});
-
-
-exports = module.exports = app;

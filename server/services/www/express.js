@@ -1,8 +1,8 @@
 "use strict";
 
-let logger 			= require("./logger");
-let config 			= require("../config");
-let redis 			= require("./redis");
+let logger 			= require("../../core/logger");
+let config 			= require("../../config");
+let redis 			= require("../../core/redis");
 
 let express 		= require("express");
 let http 			= require("http");
@@ -255,7 +255,7 @@ function initHelmetHeaders(app) {
  */
 function initAuth(app) {
 	// Init auth
-	require("./auth/passport")(app);
+	require("../../core/auth/passport")(app);
 
 	if (!config.isTestMode()) {
 /*
@@ -283,7 +283,7 @@ function initWebpack(app) {
 	// Webpack middleware in development mode
 	if (!config.isProductionMode()) {
 		let webpack	 = require("webpack");
-		let wpConfig = require("../../build/webpack.dev.config");
+		let wpConfig = require("../../../build/webpack.dev.config");
 
 		let compiler = webpack(wpConfig);
 		let devMiddleware = require('webpack-dev-middleware'); // eslint-disable-line
@@ -332,15 +332,15 @@ module.exports = function(db) {
 	initWebpack(app);
 
 	// Load services
-	let services = require("./services");
-	services.loadServices(app, db);
+	// let services = require("./services");
+	// services.loadServices(app, db);
 
 	// Load socket.io server
-	let server = require("./sockets").init(app, db);
+	let server = require("../../core/sockets").init(app, db);
 	server._app = app;
 
 	// Load routes
-	require("../routes")(app, db);
+	require("./routes")(app, db);
 
 	return server;
 };

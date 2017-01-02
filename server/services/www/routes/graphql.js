@@ -1,15 +1,15 @@
 "use strict";
 
-let config 				= require("../config");
-let logger 				= require("../core/logger");
-let auth 				= require("../core/auth/helper");
+let config 				= require("../../../config");
+let logger 				= require("../../../core/logger");
+let auth 				= require("../../../core/auth/helper");
 let graphqlExpress 		= require("graphql-server-express").graphqlExpress;
 let graphiqlExpress  	= require("graphql-server-express").graphiqlExpress;
 let graphqlTools 		= require("graphql-tools");
 
 module.exports = function(app, db) {
 
-	let servicesSchema = require("../core/services").registerGraphQLSchema();
+	let servicesSchema = require("../../../core/services").registerGraphQLSchema();
 	if (!servicesSchema) return;
 	
 	let schema = graphqlTools.makeExecutableSchema({ 

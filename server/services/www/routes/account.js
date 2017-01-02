@@ -1,20 +1,20 @@
 "use strict";
 
-let config 	= require("../config");
-let logger 	= require("../core/logger");
+let config 	= require("../../../config");
+let logger 	= require("../../../core/logger");
 
-let C 			= require("../core/constants");
-let tokgen 		= require("../libs/tokgen");
+let C 			= require("../../../core/constants");
+let tokgen 		= require("../../../libs/tokgen");
 
 let crypto 		= require("crypto");
 let async 		= require("async");
 let passport 	= require("passport");
 let express 	= require("express");
 
-let response 	= require("../core/response");
-let mailer 		= require("../libs/mailer");
+let response 	= require("../../../core/response");
+let mailer 		= require("../../../libs/mailer");
 
-let User 		= require("../models/user");
+let User 		= require("../../../models/user");
 
 /**
  * Check what social API are configured. We only show

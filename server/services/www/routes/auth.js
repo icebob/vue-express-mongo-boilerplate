@@ -1,7 +1,7 @@
 "use strict";
 
-let config 		= require("../config");
-let logger 		= require("../core/logger");
+let config 		= require("../../../config");
+let logger 		= require("../../../core/logger");
 
 let crypto 		= require("crypto");
 let async 		= require("async");
@@ -9,9 +9,9 @@ let async 		= require("async");
 let passport 	= require("passport");
 let express 	= require("express");
 
-let mailer 		= require("../libs/mailer");
-let User 		= require("../models/user");
-let Response 	= require("../core/response");
+let mailer 		= require("../../../libs/mailer");
+let User 		= require("../../../models/user");
+let Response 	= require("../../../core/response");
 
 /**
  * Generate JSON or HTML response to client,

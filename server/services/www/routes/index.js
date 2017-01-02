@@ -1,7 +1,7 @@
 "use strict";
 
-let config 	= require("../config");
-let logger 	= require("../core/logger");
+let config 	= require("../../../config");
+let logger 	= require("../../../core/logger");
 let path 	= require("path");
 
 module.exports = function(app, db) {
@@ -27,7 +27,7 @@ module.exports = function(app, db) {
 
 	// Load services routes
 	//require("../applogic/routeHandlers")(app, db);
-	let services = require("../core/services");
+	let services = require("../../../core/services");
 	services.registerRoutes(app, db);
 
 	// Handle Graphql request

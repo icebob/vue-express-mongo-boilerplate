@@ -1,7 +1,7 @@
 "use strict";
 
-let config 			= require("../config");
-let logger 			= require("../core/logger");
+let config 			= require("../../../config");
+let logger 			= require("../../../core/logger");
 
 module.exports = function(app, db) {
 
