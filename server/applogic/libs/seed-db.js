@@ -7,7 +7,7 @@ let config 			= require("../../config");
 let _ 				= require("lodash");
 let tokgen 			= require("../../libs/tokgen");
 let fakerator		= require("fakerator")();
-
+/*
 let User 			= require("../.././models/user");
 let Device 			= require("../modules/devices/models/device");
 let Post 			= require("../modules/posts/models/post");
@@ -66,3 +66,4 @@ module.exports = function() {
 
 	return Promise.all([devices, posts]);
 };
+*/

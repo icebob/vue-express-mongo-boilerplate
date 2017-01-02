@@ -14,6 +14,7 @@ logger.info();
 logger.info(chalk.bold("Application root path: ") + global.rootPath);
 
 let init		= require("./core/init");
+let db			= require("./core/mongo")();
 let broker		= require("./core/broker");
 broker.start();
 

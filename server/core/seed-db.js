@@ -70,7 +70,7 @@ module.exports = function() {
 	}).catch((err) => {
 		logger.error(err);
 	}).then(() => {
-		return require("../applogic/libs/seed-db")();
+		//return require("../applogic/libs/seed-db")();
 	}).then(() => {
 		logger.debug("Seeding done!");
 	});	

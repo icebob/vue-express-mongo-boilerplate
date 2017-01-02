@@ -9,6 +9,7 @@ let _ 				= require("lodash");
 let chalk 			= require("chalk");
 
 let IceServices     = require("ice-services");
+let Service     	= require("./ice-service");
 
 /* global WEBPACK_BUNDLE */
 if (!WEBPACK_BUNDLE) require("require-webpack-compat")(module, require);
@@ -23,7 +24,7 @@ let broker = new IceServices.ServiceBroker({
 function loadServices(broker) {
 
 	let addService = function(serviceSchema) {
-		let service = new IceServices.Service(broker, serviceSchema);
+		let service = new Service(broker, serviceSchema);
 		return service;
 	};
 
