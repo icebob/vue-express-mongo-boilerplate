@@ -1,6 +1,6 @@
 "use strict";
 
-let config 		= require("../config");
+let config 		= require("../../config");
 
 let moment 		= require("moment");
 let chalk 		= require("chalk");
@@ -13,6 +13,7 @@ module.exports = {
 		removeUnverifiedAccounts(job, done) {
 			this.logger.debug("Running 'removeUnverifiedAccounts' process...");
 			try {
+				// TODO call "users.removeUnverifiedAccounts"
 				let User = require("../models/user");
 				User.remove({ 
 					createdAt: {
@@ -68,6 +69,7 @@ module.exports = {
 	},
 
 	started() {
+		// 
 	},
 
 	stopped() {

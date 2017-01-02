@@ -1,14 +1,14 @@
 "use strict";
 
-let logger 		= require("../core/logger");
-let config 		= require("../config");
-let C 	 		= require("../core/constants");
+let logger 		= require("../../core/logger");
+let config 		= require("../../config");
 
 let nodemailer 	= require("nodemailer");
 let htmlToText 	= require("nodemailer-html-to-text").htmlToText;
 
 module.exports = {
 	name: "mailer",
+	
 	actions: {
 		send(ctx) {
 			let { recipients, subject, body } = ctx.params;
@@ -74,9 +74,5 @@ module.exports = {
 
 			});
 		}
-	},
-
-	init(ctx) {
-		// Fired when start the service
 	}
 };

@@ -7,14 +7,11 @@ let chalk 			= require("chalk");
 let mongoose 		= require("mongoose");
 let autoIncrement 	= require("mongoose-auto-increment");
 
+let db;
+
 module.exports = function() {
-	let db;
-
-	logger.info();
-
 	mongoose.Promise = global.Promise;
-
-	if (mongoose.connection.readyState !== 1) {
+	if (!db) {
 		logger.info("Connecting to Mongo " + config.db.uri + "...");
 		db = mongoose.connect(config.db.uri, config.db.options, function mongoAfterConnect(err) {
 			if (err) {

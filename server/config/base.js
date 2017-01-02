@@ -182,5 +182,23 @@ module.exports = {
 		
 	},
 
-	agendaTimer: "one minute"
+	agendaTimer: "one minute",
+
+	services: {
+		www: {
+
+		},
+		users: {
+
+		},
+		posts: {
+			enabled: false
+		},
+		agenda: {
+			db: {
+				// Override settings from global
+				uri: ""
+			}
+		}
+	}
 };
