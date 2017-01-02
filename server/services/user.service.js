@@ -32,6 +32,6 @@ module.exports = {
 	},
 
 	created() {
-		this.logger.info("Users service created!");
+		this.logger.info("Service created!");
 	}
 };

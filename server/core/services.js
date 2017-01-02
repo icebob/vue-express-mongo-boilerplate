@@ -61,7 +61,7 @@ class Services extends EventEmitter {
 			self.services[service.name] = service;
 		};
 
-		if (WEBPACK_BUNDLE || fs.existsSync(path.join(__dirname, "..", "services"))) {
+		/*if (WEBPACK_BUNDLE || fs.existsSync(path.join(__dirname, "..", "services"))) {
 			logger.info("");
 			logger.info(chalk.bold("Search built-in services..."));
 
@@ -72,7 +72,7 @@ class Services extends EventEmitter {
 					addService(modules(module));
 				});
 			}
-		}
+		}*/
 
 		if (WEBPACK_BUNDLE || fs.existsSync(path.join(__dirname, "..", "applogic", "modules"))) {
 			logger.info("");
