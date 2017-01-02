@@ -2,7 +2,7 @@
 
 let passport = require("passport");
 let LocalAPIKeyStrategy = require("passport-localapikey-update").Strategy;
-let User = require("../../../models/user");
+let User = require("../../../../models/user");
 
 module.exports = function() {
 	passport.use(new LocalAPIKeyStrategy({

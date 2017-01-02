@@ -2,7 +2,7 @@
 
 let config 				= require("../../../config");
 let logger 				= require("../../../core/logger");
-let auth 				= require("../../../core/auth/helper");
+let auth 				= require("../auth/helper");
 let graphqlExpress 		= require("graphql-server-express").graphqlExpress;
 let graphiqlExpress  	= require("graphql-server-express").graphiqlExpress;
 let graphqlTools 		= require("graphql-tools");

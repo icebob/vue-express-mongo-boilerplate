@@ -1,7 +1,7 @@
 "use strict";
 
-let logger 			= require("../logger");
-let config 			= require("../../config");
+let logger 			= require("../../../core/logger");
+let config 			= require("../../../config");
 
 let passport 		= require("passport");
 let path 			= require("path");
@@ -10,7 +10,7 @@ let chalk 			= require("chalk");
 /* global WEBPACK_BUNDLE */
 if (!WEBPACK_BUNDLE) require("require-webpack-compat")(module, require);
 
-let User 			= require("../../models/user");
+let User 			= require("../../../models/user");
 
 module.exports = function(app) {
 

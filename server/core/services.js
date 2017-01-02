@@ -13,7 +13,7 @@ let express			= require("express");
 
 let C 				= require("./constants");
 let Context 		= require("./context");
-let auth			= require("./auth/helper");
+let auth			= require("../services/www/auth/helper");
 let response		= require("./response");
 
 let listEndpoints	= require("express-list-endpoints");

@@ -1,10 +1,10 @@
 "use strict";
 
-let logger 		= require("../logger");
-let config 		= require("../../config");
+let logger 		= require("../../../core/logger");
+let config 		= require("../../../config");
 let passport 	= require("passport");
 
-let User 		= require("../../models/user");
+let User 		= require("../../../models/user");
 
 // TODO response 
 

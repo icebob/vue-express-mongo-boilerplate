@@ -255,7 +255,7 @@ function initHelmetHeaders(app) {
  */
 function initAuth(app) {
 	// Init auth
-	require("../../core/auth/passport")(app);
+	require("./auth/passport")(app);
 
 	if (!config.isTestMode()) {
 /*

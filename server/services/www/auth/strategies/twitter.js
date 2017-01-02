@@ -1,12 +1,12 @@
 "use strict";
 
-let logger 	= require("../../logger");
-let config 	= require("../../../config");
+let logger 	= require("../../../../core/logger");
+let config 	= require("../../../../config");
 let helper 	= require("../helper");
 
 let passport 		= require("passport");
 let GoogleStrategy  = require("passport-twitter").Strategy;
-let User 			= require("../../../models/user");
+let User 			= require("../../../../models/user");
 
 // https://apps.twitter.com/app/new
 module.exports = function() {
