@@ -18,7 +18,6 @@ let db 			= require("./core/mongo")();
 let broker		= require("./core/broker");
 broker.start();
 let app 		= require("./core/express")(db);
-let agenda 		= require("./core/agenda");
 
 require("./libs/gracefulExit");
 
