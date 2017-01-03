@@ -38,12 +38,16 @@ module.exports = {
 
 				if (ctx.params.filter == "my") 
 					filter.author = ctx.user.id;
-				else if (ctx.params.author != null) { 
+				else if (ctx.params.author != null)
 					filter.author = this.personService.decodeID(ctx.params.author);
-				}
 
 				let query = Post.find(filter);
 
+				return query.exec()
+				.then((json) => {
+					return ctx.result(json);
+				});
+				/*
 				return ctx.queryPageSort(query).exec().then( (docs) => {
 					return this.toJSON(docs);
 				})
@@ -53,6 +57,7 @@ module.exports = {
 				.then((json) => {
 					return ctx.result(json);
 				});
+				*/
 			}
 		},
 

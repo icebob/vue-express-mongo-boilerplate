@@ -14,7 +14,7 @@ module.exports = {
 			this.logger.debug("Running 'removeUnverifiedAccounts' process...");
 			try {
 				// TODO call "users.removeUnverifiedAccounts"
-				let User = require("../models/user");
+				let User = require("../../models/user");
 				User.remove({ 
 					createdAt: {
 						$lte: moment().subtract(1, "day").toDate()

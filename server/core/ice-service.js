@@ -9,13 +9,11 @@ class Service extends IceServices.Service {
 
 		if (this.settings.rest || this.settings.ws || this.settings.graphql) {
 			broker.on("www.listen", () => {
-				let schema = this.publishActions();
-				if (schema) {
-					broker.emit("publish.actions", schema);
-				}
+				this.publishActions();
 			});
 
-			this.publishActions();
+			if (broker.hasAction("www.publish"))
+				this.publishActions();
 		}
 	}
 
@@ -234,7 +232,9 @@ class Service extends IceServices.Service {
 			schema.graphql = this.schema.graphql;
 		}		
 
-		this.logger.info("Schema", schema);
+		//this.logger.info("Schema", schema);
+
+		this.broker.call("www.publish", { schema });
 
 		return schema;
 	}

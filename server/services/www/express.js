@@ -337,10 +337,9 @@ module.exports = function(db) {
 
 	// Load socket.io server
 	let server = require("../../core/sockets").init(app, db);
-	server._app = app;
 
 	// Load routes
 	require("./routes")(app, db);
 
-	return server;
+	return { server, app };
 };

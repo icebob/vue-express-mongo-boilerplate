@@ -27,12 +27,12 @@ module.exports = function(app, db) {
 
 	// Load services routes
 	//require("../applogic/routeHandlers")(app, db);
-	let services = require("../../../core/services");
-	services.registerRoutes(app, db);
+	//let services = require("../../../core/services");
+	//services.registerRoutes(app, db);
 
 	// Handle Graphql request
 	require("./graphql")(app, db);
 
 	// Handle errors
-	require("./errors")(app, db);	
+	require("./errors")(app, db);
 };

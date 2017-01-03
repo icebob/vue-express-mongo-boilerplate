@@ -5,9 +5,9 @@ let logger  = require("../../../core/logger");
 
 let response  = require("../../../core/response");
 
-module.exports = function(app, db) {
+module.exports = function(app) {
 
-	app.use(function(err, req, res, next) {
+	app.use(function errorHandler500(err, req, res, next) {
 		if (!err) {
 			return next();
 		}
@@ -29,7 +29,7 @@ module.exports = function(app, db) {
 		}
 	});
 
-	app.use(function(req, res) {
+	app.use(function errorHandler404(req, res) {
 		res.status(404);
 		if (!config.isTestMode())
 			logger.warn("404 error! URL:", req.url);
