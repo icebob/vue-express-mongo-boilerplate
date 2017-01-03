@@ -3,6 +3,7 @@
 let logger 		= require("../../../core/logger");
 let config 		= require("../../../config");
 let C 	 		= require("../../../core/constants");
+let E 			= require("../../../core/errors");
 
 let _			= require("lodash");
 
@@ -21,6 +22,7 @@ module.exports = {
 		role: "user",
 		collection: Post,
 
+		hashedIdentity: true,
 		modelPropFilter: "code title content author votes voters views createdAt editedAt",
 		
 		modelPopulates: {
@@ -43,40 +45,64 @@ module.exports = {
 
 				let query = Post.find(filter);
 
-				return query.exec()
-				.then((json) => {
-					return ctx.result(json);
-				});
-				/*
-				return ctx.queryPageSort(query).exec().then( (docs) => {
-					return this.toJSON(docs);
-				})
-				.then((json) => {
-					return this.populateModels(json);
-				})
-				.then((json) => {
-					return ctx.result(json);
-				});
-				*/
+				return this.applyFilters(query, ctx).exec()
+				.then(docs => this.toJSON(docs))
+				.then(json => this.populateModels(json))
+				.then(json => ctx.result(json));
 			}
 		},
 
 		// return a model by ID
-		get: {
+		model: {
 			cache: true, // if true, we can't increment the views!
 			permission: C.PERM_PUBLIC,
 			handler(ctx) {
-				ctx.assertModelIsExist(ctx.t("app:PostNotFound"));
+				return Promise.resolve(ctx)
+				.then(ctx => ctx.call(this.name + ".get", { code: ctx.params.code }))
+				.then(model => this.checkModel(model, "app:PostNotFound"))
+				.then(model => this.collection.findByIdAndUpdate(model.id, { $inc: { views: 1 } }).exec())
+				.then(doc => this.toJSON(doc))
+				.then((json) => this.populateModels(json))
+				.then((json) => ctx.result(json));
+			}
+		},
 
-				return Post.findByIdAndUpdate(ctx.modelID, { $inc: { views: 1 } }).exec().then( (doc) => {
-					return this.toJSON(doc);
+		get: {
+			cache: true,
+			publish: false,
+			handler(ctx) {
+				return Promise.resolve(ctx)
+				.then(ctx => {
+					let id = ctx.params["id"];
+					let code = ctx.params["code"];
+					if (code && this.settings.hashedIdentity) {
+						if (_.isFunction(this.collection.schema.methods["decodeID"])) {
+							if (_.isArray(code)) {
+								id = code.map(item => this.collection.schema.methods.decodeID(item));
+							} else {
+								id = this.collection.schema.methods.decodeID(code);
+							}
+						}
+					}
+
+					if (id == null || id.length == 0)
+						throw new E.RequestError(E.BAD_REQUEST, C.INVALID_CODE, "app:InvalidCode");
+
+					let query;
+					if (_.isArray(id)) {
+						query = this.collection.find({ _id: { $in: id} });
+					} else
+						query = this.collection.findById(id);
+
+					return query.exec();
 				})
-				.then((json) => {
-					return this.populateModels(json);
+				.then(docs => {
+					if (_.isArray(docs))
+						return docs.map(doc => doc.toJSON());
+					else if (_.isObject(docs)) 
+						return docs.toJSON();
 				})
-				.then((json) => {
-					return ctx.result(json);
-				});
+				.then((json) => ctx.result(json));
 			}
 		},
 

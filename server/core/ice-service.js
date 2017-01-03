@@ -1,5 +1,8 @@
 let _ 				= require("lodash");
 
+let C 				= require("../core/constants");
+let E 				= require("../core/errors");
+
 let IceServices 	= require("ice-services");
 
 class Service extends IceServices.Service {
@@ -15,6 +18,9 @@ class Service extends IceServices.Service {
 			if (broker.hasAction("www.publish"))
 				this.publishActions();
 		}
+
+		if (this.settings.collection)
+			this.collection = this.settings.collection;
 	}
 
 	publishActions() {
@@ -24,7 +30,8 @@ class Service extends IceServices.Service {
 			namespace: this.settings.namespace || this.name,
 			version: this.version,
 			latestVersion: this.settings.latestVersion,
-			idParamName: "code"
+			hashedIdentity: this.settings.hashedIdentity,
+			idParamName: this.settings.hashedIdentity ? "code" : "id"
 		};
 
 		if (this.settings.rest) {
@@ -50,6 +57,8 @@ class Service extends IceServices.Service {
 			} else {
 				action = actionFunc;
 			}
+
+			if (action.publish === false) return;
 
 			if (!action.name)
 				action.name = actionName;
@@ -119,11 +128,11 @@ class Service extends IceServices.Service {
 					break;
 				}
 
-				// You can call the `get` action with
+				// You can call the `model` action with
 				// 		GET /api/{service}/?id=123 
 				// 	or 
 				// 		GET /api/{service}/123
-				case "get": {
+				case "model": {
 					routes.push({
 						method: "get",
 						path: `/${ns}/:${schema.idParamName}`,
@@ -237,6 +246,118 @@ class Service extends IceServices.Service {
 		this.broker.call("www.publish", { schema });
 
 		return schema;
+	}
+
+	/**
+	 * Check model is exists. If not throw an error
+	 * 
+	 * @param {model} model				Model
+	 * @param {any} errMessageCode		Error message code if model not found
+	 * @returns {Object}
+	 * 
+	 * @memberOf Service
+	 */
+	checkModel(model, errMessageCode) {
+		if (model)
+			return model;
+
+		throw new E.RequestError(E.BAD_REQUEST, C.MODEL_NOT_FOUND, errMessageCode);
+	}
+
+	/**
+	 * Convert the `docs` MongoDB model to JSON object.
+	 * With `propFilter` can be filter the properties
+	 * 
+	 * @param {MongoDocument} 	docs		MongoDB document(s)
+	 * @param {String} 			propFilter	Filter properties of model. It is a space-separated `String` or an `Array`
+	 * @returns								JSON object/array
+	 * 
+	 * @memberOf Service
+	 */
+	toJSON(docs, propFilter) {
+		let func = function(doc) {
+			let json = doc.toJSON();
+			if (propFilter != null)
+				return _.pick(json, propFilter);
+			else
+				return json;
+		};
+
+		if (propFilter == null) {
+			propFilter = this.settings.modelPropFilter;
+		}
+
+		if (_.isString(propFilter)) 
+			propFilter = propFilter.split(" ");
+
+		if (_.isArray(docs)) {
+			return _.map(docs, (doc) => func(doc, propFilter));
+		} else if (_.isObject(docs)) {
+			return func(docs);
+		}
+	}
+
+	/**
+	 * Process limit, offset and sort params from request
+	 * and use them in the query
+	 *
+	 * Example:
+	 * 		GET /posts?offset=20&limit=10&sort=-votes,createdAt
+	 * 
+	 * @param  {query} query Mongo query object
+	 * @param  {Context} ctx Context of request
+	 * @return {query}
+	 * 
+	 * @memberOf Context	
+	 */
+	applyFilters(query, ctx) {
+		if (ctx.params) {
+			if (ctx.params.limit)
+				query.limit(ctx.params.limit);
+
+			if (ctx.params.offset)
+				query.skip(ctx.params.offset);
+
+			if (ctx.params.sort)
+				query.sort(ctx.params.sort.replace(/,/, " "));
+		}
+		return query;
+	}	
+
+	/**
+	 * Populate models by schema
+	 * 
+	 * @param {any} docs			Models
+	 * @param {any} populateSchema	schema for population
+	 * @returns	{Promise}
+	 * 
+	 * @memberOf Service
+	 */
+	populateModels(docs, populateSchema) {
+		/*populateSchema = populateSchema || this.$settings.modelPopulates; 
+		if (docs != null && populateSchema) {
+			let promises = [];
+			_.forIn(populateSchema, (serviceName, field) => {
+				if (_.isString(serviceName)) {
+					let service = Services.get(serviceName);
+					if (service && _.isFunction(service["getByID"])) {
+						let items = _.isArray(docs) ? docs : [docs]; 
+						items.forEach((doc) => {
+							promises.push(service.getByID(doc[field]).then((populated) => {
+								doc[field] = populated;
+							}));
+						});
+					}
+				}
+			});
+
+			if (promises.length > 0) {
+				return Promise.all(promises).then(() => {
+					return docs;
+				});
+			}
+		}*/
+		return Promise.resolve(docs);		
 	}
 }
 

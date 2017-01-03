@@ -3,8 +3,11 @@
 let logger 		= require("../../core/logger");
 let config 		= require("../../config");
 
+let E 			= require("../../core/errors");
+let C 			= require("../../core/constants");
+
 let auth		= require("./auth/helper");
-let response	= require("../../core/response");
+let tokgen		= require("../../libs/tokgen");
 
 let _	 		= require("lodash");
 let express		= require("express");
@@ -28,6 +31,91 @@ module.exports = {
 
 	// Service methods
 	methods: {
+		/**
+		 * Generate a JSON REST API response
+		 *
+		 * If data present and no error, we will send status 200 with JSON data
+		 * If no data but has error, we will send HTTP error code and message
+		 * 
+		 * @param  {Object} res        	ExpressJS res object
+		 * @param  {json} 	data       	JSON response data
+		 * @param  {Object} err        	Error object
+		 * @param  {Object} req        	ExpressJS req object
+		 * @return {json} If res assigned, send response via res, otherwise return the response JSON object
+		 */
+		sendJSON(res, data, err, req) {
+			let response = {};
+
+			if (err) {
+				response.status = err.status || 500;
+				response.error = {
+					type: err.type,
+					message: err.message
+				};
+				if (err.params) 
+					response.error.params = err.params;
+
+				if (err.msgCode) 
+					response.error.message = req.t(err.msgCode);
+
+				response.data = data;
+
+				return res ? res.status(response.status).json(response) : response;
+			}
+
+			response.status = 200;
+			response.data = data;
+
+			return res ? res.json(response) : response;
+		},
+
+		/**
+		 * Check request has enough permission to call the action
+		 * 
+		 * @param  {Object} req        	ExpressJS req object
+		 * @param  {String} permission  Permission of action (optional, default: PERM_LOGGEDIN)
+		 * @param  {String} role  		Role of action (optional, default: ROLE_USER)
+		 * @returns {Promise}
+		 */		
+		checkActionPermission(req, permission = C.PERM_LOGGEDIN, role = C.ROLE_USER) {
+			if (permission == C.PERM_PUBLIC)
+				return Promise.resolve();
+
+			return Promise.resolve()
+				// check logged in
+				.then(() => {
+					if (!req.user)
+						throw new E.RequestError(E.UNAUTHORIZED);
+				})
+
+				// check role
+				.then(() => {
+					if (permission == C.PERM_ADMIN && this.isAdmin()) {
+						throw new E.RequestError(E.FORBIDDEN);
+					}
+					else if ([C.PERM_OWNER, C.PERM_LOGGED_IN].indexOf(permission) !== -1 && this.user.roles.indexOf(role) === -1) {
+						throw new E.RequestError(E.FORBIDDEN);
+					}
+				});
+				/*
+				// check owner
+				.then(() => {
+					if (permission == C.PERM_OWNER && _.isFunction(this.service.$schema.ownerChecker)) {
+						return this.service.$schema.ownerChecker(this).catch((err) => {
+							if (_.isObject(err))
+								throw err;
+							else
+								this.errorForbidden(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, this.t("app:YouAreNotTheOwner"));
+						});
+					}
+				});*/
+		},
+
+		/**
+		 * Register actions as REST routes
+		 * 
+		 * @param {Object} schema 	Schema of routes
+		 */
 		registerRESTRoutes(schema) {
 
 			if (schema.rest && schema.rest.routes) {
@@ -49,47 +137,41 @@ module.exports = {
 				// Trying authenticate with API key (miért itt van, miért nem globálba?)
 				router.use(auth.tryAuthenticateWithApiKey);
 
-				// let idParamName = schema.idParamName || "id";
-				
 				schema.rest.routes.forEach(route => {
 					
 					// Make the request handler for action
 					let handler = (req, res) => {
+						let requestID = tokgen();
 						let user = req.user;
 						let params = _.defaults({}, req.query, req.params, req.body);
 						this.logger.debug(`Request via REST '${route.path}'`, params);
-						console.time("REST request");
+						console.time("REST request " + requestID);
 
 						Promise.resolve()
-						/*
-						// Resolve model if ID provided
-						.then(() => {
-							return ctx.resolveModel();
-						})
-
 						// Check permission
 						.then(() => {
-							return ctx.checkPermission();
+							return this.checkActionPermission(req, route.permission, route.role);
 						})
-						*/
+
 						// Call the action handler
 						.then(() => {
-							return this.broker.call(route.action);
+							return this.broker.call(route.action, params, null, requestID);
 						})
 
 						// Response the result
 						.then((json) => {
-							response.json(res, json);
+							res.append("Request-Id", requestID);
+							this.sendJSON(res, json);
 						})
 
 						// Response the error
 						.catch((err) => {
 							this.logger.error("Request error: ", err);
-							response.json(res, null, err);
+							this.sendJSON(res, null, err, req);
 						})
 
 						.then(() => {
-							console.timeEnd("REST request");
+							console.timeEnd("REST request " + requestID);
 							//logger.debug("Response time:", ctx.responseTime(), "ms");
 						});
 
