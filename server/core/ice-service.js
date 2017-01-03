@@ -327,26 +327,40 @@ class Service extends IceServices.Service {
 	/**
 	 * Populate models by schema
 	 * 
-	 * @param {any} docs			Models
-	 * @param {any} populateSchema	schema for population
+	 * @param {Context} ctx				Context
+	 * @param {Array} 	docs			Models
+	 * @param {Object} 	populateSchema	schema for population
 	 * @returns	{Promise}
 	 * 
 	 * @memberOf Service
 	 */
-	populateModels(docs, populateSchema) {
-		/*populateSchema = populateSchema || this.$settings.modelPopulates; 
+	populateModels(ctx, docs, populateSchema) {
+		populateSchema = populateSchema || this.settings.modelPopulates; 
 		if (docs != null && populateSchema) {
 			let promises = [];
-			_.forIn(populateSchema, (serviceName, field) => {
-				if (_.isString(serviceName)) {
-					let service = Services.get(serviceName);
-					if (service && _.isFunction(service["getByID"])) {
-						let items = _.isArray(docs) ? docs : [docs]; 
-						items.forEach((doc) => {
-							promises.push(service.getByID(doc[field]).then((populated) => {
-								doc[field] = populated;
-							}));
-						});
+			_.forIn(populateSchema, (actionName, field) => {
+				if (_.isString(actionName)) {
+					let items = _.isArray(docs) ? docs : [docs]; 
+					let idList = _.uniq(items.map(doc => doc[field]));
+					if (idList.length > 0) {
+						// TODO $resultAsObject implement
+						/*
+							posts.resolve action is legyen
+							Paraméterei: id, code (list vagy érték)
+							Egyéb:
+								resolveAsObject: true // objektumot ad vissza, aho la kulcs az azonosító amit kapott
+								populate: true // populate-et hajtsa végre
+								propFilter: true vagy "" // ha true, akkor csinálja a default prop filtert. 
+									Ha string vagy array, akkor azt használja prop filternek
+						*/
+
+						promises.push(ctx.call(actionName, { id: idList, $resultAsObject: true }).then(populatedDocs => {
+							items.forEach(doc => {
+								let popDoc = _.find(populatedDocs, p => p.id == doc[field]);
+								if (popDoc)
+									doc[field] = popDoc;
+							});
+						}));
 					}
 				}
 			});
@@ -356,7 +370,7 @@ class Service extends IceServices.Service {
 					return docs;
 				});
 			}
-		}*/
+		}
 		return Promise.resolve(docs);		
 	}
 

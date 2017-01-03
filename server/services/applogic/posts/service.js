@@ -19,15 +19,15 @@ module.exports = {
 		ws: true,
 		graphql: true,
 		permission: C.PERM_LOGGEDIN,
-		role: "user",
 		collection: Post,
 
 		hashedIdentity: true,
 		modelPropFilter: "code title content author votes voters views createdAt editedAt",
 		
 		modelPopulates: {
-			"author": "persons",
-			"voters": "persons"
+			//"author": "persons.get",
+			"author": "posts.get"
+			//"voters": "persons.get"
 		}	
 	},
 
@@ -47,7 +47,7 @@ module.exports = {
 
 				return this.applyFilters(query, ctx).exec()
 				.then(docs => this.toJSON(docs))
-				.then(json => this.populateModels(json))
+				.then(json => this.populateModels(ctx, json))
 				.then(json => ctx.result(json));
 			}
 		},
@@ -62,7 +62,7 @@ module.exports = {
 				.then(model => this.checkModel(model, "app:PostNotFound"))
 				.then(model => this.collection.findByIdAndUpdate(model.id, { $inc: { views: 1 } }).exec())
 				.then(doc => this.toJSON(doc))
-				.then((json) => this.populateModels(json));
+				.then((json) => this.populateModels(ctx, json));
 			}
 		},
 
@@ -86,7 +86,7 @@ module.exports = {
 					return post.save();
 				})
 				.then(doc => this.toJSON(doc))
-				.then(json => this.populateModels(json))
+				.then(json => this.populateModels(ctx, json))
 				.then(json => {
 					this.notifyModelChanges(ctx, "created", json);
 					return json;
@@ -100,6 +100,7 @@ module.exports = {
 				return Promise.resolve(ctx)
 				.then(ctx => ctx.call(this.name + ".get", { code: ctx.params.code }))
 				.then(model => this.checkModel(model, "app:PostNotFound"))
+				// TODO check owner
 				.then(model => this.collection.findById(model.id).exec())
 				.then(doc => {
 					if (ctx.params.title != null)
@@ -112,7 +113,7 @@ module.exports = {
 					return doc.save();
 				})
 				.then(doc => this.toJSON(doc))
-				.then(json => this.populateModels(json))
+				.then(json => this.populateModels(ctx, json))
 				.then((json) => {
 					this.notifyModelChanges(ctx, "updated", json);
 					return json;
@@ -142,7 +143,7 @@ module.exports = {
 			.then(doc => {		
 				// Check user is on voters
 				if (doc.voters.indexOf(ctx.user.id) !== -1) 
-					throw ctx.errorBadRequest(C.ERR_ALREADY_VOTED, ctx.t("app:YouHaveAlreadyVotedThisPost"));
+					throw new E.RequestError(E.BAD_REQUEST, C.ERR_ALREADY_VOTED, ctx.t("app:YouHaveAlreadyVotedThisPost"));
 				return doc;
 			})
 			.then(doc => {
@@ -150,7 +151,7 @@ module.exports = {
 				return Post.findByIdAndUpdate(doc.id, { $addToSet: { voters: ctx.user.id } , $inc: { votes: 1 }}, { "new": true });
 			})
 			.then(doc => this.toJSON(doc))
-			.then(json => this.populateModels(json))
+			.then(json => this.populateModels(ctx, json))
 			.then(json => {
 				this.notifyModelChanges(ctx, "voted", json);
 				return json;
@@ -158,13 +159,14 @@ module.exports = {
 		},
 
 		unvote(ctx) {
+			return Promise.resolve(ctx)
 			.then(ctx => ctx.call(this.name + ".get", { code: ctx.params.code }))
 			.then(model => this.checkModel(model, "app:PostNotFound"))
 			.then(model => this.collection.findById(model.id).exec())
 			.then(doc => {
 				// Check user is on voters
 				if (doc.voters.indexOf(ctx.user.id) == -1) 
-					throw ctx.errorBadRequest(C.ERR_NOT_VOTED_YET, ctx.t("app:YouHaveNotVotedThisPostYet"));
+					throw new E.RequestError(E.BAD_REQUEST, C.ERR_NOT_VOTED_YET, ctx.t("app:YouHaveNotVotedThisPostYet"));
 				return doc;
 			})
 			.then(doc => {
