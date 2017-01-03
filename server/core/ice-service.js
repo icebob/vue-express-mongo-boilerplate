@@ -128,11 +128,11 @@ class Service extends IceServices.Service {
 					break;
 				}
 
-				// You can call the `model` action with
+				// You can call the `get` action with
 				// 		GET /api/{service}/?id=123 
 				// 	or 
 				// 		GET /api/{service}/123
-				case "model": {
+				case "get": {
 					routes.push({
 						method: "get",
 						path: `/${ns}/:${schema.idParamName}`,
@@ -276,11 +276,12 @@ class Service extends IceServices.Service {
 	 */
 	toJSON(docs, propFilter) {
 		let func = function(doc) {
-			let json = doc.toJSON();
+			let json = doc.constructor && doc.constructor.name === "model" ? doc.toJSON() :	doc;
+
 			if (propFilter != null)
-				return _.pick(json, propFilter);
-			else
-				return json;
+				return _.pick(doc, propFilter);
+			
+			return doc;
 		};
 
 		if (propFilter == null) {
@@ -343,22 +344,10 @@ class Service extends IceServices.Service {
 					let items = _.isArray(docs) ? docs : [docs]; 
 					let idList = _.uniq(items.map(doc => doc[field]));
 					if (idList.length > 0) {
-						// TODO $resultAsObject implement
-						/*
-							posts.resolve action is legyen
-							Paraméterei: id, code (list vagy érték)
-							Egyéb:
-								resolveAsObject: true // objektumot ad vissza, aho la kulcs az azonosító amit kapott
-								populate: true // populate-et hajtsa végre
-								propFilter: true vagy "" // ha true, akkor csinálja a default prop filtert. 
-									Ha string vagy array, akkor azt használja prop filternek
-						*/
-
-						promises.push(ctx.call(actionName, { id: idList, $resultAsObject: true }).then(populatedDocs => {
+						promises.push(ctx.call(actionName, { id: idList, resultAsObject: true, propFilter: true }).then(populatedDocs => {
 							items.forEach(doc => {
-								let popDoc = _.find(populatedDocs, p => p.id == doc[field]);
-								if (popDoc)
-									doc[field] = popDoc;
+								let id = doc[field];
+								doc[field] = populatedDocs[id];
 							});
 						}));
 					}
@@ -374,8 +363,34 @@ class Service extends IceServices.Service {
 		return Promise.resolve(docs);		
 	}
 
+	/**
+	 * Resolve model(s) by ID(s) or code(s)
+	 * Available context params:
+	 * 		{Array|Number} 		id					ID or ID list
+	 * 		{Array|String} 		code				code or codelist
+	 * 		{Boolean} 			resultAsObject		if true, return an object instead of Array, and the key is the ID
+	 * 		{Boolean} 			populate			populate the models
+	 * 		{Boolean|String}	propFilter			run toJSON with filter. If `propFilter` is string, use it as filter
+	 * 
+	 * @param {Context} ctx		Context
+	 * @returns
+	 * 
+	 * @memberOf Service
+	 */
 	resolveModel(ctx) {
+		let filterProperties = (doc) => {
+			if (ctx.params.propFilter != null) {
+				let filter;
+				if (_.isString(ctx.params.propFilter))
+					filter = ctx.params.propFilter;
+				return this.toJSON(doc, filter);
+			}			
+			return doc;
+		};
+
 		return Promise.resolve(ctx)
+
+		// Get from DB by IDs or codes
 		.then(ctx => {
 			let id = ctx.params["id"];
 			let code = ctx.params["code"];
@@ -400,12 +415,38 @@ class Service extends IceServices.Service {
 
 			return query.exec();
 		})
+
+		// Convert to plain JSON object
 		.then(docs => {
 			if (_.isArray(docs))
 				return docs.map(doc => doc.toJSON());
 			else if (_.isObject(docs)) 
 				return docs.toJSON();
-		});		
+		})
+
+		// Populate if need
+		.then(docs => {
+			if (ctx.params.populate === true)
+				return this.populateModels(ctx, docs);
+
+			return docs;
+		})
+
+		// Convert result to object instead of Array (if need)
+		// & filter properties (if need)
+		.then(docs => {
+			if (_.isArray(docs) && ctx.params.resultAsObject === true) {
+				let docsObj = {};
+				docs.forEach(doc => docsObj[doc.id] = filterProperties(doc));
+
+				return docsObj;
+			}
+			if (ctx.params.propFilter != null)
+				return docs.map(doc => filterProperties(doc));
+
+			return docs;
+		});
+
 	}
 }
 

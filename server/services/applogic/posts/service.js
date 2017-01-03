@@ -25,9 +25,9 @@ module.exports = {
 		modelPropFilter: "code title content author votes voters views createdAt editedAt",
 		
 		modelPopulates: {
-			//"author": "persons.get",
-			"author": "posts.get"
-			//"voters": "persons.get"
+			//"author": "persons.model",
+			"author": "posts.model"
+			//"voters": "persons.model"
 		}	
 	},
 
@@ -47,26 +47,25 @@ module.exports = {
 
 				return this.applyFilters(query, ctx).exec()
 				.then(docs => this.toJSON(docs))
-				.then(json => this.populateModels(ctx, json))
-				.then(json => ctx.result(json));
+				.then(json => this.populateModels(ctx, json));
 			}
 		},
 
 		// return a model by ID
-		model: {
+		get: {
 			cache: true, // if true, we can't increment the views!
 			permission: C.PERM_PUBLIC,
 			handler(ctx) {
 				return Promise.resolve(ctx)
-				.then(ctx => ctx.call(this.name + ".get", { code: ctx.params.code }))
+				.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
 				.then(model => this.checkModel(model, "app:PostNotFound"))
 				.then(model => this.collection.findByIdAndUpdate(model.id, { $inc: { views: 1 } }).exec())
 				.then(doc => this.toJSON(doc))
-				.then((json) => this.populateModels(ctx, json));
+				.then(json => this.populateModels(ctx, json));
 			}
 		},
 
-		get: {
+		model: {
 			cache: true,
 			publish: false,
 			handler(ctx) {
@@ -98,7 +97,7 @@ module.exports = {
 			permission: C.PERM_OWNER,
 			handler(ctx) {
 				return Promise.resolve(ctx)
-				.then(ctx => ctx.call(this.name + ".get", { code: ctx.params.code }))
+				.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
 				.then(model => this.checkModel(model, "app:PostNotFound"))
 				// TODO check owner
 				.then(model => this.collection.findById(model.id).exec())
@@ -125,7 +124,7 @@ module.exports = {
 			permission: C.PERM_OWNER,
 			handler(ctx) {
 				return Promise.resolve(ctx)
-				.then(ctx => ctx.call(this.name + ".get", { code: ctx.params.code }))
+				.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
 				.then(model => this.checkModel(model, "app:PostNotFound"))
 				.then(model => Post.remove({ _id: model.id }) && model)
 				.then((json) => {
@@ -137,7 +136,7 @@ module.exports = {
 
 		vote(ctx) {
 			return Promise.resolve(ctx)
-			.then(ctx => ctx.call(this.name + ".get", { code: ctx.params.code }))
+			.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
 			.then(model => this.checkModel(model, "app:PostNotFound"))
 			.then(model => this.collection.findById(model.id).exec())
 			.then(doc => {		
@@ -160,7 +159,7 @@ module.exports = {
 
 		unvote(ctx) {
 			return Promise.resolve(ctx)
-			.then(ctx => ctx.call(this.name + ".get", { code: ctx.params.code }))
+			.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
 			.then(model => this.checkModel(model, "app:PostNotFound"))
 			.then(model => this.collection.findById(model.id).exec())
 			.then(doc => {

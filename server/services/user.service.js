@@ -13,14 +13,14 @@ module.exports = {
 	actions: {
 		find(ctx) {
 			this.logger.debug("Find users...");
-			return ctx.result(users);
+			return Promise.resolve(users);
 		},
 
 		get: {
 			cache: true,
 			handler(ctx) {
 				this.logger.debug("Get user...", ctx.params);
-				return ctx.result(this.findByID(ctx.params.id));
+				return Promise.resolve(this.findByID(ctx.params.id));
 			}
 		}
 	},
