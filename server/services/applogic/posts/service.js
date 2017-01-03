@@ -62,8 +62,7 @@ module.exports = {
 				.then(model => this.checkModel(model, "app:PostNotFound"))
 				.then(model => this.collection.findByIdAndUpdate(model.id, { $inc: { views: 1 } }).exec())
 				.then(doc => this.toJSON(doc))
-				.then((json) => this.populateModels(json))
-				.then((json) => ctx.result(json));
+				.then((json) => this.populateModels(json));
 			}
 		},
 
@@ -71,76 +70,38 @@ module.exports = {
 			cache: true,
 			publish: false,
 			handler(ctx) {
-				return Promise.resolve(ctx)
-				.then(ctx => {
-					let id = ctx.params["id"];
-					let code = ctx.params["code"];
-					if (code && this.settings.hashedIdentity) {
-						if (_.isFunction(this.collection.schema.methods["decodeID"])) {
-							if (_.isArray(code)) {
-								id = code.map(item => this.collection.schema.methods.decodeID(item));
-							} else {
-								id = this.collection.schema.methods.decodeID(code);
-							}
-						}
-					}
-
-					if (id == null || id.length == 0)
-						throw new E.RequestError(E.BAD_REQUEST, C.INVALID_CODE, "app:InvalidCode");
-
-					let query;
-					if (_.isArray(id)) {
-						query = this.collection.find({ _id: { $in: id} });
-					} else
-						query = this.collection.findById(id);
-
-					return query.exec();
-				})
-				.then(docs => {
-					if (_.isArray(docs))
-						return docs.map(doc => doc.toJSON());
-					else if (_.isObject(docs)) 
-						return docs.toJSON();
-				})
-				.then((json) => ctx.result(json));
+				return this.resolveModel(ctx);
 			}
 		},
 
 		create: {
 			handler(ctx) {
-				this.validateParams(ctx, true);
-
-				let post = new Post({
-					title: ctx.params.title,
-					content: ctx.params.content,
-					author: ctx.user.id
-				});
-
-				return post.save()
-				.then((doc) => {
-					return this.toJSON(doc);
+				return Promise.resolve(ctx)
+				.then(() => {
+					let post = new Post({
+						title: ctx.params.title,
+						content: ctx.params.content,
+						author: ctx.user.id
+					});
+					return post.save();
 				})
-				.then((json) => {
-					return this.populateModels(json);
-				})
-				.then((json) => {
+				.then(doc => this.toJSON(doc))
+				.then(json => this.populateModels(json))
+				.then(json => {
 					this.notifyModelChanges(ctx, "created", json);
 					return json;
-				})
-				.then((json) => {
-					return ctx.result(json);
-				});								
+				});
 			}
 		},
 
 		update: {
 			permission: C.PERM_OWNER,
 			handler(ctx) {
-				ctx.assertModelIsExist(ctx.t("app:PostNotFound"));
-				this.validateParams(ctx);
-
-				return this.collection.findById(ctx.modelID).exec()
-				.then((doc) => {
+				return Promise.resolve(ctx)
+				.then(ctx => ctx.call(this.name + ".get", { code: ctx.params.code }))
+				.then(model => this.checkModel(model, "app:PostNotFound"))
+				.then(model => this.collection.findById(model.id).exec())
+				.then(doc => {
 					if (ctx.params.title != null)
 						doc.title = ctx.params.title;
 
@@ -150,18 +111,11 @@ module.exports = {
 					doc.editedAt = Date.now();
 					return doc.save();
 				})
-				.then((doc) => {
-					return this.toJSON(doc);
-				})
-				.then((json) => {
-					return this.populateModels(json);
-				})
+				.then(doc => this.toJSON(doc))
+				.then(json => this.populateModels(json))
 				.then((json) => {
 					this.notifyModelChanges(ctx, "updated", json);
 					return json;
-				})
-				.then((json) => {
-					return ctx.result(json);
 				});								
 			}
 		},
@@ -169,77 +123,59 @@ module.exports = {
 		remove: {
 			permission: C.PERM_OWNER,
 			handler(ctx) {
-				ctx.assertModelIsExist(ctx.t("app:PostNotFound"));
-
-				return Post.remove({ _id: ctx.modelID })
-				.then(() => {
-					return ctx.model;
-				})
+				return Promise.resolve(ctx)
+				.then(ctx => ctx.call(this.name + ".get", { code: ctx.params.code }))
+				.then(model => this.checkModel(model, "app:PostNotFound"))
+				.then(model => Post.remove({ _id: model.id }) && model)
 				.then((json) => {
 					this.notifyModelChanges(ctx, "removed", json);
 					return json;
-				})
-				.then((json) => {
-					return ctx.result(json);
 				});		
 			}
 		},
 
 		vote(ctx) {
-			ctx.assertModelIsExist(ctx.t("app:PostNotFound"));
-
-			return this.collection.findById(ctx.modelID).exec()
-			.then((doc) => {		
+			return Promise.resolve(ctx)
+			.then(ctx => ctx.call(this.name + ".get", { code: ctx.params.code }))
+			.then(model => this.checkModel(model, "app:PostNotFound"))
+			.then(model => this.collection.findById(model.id).exec())
+			.then(doc => {		
 				// Check user is on voters
 				if (doc.voters.indexOf(ctx.user.id) !== -1) 
 					throw ctx.errorBadRequest(C.ERR_ALREADY_VOTED, ctx.t("app:YouHaveAlreadyVotedThisPost"));
 				return doc;
 			})
-			.then((doc) => {
+			.then(doc => {
 				// Add user to voters
 				return Post.findByIdAndUpdate(doc.id, { $addToSet: { voters: ctx.user.id } , $inc: { votes: 1 }}, { "new": true });
 			})
-			.then((doc) => {
-				return this.toJSON(doc);
-			})
-			.then((json) => {
-				return this.populateModels(json);
-			})
-			.then((json) => {
+			.then(doc => this.toJSON(doc))
+			.then(json => this.populateModels(json))
+			.then(json => {
 				this.notifyModelChanges(ctx, "voted", json);
 				return json;
-			})
-			.then((json) => {
-				return ctx.result(json);
 			});
 		},
 
 		unvote(ctx) {
-			ctx.assertModelIsExist(ctx.t("app:PostNotFound"));
-
-			return this.collection.findById(ctx.modelID).exec()
-			.then((doc) => {
+			.then(ctx => ctx.call(this.name + ".get", { code: ctx.params.code }))
+			.then(model => this.checkModel(model, "app:PostNotFound"))
+			.then(model => this.collection.findById(model.id).exec())
+			.then(doc => {
 				// Check user is on voters
 				if (doc.voters.indexOf(ctx.user.id) == -1) 
 					throw ctx.errorBadRequest(C.ERR_NOT_VOTED_YET, ctx.t("app:YouHaveNotVotedThisPostYet"));
 				return doc;
 			})
-			.then((doc) => {
+			.then(doc => {
 				// Remove user from voters
 				return Post.findByIdAndUpdate(doc.id, { $pull: { voters: ctx.user.id } , $inc: { votes: -1 }}, { "new": true });
 			})
-			.then((doc) => {
-				return this.toJSON(doc);
-			})
-			.then((json) => {
-				return this.populateModels(json);
-			})
-			.then((json) => {
+			.then(doc => this.toJSON(doc))
+			.then(json => this.populateModels(json))
+			.then(json => {
 				this.notifyModelChanges(ctx, "unvoted", json);
 				return json;
-			})
-			.then((json) => {
-				return ctx.result(json);
 			});
 
 		}

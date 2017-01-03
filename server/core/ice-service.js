@@ -359,6 +359,40 @@ class Service extends IceServices.Service {
 		}*/
 		return Promise.resolve(docs);		
 	}
+
+	resolveModel(ctx) {
+		return Promise.resolve(ctx)
+		.then(ctx => {
+			let id = ctx.params["id"];
+			let code = ctx.params["code"];
+			if (code && this.settings.hashedIdentity) {
+				if (_.isFunction(this.collection.schema.methods["decodeID"])) {
+					if (_.isArray(code)) {
+						id = code.map(item => this.collection.schema.methods.decodeID(item));
+					} else {
+						id = this.collection.schema.methods.decodeID(code);
+					}
+				}
+			}
+
+			if (id == null || id.length == 0)
+				throw new E.RequestError(E.BAD_REQUEST, C.INVALID_CODE, "app:InvalidCode");
+
+			let query;
+			if (_.isArray(id)) {
+				query = this.collection.find({ _id: { $in: id} });
+			} else
+				query = this.collection.findById(id);
+
+			return query.exec();
+		})
+		.then(docs => {
+			if (_.isArray(docs))
+				return docs.map(doc => doc.toJSON());
+			else if (_.isObject(docs)) 
+				return docs.toJSON();
+		});		
+	}
 }
 
 module.exports = Service;
