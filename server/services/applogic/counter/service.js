@@ -3,19 +3,25 @@
 let logger 		= require("../../../core/logger");
 let config 		= require("../../../config");
 let C 	 		= require("../../../core/constants");
+let E 			= require("../../../core/errors");
 
 let store 		= require("./memstore");
 
 module.exports = {
+	// Name of service
+	name: "counter",
+
+	// Version (for versioned API)
+	version: 1,
+
+	// Additional settings of service
 	settings: {
-		// Name of service
-		name: "counter",
 
-		// Version (for versioned API)
-		version: 1,
+		// Is it the latest version of service? If yes, will be publish without version number too `/api/counter/get`
+		latestVersion: true,
 
-		// Namespace for rest and websocket requests
-		namespace: "counter",
+		// Namespace for rest and websocket requests (if not definied, will be used the name of service)
+		// namespace: "counter",
 
 		// Enable calling via REST
 		rest: true,
@@ -23,8 +29,14 @@ module.exports = {
 		// Enable calling via websocket
 		ws: true,
 
-		// Required permission for actions
-		permission: C.PERM_LOGGEDIN
+		// Enable calling via GraphQL
+		graphql: true,
+
+		// Default required permission to invoke actions
+		permission: C.PERM_LOGGEDIN,
+
+		// Default required role to invoke actions
+		role: C.ROLE_USER
 	},
 
 	// Actions of service
@@ -34,18 +46,24 @@ module.exports = {
 		 * 	
 		 *	via REST: 
 		 *		GET /counter
-		 *		GET /counter/find
+		 *		GET /counter/get
 		 *		
 		 *	via Websocket: 
-		 *		/counter/find
+		 *		/counter/get
 		 *		
 		 *	via GraphQL: 
 		 *		query { counter }
 		 */
-		find: {
+		get: {
+			// Enable caching the response
 			cache: true,
+
+			// Set this action as the default action for "GET" HTTP method
+			// 		GET /api/counter
+			defaultMethod: "get",
+
 			handler(ctx) {
-				return Promise.resolve(store.counter);
+				return store.counter;
 			}
 		},
 
@@ -56,21 +74,27 @@ module.exports = {
 		 *		POST /counter
 		 *			body: { value: 123 }
 		 *		
-		 *		GET /counter/create?value=123
+		 *		GET /counter/set?value=123
 		 *		
 		 *	via Websocket: 
-		 *		/counter/create
+		 *		/counter/set
 		 *			data: { value: 123 }
 		 *		
 		 *	via GraphQL: 
-		 *		mutation { countercreate(value: 123) }
+		 *		mutation { counterSet(value: 123) }
 		 *		
 		 */		
-		create(ctx) {
-			if (ctx.params.value) {
-				return this.changeCounter(ctx, parseInt(ctx.params.value));
-			} else {
-				throw new Error("Missing value from request!");
+		set: {
+			// Set this action as the default action for "POST" HTTP method
+			// 		POST /api/counter
+			defaultMethod: "post",
+
+			handler(ctx) {
+				if (ctx.params.value) {
+					return this.changeCounter(ctx, parseInt(ctx.params.value));
+				} else {
+					throw new E.RequestError(E.BAD_REQUEST, C.MODEL_NOT_FOUND, "Missing value from request!");
+				}
 			}
 		},
 
@@ -89,6 +113,10 @@ module.exports = {
 		reset: {
 			// Need administration role to perform this action
 			permission: C.PERM_ADMIN,
+
+			// Set this action as the default action for "DELETE" HTTP method
+			// 		DELETE /api/counter
+			defaultMethod: "delete",
 
 			// Handler
 			handler(ctx) {
@@ -135,30 +163,20 @@ module.exports = {
 		 * Change the counter value
 		 * @param  {Context} ctx   Context of request
 		 * @param  {Number} value  New value
-		 * @return {Promise}       Promise with the counter value
+		 * @return {Number}        Value of counter
 		 */
 		changeCounter(ctx, value) {
 			store.counter = value;
-			logger.info(ctx.user.username + " changed the counter to ", store.counter);
-			this.notifyModelChanges(ctx, "changed", store.counter);
+			logger.info(ctx.params.$user.username + " changed the counter to ", store.counter);
+			//this.notifyModelChanges(ctx, "changed", store.counter);
 
-			return Promise.resolve(store.counter);
+			return store.counter;
 		}
 	},
 	
 	/**
-	 * Initialize this service. It will be called when server load this service.
-	 * The `ctx` contains the references of `app` and `db`
-	 * @param  {Context} ctx   Context of initialization
-	 */
-	init(ctx) {
-		// Call when start the service
-		//logger.info("Initialize counter service!");
-	},
-
-	/**
 	 * Websocket options
-	 */
+	 *
 	socket: {
 		// Namespace of socket
 		//nsp: "/counter",
@@ -170,7 +188,7 @@ module.exports = {
 			// We sent the counter last value to the client
 			socket.emit("/counter/changed", store.counter);
 		}
-	},
+	},*/
 
 	/**
 	 * Define GraphQL queries, types, mutations. 
@@ -184,7 +202,7 @@ module.exports = {
 		types: "",
 
 		mutation: `
-			counterCreate(value: Int!): Int
+			counterSet(value: Int!): Int
 			counterReset: Int
 			counterIncrement: Int
 			counterDecrement: Int
@@ -193,11 +211,11 @@ module.exports = {
 		resolvers: {
 
 			Query: {
-				counter: "find",
+				counter: "get",
 			},
 
 			Mutation: {
-				counterCreate: "create",
+				counterSet: "set",
 				counterReset: "reset",
 				counterIncrement: "increment",
 				counterDecrement: "decrement"
@@ -216,9 +234,9 @@ query getCounter {
   counter
 }
 
-# Save a new counter value
-mutation saveCounter {
-  counterCreate(value: 12)
+# Set a new counter value
+mutation setCounter {
+  counterSet(value: 12)
 }
 
 # Reset the counter

@@ -132,10 +132,7 @@ module.exports = {
 						let requestID = tokgen();
 						let user = req.user;
 						let params = _.defaults({}, req.query, req.params, req.body);
-						params.$user = {
-							id: user.id,
-							roles: user.roles
-						};
+						params.$user = _.pick(user, ["id", "code", "avatar", "roles", "username", "fullName"]);
 						this.logger.debug(`Request via REST '${route.path}'`, params);
 						console.time("REST request " + requestID);
 
