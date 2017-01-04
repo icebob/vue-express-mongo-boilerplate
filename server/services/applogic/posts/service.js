@@ -34,6 +34,7 @@ module.exports = {
 	actions: {
 		list: {
 			cache: true,
+			defaultMethod: "get",
 			handler(ctx) {
 				let filter = {};
 
@@ -42,7 +43,7 @@ module.exports = {
 				else if (ctx.params.author != null)
 					filter.author = this.personService.decodeID(ctx.params.author);
 
-				let query = Post.find(filter);
+				let query = this.collection.find(filter);
 
 				return this.applyFilters(query, ctx).exec()
 				.then(docs => this.toJSON(docs))
@@ -54,6 +55,8 @@ module.exports = {
 		get: {
 			cache: true, // if true, we can't increment the views!
 			permission: C.PERM_PUBLIC,
+			defaultMethod: "get",
+			needModel: true,
 			handler(ctx) {
 				return Promise.resolve(ctx)
 				.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
@@ -73,6 +76,7 @@ module.exports = {
 		},
 
 		create: {
+			defaultMethod: "post",
 			handler(ctx) {
 				return Promise.resolve(ctx)
 				.then(() => {
@@ -101,6 +105,8 @@ module.exports = {
 		},
 
 		update: {
+			defaultMethod: "put",
+			needModel: true,
 			permission: C.PERM_OWNER,
 			handler(ctx) {
 				return Promise.resolve(ctx)
@@ -128,13 +134,15 @@ module.exports = {
 		},
 
 		remove: {
+			defaultMethod: "delete",
+			needModel: true,
 			permission: C.PERM_OWNER,
 			handler(ctx) {
 				return Promise.resolve(ctx)
 				.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
 				.then(model => this.checkModel(model, "app:PostNotFound"))
 				.then(model => {
-					return Post.remove({ _id: model.id }).then(() => model);
+					return this.collection.remove({ _id: model.id }).then(() => model);
 				})
 				.then((json) => {
 					//this.notifyModelChanges(ctx, "removed", json);

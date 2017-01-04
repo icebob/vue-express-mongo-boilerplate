@@ -29,6 +29,7 @@ module.exports = {
 		// return my profile with all properties
 		get: {
 			cache: false, // can't be cached, because it is unique for every account
+			defaultMethod: "get",
 			handler(ctx) {
 				return Promise.resolve(ctx)
 				.then(ctx => User.findById(ctx.params.$user.id).exec())
@@ -37,8 +38,11 @@ module.exports = {
 			}
 		},
 
-		update(ctx) {
-			// TODO: save profile changes
+		update: {
+			defaultMethod: "post",
+			handler(ctx) {
+				// TODO: save profile changes
+			}
 		}
 	},
 

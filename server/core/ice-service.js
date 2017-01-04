@@ -48,183 +48,58 @@ class Service extends IceServices.Service {
 
 		let ns = schema.namespace;
 
-		_.forIn(this.schema.actions, (actionFunc, actionName) => {
+		_.forIn(this.schema.actions, (handler, actionName) => {
 			let action;
-			if (_.isFunction(actionFunc)) {
-				action = {
-					handler: actionFunc
-				};
-			} else {
-				action = actionFunc;
-			}
+			if (_.isFunction(handler))
+				action = { handler };
+			else
+				action = handler;
 
 			if (action.publish === false) return;
 
-			if (!action.name)
-				action.name = actionName;
-
-			if (!action.permission)
-				action.permission = this.settings.permission;
-
-			if (!action.role)
-				action.role = this.settings.role;
+			action.name = action.name || actionName;
+			action.permission = action.permission || this.settings.permission;
+			action.role = action.role || this.settings.role || C.ROLE_USER;
 
 			let actionCallName = `${this.name}.${action.name}`;
 
 			if (this.settings.rest)	{
 				let routes = schema.rest.routes;
 
+				let addRoute = (method, path, insert) => {
+					routes[insert?"unshift":"push"]({
+						method,
+						path,
+						action: actionCallName,
+						permission: action.permission,
+						role: action.role
+					});					
+				};
+
 				// Register every action with GET and POST method types
 				// So you can call the /api/{service}/{action} with these request methods.
 				//
 				// 		GET  /api/{service}/{action}?id=123
 				// 		POST /api/{service}/{action}?id=123
-				routes.unshift({
-					method: "get",
-					path: `/${ns}/${action.name}`,
-					action: actionCallName,
-					permission: action.permission,
-					role: action.role
-				});
-				routes.unshift({
-					method: "post",
-					path: `/${ns}/${action.name}`,
-					action: actionCallName,
-					permission: action.permission,
-					role: action.role
-				});
+				addRoute("get", `/${ns}/${action.name}`, true);
+				addRoute("post", `/${ns}/${action.name}`, true);
 
-				// You can call with ID in the path 
+				// You can also call with ID/Code in the path 
 				// 		GET  /api/{service}/123/{action}
 				// 		POST /api/{service}/123/{action}
-				routes.unshift({
-					method: "get",
-					path: `/${ns}/:${schema.idParamName}/${action.name}`,
-					action: actionCallName,
-					permission: action.permission,
-					role: action.role
-				});
-				routes.unshift({
-					method: "post",
-					path: `/${ns}/:${schema.idParamName}/${action.name}`,
-					action: actionCallName,
-					permission: action.permission,
-					role: action.role
-				});	
+				addRoute("get", `/${ns}/:${schema.idParamName}/${action.name}`, true);
+				addRoute("post", `/${ns}/:${schema.idParamName}/${action.name}`, true);
 
-				// Register name-specific short-hand paths
-				switch(action.name) {
-
-				// You can call the `list` action with 
-				// 		GET /api/{service}
-				case "list": {
-					routes.push({
-						method: "get",
-						path: `/${ns}`,
-						action: actionCallName,
-						permission: action.permission,
-						role: action.role
-					});
-					break;
+				// Register name-specific short-hand paths for methods
+				if (action.defaultMethod) {
+					// You can call action without action name if set `defaultMethod` in action definition
+					// 		{method}  /api/{service}
+					// 		{method}  /api/{service}/123
+					if (action.needModel)
+						addRoute(action.defaultMethod.toLowerCase(), `/${ns}/:${schema.idParamName}`);
+					else
+						addRoute(action.defaultMethod.toLowerCase(), `/${ns}`);
 				}
-
-				// You can call the `get` action with
-				// 		GET /api/{service}/?id=123 
-				// 	or 
-				// 		GET /api/{service}/123
-				case "get": {
-					routes.push({
-						method: "get",
-						path: `/${ns}/:${schema.idParamName}`,
-						action: actionCallName,
-						permission: action.permission,
-						role: action.role
-					});
-					break;
-				}
-
-				// You can call the `create` action with 
-				// 		POST /api/{service}
-				case "create": {
-					routes.push({
-						method: "post",
-						path: `/${ns}/:${schema.idParamName}`,
-						action: actionCallName,
-						permission: action.permission,
-						role: action.role
-					});
-					routes.unshift({
-						method: "post",
-						path: `/${ns}/`,
-						action: actionCallName,
-						permission: action.permission,
-						role: action.role
-					});
-					break;
-				}
-
-				// You can call the `update` action with
-				// 		PUT /api/{service}/?id=123 
-				// 		PUT /api/{service}/123
-				// 	or 
-				// 		PATCH /api/{service}/?id=123 
-				// 		PATCH /api/{service}/123
-				case "update": {
-					routes.push({
-						method: "put",
-						path: `/${ns}/:${schema.idParamName}`,
-						action: actionCallName,
-						permission: action.permission,
-						role: action.role
-					});
-					routes.push({
-						method: "put",
-						path: `/${ns}/`,
-						action: actionCallName,
-						permission: action.permission,
-						role: action.role
-					});
-
-					routes.push({
-						method: "patch",
-						path: `/${ns}/:${schema.idParamName}`,
-						action: actionCallName,
-						permission: action.permission,
-						role: action.role
-					});
-					routes.push({
-						method: "patch",
-						path: `/${ns}/`,
-						action: actionCallName,
-						permission: action.permission,
-						role: action.role
-					});
-					break;
-				}
-
-				// You can call the `remove` action with 
-				// 		DELETE /api/{service}/?id=123 
-				// 	or 
-				// 		DELETE /api/{service}/123
-				case "remove": {
-					routes.push({
-						method: "delete",
-						path: `/${ns}/:${schema.idParamName}`,
-						action: actionCallName,
-						permission: action.permission,
-						role: action.role
-					});
-					routes.push({
-						method: "delete",
-						path: `/${ns}/`,
-						action: actionCallName,
-						permission: action.permission,
-						role: action.role
-					});					
-					break;
-				}
-				}		
-
 			}
 			
 			if (this.settings.ws) {

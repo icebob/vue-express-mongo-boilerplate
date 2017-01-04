@@ -4,8 +4,6 @@
 let config    		= require("../../../../config");
 let logger    		= require("../../../../core/logger");
 
-let _ 				= require("lodash");
-
 let db	    		= require("../../../../core/mongo");
 let mongoose 		= require("mongoose");
 let Schema 			= mongoose.Schema;
@@ -71,21 +69,6 @@ PostSchema.methods.encodeID = function() {
 PostSchema.methods.decodeID = function(code) {
 	return hashids.decodeHex(code);
 };
-
-/*
-PostSchema.static("getByID", function(id) {
-	let query;
-	if (_.isArray(id)) {
-		query = this.collection.find({ _id: { $in: id} });
-	} else
-		query = this.collection.findById(id);
-
-	return query
-		.populate({
-			path: "author",
-			select: ""
-		})
-});*/
 
 let Post = mongoose.model("Post", PostSchema);
 
