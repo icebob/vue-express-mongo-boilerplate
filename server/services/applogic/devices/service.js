@@ -47,7 +47,9 @@ module.exports = {
 			handler(ctx) {
 				return Promise.resolve(ctx)
 				.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
-				.then(model => this.checkModel(model, "app:DeviceNotFound"));
+				.then(model => this.checkModel(model, "app:DeviceNotFound"))
+				.then(doc => this.toJSON(doc))
+				.then(json => this.populateModels(ctx, json));
 			}
 		},
 
@@ -88,9 +90,9 @@ module.exports = {
 			needModel: true,
 			handler(ctx) {
 				return Promise.resolve(ctx)
-				.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
-				.then(model => this.checkModel(model, "app:DeviceNotFound"))
-				.then(model => this.collection.findById(model.id).exec())
+				.then(ctx => this.resolveID(ctx))
+				.then(modelID => this.checkModel(modelID, "app:DeviceNotFound"))
+				.then(modelID => this.collection.findById(modelID).exec())
 				.then(doc => {
 
 					if (ctx.params.address != null)
@@ -129,6 +131,8 @@ module.exports = {
 				.then(model => {
 					return this.collection.remove({ _id: model.id }).then(() => model);
 				})
+				.then(doc => this.toJSON(doc))
+				.then(json => this.populateModels(ctx, json))
 				.then((json) => {
 					//this.notifyModelChanges(ctx, "removed", json);
 					return json;

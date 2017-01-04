@@ -41,7 +41,7 @@ module.exports = {
 				if (ctx.params.filter == "my") 
 					filter.author = ctx.user.id;
 				else if (ctx.params.author != null)
-					filter.author = this.personService.decodeID(ctx.params.author);
+					filter.author = this.personService.decodeID(ctx.params.author); // TODO
 
 				let query = this.collection.find(filter);
 
@@ -59,9 +59,9 @@ module.exports = {
 			needModel: true,
 			handler(ctx) {
 				return Promise.resolve(ctx)
-				.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
-				.then(model => this.checkModel(model, "app:PostNotFound"))
-				.then(model => this.collection.findByIdAndUpdate(model.id, { $inc: { views: 1 } }).exec())
+				.then(ctx => this.resolveID(ctx))
+				.then(modelID => this.checkModel(modelID, "app:PostNotFound"))
+				.then(modelID => this.collection.findByIdAndUpdate(modelID, { $inc: { views: 1 } }).exec())
 				.then(doc => this.toJSON(doc))
 				.then(json => this.populateModels(ctx, json));
 			}
@@ -110,10 +110,10 @@ module.exports = {
 			permission: C.PERM_OWNER,
 			handler(ctx) {
 				return Promise.resolve(ctx)
-				.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
-				.then(model => this.checkModel(model, "app:PostNotFound"))
-				.then(model => this.checkModelOwner(model, "author", ctx.params.$user))
-				.then(model => this.collection.findById(model.id).exec())
+				.then(ctx => this.resolveID(ctx))
+				.then(modelID => this.checkModel(modelID, "app:PostNotFound"))
+				.then(modelID => this.collection.findById(modelID).exec())
+				.then(doc => this.checkModelOwner(doc, "author", ctx.params.$user))
 				.then(doc => {
 					if (ctx.params.title != null)
 						doc.title = ctx.params.title;
@@ -141,6 +141,7 @@ module.exports = {
 				return Promise.resolve(ctx)
 				.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
 				.then(model => this.checkModel(model, "app:PostNotFound"))
+				.then(model => this.checkModelOwner(model, "author", ctx.params.$user))
 				.then(model => {
 					return this.collection.remove({ _id: model.id }).then(() => model);
 				})
@@ -153,9 +154,9 @@ module.exports = {
 
 		vote(ctx) {
 			return Promise.resolve(ctx)
-			.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
-			.then(model => this.checkModel(model, "app:PostNotFound"))
-			.then(model => this.collection.findById(model.id).exec())
+			.then(ctx => this.resolveID(ctx))
+			.then(modelID => this.checkModel(modelID, "app:PostNotFound"))
+			.then(modelID => this.collection.findById(modelID).exec())
 			.then(doc => {		
 				// Check user is on voters
 				if (doc.voters.indexOf(ctx.params.$user.id) !== -1) 
@@ -173,9 +174,9 @@ module.exports = {
 
 		unvote(ctx) {
 			return Promise.resolve(ctx)
-			.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
-			.then(model => this.checkModel(model, "app:PostNotFound"))
-			.then(model => this.collection.findById(model.id).exec())
+			.then(ctx => this.resolveID(ctx))
+			.then(modelID => this.checkModel(modelID, "app:PostNotFound"))
+			.then(modelID => this.collection.findById(modelID).exec())
 			.then(doc => {
 				// Check user is on voters
 				if (doc.voters.indexOf(ctx.params.$user.id) == -1) 

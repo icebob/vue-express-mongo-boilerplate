@@ -269,6 +269,28 @@ class Service extends IceServices.Service {
 	}
 
 	/**
+	 * Resolve ID from ID(s) or code(s)
+	 * @param {Context} ctx		Context
+	 * @returns
+	 * 
+	 * @memberOf Service
+	 */
+	resolveID(ctx) {
+		let id = ctx.params["id"];
+		let code = ctx.params["code"];
+		if (code && this.settings.hashedIdentity) {
+			if (_.isFunction(this.collection.schema.methods["decodeID"])) {
+				if (_.isArray(code)) {
+					id = code.map(item => this.collection.schema.methods.decodeID(item));
+				} else {
+					id = this.collection.schema.methods.decodeID(code);
+				}
+			}
+		}
+		return id;
+	}	
+
+	/**
 	 * Resolve model(s) by ID(s) or code(s)
 	 * Available context params:
 	 * 		{Array|Number} 		id					ID or ID list
@@ -297,18 +319,7 @@ class Service extends IceServices.Service {
 
 		// Get from DB by IDs or codes
 		.then(ctx => {
-			let id = ctx.params["id"];
-			let code = ctx.params["code"];
-			if (code && this.settings.hashedIdentity) {
-				if (_.isFunction(this.collection.schema.methods["decodeID"])) {
-					if (_.isArray(code)) {
-						id = code.map(item => this.collection.schema.methods.decodeID(item));
-					} else {
-						id = this.collection.schema.methods.decodeID(code);
-					}
-				}
-			}
-
+			let id = this.resolveID(ctx);
 			if (id == null || id.length == 0)
 				throw new E.RequestError(E.BAD_REQUEST, C.INVALID_CODE, "app:InvalidCode");
 
