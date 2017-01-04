@@ -25,9 +25,8 @@ module.exports = {
 		modelPropFilter: "code title content author votes voters views createdAt editedAt",
 		
 		modelPopulates: {
-			//"author": "persons.model",
-			"author": "posts.model"
-			//"voters": "persons.model"
+			"author": "persons.model",
+			"voters": "persons.model"
 		}	
 	},
 

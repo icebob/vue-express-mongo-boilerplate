@@ -15,7 +15,7 @@ let Service     	= require("./ice-service");
 if (!WEBPACK_BUNDLE) require("require-webpack-compat")(module, require);
 
 let broker = new IceServices.ServiceBroker({
-	cacher: new IceServices.Cachers.Memory(),
+	// cacher: new IceServices.Cachers.Memory(),
 	logger,
 	nodeID: config.nodeID,
 	metrics: false

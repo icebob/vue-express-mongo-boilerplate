@@ -341,13 +341,23 @@ class Service extends IceServices.Service {
 			let promises = [];
 			_.forIn(populateSchema, (actionName, field) => {
 				if (_.isString(actionName)) {
-					let items = _.isArray(docs) ? docs : [docs]; 
-					let idList = _.uniq(items.map(doc => doc[field]));
+					let items = _.isArray(docs) ? docs : [docs];
+
+					// Collect IDs from field of docs (flatten, compact & unique list) 
+					let idList = _.uniq(_.flattenDeep(_.compact(items.map(doc => doc[field]))));
 					if (idList.length > 0) {
+						
+						// Call the target action & collect the promises
 						promises.push(ctx.call(actionName, { id: idList, resultAsObject: true, propFilter: true }).then(populatedDocs => {
+							// Replace the received models with IDs in the original docs
 							items.forEach(doc => {
 								let id = doc[field];
-								doc[field] = populatedDocs[id];
+								if (_.isArray(id)) {
+									let models = _.compact(id.map(_id => populatedDocs[_id]));
+									doc[field] = models;
+								} else {
+									doc[field] = populatedDocs[id];
+								}
 							});
 						}));
 					}
@@ -360,6 +370,8 @@ class Service extends IceServices.Service {
 				});
 			}
 		}
+		
+		// Fallback, if no populate defined
 		return Promise.resolve(docs);		
 	}
 
