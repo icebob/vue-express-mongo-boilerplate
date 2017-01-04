@@ -268,7 +268,7 @@ class Service extends IceServices.Service {
 	 * Check the model owner with the user
 	 * 
 	 * @param {any} model			Model
-	 * @param {any} fieldName		name of owner field
+	 * @param {any} fieldName		name of owner field in model
 	 * @param {any} user			User of request
 	 * @param {string} errMessageCode Error message code (optional)
 	 * @returns
@@ -279,7 +279,7 @@ class Service extends IceServices.Service {
 		if (model[fieldName] == user.id || user.roles.indexOf(C.ROLE_ADMIN) != -1)
 			return model;
 
-		throw new E.RequestError(E.BAD_REQUEST, C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, errMessageCode);
+		throw new E.RequestError(E.FORBIDDEN, C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, errMessageCode);
 	}
 
 	/**

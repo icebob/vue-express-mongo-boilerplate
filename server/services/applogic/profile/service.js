@@ -3,23 +3,25 @@
 let logger 		= require("../../../core/logger");
 let config 		= require("../../../config");
 let C 	 		= require("../../../core/constants");
+let E 			= require("../../../core/errors");
 
 let _			= require("lodash");
 
 let User 		= require("./models/user");
 
 module.exports = {
+	name: "profile",
+	version: 1,
+
 	settings: {
-		name: "profile",
-		version: 1,
-		namespace: "profile",
+		latestVersion: true,
 		rest: true,
 		ws: true,
 		graphql: true,
 		permission: C.PERM_LOGGEDIN,
-		role: "user",
 		collection: User,
 
+		hashedIdentity: true,
 		modelPropFilter: "code username fullName email avatar passwordLess provider profile socialLinks roles apiKey lastLogin locale status createdAt updatedAt"
 	},
 	
@@ -28,13 +30,15 @@ module.exports = {
 		get: {
 			cache: false, // can't be cached, because it is unique for every account
 			handler(ctx) {
-				return User.findById(User.schema.methods.decodeID(ctx.user.code)).exec().then( (doc) => {
-					return this.toJSON(doc);
-				})
-				.then((json) => {
-					return this.populateModels(json);
-				});
+				return Promise.resolve(ctx)
+				.then(ctx => User.findById(ctx.params.$user.id).exec())
+				.then(doc => this.toJSON(doc))
+				.then(json => this.populateModels(ctx, json));
 			}
+		},
+
+		update(ctx) {
+			// TODO: save profile changes
 		}
 	},
 
@@ -99,28 +103,41 @@ module.exports = {
 ## GraphiQL test ##
 
 # Get a person
-query getPerson {
-  person(code: "O5rNl5Bwnd") {
-    ...personFields
+query getProfile {
+  profile {
+    ...profileFields
   }
 }
 
 
-fragment personFields on Person {
-  code
-  fullName
-  email
-  username
-  roles
-  verified
-  avatar
-  lastLogin
-  locale
-  
-  posts(sort: "-createdAt") {
-    code
-    title
-  }
+fragment profileFields on Profile {
+	code
+	fullName
+	email
+	username
+	passwordLess
+	provider
+	profile {
+		name
+		gender
+		picture
+		location
+	}
+	socialLinks {
+		facebook
+		twitter
+		google
+		github
+	}
+	roles
+	verified
+	apiKey
+	locale
+	avatar
+	createdAt
+	updatedAt
+	lastLogin
+	status  
 }
 
 */

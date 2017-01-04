@@ -260,3 +260,80 @@ module.exports = {
 		}
 	}	
 };
+
+
+/*
+## GraphiQL test ##
+
+# Find all posts
+query getPosts {
+  posts(sort: "-createdAt -votes", limit: 3) {
+    ...postFields
+  }
+}
+
+# Create a new post
+mutation createPost {
+  postCreate(title: "New post", content: "New post content") {
+    ...postFields
+  }
+}
+
+# Get a post
+query getPost($code: String!) {
+  post(code: $code) {
+    ...postFields
+  }
+}
+
+# Update an existing post
+mutation updatePost($code: String!) {
+  postUpdate(code: $code, content: "Modified post content") {
+    ...postFields
+  }
+}
+
+# vote the post
+mutation votePost($code: String!) {
+  postVote(code: $code) {
+    ...postFields
+  }
+}
+
+# unvote the post
+mutation unVotePost($code: String!) {
+  postUnvote(code: $code) {
+    ...postFields
+  }
+}
+
+# Remove a post
+mutation removePost($code: String!) {
+  postRemove(code: $code) {
+    ...postFields
+  }
+}
+
+
+
+fragment postFields on Post {
+    code
+    title
+    content
+    author {
+      code
+      fullName
+      username
+      avatar
+    }
+    views
+    votes
+  	voters {
+  	  code
+  	  fullName
+  	  username
+  	  avatar
+  	}
+}
+
+*/

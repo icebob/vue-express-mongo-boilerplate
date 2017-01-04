@@ -99,3 +99,30 @@ module.exports = {
 		}
 	}	
 };
+
+/*
+## GraphiQL test ##
+
+# Get a person
+query getPerson {
+  person(code: "O5rNl5Bwnd") {
+    ...personFields
+  }
+}
+
+
+fragment personFields on Person {
+  code
+  fullName
+  username
+  roles
+  avatar
+  lastLogin
+  
+  posts(sort: "-createdAt") {
+    code
+    title
+  }
+}
+
+*/

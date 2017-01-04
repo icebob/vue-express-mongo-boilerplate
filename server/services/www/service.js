@@ -82,33 +82,21 @@ module.exports = {
 				return Promise.resolve();
 
 			return Promise.resolve()
-				// check logged in
-				.then(() => {
-					if (!req.user)
-						throw new E.RequestError(E.UNAUTHORIZED);
-				})
+			// check logged in
+			.then(() => {
+				if (!req.user)
+					throw new E.RequestError(E.UNAUTHORIZED);
+			})
 
-				// check role
-				.then(() => {
-					if (permission == C.PERM_ADMIN && req.user.roles.indexOf(C.ROLE_ADMIN)) {
-						throw new E.RequestError(E.FORBIDDEN);
-					}
-					else if ([C.PERM_OWNER, C.PERM_LOGGED_IN].indexOf(permission) !== -1 && req.user.roles.indexOf(role) === -1) {
-						throw new E.RequestError(E.FORBIDDEN);
-					}
-				});
-				/*
-				// check owner
-				.then(() => {
-					if (permission == C.PERM_OWNER && _.isFunction(this.service.$schema.ownerChecker)) {
-						return this.service.$schema.ownerChecker(this).catch((err) => {
-							if (_.isObject(err))
-								throw err;
-							else
-								this.errorForbidden(C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, this.t("app:YouAreNotTheOwner"));
-						});
-					}
-				});*/
+			// check role
+			.then(() => {
+				if (permission == C.PERM_ADMIN && req.user.roles.indexOf(C.ROLE_ADMIN)) {
+					throw new E.RequestError(E.FORBIDDEN);
+				}
+				else if ([C.PERM_OWNER, C.PERM_LOGGED_IN].indexOf(permission) !== -1 && req.user.roles.indexOf(role) === -1) {
+					throw new E.RequestError(E.FORBIDDEN);
+				}
+			});
 		},
 
 		/**
