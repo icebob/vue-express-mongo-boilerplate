@@ -32,7 +32,7 @@ module.exports = {
 
 	// Exposed actions
 	actions: {
-		find: {
+		list: {
 			cache: true,
 			handler(ctx) {
 				let filter = {};
@@ -79,14 +79,22 @@ module.exports = {
 					let post = new Post({
 						title: ctx.params.title,
 						content: ctx.params.content,
-						author: ctx.user.id
+						author: ctx.params.$user.id
 					});
 					return post.save();
 				})
 				.then(doc => this.toJSON(doc))
 				.then(json => this.populateModels(ctx, json))
 				.then(json => {
-					this.notifyModelChanges(ctx, "created", json);
+					//this.notifyModelChanges(ctx, "created", json);
+					/*
+						TODO:
+							- send broker.emit("posts.created", json);
+							- send to clients via websocket? or www listen this event 
+								and forward via socket
+							- emit posts.cache.clear event 
+							- call broker.clearCache
+					*/
 					return json;
 				});
 			}
@@ -98,7 +106,7 @@ module.exports = {
 				return Promise.resolve(ctx)
 				.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
 				.then(model => this.checkModel(model, "app:PostNotFound"))
-				// TODO check owner
+				.then(model => this.checkModelOwner(model, "author", ctx.params.$user))
 				.then(model => this.collection.findById(model.id).exec())
 				.then(doc => {
 					if (ctx.params.title != null)
@@ -113,7 +121,7 @@ module.exports = {
 				.then(doc => this.toJSON(doc))
 				.then(json => this.populateModels(ctx, json))
 				.then((json) => {
-					this.notifyModelChanges(ctx, "updated", json);
+					//this.notifyModelChanges(ctx, "updated", json);
 					return json;
 				});								
 			}
@@ -125,9 +133,11 @@ module.exports = {
 				return Promise.resolve(ctx)
 				.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
 				.then(model => this.checkModel(model, "app:PostNotFound"))
-				.then(model => Post.remove({ _id: model.id }) && model)
+				.then(model => {
+					return Post.remove({ _id: model.id }).then(() => model);
+				})
 				.then((json) => {
-					this.notifyModelChanges(ctx, "removed", json);
+					//this.notifyModelChanges(ctx, "removed", json);
 					return json;
 				});		
 			}
@@ -140,18 +150,15 @@ module.exports = {
 			.then(model => this.collection.findById(model.id).exec())
 			.then(doc => {		
 				// Check user is on voters
-				if (doc.voters.indexOf(ctx.user.id) !== -1) 
-					throw new E.RequestError(E.BAD_REQUEST, C.ERR_ALREADY_VOTED, ctx.t("app:YouHaveAlreadyVotedThisPost"));
+				if (doc.voters.indexOf(ctx.params.$user.id) !== -1) 
+					throw new E.RequestError(E.BAD_REQUEST, C.ERR_ALREADY_VOTED, "app:YouHaveAlreadyVotedThisPost");
 				return doc;
 			})
-			.then(doc => {
-				// Add user to voters
-				return Post.findByIdAndUpdate(doc.id, { $addToSet: { voters: ctx.user.id } , $inc: { votes: 1 }}, { "new": true });
-			})
+			.then(doc => Post.findByIdAndUpdate(doc.id, { $addToSet: { voters: ctx.params.$user.id } , $inc: { votes: 1 }}, { "new": true }))
 			.then(doc => this.toJSON(doc))
 			.then(json => this.populateModels(ctx, json))
 			.then(json => {
-				this.notifyModelChanges(ctx, "voted", json);
+				//this.notifyModelChanges(ctx, "voted", json);
 				return json;
 			});
 		},
@@ -163,18 +170,15 @@ module.exports = {
 			.then(model => this.collection.findById(model.id).exec())
 			.then(doc => {
 				// Check user is on voters
-				if (doc.voters.indexOf(ctx.user.id) == -1) 
-					throw new E.RequestError(E.BAD_REQUEST, C.ERR_NOT_VOTED_YET, ctx.t("app:YouHaveNotVotedThisPostYet"));
+				if (doc.voters.indexOf(ctx.params.$user.id) == -1) 
+					throw new E.RequestError(E.BAD_REQUEST, C.ERR_NOT_VOTED_YET, "app:YouHaveNotVotedThisPostYet");
 				return doc;
 			})
-			.then(doc => {
-				// Remove user from voters
-				return Post.findByIdAndUpdate(doc.id, { $pull: { voters: ctx.user.id } , $inc: { votes: -1 }}, { "new": true });
-			})
+			.then(doc => Post.findByIdAndUpdate(doc.id, { $pull: { voters: ctx.params.$user.id } , $inc: { votes: -1 }}, { "new": true }))
 			.then(doc => this.toJSON(doc))
-			.then(json => this.populateModels(json))
+			.then(json => this.populateModels(ctx, json))
 			.then(json => {
-				this.notifyModelChanges(ctx, "unvoted", json);
+				//this.notifyModelChanges(ctx, "unvoted", json);
 				return json;
 			});
 
@@ -242,7 +246,7 @@ module.exports = {
 
 		resolvers: {
 			Query: {
-				posts: "find",
+				posts: "list",
 				post: "get"
 			},
 

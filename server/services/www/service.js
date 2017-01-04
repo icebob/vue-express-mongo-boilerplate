@@ -90,10 +90,10 @@ module.exports = {
 
 				// check role
 				.then(() => {
-					if (permission == C.PERM_ADMIN && this.isAdmin()) {
+					if (permission == C.PERM_ADMIN && req.user.roles.indexOf(C.ROLE_ADMIN)) {
 						throw new E.RequestError(E.FORBIDDEN);
 					}
-					else if ([C.PERM_OWNER, C.PERM_LOGGED_IN].indexOf(permission) !== -1 && this.user.roles.indexOf(role) === -1) {
+					else if ([C.PERM_OWNER, C.PERM_LOGGED_IN].indexOf(permission) !== -1 && req.user.roles.indexOf(role) === -1) {
 						throw new E.RequestError(E.FORBIDDEN);
 					}
 				});
@@ -144,6 +144,10 @@ module.exports = {
 						let requestID = tokgen();
 						let user = req.user;
 						let params = _.defaults({}, req.query, req.params, req.body);
+						params.$user = {
+							id: user.id,
+							roles: user.roles
+						};
 						this.logger.debug(`Request via REST '${route.path}'`, params);
 						console.time("REST request " + requestID);
 

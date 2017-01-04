@@ -115,9 +115,9 @@ class Service extends IceServices.Service {
 				// Register name-specific short-hand paths
 				switch(action.name) {
 
-				// You can call the `find` action with 
+				// You can call the `list` action with 
 				// 		GET /api/{service}
-				case "find": {
+				case "list": {
 					routes.push({
 						method: "get",
 						path: `/${ns}`,
@@ -262,6 +262,13 @@ class Service extends IceServices.Service {
 			return model;
 
 		throw new E.RequestError(E.BAD_REQUEST, C.MODEL_NOT_FOUND, errMessageCode);
+	}
+
+	checkModelOwner(model, fieldName, user, errMessageCode = "app:YouAreNotTheOwner") {
+		if (model[fieldName] == user.id || user.roles.indexOf(C.ROLE_ADMIN) != -1)
+			return model;
+
+		throw new E.RequestError(E.BAD_REQUEST, C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, errMessageCode);
 	}
 
 	/**
