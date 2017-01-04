@@ -18,7 +18,7 @@ module.exports = {
 	// Exposed actions
 	actions: {
 		publish(ctx) {
-			this.logger.info("Publish schema:", ctx.params.schema);
+			//this.logger.info("Publish schema:", ctx.params.schema);
 			if (ctx.params.schema.rest)
 				this.registerRESTRoutes(ctx.params.schema);
 		}

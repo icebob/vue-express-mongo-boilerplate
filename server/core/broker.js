@@ -36,33 +36,12 @@ function loadServices(broker) {
 		let ctx = require.context("../services", true, /service\.js$/);
 		if (ctx) {
 			ctx.keys().map(function(filename) {
-				logger.info("  Load", path.relative(path.join(__dirname, "..", "services"), filename), "service...");
+				let svcName = path.relative(path.join(__dirname, "..", "services"), filename).replace(/.js$/, "");
+				logger.info(`  Load ${svcName}`);
 				addService(ctx(filename));
 			});
 		}
 	}
-	/*
-	if (WEBPACK_BUNDLE || fs.existsSync(path.join(__dirname, "..", "applogic", "modules"))) {
-		logger.info("");
-		logger.info(chalk.bold("Search applogic services..."));
-
-		let files = require.context("../applogic/modules", true, /service\.js$/);
-		if (files) {
-			files.keys().map(function(module) {
-				logger.info("  Load", path.relative(path.join(__dirname, "..", "applogic", "modules"), module), "service...");
-				addService(files(module));
-			});
-		}
-	}
-	
-
-	// Call `init` of services
-	_.forIn(self.services, (service) => {
-		if (_.isFunction(service.$schema.init)) {
-			service.$schema.init.call(service, Context.CreateToServiceInit(service));
-		}
-	});
-	*/
 }
 
 loadServices(broker);
