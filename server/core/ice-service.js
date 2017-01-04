@@ -264,6 +264,17 @@ class Service extends IceServices.Service {
 		throw new E.RequestError(E.BAD_REQUEST, C.MODEL_NOT_FOUND, errMessageCode);
 	}
 
+	/**
+	 * Check the model owner with the user
+	 * 
+	 * @param {any} model			Model
+	 * @param {any} fieldName		name of owner field
+	 * @param {any} user			User of request
+	 * @param {string} errMessageCode Error message code (optional)
+	 * @returns
+	 * 
+	 * @memberOf Service
+	 */
 	checkModelOwner(model, fieldName, user, errMessageCode = "app:YouAreNotTheOwner") {
 		if (model[fieldName] == user.id || user.roles.indexOf(C.ROLE_ADMIN) != -1)
 			return model;
