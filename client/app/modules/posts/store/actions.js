@@ -10,7 +10,7 @@ let service = new Service("posts");
 
 export const getRows = function ({commit, state}, loadMore) {
 	commit(FETCHING, true);
-	return service.rest("find", { filter: state.viewMode, sort: state.sort, limit: 10, offset: state.offset }).then((data) => {
+	return service.rest("list", { filter: state.viewMode, sort: state.sort, limit: 10, offset: state.offset }).then((data) => {
 		if (data.length == 0)
 			commit(NO_MORE_ITEMS);
 		else

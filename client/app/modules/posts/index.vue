@@ -29,7 +29,7 @@
 			li(v-for="post of posts", :key="post.code")
 				article.media
 					.media-left
-						img.avatar(:src="post.author.avatar")
+						img.avatar(v-if="post.author", :src="post.author.avatar")
 
 						.votes(:class="{ voted: iVoted(post) }")
 							.count.text-center {{ post.votes }}
@@ -185,7 +185,8 @@
 			]),
 
 			markdown(content) {
-				return marked(content);
+				if (content)
+					return marked(content);
 			},
 
 			iVoted(post) {
@@ -208,7 +209,7 @@
 			},
 
 			createdAgo(post) {
-				return this._("CreatedAgoByName", { ago: Vue.filter("ago")(post.createdAt), name: post.author.fullName } );
+				return this._("CreatedAgoByName", { ago: Vue.filter("ago")(post.createdAt), name: post.author ? post.author.fullName : "" } );
 			},
 
 			editedAgo(post) {
