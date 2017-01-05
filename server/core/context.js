@@ -6,7 +6,7 @@ let response		= require("./response");
 let tokgen			= require("../libs/tokgen");
 
 let C 				= require("./constants");
-let Sockets   		= require("./sockets");
+let Sockets   		= require("../services/www/sockets");
 
 let _ 				= require("lodash");
 let hash			= require("object-hash");

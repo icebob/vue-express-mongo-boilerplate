@@ -22,7 +22,7 @@ module.exports = {
 	actions: {
 		// return my User model
 		me(ctx) {
-			return this.broker.call("profile.get");
+			return ctx.call("profile.get", ctx.params);
 		},
 
 		// return all online users

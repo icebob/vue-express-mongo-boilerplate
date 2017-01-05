@@ -175,20 +175,13 @@ module.exports = {
 	},
 	
 	/**
-	 * Websocket options
-	 *
-	socket: {
-		// Namespace of socket
-		//nsp: "/counter",
-
-		// Fired after a new socket connected
-		afterConnection(socket, io) {
-			//logger.info("counter afterConnection");
-			
-			// We sent the counter last value to the client
-			socket.emit("/counter/changed", store.counter);
+	 * Subscribe to events
+	 */
+	events: {
+		"socket.client.connected"({ socketID }) {
+			this.broker.emit("socket.emit.client", socketID, "/counter/changed", { data: store.counter });
 		}
-	},*/
+	},
 
 	/**
 	 * Define GraphQL queries, types, mutations. 

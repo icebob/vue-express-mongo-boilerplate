@@ -81,7 +81,7 @@ export default class Service {
 	emit(action, params) {
 		return new Promise((resolve, reject) => {
 
-			this.socket.emit(`/${this.namespace}/${action}`, params, (response) => {
+			this.socket.emit(`${this.namespace}.${action}`, params, (response) => {
 
 				//console.log("Response: ", response);
 				if (response && response.status == 200)

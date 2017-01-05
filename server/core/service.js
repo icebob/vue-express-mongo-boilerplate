@@ -2,12 +2,12 @@
 
 let logger 		= require("./logger");
 let config 		= require("../config");
-let Sockets		= require("./sockets");
+let Sockets		= require("../services/www/sockets");
 let C 	 		= require("./constants");
 
 let _			= require("lodash");
 let hash		= require("object-hash");
-let Cacher		= require("./cacher");
+//let Cacher		= require("./cacher");
 let Services;
 
 let warn = function(msg) {

@@ -302,7 +302,7 @@ function initWebpack(app) {
 	}
 }
 
-module.exports = function(db) {
+module.exports = function(db, service) {
 
 	// Create express app
 	let app = express();
@@ -329,14 +329,10 @@ module.exports = function(db) {
 	initAuth(app);
 
 	// Init webpack devserver & hot reload module
-	// initWebpack(app);
-
-	// Load services
-	// let services = require("./services");
-	// services.loadServices(app, db);
+	initWebpack(app);
 
 	// Load socket.io server
-	let server = require("../../core/sockets").init(app, db);
+	let server = require("./sockets").init(app, db, service);
 
 	// Load routes
 	require("./routes")(app, db);

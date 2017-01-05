@@ -5,7 +5,7 @@ import Service from "../../../core/service";
 let service = new Service("counter", this); 
 
 export const getValue = function (ctx) {
-	service.emit("find").then( (data) => {
+	service.emit("get").then( (data) => {
 		console.log("Counter current value: ", data);
 		ctx.commit("CHANGED_VALUE", data);
 	});

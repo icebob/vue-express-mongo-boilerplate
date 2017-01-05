@@ -66,7 +66,7 @@
 	import Vue from "vue";
 	import marked from "marked";
 	import toast from "../../core/toastr";
-	import { cloneDeep } from "lodash";
+	import { cloneDeep, find } from "lodash";
 	import { validators, schema as schemaUtils } from "vue-form-generator";
 
 	import { mapGetters, mapActions } from "vuex";
@@ -189,7 +189,7 @@
 			},
 
 			iVoted(post) {
-				return _.find(post.voters, (user) => user.code == this.me.code) != null;
+				return find(post.voters, (user) => user.code == this.me.code) != null;
 			},
 
 			toggleVote(post) {
@@ -201,7 +201,7 @@
 
 			lastVoters(post, count = 5) {
 				if (post.voters && post.voters.length > 0) {
-					let voters = _.clone(post.voters).reverse().slice(0, 5);
+					let voters = cloneDeep(post.voters).reverse().slice(0, 5);
 					return voters;
 				}
 				return [];

@@ -113,6 +113,7 @@
 		 * Application created
 		 */
 		created() {
+			this.$socket.open();
 			console.log("App started!");
 			window.app = this;
 

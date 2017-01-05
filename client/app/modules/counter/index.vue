@@ -3,13 +3,13 @@
 		h2.title {{ "Demo" | i18n }}
 
 		h3 {{ count }}
-		button.button.success(@click="inc") 
+		button.button.success(@click="increment") 
 			span.icon
 				i.fa.fa-arrow-up 
 			span {{ "Increment" | i18n }}
 		br
 		br
-		button.button.warning(@click="dec") 
+		button.button.warning(@click="decrement") 
 			span
 				i.fa.fa-arrow-up  
 			span {{ "Decrement" | i18n }}
@@ -41,30 +41,14 @@
 				"increment",
 				"decrement",
 				"changedValue"
-			]),
-
-			/**
-			 * Increment counter
-			 */
-			inc() {
-				this.increment();
-			},
-
-			/**
-			 * Decrement counter
-			 */
-			dec() {
-				this.decrement();
-			}
+			])
 		},
 
 		/**
 		 * Socket handlers. Every property is an event handler
 		 */
 		socket: {
-
 			prefix: "/counter/",
-
 			//namespace: "/counter",
 
 			events: {

@@ -26,8 +26,10 @@ class Service extends IceServices.Service {
 	publishActions() {
 		if (!this.schema.actions) return;
 
+		let ns = this.settings.namespace || this.name;
+
 		let schema = {
-			namespace: this.settings.namespace || this.name,
+			namespace: ns,
 			version: this.version,
 			latestVersion: this.settings.latestVersion,
 			hashedIdentity: this.settings.hashedIdentity,
@@ -45,8 +47,6 @@ class Service extends IceServices.Service {
 				routes: []
 			};
 		}
-
-		let ns = schema.namespace;
 
 		_.forIn(this.schema.actions, (handler, actionName) => {
 			let action;
@@ -78,17 +78,18 @@ class Service extends IceServices.Service {
 
 				// Register every action with GET and POST method types
 				// So you can call the /api/{service}/{action} with these request methods.
-				//
 				// 		GET  /api/{service}/{action}?id=123
 				// 		POST /api/{service}/{action}?id=123
 				addRoute("get", `/${ns}/${action.name}`, true);
 				addRoute("post", `/${ns}/${action.name}`, true);
+
 
 				// You can also call with ID/Code in the path 
 				// 		GET  /api/{service}/123/{action}
 				// 		POST /api/{service}/123/{action}
 				addRoute("get", `/${ns}/:${schema.idParamName}/${action.name}`, true);
 				addRoute("post", `/${ns}/:${schema.idParamName}/${action.name}`, true);
+
 
 				// Register name-specific short-hand paths for methods
 				if (action.defaultMethod) {
@@ -104,7 +105,7 @@ class Service extends IceServices.Service {
 			
 			if (this.settings.ws) {
 				schema.ws.routes.push({
-					path: `/${ns}/${action.name}`,
+					path: `${ns}.${action.name}`,
 					action: actionCallName,
 					permission: action.permission,
 					role: action.role

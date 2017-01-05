@@ -18,9 +18,21 @@ module.exports = {
 	// Exposed actions
 	actions: {
 		publish(ctx) {
-			//this.logger.info("Publish schema:", ctx.params.schema);
-			if (ctx.params.schema.rest)
-				this.registerRESTRoutes(ctx.params.schema);
+			this.logger.info("Publish schema:", ctx.params.schema);
+			let schema = ctx.params.schema;
+			let old = this.publishedSchemas[schema.namespace];
+			if (old) {
+				// TODO: if there is old, reregister routes
+				/*
+				if (schema.rest)
+					this.unregisterRESTRoutes(old);
+				*/
+			}
+
+			if (schema.rest)
+				this.registerRESTRoutes(schema);
+
+			this.publishedSchemas[schema.namespace] = schema;
 		}
 	},
 
@@ -72,28 +84,28 @@ module.exports = {
 		/**
 		 * Check request has enough permission to call the action
 		 * 
-		 * @param  {Object} req        	ExpressJS req object
+		 * @param  {Object} user       	User of request
 		 * @param  {String} permission  Permission of action (optional, default: PERM_LOGGEDIN)
 		 * @param  {String} role  		Role of action (optional, default: ROLE_USER)
 		 * @returns {Promise}
 		 */		
-		checkActionPermission(req, permission = C.PERM_LOGGEDIN, role = C.ROLE_USER) {
+		checkActionPermission(user, permission = C.PERM_LOGGEDIN, role = C.ROLE_USER) {
 			if (permission == C.PERM_PUBLIC)
 				return Promise.resolve();
 
 			return Promise.resolve()
 			// check logged in
 			.then(() => {
-				if (!req.user)
+				if (!user)
 					throw new E.RequestError(E.UNAUTHORIZED);
 			})
 
 			// check role
 			.then(() => {
-				if (permission == C.PERM_ADMIN && req.user.roles.indexOf(C.ROLE_ADMIN)) {
+				if (permission == C.PERM_ADMIN && user.roles.indexOf(C.ROLE_ADMIN)) {
 					throw new E.RequestError(E.FORBIDDEN);
 				}
-				else if ([C.PERM_OWNER, C.PERM_LOGGED_IN].indexOf(permission) !== -1 && req.user.roles.indexOf(role) === -1) {
+				else if ([C.PERM_OWNER, C.PERM_LOGGED_IN].indexOf(permission) !== -1 && user.roles.indexOf(role) === -1) {
 					throw new E.RequestError(E.FORBIDDEN);
 				}
 			});
@@ -139,7 +151,7 @@ module.exports = {
 						Promise.resolve()
 						// Check permission
 						.then(() => {
-							return this.checkActionPermission(req, route.permission, route.role);
+							return this.checkActionPermission(req.user, route.permission, route.role);
 						})
 
 						// Call the action handler
@@ -182,15 +194,86 @@ module.exports = {
 				// Add error handlers to the end
 				require("./routes/errors")(this.app);
 			}
+		},
+
+		/**
+		 * Register actions as REST routes
+		 * 
+		 * @param {Object} socket 	Socket of ws client
+		 */
+		registerSocketActions(socket) {
+			let user = socket.request.user;
+
+			_.forIn(this.publishedSchemas, (schema) => {
+				if (!schema.ws) return;
+
+				schema.ws.routes.forEach(route => {
+
+					let handler = (data, callback) => {
+						let requestID = tokgen();
+						
+						let params = Object.assign({}, data, {
+							$user: _.pick(user, ["id", "code", "avatar", "roles", "username", "fullName"])
+						});
+
+						this.logger.debug(`Request via WS '${route.path}'`, params);
+						console.time("WS request " + requestID);
+
+						Promise.resolve()
+						// Check permission
+						.then(() => {
+							return this.checkActionPermission(user, route.permission, route.role);
+						})
+
+						// Call the action handler
+						.then(() => {
+							return this.broker.call(route.action, params, null, requestID);
+						})
+
+						// Response the result
+						.then(json => {
+							if (_.isFunction(callback))
+								callback(this.sendJSON(null, json));
+						})
+
+						// Response the error
+						.catch(err => {
+							this.logger.error("Request error: ", err);
+							if (_.isFunction(callback))
+								callback(this.sendJSON(null, null, err));
+						})
+
+						.then(() => {
+							console.timeEnd("WS request " + requestID);
+						});						
+					};
+
+					// Register as versioned action
+					if (schema.version) {
+						socket.on(`v${schema.version}.${route.path}`, handler);
+					}
+
+					// Register action without version
+					if (schema.latestVersion) {
+						socket.on(route.path, handler);
+					}		
+
+				});
+
+			});
+
 		}
 	},
 
 	created() {
+		this.publishedSchemas = {};
+		
 		this.db	= require("../../core/mongo")();
-		let { server, app } = require("./express")(this.db);
+		let { server, app } = require("./express")(this.db, this);
 		this.server = server;
 		this.app = app;
-		this.logger.info("Service created!");		
+
+		//this.logger.info("Service created!");		
 	},
 
 	started() {

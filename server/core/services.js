@@ -279,7 +279,7 @@ class Services extends EventEmitter {
 				// get namespace IO
 				let io;
 				if (service.socket.nsp && service.socket.nsp !== "/") {
-					io = socketHandler.addNameSpace(service.socket.nsp, service.role);
+					io = socketHandler.createNameSpace(service.socket.nsp, service.role);
 				}
 				else
 					io = IO;

@@ -1,7 +1,7 @@
 "use strict";
 
-let logger 			= require("./logger");
-let config 			= require("../config");
+let logger 			= require("../../core/logger");
+let config 			= require("../../config");
 
 let	path 			= require("path");
 let	fs 				= require("fs");
@@ -14,14 +14,18 @@ let	socketio 		= require("socket.io");
 let	session 		= require("express-session");
 let	MongoStore 		= require("connect-mongo")(session);
 
-let Services; // circular references
-
 let self = {
 	/**
 	 * IO server instance
 	 * We will assign it in `init`
 	 */
 	IO: null,
+
+	/**
+	 * Service broker instance
+	 * We will assign it in `init`
+	 */
+	broker: null,
 	
 	/**
 	 * Mongo store instance.
@@ -47,9 +51,13 @@ let self = {
 	 * 
 	 * @param  {Object} app Express App
 	 * @param  {Object} db  MongoDB connection
+	 * @param  {Service} service  WWW service instance
 	 */
-	init(app, db) {
-		// Create a MongoDB storage object
+	init(app, db, service) {
+		self.service = service;
+		self.broker = service.broker;
+
+		// Create a MongoDB session store object
 		self.mongoStore = new MongoStore({
 			mongooseConnection: db.connection,
 			collection: config.sessions.collection,
@@ -73,8 +81,20 @@ let self = {
 			});
 		});
 
-		let services = require("./services");
-		services.registerSockets(IO, self);
+		self.broker.on("socket.emit.client", (socketID, eventName, payload) => {
+			self.broker.logger.debug("Send WS broadcast message to '" + eventName + "':", payload);
+			let socket = self.IO.sockets.connected[socketID];
+			if (socket)
+				socket.emit(eventName, payload);
+		});
+
+		self.broker.on("socket.emit.role", (role, eventName, payload) => {
+			
+		});
+
+		self.broker.on("socket.emit", (eventName, payload) => {
+			self.IO.emit(eventName, payload);
+		});
 
 		return server;
 	},
@@ -86,7 +106,7 @@ let self = {
 	 * @param {any} role	required role for namespace
 	 * @returns
 	 */
-	addNameSpace(ns, role) {
+	createNameSpace(ns, role) {
 		let io = self.namespaces[ns];
 		if (io == null) {
 			io = self.IO.of(ns);
@@ -159,18 +179,24 @@ let self = {
 
 		// Add an event listener to the 'connection' event
 		io.on("connection", function (socket) {
-			if (!Services)
-				Services = require("./services");
-				
-			Services.emit("socket:connect", socket);
+			let payload = {
+				ns: ns,
+				socketID: socket.id,
+				user: _.pick(socket.request.user, ["id", "username", "fullName", "roles"])
+			};
+
+			self.broker.emit("socket.client.connected", payload);
+
 			self.addOnlineUser(socket);
-			logger.debug("WS client connected to namespace " + (io.name || "root") + "! User: " + socket.request.user.username);
+			logger.debug(`WS client connected to namespace ${ns}! User: ${socket.request.user.username}`);
 
 			socket.on("disconnect", function() {
-				Services.emit("socket:connect", socket);
+				self.broker.emit("socket.client.disconnected", payload);
 				self.removeSocket(socket);
-				logger.debug("WS client disconnected from namespace " + (io.name || "root") + "!");
+				logger.debug(`WS client disconnected from namespace ${ns}!`);
 			});
+
+			self.service.registerSocketActions(socket, io);
 		});
 
 		self.namespaces[ns] = io;
