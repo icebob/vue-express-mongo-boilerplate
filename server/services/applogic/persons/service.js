@@ -73,10 +73,9 @@ module.exports = {
 				roles: [String]
 				avatar: String
 				lastLogin: Timestamp
-
-				posts(limit: Int, offset: Int, sort: String): [Post]
 			}
 		`,		
+		//				posts(limit: Int, offset: Int, sort: String): [Post]
 
 		mutation: `
 		`,
@@ -87,14 +86,14 @@ module.exports = {
 			},
 
 			Person: {
+				/*
 				posts(person, args, context) {
-					/*
 					let ctx = context.ctx;
 					let postService = ctx.services("posts");
 					if (postService)
 						return postService.actions.find(ctx.copy(Object.assign(args, { author: person.code })));
-					*/
 				}
+				*/
 			}
 		}
 	}	

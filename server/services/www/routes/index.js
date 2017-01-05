@@ -4,7 +4,7 @@ let config 	= require("../../../config");
 let logger 	= require("../../../core/logger");
 let path 	= require("path");
 
-module.exports = function(app, db) {
+module.exports = function(app, db, service) {
 
 	// Index page
 	app.get("/", function(req, res) {
@@ -31,7 +31,7 @@ module.exports = function(app, db) {
 	//services.registerRoutes(app, db);
 
 	// Handle Graphql request
-	require("./graphql")(app, db);
+	require("./graphql")(app, db, service);
 
 	// Handle errors
 	require("./errors")(app, db);

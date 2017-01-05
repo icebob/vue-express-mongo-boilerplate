@@ -12,6 +12,10 @@ let tokgen		= require("../../libs/tokgen");
 let _	 		= require("lodash");
 let express		= require("express");
 
+let graphqlTools 		= require("graphql-tools");
+let GraphQLScalarType 	= require("graphql").GraphQLScalarType;
+let Kind				= require("graphql/language").Kind;
+
 module.exports = {
 	name: "www",
 
@@ -33,6 +37,7 @@ module.exports = {
 				this.registerRESTRoutes(schema);
 
 			this.publishedSchemas[schema.namespace] = schema;
+			this.generateGraphQLSchema();
 		}
 	},
 
@@ -262,11 +267,164 @@ module.exports = {
 
 			});
 
+		},
+
+		generateGraphQLSchema() {
+
+			let schemas = {
+				queries: [],
+				types: [],
+				mutations: [],
+				resolvers: []
+			};
+
+			_.forIn(this.publishedSchemas, (publishSchema) => {
+				if (publishSchema.graphql !== false && _.isObject(publishSchema.graphql)) {
+					let graphQL = publishSchema.graphql; 
+					graphQL.resolvers = graphQL.resolvers || {};
+
+					let processResolvers = (resolvers) => {
+						_.forIn(resolvers, (resolver, name) => {
+
+							if (_.isString(resolver)) {
+
+								let handler = (root, args, context) => {
+									let requestID = tokgen();
+									let actionName = `${publishSchema.namespace}.${resolver}`;
+									let user = context.user;
+									let params = args;
+									params.$user = _.pick(user, ["id", "code", "avatar", "roles", "username", "fullName"]);
+									this.logger.debug(`Request via GraphQL '${actionName}'`, params);
+									console.time("GRAPHQL request " + requestID);
+
+									return Promise.resolve()
+									// Check permission
+									.then(() => {
+										//return this.checkActionPermission(user, route.permission, route.role);
+									})
+
+									// Call the action handler
+									.then(() => {
+										return this.broker.call(actionName, params, null, requestID);
+									})
+
+									// Response the error
+									.catch((err) => {
+										this.logger.error("Request error: ", err);
+										throw err;
+									})
+
+									.then(json => {
+										console.timeEnd("GRAPHQL request " + requestID);
+										//logger.debug("Response time:", ctx.responseTime(), "ms");
+										return json;
+									});							
+								};
+
+								resolvers[name] = handler.bind(this);
+
+							}
+
+						});
+					};
+
+					if (graphQL.resolvers.Query)
+						processResolvers(graphQL.resolvers.Query);
+
+					if (graphQL.resolvers.Mutation)
+						processResolvers(graphQL.resolvers.Mutation);
+
+					schemas.queries.push(graphQL.query);
+					schemas.types.push(graphQL.types);
+					schemas.mutations.push(graphQL.mutation);
+					schemas.resolvers.push(graphQL.resolvers);
+				}
+
+			});
+
+			if (schemas.queries.length == 0) {
+				this.graphQLSchema = null;
+				return;
+			}
+
+			// Merge Type Definitons
+			let mergedSchema = `
+
+				scalar Timestamp
+
+				type Query {
+					${schemas.queries.join("\n")}
+				}
+
+				${schemas.types.join("\n")}
+
+				type Mutation {
+					${schemas.mutations.join("\n")}
+				}
+
+				schema {
+					query: Query
+					mutation: Mutation
+				}
+			`;
+
+			// Merge Resolvers
+			let mergeModuleResolvers = function(baseResolvers) {
+				schemas.resolvers.forEach((module) => {
+					baseResolvers = _.merge(baseResolvers, module);
+				});
+
+				return baseResolvers;
+			};
+
+			// Generate executable graphQL schema
+			this.graphQLSchema = graphqlTools.makeExecutableSchema({ 
+				typeDefs: [mergedSchema], 
+				resolvers: mergeModuleResolvers({
+					Timestamp: {
+						__parseValue(value) {
+							return new Date(value); // value from the client
+						},
+						__serialize(value) {
+							return value.getTime(); // value sent to the client
+						},
+						__parseLiteral(ast) {
+							if (ast.kind === Kind.INT)
+								return parseInt(ast.value, 10); // ast value is always in string format
+							
+							return null;
+						}
+					}
+					/* This version is not working
+						Copied from http://dev.apollodata.com/tools/graphql-tools/scalars.html
+					*/
+					/*
+					Timestamp: new GraphQLScalarType({
+						name: "Timestamp",
+						description: "Timestamp scalar type",
+						parseValue(value) {
+							return new Date(value); // value from the client
+						},
+						serialize(value) {
+							return value.getTime(); // value sent to the client
+						},
+						parseLiteral(ast) {
+							if (ast.kind === Kind.INT) {
+								return parseInt(ast.value, 10); // ast value is always in string format
+							}
+							return null;
+						},
+					}),*/
+				}),
+				logger: config.isDevMode() ? logger : undefined
+				//allowUndefinedInResolve: false
+			});
 		}
 	},
 
 	created() {
 		this.publishedSchemas = {};
+		this.graphQLSchema = null;
 		
 		this.db	= require("../../core/mongo")();
 		let { server, app } = require("./express")(this.db, this);

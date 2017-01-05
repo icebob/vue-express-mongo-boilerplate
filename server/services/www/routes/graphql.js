@@ -5,20 +5,8 @@ let logger 				= require("../../../core/logger");
 let auth 				= require("../auth/helper");
 let graphqlExpress 		= require("graphql-server-express").graphqlExpress;
 let graphiqlExpress  	= require("graphql-server-express").graphiqlExpress;
-let graphqlTools 		= require("graphql-tools");
 
-module.exports = function(app, db) {
-
-	let servicesSchema = require("../../../core/services").registerGraphQLSchema();
-	if (!servicesSchema) return;
-	
-	let schema = graphqlTools.makeExecutableSchema({ 
-		typeDefs: servicesSchema.schema, 
-		resolvers: servicesSchema.resolvers,
-		logger: config.isDevMode() ? logger : undefined
-		//allowUndefinedInResolve: false
-	});	
-	//console.log(schema);
+module.exports = function(app, db, service) {
 
 	// Register graphql server
 	app.use("/graphql", graphqlExpress( (req) => {
@@ -34,7 +22,7 @@ module.exports = function(app, db) {
 			//graphiql: config.isDevMode(),
 			//pretty: config.isDevMode(),
 			//printErrors: config.isDevMode(),
-			schema: schema,
+			schema: service.graphQLSchema,
 			context: {
 				req: req,
 				query: query,

@@ -335,7 +335,7 @@ module.exports = function(db, service) {
 	let server = require("./sockets").init(app, db, service);
 
 	// Load routes
-	require("./routes")(app, db);
+	require("./routes")(app, db, service);
 
 	return { server, app };
 };
