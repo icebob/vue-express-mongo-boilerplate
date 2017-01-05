@@ -133,7 +133,7 @@
 				 * @param  {Object} res Device object
 				 */
 				/*
-				We don't use it because we don't know we need to add it to the page (filter, sort..etc)
+				We don't use it because we don't know where to add it to the page (filter, sort..etc)
 				created(res) {
 					this.created(res.data);
 					toast.success(this._("PostNameAdded", res), this._("PostAdded"));
