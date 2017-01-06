@@ -18,7 +18,7 @@ let broker = new IceServices.ServiceBroker({
 	// cacher: new IceServices.Cachers.Memory(),
 	logger,
 	nodeID: config.nodeID,
-	metrics: false
+	metrics: true
 });
 
 

@@ -12,6 +12,8 @@ let tokgen		= require("../../libs/tokgen");
 let _	 		= require("lodash");
 let express		= require("express");
 
+let Context		= require("ice-services").Context;
+
 let graphqlTools 		= require("graphql-tools");
 let GraphQLScalarType 	= require("graphql").GraphQLScalarType;
 let Kind				= require("graphql/language").Kind;
@@ -22,7 +24,7 @@ module.exports = {
 	// Exposed actions
 	actions: {
 		publish(ctx) {
-			this.logger.info("Publish schema:", ctx.params.schema);
+			//this.logger.info("Publish schema:", ctx.params.schema);
 			let schema = ctx.params.schema;
 			let old = this.publishedSchemas[schema.namespace];
 			if (old) {
@@ -150,37 +152,44 @@ module.exports = {
 						let user = req.user;
 						let params = _.defaults({}, req.query, req.params, req.body);
 						params.$user = _.pick(user, ["id", "code", "avatar", "roles", "username", "fullName"]);
-						this.logger.debug(`Request via REST '${route.path}'`, params);
-						console.time("REST request " + requestID);
+						this.logger.debug(`Request via REST '${route.path}' ${requestID}`, params);
 
-						Promise.resolve()
-						// Check permission
-						.then(() => {
-							return this.checkActionPermission(req.user, route.permission, route.role);
-						})
-
-						// Call the action handler
-						.then(() => {
-							return this.broker.call(route.action, params, null, requestID);
-						})
-
-						// Response the result
-						.then((json) => {
-							res.append("Request-Id", requestID);
-							this.sendJSON(res, json);
-						})
-
-						// Response the error
-						.catch((err) => {
-							this.logger.error("Request error: ", err);
-							this.sendJSON(res, null, err, req);
-						})
-
-						.then(() => {
-							console.timeEnd("REST request " + requestID);
-							//logger.debug("Response time:", ctx.responseTime(), "ms");
+						let ctx = new Context({
+							broker: this.broker,
+							requestID,
+							action: {
+								name: "request.rest"
+							}
 						});
 
+						return ctx.invoke(ctx => {
+							return Promise.resolve()
+							// Check permission
+							.then(() => {
+								return this.checkActionPermission(req.user, route.permission, route.role);
+							})
+
+							// Call the action handler
+							.then(() => {
+								return ctx.call(route.action, params);
+							})
+
+							// Response the result
+							.then((json) => {
+								res.append("Request-Id", requestID);
+								this.sendJSON(res, json);
+							})
+
+							// Response the error
+							.catch((err) => {
+								this.logger.error("Request error: ", err);
+								this.sendJSON(res, null, err, req);
+							});
+						})
+
+						.then(() => {
+							this.logger.debug(`Response time for ${ctx.requestID}: ${ctx.duration}ms`);
+						});
 					};
 
 					router[route.method || "get"](route.path, handler);
@@ -221,36 +230,47 @@ module.exports = {
 							$user: _.pick(user, ["id", "code", "avatar", "roles", "username", "fullName"])
 						});
 
-						this.logger.debug(`Request via WS '${route.path}'`, params);
-						console.time("WS request " + requestID);
+						this.logger.debug(`Request via WS '${route.path}' ${requestID}`, params);
 
-						Promise.resolve()
-						// Check permission
+						let ctx = new Context({
+							broker: this.broker,
+							requestID,
+							action: {
+								name: "request.ws"
+							}
+						});
+
+						return ctx.invoke(ctx => {
+
+							return Promise.resolve()
+							// Check permission
+							.then(() => {
+								return this.checkActionPermission(user, route.permission, route.role);
+							})
+
+							// Call the action handler
+							.then(() => {
+								return ctx.call(route.action, params);
+							})
+
+							// Response the result
+							.then(json => {
+								if (_.isFunction(callback))
+									callback(this.sendJSON(null, json));
+							})
+
+							// Response the error
+							.catch(err => {
+								this.logger.error("Request error: ", err);
+								if (_.isFunction(callback))
+									callback(this.sendJSON(null, null, err));
+							});	
+
+						})
 						.then(() => {
-							return this.checkActionPermission(user, route.permission, route.role);
-						})
-
-						// Call the action handler
-						.then(() => {
-							return this.broker.call(route.action, params, null, requestID);
-						})
-
-						// Response the result
-						.then(json => {
-							if (_.isFunction(callback))
-								callback(this.sendJSON(null, json));
-						})
-
-						// Response the error
-						.catch(err => {
-							this.logger.error("Request error: ", err);
-							if (_.isFunction(callback))
-								callback(this.sendJSON(null, null, err));
-						})
-
-						.then(() => {
-							console.timeEnd("WS request " + requestID);
-						});						
+							this.logger.debug(`Response time for ${ctx.requestID}: ${ctx.duration}ms`);
+						});		
+									
 					};
 
 					// Register as versioned action
@@ -289,36 +309,45 @@ module.exports = {
 							if (_.isString(resolver)) {
 
 								let handler = (root, args, context) => {
+									context.broker = this.broker;
 									let requestID = tokgen();
 									let actionName = `${publishSchema.namespace}.${resolver}`;
 									let user = context.user;
 									let params = args;
 									params.$user = _.pick(user, ["id", "code", "avatar", "roles", "username", "fullName"]);
-									this.logger.debug(`Request via GraphQL '${actionName}'`, params);
-									console.time("GRAPHQL request " + requestID);
+									this.logger.debug(`Request via GraphQL '${actionName}' ${requestID}`, params);
 
-									return Promise.resolve()
-									// Check permission
-									.then(() => {
-										//return this.checkActionPermission(user, route.permission, route.role);
+									let ctx = new Context({
+										broker: this.broker,
+										requestID,
+										action: {
+											name: "request.graphql"
+										}
+									});
+
+									return ctx.invoke(ctx => {
+										return Promise.resolve()
+										// Check permission
+										.then(() => {
+											//return this.checkActionPermission(user, route.permission, route.role);
+										})
+
+										// Call the action handler
+										.then(() => {
+											return ctx.call(actionName, params);
+										})
+
+										// Response the error
+										.catch((err) => {
+											this.logger.error("Request error: ", err);
+											throw err;
+										});	
 									})
-
-									// Call the action handler
-									.then(() => {
-										return this.broker.call(actionName, params, null, requestID);
-									})
-
-									// Response the error
-									.catch((err) => {
-										this.logger.error("Request error: ", err);
-										throw err;
-									})
-
 									.then(json => {
-										console.timeEnd("GRAPHQL request " + requestID);
-										//logger.debug("Response time:", ctx.responseTime(), "ms");
+										this.logger.debug(`Response time for ${ctx.requestID}: ${ctx.duration}ms`);
 										return json;
-									});							
+									});						
+
 								};
 
 								resolvers[name] = handler.bind(this);
@@ -377,48 +406,55 @@ module.exports = {
 				return baseResolvers;
 			};
 
-			// Generate executable graphQL schema
-			this.graphQLSchema = graphqlTools.makeExecutableSchema({ 
-				typeDefs: [mergedSchema], 
-				resolvers: mergeModuleResolvers({
-					Timestamp: {
-						__parseValue(value) {
-							return new Date(value); // value from the client
-						},
-						__serialize(value) {
-							return value.getTime(); // value sent to the client
-						},
-						__parseLiteral(ast) {
-							if (ast.kind === Kind.INT)
-								return parseInt(ast.value, 10); // ast value is always in string format
-							
-							return null;
-						}
-					}
-					/* This version is not working
-						Copied from http://dev.apollodata.com/tools/graphql-tools/scalars.html
-					*/
-					/*
-					Timestamp: new GraphQLScalarType({
-						name: "Timestamp",
-						description: "Timestamp scalar type",
-						parseValue(value) {
-							return new Date(value); // value from the client
-						},
-						serialize(value) {
-							return value.getTime(); // value sent to the client
-						},
-						parseLiteral(ast) {
-							if (ast.kind === Kind.INT) {
-								return parseInt(ast.value, 10); // ast value is always in string format
+			try {
+				// Generate executable graphQL schema
+				let newSchema = graphqlTools.makeExecutableSchema({ 
+					typeDefs: [mergedSchema], 
+					resolvers: mergeModuleResolvers({
+						Timestamp: {
+							__parseValue(value) {
+								return new Date(value); // value from the client
+							},
+							__serialize(value) {
+								return value.getTime(); // value sent to the client
+							},
+							__parseLiteral(ast) {
+								if (ast.kind === Kind.INT)
+									return parseInt(ast.value, 10); // ast value is always in string format
+								
+								return null;
 							}
-							return null;
-						},
-					}),*/
-				}),
-				logger: config.isDevMode() ? logger : undefined
-				//allowUndefinedInResolve: false
-			});
+						}
+						/* This version is not working
+							Copied from http://dev.apollodata.com/tools/graphql-tools/scalars.html
+						*/
+						/*
+						Timestamp: new GraphQLScalarType({
+							name: "Timestamp",
+							description: "Timestamp scalar type",
+							parseValue(value) {
+								return new Date(value); // value from the client
+							},
+							serialize(value) {
+								return value.getTime(); // value sent to the client
+							},
+							parseLiteral(ast) {
+								if (ast.kind === Kind.INT) {
+									return parseInt(ast.value, 10); // ast value is always in string format
+								}
+								return null;
+							},
+						}),*/
+					}),
+					logger: config.isDevMode() ? logger : undefined
+					//allowUndefinedInResolve: false
+				});
+
+				this.graphQLSchema = newSchema;
+				this.logger.info("GraphQL schema registered!");
+			} catch(err) {
+				this.logger.warn("GraphQL compile error:", err.message);
+			}
 		}
 	},
 

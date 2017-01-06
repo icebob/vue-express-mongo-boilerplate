@@ -41,7 +41,8 @@ module.exports = {
 				if (ctx.params.filter == "my") 
 					filter.author = ctx.user.id;
 				else if (ctx.params.author != null)
-					filter.author = this.personService.decodeID(ctx.params.author); // TODO
+					filter.author = ctx.params.author;
+					//filter.author = this.personService.decodeID(ctx.params.author); // TODO
 
 				let query = this.collection.find(filter);
 
