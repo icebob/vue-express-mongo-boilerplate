@@ -17,6 +17,8 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 
 *This is just my personal boilerplate, it may or may not be a good fit for your project(s).*
 
+If you like my work, please **[donate](https://www.paypal.me/meregnorbert)**. Thank you!
+
 ### [Live Demo](http://vemapp.e-paper.space/) (login: test/test1234)
 
 ## Features
