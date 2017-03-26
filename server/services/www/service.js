@@ -12,7 +12,7 @@ let tokgen		= require("../../libs/tokgen");
 let _	 		= require("lodash");
 let express		= require("express");
 
-let Context		= require("ice-services").Context;
+let Context		= require("Moleculer").Context;
 
 let graphqlTools 		= require("graphql-tools");
 let GraphQLScalarType 	= require("graphql").GraphQLScalarType;

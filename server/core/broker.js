@@ -8,14 +8,14 @@ let	fs 				= require("fs");
 let _ 				= require("lodash");
 let chalk 			= require("chalk");
 
-let IceServices     = require("ice-services");
+let Moleculer     	= require("moleculer");
 let Service     	= require("./ice-service");
 
 /* global WEBPACK_BUNDLE */
 if (!WEBPACK_BUNDLE) require("require-webpack-compat")(module, require);
 
-let broker = new IceServices.ServiceBroker({
-	// cacher: new IceServices.Cachers.Memory(),
+let broker = new Moleculer.ServiceBroker({
+	// cacher: new Moleculer.Cachers.Memory(),
 	logger,
 	nodeID: config.nodeID,
 	metrics: false

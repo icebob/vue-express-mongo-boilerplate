@@ -19,8 +19,7 @@
     "lint": "eslint --ext=.js,.vue client server",
     "lint:fix": "eslint --fix --ext=.js,.vue client server",
     "snyk-protect": "snyk protect",
-    "typings": "typings install",
-    "prepublish": "npm run snyk-protect"
+    "typings": "typings install"
   },
   "repository": {
     "type": "git",
@@ -166,6 +165,7 @@
     "vue-websocket": "0.2.1",
     "vuex": "2.1.1",
     "webpack": "v2.2.0-rc.3",
+    "webpack-bundle-analyzer": "2.3.1",
     "webpack-dev-middleware": "1.9.0",
     "webpack-dev-server": "2.2.0-rc.0",
     "webpack-hot-middleware": "2.14.0",

@@ -3,10 +3,10 @@ let _ 				= require("lodash");
 let C 				= require("../core/constants");
 let E 				= require("../core/errors");
 
-let IceServices 	= require("ice-services");
+let Moleculer 		= require("moleculer");
 let publisher		= require("./publisher");
 
-class Service extends IceServices.Service {
+class Service extends Moleculer.Service {
 
 	constructor(broker, schema) {
 		super(broker, schema);
