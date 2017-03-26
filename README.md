@@ -1,5 +1,6 @@
 # vue-express-mongo-boilerplate #
 [![Known Vulnerabilities](https://snyk.io/test/github/icebob/vue-express-mongo-boilerplate/badge.svg)](https://snyk.io/test/github/icebob/vue-express-mongo-boilerplate)
+![Node 6](https://img.shields.io/badge/node-6.x.x-green.svg)
 ![VueJS 2](https://img.shields.io/badge/vuejs-2.1.8-green.svg)
 ![Webpack 2](https://img.shields.io/badge/webpack-2.2.0-green.svg)
 
@@ -18,6 +19,8 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 *This is just my personal boilerplate, it may or may not be a good fit for your project(s).*
 
 ### [Live Demo](http://vemapp.e-paper.space/) (login: test/test1234 or sign-up)
+
+If you like my work, please **[donate](https://www.paypal.me/meregnorbert)**. Thank you!
 
 ## Features
 **Server-side**
