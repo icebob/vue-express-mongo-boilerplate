@@ -12,7 +12,7 @@
 
 **This project is under heavy development!!!**
 
-This is a VueJS webapp boilerplate project with ExpressJS + Mongo server. Not an out-of-box webapp.
+This is a full stack javascript boilerplate project with VueJS & ExpressJS + Mongo server. Not an out-of-box webapp.
 
 Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/hackathon-starter](https://github.com/sahat/hackathon-starter)
 
