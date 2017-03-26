@@ -9,10 +9,10 @@ let _			= require("lodash");
 
 module.exports = {
 	name: "session",
-	version: 1,
+	//version: 1,
 
 	settings: {
-		latestVersion: true,
+		//latestVersion: true,
 		rest: true,
 		ws: true,
 		graphql: true,

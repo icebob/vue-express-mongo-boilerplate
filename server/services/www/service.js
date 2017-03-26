@@ -162,29 +162,27 @@ module.exports = {
 							}
 						});
 
-						return ctx.invoke(ctx => {
-							return Promise.resolve()
-							// Check permission
-							.then(() => {
-								return this.checkActionPermission(req.user, route.permission, route.role);
-							})
+						return Promise.resolve()
+						// Check permission
+						.then(() => {
+							return this.checkActionPermission(req.user, route.permission, route.role);
+						})
 
-							// Call the action handler
-							.then(() => {
-								return ctx.call(route.action, params);
-							})
+						// Call the action handler
+						.then(() => {
+							return ctx.call(route.action, params);
+						})
 
-							// Response the result
-							.then((json) => {
-								res.append("Request-Id", requestID);
-								this.sendJSON(res, json);
-							})
+						// Response the result
+						.then((json) => {
+							res.append("Request-Id", requestID);
+							this.sendJSON(res, json);
+						})
 
-							// Response the error
-							.catch((err) => {
-								this.logger.error("Request error: ", err);
-								this.sendJSON(res, null, err, req);
-							});
+						// Response the error
+						.catch((err) => {
+							this.logger.error("Request error: ", err);
+							this.sendJSON(res, null, err, req);
 						})
 
 						.then(() => {
@@ -201,7 +199,7 @@ module.exports = {
 				}
 
 				// Register router to namespace
-				if (schema.latestVersion) {
+				if (schema.version == null || schema.latestVersion) {
 					this.app.use("/api", router);
 				}		
 

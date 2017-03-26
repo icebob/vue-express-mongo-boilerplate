@@ -12,13 +12,13 @@ module.exports = {
 	name: "counter",
 
 	// Version (for versioned API)
-	version: 1,
+	//version: 1,
 
 	// Additional settings of service
 	settings: {
 
 		// Is it the latest version of service? If yes, will be publish without version number too `/api/counter/get`
-		latestVersion: true,
+		//latestVersion: true,
 
 		// Namespace for rest and websocket requests (if not definied, will be used the name of service)
 		// namespace: "counter",

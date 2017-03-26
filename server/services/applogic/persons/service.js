@@ -11,10 +11,10 @@ let User 		= require("./models/user");
 
 module.exports = {
 	name: "persons",
-	version: 1,
+	//version: 1,
 
 	settings: {
-		latestVersion: true,
+		//latestVersion: true,
 		rest: true,
 		ws: true,
 		graphql: true,

@@ -11,10 +11,10 @@ let Post 		= require("./models/post");
 
 module.exports = {
 	name: "posts",
-	version: 1,
+	//version: 1,
 
 	settings: {
-		latestVersion: true,
+		//latestVersion: true,
 		rest: true,
 		ws: true,
 		graphql: true,

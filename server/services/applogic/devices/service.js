@@ -11,9 +11,10 @@ let Device 		= require("./models/device");
 
 module.exports = {
 	name: "devices",
-	version: 1,
+	//version: 1,
+
 	settings: {
-		latestVersion: true,
+		//latestVersion: true,
 		rest: true,
 		ws: true,
 		graphql: true,
