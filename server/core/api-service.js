@@ -3,10 +3,12 @@ let _ = require("lodash");
 let C = require("../core/constants");
 let E = require("../core/errors");
 
+let { isNumber, isString } = require("lodash");
+
 let Moleculer = require("moleculer");
 let publisher = require("./publisher");
 
-class Service extends Moleculer.Service {
+class APIService extends Moleculer.Service {
 
 	constructor(broker, schema) {
 		super(broker, schema);
@@ -125,13 +127,13 @@ class Service extends Moleculer.Service {
 	applyFilters(query, ctx) {
 		// TODO full-text search with `q` params
 		if (ctx.params) {
-			if (ctx.params.limit)
+			if (isNumber(ctx.params.limit))
 				query.limit(ctx.params.limit);
 
-			if (ctx.params.offset)
+			if (isNumber(ctx.params.offset))
 				query.skip(ctx.params.offset);
 
-			if (ctx.params.sort)
+			if (isString(ctx.params.sort))
 				query.sort(ctx.params.sort.replace(/,/, " "));
 		}
 		return query;
@@ -351,4 +353,4 @@ class Service extends Moleculer.Service {
 	}
 }
 
-module.exports = Service;
+module.exports = APIService;

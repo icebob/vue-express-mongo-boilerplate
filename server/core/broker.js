@@ -9,23 +9,26 @@ let _ 				= require("lodash");
 let chalk 			= require("chalk");
 
 let Moleculer     	= require("moleculer");
-let Service     	= require("./ice-service");
+let APIService     	= require("./api-service");
 
 /* global WEBPACK_BUNDLE */
 if (!WEBPACK_BUNDLE) require("require-webpack-compat")(module, require);
 
 let broker = new Moleculer.ServiceBroker({
-	// cacher: new Moleculer.Cachers.Memory(),
+	cacher: new Moleculer.Cachers.Memory(),
 	logger,
+	logLevel: "debug",
 	nodeID: config.nodeID,
-	metrics: false
+	metrics: false,
+	statistics: false,
+	ServiceFactory: APIService
 });
 
 
 function loadServices(broker) {
 
 	let addService = function(serviceSchema) {
-		let service = new Service(broker, serviceSchema);
+		let service = broker.createService(serviceSchema);
 		return service;
 	};
 

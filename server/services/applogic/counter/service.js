@@ -184,11 +184,11 @@ module.exports = {
 	events: {
 		"socket.client.connected"({	socketID }) {
 			const payload = {
-				value: store.counter
+				data: store.counter
 			};
 			this.broker.emit("socket.emit.client", {
 				socketID,
-				event: "/counter/changed",
+				event: "counter.changed",
 				payload
 			});
 		}

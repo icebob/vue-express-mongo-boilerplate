@@ -88,7 +88,6 @@
     "nodemailer-html-to-text": "2.1.0",
     "nodemailer-mailgun-transport": "1.2.4",
     "nodemailer-sendgrid-transport": "0.2.0",
-    "object-hash": "1.1.5",
     "passport": "0.3.2",
     "passport-facebook": "2.1.1",
     "passport-github": "1.1.0",
