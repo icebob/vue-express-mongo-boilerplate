@@ -3,6 +3,7 @@
 let logger 			= require("./logger");
 let config 			= require("../config");
 
+let Promise			= require("bluebird");
 let chalk 			= require("chalk");
 let mongoose 		= require("mongoose");
 let autoIncrement 	= require("mongoose-auto-increment");
@@ -10,7 +11,7 @@ let autoIncrement 	= require("mongoose-auto-increment");
 let db;
 
 module.exports = function() {
-	mongoose.Promise = global.Promise;
+	mongoose.Promise = Promise;
 	if (!db) {
 		logger.info("Connecting to Mongo " + config.db.uri + "...");
 		db = mongoose.connect(config.db.uri, config.db.options, function mongoAfterConnect(err) {

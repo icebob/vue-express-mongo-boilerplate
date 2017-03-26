@@ -4,6 +4,7 @@ let logger 			= require("./logger");
 let config 			= require("../config");
 let C 				= require("./constants");
 
+let Promise			= require("bluebird");
 let _ 				= require("lodash");
 let tokgen 			= require("../libs/tokgen");
 let fakerator		= require("fakerator")();

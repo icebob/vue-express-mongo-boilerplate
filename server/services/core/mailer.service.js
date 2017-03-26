@@ -20,7 +20,7 @@ module.exports = {
 
 	methods: {
 		send(recipients, subject, body) {
-			return new Promise((resolve, reject) => {
+			return new this.Promise((resolve, reject) => {
 
 				/*let recipients = ctx.params.recipients;
 				let subject = ctx.params.subject;

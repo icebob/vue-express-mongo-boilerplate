@@ -1,10 +1,10 @@
-let _ 				= require("lodash");
+let _ = require("lodash");
 
-let C 				= require("../core/constants");
-let E 				= require("../core/errors");
+let C = require("../core/constants");
+let E = require("../core/errors");
 
-let Moleculer 		= require("moleculer");
-let publisher		= require("./publisher");
+let Moleculer = require("moleculer");
+let publisher = require("./publisher");
 
 class Service extends Moleculer.Service {
 
@@ -32,10 +32,12 @@ class Service extends Moleculer.Service {
 	 */
 	publishActions() {
 		if (this.schema.actions) {
-			let schema = publisher.call(this);			
+			let schema = publisher.call(this);
 			//this.logger.info("Schema", schema);
 
-			this.broker.call("www.publish", { schema });
+			this.broker.call("www.publish", {
+				schema
+			});
 		}
 	}
 
@@ -84,12 +86,12 @@ class Service extends Moleculer.Service {
 	 * @memberOf Service
 	 */
 	toJSON(docs, propFilter) {
-		let func = function(doc) {
-			let json = doc.constructor && doc.constructor.name === "model" ? doc.toJSON() :	doc;
+		let func = function (doc) {
+			let json = doc.constructor && doc.constructor.name === "model" ? doc.toJSON() : doc;
 
 			if (propFilter != null)
 				return _.pick(doc, propFilter);
-			
+
 			return doc;
 		};
 
@@ -97,7 +99,7 @@ class Service extends Moleculer.Service {
 			propFilter = this.settings.modelPropFilter;
 		}
 
-		if (_.isString(propFilter)) 
+		if (_.isString(propFilter))
 			propFilter = propFilter.split(" ");
 
 		if (_.isArray(docs)) {
@@ -133,7 +135,7 @@ class Service extends Moleculer.Service {
 				query.sort(ctx.params.sort.replace(/,/, " "));
 		}
 		return query;
-	}	
+	}
 
 	/**
 	 * Populate models by schema
@@ -146,7 +148,7 @@ class Service extends Moleculer.Service {
 	 * @memberOf Service
 	 */
 	populateModels(ctx, docs, populateSchema) {
-		populateSchema = populateSchema || this.settings.modelPopulates; 
+		populateSchema = populateSchema || this.settings.modelPopulates;
 		if (docs != null && populateSchema) {
 			let promises = [];
 			_.forIn(populateSchema, (actionName, field) => {
@@ -156,9 +158,13 @@ class Service extends Moleculer.Service {
 					// Collect IDs from field of docs (flatten, compact & unique list) 
 					let idList = _.uniq(_.flattenDeep(_.compact(items.map(doc => doc[field]))));
 					if (idList.length > 0) {
-						
+
 						// Call the target action & collect the promises
-						promises.push(ctx.call(actionName, { id: idList, resultAsObject: true, propFilter: true }).then(populatedDocs => {
+						promises.push(ctx.call(actionName, {
+							id: idList,
+							resultAsObject: true,
+							propFilter: true
+						}).then(populatedDocs => {
 							// Replace the received models with IDs in the original docs
 							items.forEach(doc => {
 								let id = doc[field];
@@ -175,14 +181,14 @@ class Service extends Moleculer.Service {
 			});
 
 			if (promises.length > 0) {
-				return Promise.all(promises).then(() => {
+				return this.Promise.all(promises).then(() => {
 					return docs;
 				});
 			}
 		}
-		
+
 		// Fallback, if no populate defined
-		return Promise.resolve(docs);		
+		return this.Promise.resolve(docs);
 	}
 
 	/**
@@ -205,7 +211,7 @@ class Service extends Moleculer.Service {
 			}
 		}
 		return id;
-	}	
+	}
 
 	/**
 	 * Resolve model(s) by ID(s) or code(s)
@@ -228,57 +234,61 @@ class Service extends Moleculer.Service {
 				if (_.isString(ctx.params.propFilter))
 					filter = ctx.params.propFilter;
 				return this.toJSON(doc, filter);
-			}			
+			}
 			return doc;
 		};
 
-		return Promise.resolve(ctx)
+		return this.Promise.resolve(ctx)
 
-		// Get from DB by IDs or codes
-		.then(ctx => {
-			let id = this.resolveID(ctx);
-			if (id == null || id.length == 0)
-				throw new E.RequestError(E.BAD_REQUEST, C.INVALID_CODE, "app:InvalidCode");
+			// Get from DB by IDs or codes
+			.then(ctx => {
+				let id = this.resolveID(ctx);
+				if (id == null || id.length == 0)
+					throw new E.RequestError(E.BAD_REQUEST, C.INVALID_CODE, "app:InvalidCode");
 
-			let query;
-			if (_.isArray(id)) {
-				query = this.collection.find({ _id: { $in: id} });
-			} else
-				query = this.collection.findById(id);
+				let query;
+				if (_.isArray(id)) {
+					query = this.collection.find({
+						_id: {
+							$in: id
+						}
+					});
+				} else
+					query = this.collection.findById(id);
 
-			return query.exec();
-		})
+				return query.exec();
+			})
 
-		// Convert to plain JSON object
-		.then(docs => {
-			if (_.isArray(docs))
-				return docs.map(doc => doc.toJSON());
-			else if (_.isObject(docs)) 
-				return docs.toJSON();
-		})
+			// Convert to plain JSON object
+			.then(docs => {
+				if (_.isArray(docs))
+					return docs.map(doc => doc.toJSON());
+				else if (_.isObject(docs))
+					return docs.toJSON();
+			})
 
-		// Populate if need
-		.then(docs => {
-			if (ctx.params.populate === true)
-				return this.populateModels(ctx, docs);
+			// Populate if need
+			.then(docs => {
+				if (ctx.params.populate === true)
+					return this.populateModels(ctx, docs);
 
-			return docs;
-		})
+				return docs;
+			})
 
-		// Convert result to object instead of Array (if need)
-		// & filter properties (if need)
-		.then(docs => {
-			if (_.isArray(docs) && ctx.params.resultAsObject === true) {
-				let docsObj = {};
-				docs.forEach(doc => docsObj[doc.id] = filterProperties(doc));
+			// Convert result to object instead of Array (if need)
+			// & filter properties (if need)
+			.then(docs => {
+				if (_.isArray(docs) && ctx.params.resultAsObject === true) {
+					let docsObj = {};
+					docs.forEach(doc => docsObj[doc.id] = filterProperties(doc));
 
-				return docsObj;
-			}
-			if (ctx.params.propFilter != null)
-				return docs.map(doc => filterProperties(doc));
+					return docsObj;
+				}
+				if (ctx.params.propFilter != null)
+					return docs.map(doc => filterProperties(doc));
 
-			return docs;
-		});
+				return docs;
+			});
 
 	}
 
@@ -292,16 +302,20 @@ class Service extends Moleculer.Service {
 	 */
 	notifyModelChanges(type, payload) {
 		const event = this.name + "." + type;
-		
+
 		// Send notify to other services
 		this.broker.emit(event, payload);
 
 		// Send notification via socket
-		this.broker.emit("socket.emit.role", { role: this.settings.role, event, payload });
-		
+		this.broker.emit("socket.emit.role", {
+			role: this.settings.role,
+			event,
+			payload
+		});
+
 		// Clear cached values
 		this.clearCache();
-	}	
+	}
 
 	/**
 	 * Clear cache entities

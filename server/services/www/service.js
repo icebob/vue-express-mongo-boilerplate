@@ -99,9 +99,9 @@ module.exports = {
 		 */		
 		checkActionPermission(user, permission = C.PERM_LOGGEDIN, role = C.ROLE_USER) {
 			if (permission == C.PERM_PUBLIC)
-				return Promise.resolve();
+				return this.Promise.resolve();
 
-			return Promise.resolve()
+			return this.Promise.resolve()
 			// check logged in
 			.then(() => {
 				if (!user)
@@ -163,7 +163,7 @@ module.exports = {
 							}
 						});
 
-						return Promise.resolve()
+						return this.Promise.resolve()
 						// Check permission
 						.then(() => {
 							return this.checkActionPermission(req.user, route.permission, route.role);
@@ -235,7 +235,7 @@ module.exports = {
 							}
 						});
 
-						return Promise.resolve()
+						return this.Promise.resolve()
 						// Check permission
 						.then(() => {
 							return this.checkActionPermission(user, route.permission, route.role);
@@ -313,7 +313,7 @@ module.exports = {
 										}
 									});
 
-									return Promise.resolve()
+									return this.Promise.resolve()
 									// Check permission
 									.then(() => {
 										//return this.checkActionPermission(user, route.permission, route.role);

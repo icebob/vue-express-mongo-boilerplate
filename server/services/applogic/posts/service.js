@@ -59,7 +59,7 @@ module.exports = {
 			defaultMethod: "get",
 			needModel: true,
 			handler(ctx) {
-				return Promise.resolve(ctx)
+				return this.Promise.resolve(ctx)
 					.then(ctx => this.resolveID(ctx))
 					.then(modelID => this.checkModel(modelID, "app:PostNotFound"))
 					.then(modelID => this.collection.findByIdAndUpdate(modelID, {
@@ -83,7 +83,7 @@ module.exports = {
 		create: {
 			defaultMethod: "post",
 			handler(ctx) {
-				return Promise.resolve(ctx)
+				return this.Promise.resolve(ctx)
 					.then(() => {
 						let post = new Post({
 							title: ctx.params.title,
@@ -110,7 +110,7 @@ module.exports = {
 			needModel: true,
 			permission: C.PERM_OWNER,
 			handler(ctx) {
-				return Promise.resolve(ctx)
+				return this.Promise.resolve(ctx)
 					.then(ctx => this.resolveID(ctx))
 					.then(modelID => this.checkModel(modelID, "app:PostNotFound"))
 					.then(modelID => this.collection.findById(modelID).exec())
@@ -143,7 +143,7 @@ module.exports = {
 			needModel: true,
 			permission: C.PERM_OWNER,
 			handler(ctx) {
-				return Promise.resolve(ctx)
+				return this.Promise.resolve(ctx)
 					.then(ctx => ctx.call(this.name + ".model", {
 						code: ctx.params.code
 					}))
@@ -166,7 +166,7 @@ module.exports = {
 		},
 
 		vote(ctx) {
-			return Promise.resolve(ctx)
+			return this.Promise.resolve(ctx)
 				.then(ctx => this.resolveID(ctx))
 				.then(modelID => this.checkModel(modelID, "app:PostNotFound"))
 				.then(modelID => this.collection.findById(modelID).exec())
@@ -199,7 +199,7 @@ module.exports = {
 		},
 
 		unvote(ctx) {
-			return Promise.resolve(ctx)
+			return this.Promise.resolve(ctx)
 				.then(ctx => this.resolveID(ctx))
 				.then(modelID => this.checkModel(modelID, "app:PostNotFound"))
 				.then(modelID => this.collection.findById(modelID).exec())

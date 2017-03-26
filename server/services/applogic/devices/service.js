@@ -46,7 +46,7 @@ module.exports = {
 			defaultMethod: "get",
 			needModel: true,
 			handler(ctx) {
-				return Promise.resolve(ctx)
+				return this.Promise.resolve(ctx)
 				.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
 				.then(model => this.checkModel(model, "app:DeviceNotFound"))
 				.then(doc => this.toJSON(doc))
@@ -65,7 +65,7 @@ module.exports = {
 		create: {
 			defaultMethod: "post",
 			handler(ctx) {
-				return Promise.resolve(ctx)
+				return this.Promise.resolve(ctx)
 				.then(() => {
 					let device = new Device({
 						address: ctx.params.address,
@@ -94,7 +94,7 @@ module.exports = {
 			defaultMethod: "put",
 			needModel: true,
 			handler(ctx) {
-				return Promise.resolve(ctx)
+				return this.Promise.resolve(ctx)
 				.then(ctx => this.resolveID(ctx))
 				.then(modelID => this.checkModel(modelID, "app:DeviceNotFound"))
 				.then(modelID => this.collection.findById(modelID).exec())
@@ -134,7 +134,7 @@ module.exports = {
 			defaultMethod: "delete",
 			needModel: true,
 			handler(ctx) {
-				return Promise.resolve(ctx)
+				return this.Promise.resolve(ctx)
 				.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
 				.then(model => this.checkModel(model, "app:DeviceNotFound"))
 				.then(model => {

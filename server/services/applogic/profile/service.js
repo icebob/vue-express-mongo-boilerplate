@@ -31,7 +31,7 @@ module.exports = {
 			cache: false, // can't be cached, because it is unique for every account
 			defaultMethod: "get",
 			handler(ctx) {
-				return Promise.resolve(ctx)
+				return this.Promise.resolve(ctx)
 				.then(ctx => User.findById(ctx.params.$user.id).exec())
 				.then(doc => this.toJSON(doc))
 				.then(json => this.populateModels(ctx, json));
