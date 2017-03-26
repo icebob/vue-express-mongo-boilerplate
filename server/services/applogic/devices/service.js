@@ -80,7 +80,11 @@ module.exports = {
 				.then(doc => this.toJSON(doc))
 				.then(json => this.populateModels(ctx, json))
 				.then(json => {
-					//this.notifyModelChanges(ctx, "created", json);
+					this.notifyModelChanges("created", {
+						user: ctx.params.$user, // TODO: filter properties
+						data: json
+					});
+
 					return json;
 				});	
 			}
@@ -116,7 +120,11 @@ module.exports = {
 				.then(doc => this.toJSON(doc))
 				.then(json => this.populateModels(ctx, json))
 				.then((json) => {
-					//this.notifyModelChanges(ctx, "updated", json);
+					this.notifyModelChanges("updated", {
+						user: ctx.params.$user, // TODO: filter properties
+						data: json
+					});
+
 					return json;
 				});	
 			}							
@@ -135,7 +143,11 @@ module.exports = {
 				.then(doc => this.toJSON(doc))
 				.then(json => this.populateModels(ctx, json))
 				.then((json) => {
-					//this.notifyModelChanges(ctx, "removed", json);
+					this.notifyModelChanges("removed", {
+						user: ctx.params.$user, // TODO: filter properties
+						data: json
+					});
+
 					return json;
 				});		
 			}
