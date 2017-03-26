@@ -125,7 +125,7 @@
 		 */
 		socket: {
 
-			prefix: "/posts/",
+			prefix: "posts.",
 
 			events: {
 				/**

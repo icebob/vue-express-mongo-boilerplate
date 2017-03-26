@@ -9,6 +9,7 @@ let C 			= require("../../core/constants");
 let auth		= require("./auth/helper");
 let tokgen		= require("../../libs/tokgen");
 
+let util 		= require("util");
 let _	 		= require("lodash");
 let express		= require("express");
 
@@ -181,12 +182,8 @@ module.exports = {
 
 						// Response the error
 						.catch((err) => {
-							this.logger.error("Request error: ", err);
+							this.logger.error("Request error: ", util.inspect(err, { depth: 0, colors: true }));
 							this.sendJSON(res, null, err, req);
-						})
-
-						.then(() => {
-							this.logger.debug(`Response time for ${ctx.requestID}: ${ctx.duration}ms`);
 						});
 					};
 
@@ -238,35 +235,28 @@ module.exports = {
 							}
 						});
 
-						return ctx.invoke(ctx => {
-
-							return Promise.resolve()
-							// Check permission
-							.then(() => {
-								return this.checkActionPermission(user, route.permission, route.role);
-							})
-
-							// Call the action handler
-							.then(() => {
-								return ctx.call(route.action, params);
-							})
-
-							// Response the result
-							.then(json => {
-								if (_.isFunction(callback))
-									callback(this.sendJSON(null, json));
-							})
-
-							// Response the error
-							.catch(err => {
-								this.logger.error("Request error: ", err);
-								if (_.isFunction(callback))
-									callback(this.sendJSON(null, null, err));
-							});	
-
-						})
+						return Promise.resolve()
+						// Check permission
 						.then(() => {
-							this.logger.debug(`Response time for ${ctx.requestID}: ${ctx.duration}ms`);
+							return this.checkActionPermission(user, route.permission, route.role);
+						})
+
+						// Call the action handler
+						.then(() => {
+							return ctx.call(route.action, params);
+						})
+
+						// Response the result
+						.then(json => {
+							if (_.isFunction(callback))
+								callback(this.sendJSON(null, json));
+						})
+
+						// Response the error
+						.catch(err => {
+							this.logger.error("Request error: ", err);
+							if (_.isFunction(callback))
+								callback(this.sendJSON(null, null, err));
 						});		
 									
 					};
@@ -277,7 +267,7 @@ module.exports = {
 					}
 
 					// Register action without version
-					if (schema.latestVersion) {
+					if (schema.version == null || schema.latestVersion) {
 						socket.on(route.path, handler);
 					}		
 
@@ -323,27 +313,21 @@ module.exports = {
 										}
 									});
 
-									return ctx.invoke(ctx => {
-										return Promise.resolve()
-										// Check permission
-										.then(() => {
-											//return this.checkActionPermission(user, route.permission, route.role);
-										})
-
-										// Call the action handler
-										.then(() => {
-											return ctx.call(actionName, params);
-										})
-
-										// Response the error
-										.catch((err) => {
-											this.logger.error("Request error: ", err);
-											throw err;
-										});	
+									return Promise.resolve()
+									// Check permission
+									.then(() => {
+										//return this.checkActionPermission(user, route.permission, route.role);
 									})
-									.then(json => {
-										this.logger.debug(`Response time for ${ctx.requestID}: ${ctx.duration}ms`);
-										return json;
+
+									// Call the action handler
+									.then(() => {
+										return ctx.call(actionName, params);
+									})
+
+									// Response the error
+									.catch((err) => {
+										this.logger.error("Request error: ", err);
+										throw err;
 									});						
 
 								};

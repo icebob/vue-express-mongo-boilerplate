@@ -81,19 +81,19 @@ let self = {
 			});
 		});
 
-		self.broker.on("socket.emit.client", (socketID, eventName, payload) => {
-			self.broker.logger.debug("Send WS broadcast message to '" + eventName + "':", payload);
+		self.broker.on("socket.emit.client", ({ socketID, event, payload }) => {
+			self.broker.logger.debug("Send WS broadcast message to '" + event + "':", payload);
 			let socket = self.IO.sockets.connected[socketID];
 			if (socket)
-				socket.emit(eventName, payload);
+				socket.emit(event, payload);
 		});
 
-		self.broker.on("socket.emit.role", (role, eventName, payload) => {
-			
+		self.broker.on("socket.emit.role", ({ role, event, payload }) => {
+			self.IO.emit(event, payload); // TODO only for role
 		});
 
-		self.broker.on("socket.emit", (eventName, payload) => {
-			self.IO.emit(eventName, payload);
+		self.broker.on("socket.emit", ({ event, payload }) => {
+			self.IO.emit(event, payload);
 		});
 
 		return server;

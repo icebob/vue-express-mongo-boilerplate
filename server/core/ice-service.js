@@ -281,6 +281,36 @@ class Service extends Moleculer.Service {
 		});
 
 	}
+
+	/**
+	 * Notificate the connected users if the model changed
+	 * 
+	 * @param {any} type	Type of changes (created, updated, deleted...etc)
+	 * @param {any} payload	JSON payload
+	 * 
+	 * @memberOf Service
+	 */
+	notifyModelChanges(type, payload) {
+		const event = this.name + "." + type;
+		
+		// Send notify to other services
+		this.broker.emit(event, payload);
+
+		// Send notification via socket
+		this.broker.emit("socket.emit.role", { role: this.settings.role, event, payload });
+		
+		// Clear cached values
+		this.clearCache();
+	}	
+
+	/**
+	 * Clear cache entities
+	 * 
+	 * @memberOf Service
+	 */
+	clearCache() {
+		this.broker.emit("cache.clean", this.name + ".*");
+	}
 }
 
 module.exports = Service;

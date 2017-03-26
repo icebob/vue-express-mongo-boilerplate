@@ -1,11 +1,11 @@
 "use strict";
 
-let logger 		= require("../../../core/logger");
-let config 		= require("../../../config");
-let C 	 		= require("../../../core/constants");
-let E 			= require("../../../core/errors");
+let logger = require("../../../core/logger");
+let config = require("../../../config");
+let C = require("../../../core/constants");
+let E = require("../../../core/errors");
 
-let store 		= require("./memstore");
+let store = require("./memstore");
 
 module.exports = {
 	// Name of service
@@ -83,7 +83,7 @@ module.exports = {
 		 *	via GraphQL: 
 		 *		mutation { counterSet(value: 123) }
 		 *		
-		 */		
+		 */
 		set: {
 			// Set this action as the default action for "POST" HTTP method
 			// 		POST /api/counter
@@ -122,7 +122,7 @@ module.exports = {
 			handler(ctx) {
 				return this.changeCounter(ctx, 0);
 			}
-		},		
+		},
 
 		/**
 		 * Increment the counter
@@ -167,19 +167,32 @@ module.exports = {
 		 */
 		changeCounter(ctx, value) {
 			store.counter = value;
-			logger.info(ctx.params.$user.username + " changed the counter to ", store.counter);
-			//this.notifyModelChanges(ctx, "changed", store.counter);
+			logger.info(ctx.params.$user.username, " changed the counter to", store.counter);
+
+			this.notifyModelChanges("changed", {
+				user: ctx.params.$user, // TODO: filter properties
+				data: store.counter
+			});
 
 			return store.counter;
 		}
 	},
-	
+
 	/**
 	 * Subscribe to events
 	 */
 	events: {
-		"socket.client.connected"({ socketID }) {
-			this.broker.emit("socket.emit.client", socketID, "/counter/changed", { data: store.counter });
+		"socket.client.connected" ({
+			socketID
+		}) {
+			const payload = {
+				value: store.counter
+			};
+			this.broker.emit("socket.emit.client", {
+				socketID,
+				event: "/counter/changed",
+				payload
+			});
 		}
 	},
 
@@ -200,7 +213,7 @@ module.exports = {
 			counterIncrement: Int
 			counterDecrement: Int
 		`,
-		
+
 		resolvers: {
 
 			Query: {

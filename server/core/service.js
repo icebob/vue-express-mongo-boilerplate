@@ -7,7 +7,6 @@ let C 	 		= require("./constants");
 
 let _			= require("lodash");
 let hash		= require("object-hash");
-//let Cacher		= require("./cacher");
 let Services;
 
 let warn = function(msg) {
@@ -43,7 +42,6 @@ class Service {
 			exception(`No settings of service '${self.name}'! Please create a settings object in service schema!`);
 
 		let settings = _.defaultsDeep(schema.settings, {
-			version: 1,
 			namespace: "",
 			internal: false,
 			rest: false,
@@ -321,56 +319,6 @@ class Service {
 	}
 
 	/**
-	 * Generate a cache key for caching from action name & hashed parameters
-	 * E.g: 
-	 * 		find:8de264844d01ab32078eb71762fdfda646a15cb4
-	 * 
-	 * @param {any} name	name of action
-	 * @param {any} params	params of request
-	 * @returns	{String} 	hashed key
-	 */
-	getCacheKey(name, params) {
-		return (name ? name + ":" : "") + (params ? hash(params) : "");
-	}
-
-	/**
-	 * Get a result from cache by `key` 
-	 * 
-	 * @param {any} key
-	 * @returns {Promise}
-	 */
-	getFromCache(key) {
-		if (this.$cacher) {
-			return this.$cacher.get(key);
-		} else 
-			return Promise.resolve(null); 
-	}
-
-	/**
-	 * Put the result to the cache by `key`
-	 * 
-	 * @param {any} key
-	 * @param {any} data
-	 * @returns
-	 */
-	putToCache(key, data) {
-		if (this.$cacher) {
-			return this.$cacher.set(key, data);
-		} else 
-			return Promise.resolve(); 
-	}
-
-	/**
-	 * Clear all cached items for this service
-	 */
-	clearCache() {
-		if (this.$cacher) {
-			return this.$cacher.clean();
-		} 
-		return Promise.resolve();
-	}	
-
-	/**
 	 * Notificate the connected users if the model changed
 	 * 
 	 * @param {any} ctx		Request context
@@ -388,18 +336,6 @@ class Service {
 		// Clear cached values
 		this.clearCache();
 	}		
-
-	/**
-	 * Get a service by name of service
-	 * 
-	 * @param {any} serviceName
-	 * @returns {Service}
-	 * 
-	 * @memberOf Service	
-	 */
-	services(serviceName) {
-		return Services.get(serviceName);
-	}
 
 }
 

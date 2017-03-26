@@ -35,7 +35,7 @@
 		 */
 		socket: {
 
-			prefix: "/devices/",
+			prefix: "devices.",
 
 			events: {
 				/**

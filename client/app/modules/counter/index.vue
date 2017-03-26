@@ -48,7 +48,7 @@
 		 * Socket handlers. Every property is an event handler
 		 */
 		socket: {
-			prefix: "/counter/",
+			prefix: "counter.",
 			//namespace: "/counter",
 
 			events: {
