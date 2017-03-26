@@ -41,7 +41,7 @@
 						p.content(v-html="markdown(post.content)")
 						hr.full
 						.row
-							.functions.left
+							.functions.left(v-if="editable(post)")
 								a(:title="_('EditPost')", @click="editPost(post)")
 									i.fa.fa-pencil
 								a(:title="_('DeletePost')", @click="deletePost(post)")
@@ -190,7 +190,8 @@
 			},
 
 			iVoted(post) {
-				return find(post.voters, (user) => user.code == this.me.code) != null;
+				if (post)
+					return find(post.voters, (user) => user.code == this.me.code) != null;
 			},
 
 			toggleVote(post) {
@@ -246,7 +247,17 @@
 					if (el)
 						el.focus();
 				});
-			},			
+			},
+
+			isMyPost(post) {
+				if (post)
+					return post.author.code == this.me.code;
+			},
+
+			editable(post) {
+				if (post)
+					return this.isMyPost(post) || this.me.roles.indexOf("admin") !== -1;
+			},
 
 			savePost() {
 				if (this.$refs.form.validate()) {

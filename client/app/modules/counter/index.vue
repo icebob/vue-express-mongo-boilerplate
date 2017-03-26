@@ -10,8 +10,8 @@
 		br
 		br
 		button.button.warning(@click="decrement") 
-			span
-				i.fa.fa-arrow-up  
+			span.icon
+				i.fa.fa-arrow-up 
 			span {{ "Decrement" | i18n }}
 
 </template>
