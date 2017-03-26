@@ -110,7 +110,7 @@ module.exports = {
 
 			// check role
 			.then(() => {
-				if (permission == C.PERM_ADMIN && user.roles.indexOf(C.ROLE_ADMIN)) {
+				if (permission == C.PERM_ADMIN && user.roles.indexOf(C.ROLE_ADMIN) == -1) {
 					throw new E.RequestError(E.FORBIDDEN);
 				}
 				else if ([C.PERM_OWNER, C.PERM_LOGGED_IN].indexOf(permission) !== -1 && user.roles.indexOf(role) === -1) {

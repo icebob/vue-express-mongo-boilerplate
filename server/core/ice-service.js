@@ -58,7 +58,7 @@ class Service extends Moleculer.Service {
 	}
 
 	/**
-	 * Check the model owner with the user
+	 * Check the model owner is the user, or has 'admin' role
 	 * 
 	 * @param {any} model			Model
 	 * @param {any} fieldName		name of owner field in model
@@ -69,7 +69,7 @@ class Service extends Moleculer.Service {
 	 * @memberOf Service
 	 */
 	checkModelOwner(model, fieldName, user, errMessageCode = "app:YouAreNotTheOwner") {
-		if (model[fieldName] == user.id || user.roles.indexOf(C.ROLE_ADMIN) != -1)
+		if (model[fieldName] == user.id || user.roles.indexOf(C.ROLE_ADMIN) !== -1)
 			return model;
 
 		throw new E.RequestError(E.FORBIDDEN, C.ERR_ONLY_OWNER_CAN_EDIT_AND_DELETE, errMessageCode);
@@ -285,7 +285,11 @@ class Service extends Moleculer.Service {
 					return docsObj;
 				}
 				if (ctx.params.propFilter != null)
-					return docs.map(doc => filterProperties(doc));
+					if (_.isArray(docs)) {
+						return docs.map(doc => filterProperties(doc));
+					} else {
+						return filterProperties(docs);
+					}
 
 				return docs;
 			});
@@ -295,26 +299,46 @@ class Service extends Moleculer.Service {
 	/**
 	 * Notificate the connected users if the model changed
 	 * 
+	 * @param {any} ctx		Context
 	 * @param {any} type	Type of changes (created, updated, deleted...etc)
-	 * @param {any} payload	JSON payload
+	 * @param {any} data	JSON payload
+	 * @param {any} user	User who made changes
 	 * 
 	 * @memberOf Service
 	 */
-	notifyModelChanges(type, payload) {
+	notifyModelChanges(ctx, type, data, user) {
 		const event = this.name + "." + type;
 
-		// Send notify to other services
-		this.broker.emit(event, payload);
+		const payload = {
+			data
+		};
 
-		// Send notification via socket
-		this.broker.emit("socket.emit.role", {
-			role: this.settings.role,
-			event,
-			payload
-		});
+		Promise.resolve(payload)
+			.then(payload => {
+				if (user) {
+					return ctx.call("persons.model", { 
+						code: user.code,
+						resultAsObject: true,
+						propFilter: true 
+					}).then(user => {
+						payload.user = user;
+						return payload;
+					});
+				}
 
-		// Clear cached values
-		this.clearCache();
+				return payload;
+			})
+			.then(payload => {
+				// Send notify to other services
+				this.broker.emit(event, payload);
+
+				// Send notification via socket
+				this.broker.emit("socket.emit.role", {
+					role: this.settings.role,
+					event,
+					payload
+				});
+			}).catch(err => this.logger.error("Unable to get user record!", err));
 	}
 
 	/**

@@ -95,10 +95,10 @@ module.exports = {
 					.then(doc => this.toJSON(doc))
 					.then(json => this.populateModels(ctx, json))
 					.then(json => {
-						this.notifyModelChanges("changed", {
-							user: ctx.params.$user, // TODO: filter properties
-							data: json
-						});
+						this.notifyModelChanges(ctx, "changed", json, ctx.params.$user);
+						
+						// Clear cached values
+						this.clearCache();
 						
 						return json;
 					});
@@ -128,10 +128,10 @@ module.exports = {
 					.then(doc => this.toJSON(doc))
 					.then(json => this.populateModels(ctx, json))
 					.then((json) => {
-						this.notifyModelChanges("updated", {
-							user: ctx.params.$user, // TODO: filter properties
-							data: json
-						});
+						this.notifyModelChanges(ctx, "updated", json, ctx.params.$user);
+						
+						// Clear cached values
+						this.clearCache();
 
 						return json;
 					});
@@ -155,10 +155,10 @@ module.exports = {
 						}).then(() => model);
 					})
 					.then((json) => {
-						this.notifyModelChanges("removed", {
-							user: ctx.params.$user, // TODO: filter properties
-							data: json
-						});
+						this.notifyModelChanges(ctx, "removed", json, ctx.params.$user);
+						
+						// Clear cached values
+						this.clearCache();
 
 						return json;
 					});
@@ -189,10 +189,10 @@ module.exports = {
 				.then(doc => this.toJSON(doc))
 				.then(json => this.populateModels(ctx, json))
 				.then(json => {
-					this.notifyModelChanges("voted", {
-						user: ctx.params.$user, // TODO: filter properties
-						data: json
-					});
+					this.notifyModelChanges(ctx, "voted", json, ctx.params.$user);
+					
+					// Clear cached values
+					this.clearCache();
 
 					return json;
 				});
@@ -222,10 +222,10 @@ module.exports = {
 				.then(doc => this.toJSON(doc))
 				.then(json => this.populateModels(ctx, json))
 				.then(json => {
-					this.notifyModelChanges("unvoted", {
-						user: ctx.params.$user, // TODO: filter properties
-						data: json
-					});
+					this.notifyModelChanges(ctx, "unvoted", json, ctx.params.$user);
+					
+					// Clear cached values
+					this.clearCache();
 
 					return json;
 				});

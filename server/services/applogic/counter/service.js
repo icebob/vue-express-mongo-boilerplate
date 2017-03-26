@@ -169,10 +169,10 @@ module.exports = {
 			store.counter = value;
 			logger.info(ctx.params.$user.username, " changed the counter to", store.counter);
 
-			this.notifyModelChanges("changed", {
-				user: ctx.params.$user, // TODO: filter properties
-				data: store.counter
-			});
+			this.notifyModelChanges(ctx, "changed", store.counter, ctx.params.$user);
+
+			// Clear cached values
+			this.clearCache();
 
 			return store.counter;
 		}
@@ -182,9 +182,7 @@ module.exports = {
 	 * Subscribe to events
 	 */
 	events: {
-		"socket.client.connected" ({
-			socketID
-		}) {
+		"socket.client.connected"({	socketID }) {
 			const payload = {
 				value: store.counter
 			};

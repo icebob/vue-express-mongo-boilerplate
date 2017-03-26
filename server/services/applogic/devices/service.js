@@ -80,10 +80,10 @@ module.exports = {
 				.then(doc => this.toJSON(doc))
 				.then(json => this.populateModels(ctx, json))
 				.then(json => {
-					this.notifyModelChanges("created", {
-						user: ctx.params.$user, // TODO: filter properties
-						data: json
-					});
+					this.notifyModelChanges(ctx, "created", json, ctx.params.$user);
+
+					// Clear cached values
+					this.clearCache();
 
 					return json;
 				});	
@@ -120,10 +120,10 @@ module.exports = {
 				.then(doc => this.toJSON(doc))
 				.then(json => this.populateModels(ctx, json))
 				.then((json) => {
-					this.notifyModelChanges("updated", {
-						user: ctx.params.$user, // TODO: filter properties
-						data: json
-					});
+					this.notifyModelChanges(ctx, "updated", json, ctx.params.$user);
+					
+					// Clear cached values
+					this.clearCache();
 
 					return json;
 				});	
@@ -143,10 +143,10 @@ module.exports = {
 				.then(doc => this.toJSON(doc))
 				.then(json => this.populateModels(ctx, json))
 				.then((json) => {
-					this.notifyModelChanges("removed", {
-						user: ctx.params.$user, // TODO: filter properties
-						data: json
-					});
+					this.notifyModelChanges(ctx, "removed", json, ctx.params.$user);
+					
+					// Clear cached values
+					this.clearCache();
 
 					return json;
 				});		
