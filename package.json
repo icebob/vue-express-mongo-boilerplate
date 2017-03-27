@@ -1,6 +1,6 @@
 {
   "name": "vue-express-mongo-boilerplate",
-  "version": "0.10.0",
+  "version": "1.0.0",
   "title": "Vue-Express-Mongo BoilerPlate",
   "description": "Express NodeJS application server boilerplate with Mongo and VueJS",
   "main": "server/index.js",
