@@ -160,8 +160,10 @@ module.exports = {
 							requestID,
 							action: {
 								name: "request.rest"
-							}
+							},
+							metrics: this.broker.options.metrics
 						});
+						ctx._metricStart();
 
 						return this.Promise.resolve()
 						// Check permission
@@ -178,12 +180,14 @@ module.exports = {
 						.then((json) => {
 							res.append("Request-Id", requestID);
 							this.sendJSON(res, json);
+							ctx._metricFinish();
 						})
 
 						// Response the error
 						.catch((err) => {
 							this.logger.error("Request error: ", util.inspect(err, { depth: 0, colors: true }));
 							this.sendJSON(res, null, err, req);
+							ctx._metricFinish(err);
 						});
 					};
 
