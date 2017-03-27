@@ -179,8 +179,6 @@ Before start, you have to install production dependencies with npm: `npm install
 
 ## Obtaining API keys for social signup/login
 
-### Google
-
 ![Google Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/128px-Google_2015_logo.svg.png)
 
 These are the instructions for Google:
@@ -201,8 +199,6 @@ These are the instructions for Google:
 - Click on **Create Client ID** button
 - Copy and paste *Client ID* and *Client secret* keys into `config.js` file
 
-### Facebook
-
 ![Facebook Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Facebook_New_Logo_%282015%29.svg/128px-Facebook_New_Logo_%282015%29.svg.png)
 
 These are the instructions for Facebook:
@@ -222,8 +218,6 @@ These are the instructions for Facebook:
 
 **Note:** After a successful sign in with Facebook, a user will be redirected back to home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
 
-### GitHub
-
 ![GitHub Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/GitHub_logo_2013_padded.svg/128px-GitHub_logo_2013_padded.svg.png)
 
 These are the instructions for GitHub:
@@ -235,8 +229,6 @@ These are the instructions for GitHub:
 - For *Authorization Callback URL*: http://localhost:3000/auth/github/callback
 - Click **Register application**
 - Now copy and paste *Client ID* and *Client Secret* keys into `config.js` file
-
-### Twitter
 
 ![Twitter Logo](https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/64px-Twitter_bird_logo_2012.svg.png)
 
