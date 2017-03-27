@@ -12,7 +12,7 @@
 
 **This project is under heavy development!!!**
 
-This is a full stack javascript boilerplate project with VueJS & ExpressJS + Mongo server. Not an out-of-box webapp. Server-side based on the [Moleculer](https://github.com/ice-services/moleculer) microservices framework.
+This is a full stack javascript boilerplate project with VueJS & ExpressJS + Mongo server. Not an out-of-box webapp. Server-side code is based on the [Moleculer](https://github.com/ice-services/moleculer) microservices framework.
 
 Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/hackathon-starter](https://github.com/sahat/hackathon-starter)
 
@@ -26,7 +26,7 @@ If you like my work, please **[donate](https://www.paypal.me/meregnorbert)**. Th
 **Server-side**
 * [x] **[Node.JS](https://nodejs.org)** v6.x.x
 * [x] **[Express](https://github.com/expressjs/express)**
-* [x] **[Moleculer](https://github.com/ice-services/moleculer)**
+* [x] **[Moleculer](https://github.com/ice-services/moleculer)** as the microservices framework
 * [x] [MongoDB](https://www.mongodb.com/) with [Mongoose](https://github.com/Automattic/mongoose)
 * [x] [NodeMailer](https://github.com/nodemailer/nodemailer) with SMTP, MailGun or SendGrid
 * [x] [Helmet](https://github.com/helmetjs/helmet)
