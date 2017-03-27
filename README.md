@@ -23,6 +23,7 @@ If you like my work, please **[donate](https://www.paypal.me/meregnorbert)**. Th
 ### [Live Demo](http://vemapp.e-paper.space/) (login: test/test1234)
 
 ## Features
+
 **Server-side**
 * [x] **[Node.JS](https://nodejs.org)** v6.x.x
 * [x] **[Express](https://github.com/expressjs/express)**
@@ -64,6 +65,7 @@ If you like my work, please **[donate](https://www.paypal.me/meregnorbert)**. Th
 * [x] [Logz.io](http://logz.io/)
 
 ## Usage
+
 Install dependencies
 ```
 $ npm install
@@ -91,10 +93,15 @@ $ npm start
 ## Screenshots
 
 ### Login screen
+
 ![Login screen](https://cloud.githubusercontent.com/assets/306521/20032026/e2241716-a381-11e6-8ec2-4e0263308762.png)
+
 ### Index page after login
+
 ![Index page](https://cloud.githubusercontent.com/assets/306521/20032034/e401f10c-a381-11e6-86bb-5325671d32bf.png)
+
 ### Devices page
+
 ![Devices module](https://cloud.githubusercontent.com/assets/306521/20032035/e5e7ec60-a381-11e6-9481-e1db97126797.png)
 
 ## Directory structure
@@ -153,9 +160,12 @@ $ npm start
 ```
 
 ## Bundled server-side
+
 If you want to bundle your NodeJS server-side code run webpack on server code with `npm run build && npm run build:server` command. It if was success, run the server: `npm run start:bundle`
 
 If you want to export bundled version copy these folders & files to the new place:
+
+```txt
 - server
 	- locales
 	- public
@@ -163,12 +173,16 @@ If you want to export bundled version copy these folders & files to the new plac
 	- bundle.js
 - package.json
 - config.js (optional)
+```
 
 Before start, you have to install production dependencies with npm: `npm install --production`
 
 ## Obtaining API keys for social signup/login
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1000px-Google_2015_logo.svg.png" width="100">
+![Google Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/128px-Google_2015_logo.svg.png)
+
+These are the instructions for Google:
+
 - Visit [Google Cloud Console](https://cloud.google.com/console/project)
 - Click on the **Create Project** button
 - Enter *Project Name*, then click on **Create** button
@@ -185,9 +199,10 @@ Before start, you have to install production dependencies with npm: `npm install
 - Click on **Create Client ID** button
 - Copy and paste *Client ID* and *Client secret* keys into `config.js` file
 
-<hr>
+![Facebook Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Facebook_New_Logo_%282015%29.svg/128px-Facebook_New_Logo_%282015%29.svg.png)
 
-<img src="http://www.doit.ba/img/facebook.jpg" width="100">
+These are the instructions for Facebook:
+
 - Visit [Facebook Developers](https://developers.facebook.com/)
 - Click **My Apps**, then select **Add a New App* from the dropdown menu
 - Select **Website** platform and enter a new name for your app
@@ -203,9 +218,10 @@ Before start, you have to install production dependencies with npm: `npm install
 
 **Note:** After a successful sign in with Facebook, a user will be redirected back to home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
 
-<hr>
+![GitHub Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/GitHub_logo_2013_padded.svg/128px-GitHub_logo_2013_padded.svg.png)
 
-<img src="https://github.global.ssl.fastly.net/images/modules/logos_page/GitHub-Logo.png" width="100">
+These are the instructions for GitHub:
+
 - Go to [Account Settings](https://github.com/settings/profile)
 - Select **Applications** from the sidebar
 - Then inside **Developer applications** click on **Register new application**
@@ -214,9 +230,10 @@ Before start, you have to install production dependencies with npm: `npm install
 - Click **Register application**
 - Now copy and paste *Client ID* and *Client Secret* keys into `config.js` file
 
-<hr>
+![Twitter Logo](https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/64px-Twitter_bird_logo_2012.svg.png)
 
-<img src="https://g.twimg.com/ios_homescreen_icon.png" width="45">
+These are the instructions for Twitter:
+
 - Sign in at [https://apps.twitter.com/](https://apps.twitter.com/)
 - Click **Create a new application**
 - Enter your application name, website and description
@@ -228,6 +245,7 @@ Before start, you have to install production dependencies with npm: `npm install
 - Copy and paste *Consumer Key* and *Consumer Secret* keys into `config.js` file
 
 ## License
+
 vue-express-mongo-boilerplate is available under the [MIT license](https://tldrlegal.com/license/mit-license).
 
 ## Contact
