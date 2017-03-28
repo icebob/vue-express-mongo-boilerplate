@@ -20,3 +20,8 @@ let broker		= require("./core/broker");
 broker.start();
 
 require("./libs/gracefulExit");
+
+module.exports = {
+	broker,
+	config
+};

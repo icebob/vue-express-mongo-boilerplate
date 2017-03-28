@@ -10,12 +10,12 @@ let commands = {
 
 module.exports = {
 	url() {
-		return this.client.api.options.baseURL + "/#!/";
+		return this.client.api.options.baseURL + "/#/";
 	},
 
 	commands: [commands],
 
 	elements: {
-		title: "#app h1"
+		title: ".app-main h1"
 	}
 };

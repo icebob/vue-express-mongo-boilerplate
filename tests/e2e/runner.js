@@ -6,8 +6,8 @@ let path = require("path");
 process.env.NODE_ENV = "test";
 
 // Pass the port of server via environment
-let app = require("../load-server");
-process.env.APP_PORT = parseInt(app._app.settings.port);
+let { broker, config} = require("../load-server");
+process.env.APP_PORT = parseInt(config.port);
 
 // 2. run the nightwatch test suite against it
 // to run in additional browsers:
@@ -33,11 +33,13 @@ let spawn = require("cross-spawn");
 let runner = spawn("./node_modules/.bin/nightwatch", opts, { stdio: "inherit" });
 
 runner.on("exit", function (code) {
-	app.close();
+	//app.close();
+	broker.stop();
 	process.exit(code);
 });
 
 runner.on("error", function (err) {
-	app.close();
+	//app.close();
+	broker.stop();
 	throw err;
 });
