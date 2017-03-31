@@ -67,7 +67,8 @@ module.exports = {
 	form: {
 		fields: [
 			{
-				type: "text",
+				type: "input",
+				inputType: "text",
 				label: _("ID"),
 				model: "code",
 				readonly: true,
@@ -91,7 +92,8 @@ module.exports = {
 
 			},	
 			{
-				type: "text",
+				type: "input",
+				inputType: "text",
 				label: _("Name"),
 				model: "name",
 				featured: true,
@@ -100,7 +102,8 @@ module.exports = {
 				validator: validators.string
 			},
 			{
-				type: "text",
+				type: "input",
+				inputType: "text",
 				label: _("Description"),
 				model: "description",
 				featured: false,
@@ -108,7 +111,8 @@ module.exports = {
 				validator: validators.string
 			},	
 			{
-				type: "text",
+				type: "input",
+				inputType: "text",
 				label: _("Address"),
 				model: "address",
 				placeholder: _("AddressOfDevice"),

@@ -97,7 +97,8 @@
 				schema: {
 					fields: [
 						{
-							type: "text",
+							type: "input",
+							inputType: "text",
 							label: this._("Title"),
 							model: "title",
 							featured: true,
