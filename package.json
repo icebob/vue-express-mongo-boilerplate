@@ -78,6 +78,7 @@
     "lodash": "4.17.4",
     "method-override": "2.3.8",
     "mkdirp": "0.5.1",
+    "moleculer": "0.6.0",
     "moment": "2.18.1",
     "mongoose": "4.9.2",
     "mongoose-auto-increment": "5.0.1",
