@@ -1,5 +1,19 @@
 <template lang="pug">
-	admin-page(:schema="schema", :selected="selected", :rows="devices")
+	div
+		admin-page(:schema="schema", :selected="selected", :rows="devices")
+
+		br
+		br
+		.panel.primary
+			.header 
+				i.fa.fa-info-circle 
+				|  Table & Form demo
+			.body 
+				p This is an admin page demo. We use 
+					a(href="https://github.com/icebob/vue-form-generator", target="_blank") vue-form-generator
+					|  to generate form from schema. 
+				p The table is also generated from schema. You can sort the rows & select multiple rows.
+				p If somebody changes a device, you will get a notification toast.
 </template>
 
 <script>

@@ -463,11 +463,10 @@ body {
 		background-color: rgba($backgroundColor, 0.5);
 	}
 
-	padding-top: $headerHeight;
 	margin-left: $menuWidth;
 	transition: margin-left .5s ease;
 
-	padding-left: 10px;
+	padding: $headerHeight 2em 2em 2em;
 
 	&.miniSidebar {
 		margin-left: $menuMiniWidth;

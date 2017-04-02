@@ -764,7 +764,6 @@
 	@import "../../../scss/themes/blurred/variables";
 
 	.container {
-		padding: 0 1rem;
 	}
 
 	section {

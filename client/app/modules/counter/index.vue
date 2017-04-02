@@ -2,7 +2,7 @@
 	.container
 		h2.title {{ "Demo" | i18n }}
 
-		h3 {{ count }}
+		h3 Value: {{ count }}
 		button.button.success(@click="increment") 
 			span.icon
 				i.fa.fa-arrow-up 
@@ -13,6 +13,19 @@
 			span.icon
 				i.fa.fa-arrow-up 
 			span {{ "Decrement" | i18n }}
+
+		br
+		br
+		.panel.primary
+			.header 
+				i.fa.fa-info-circle 
+				|  Websocket demo
+			.body 
+				p This is a simple counter demo. You can increment & decrement the value with buttons. We use websocket for communication. The value is global, so you can see if somebody changed it.
+				p Try the following commands in the console of the browser:
+				pre
+					| counterService.emit("increment");
+					| counterService.emit("set", { value: 50 });
 
 </template>
 

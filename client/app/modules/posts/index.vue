@@ -299,7 +299,6 @@
 	@import "../../../scss/common/mixins";
 
 	.container {
-		padding-bottom: 1rem;
 	}
 
 	.header {
@@ -319,7 +318,7 @@
 	} // .postForm
 
 	ul.posts {
-		margin: 1rem 3rem;
+		margin: 1rem 0rem;
 		padding: 0;
 		list-style: none;
 

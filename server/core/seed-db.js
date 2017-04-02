@@ -60,7 +60,7 @@ module.exports = function() {
 							verified: true
 							//apiKey: tokgen()
 						});
-						users.push(user.save());					
+						return user.save();
 					}));
 				}				
 			})

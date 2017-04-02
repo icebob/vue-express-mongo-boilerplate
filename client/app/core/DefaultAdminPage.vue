@@ -219,7 +219,7 @@
 	@import "../../scss/common/mixins";
 
 	.container {
-		padding: 1rem;
+		padding: 0rem;
 	}
 
 	.form {
