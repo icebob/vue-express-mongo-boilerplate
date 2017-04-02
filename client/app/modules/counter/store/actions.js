@@ -5,20 +5,20 @@ import Service from "../../../core/service";
 let service = new Service("counter", this); 
 
 export const getValue = function (ctx) {
-	service.emit("get").then( (data) => {
+	service.emit("get").then(data => {
 		console.log("Counter current value: ", data);
 		ctx.commit("CHANGED_VALUE", data);
 	});
 };
 
 export const increment = function ({ commit }) {
-	service.emit("increment").then((newValue) => {
+	service.emit("increment").then(newValue => {
 		commit("CHANGED_VALUE", newValue);	
 	});
 };
 
 export const decrement = function ({ commit }) {
-	service.emit("decrement").then((newValue) => {
+	service.emit("decrement").then(newValue => {
 		commit("CHANGED_VALUE", newValue);	
 	});
 };

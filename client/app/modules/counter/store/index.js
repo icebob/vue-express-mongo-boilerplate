@@ -3,7 +3,7 @@ const state = {
 };
 
 const mutations = {
-	["CHANGED_VALUE"](state, newValue) {
+	"CHANGED_VALUE"(state, newValue) {
 		state.count = newValue;
 	}
 };
