@@ -56,7 +56,9 @@ module.exports = {
 		 */
 		get: {
 			// Enable caching the response
-			cache: true,
+			cache: {
+				keys: []
+			},
 
 			// Set this action as the default action for "GET" HTTP method
 			// 		GET /api/counter

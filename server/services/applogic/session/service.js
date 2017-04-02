@@ -37,7 +37,7 @@ module.exports = {
 	graphql: {
 
 		query: `
-			me: Person
+			me: Profile
 			onlineUsers: [Person]
 		`,
 
@@ -59,7 +59,7 @@ module.exports = {
 # Get my account
 query me {
   me {
-    ...personFields
+    ...profileFields
   }
 }
 
@@ -71,22 +71,48 @@ query getOnlineUser {
   }
 }
 
-
 fragment personFields on Person {
   code
   fullName
-  email
   username
   roles
-  verified
   avatar
   lastLogin
-  locale
   
   posts(sort: "-createdAt") {
     code
     title
   }
+}
+
+fragment profileFields on Profile {
+	code
+	fullName
+	email
+	username
+	passwordLess
+	provider
+	profile {
+		name
+		gender
+		picture
+		location
+	}
+	socialLinks {
+		facebook
+		twitter
+		google
+		github
+	}
+	roles
+	verified
+	apiKey
+	locale
+	avatar
+	createdAt
+	updatedAt
+	lastLogin
+	status  
 }
 
 */

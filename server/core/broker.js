@@ -14,10 +14,17 @@ let APIService     	= require("./api-service");
 /* global WEBPACK_BUNDLE */
 if (!WEBPACK_BUNDLE) require("require-webpack-compat")(module, require);
 
+// Create cache module
+let cacher;
+if (config.cacheTimeout > 0) {
+	cacher = new Moleculer.Cachers.Memory({
+		ttl: config.cacheTimeout
+	});
+}
+
+// Create service broker
 let broker = new Moleculer.ServiceBroker({
-	cacher: new Moleculer.Cachers.Memory({
-		ttl: 30
-	}),
+	cacher,
 	logger,
 	logLevel: "debug",
 	nodeID: config.nodeID,
@@ -26,12 +33,7 @@ let broker = new Moleculer.ServiceBroker({
 	ServiceFactory: APIService
 });
 
-
-let addService = function(serviceSchema) {
-	let service = broker.createService(serviceSchema);
-	return service;
-};
-
+// Load services
 if (WEBPACK_BUNDLE || fs.existsSync(path.join(__dirname, "..", "services"))) {
 	logger.info("");
 	logger.info(chalk.bold("Load built-in services..."));
@@ -44,6 +46,11 @@ if (WEBPACK_BUNDLE || fs.existsSync(path.join(__dirname, "..", "services"))) {
 			addService(ctx(filename));
 		});
 	}
+}
+
+function addService(serviceSchema) {
+	let service = broker.createService(serviceSchema);
+	return service;
 }
 
 module.exports = broker;

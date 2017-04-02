@@ -19,6 +19,7 @@ module.exports = {
 		"metrics.trace.span.finish"(payload) {
 			let item = this.requests[payload.id];
 			_.assign(item, payload);
+			item.done = true;
 
 			if (!payload.parent)
 				this.printRequest(payload.id);
@@ -39,6 +40,8 @@ module.exports = {
 			this.logger.debug(["┌", r("─", w-2), "┐"].join(""));
 
 			let printSpanTime = (span) => {
+				if (!span.done) return;
+
 				let time = span.duration.toFixed(2);
 
 				let maxActionName = maxTitle - (span.level-1) * 2 - time.length - 3 - (span.fromCache ? 2 : 0) - (span.remoteCall ? 2 : 0) - (span.error ? 2 : 0);

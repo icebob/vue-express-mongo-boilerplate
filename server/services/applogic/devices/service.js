@@ -27,7 +27,9 @@ module.exports = {
 	
 	actions: {
 		list: {
-			cache: true,
+			cache: {
+				keys: [ "limit", "offset", "sort", "filter", "author" ]
+			},
 			defaultMethod: "get",
 			handler(ctx) {
 				let filter = {};
@@ -42,7 +44,9 @@ module.exports = {
 
 		// return a model by ID
 		get: {
-			cache: true,
+			cache: {
+				keys: [ "code" ]
+			},
 			defaultMethod: "get",
 			needModel: true,
 			handler(ctx) {
@@ -204,7 +208,7 @@ module.exports = {
 
 		resolvers: {
 			Query: {
-				devices: "find",
+				devices: "list",
 				device: "get"
 			},
 

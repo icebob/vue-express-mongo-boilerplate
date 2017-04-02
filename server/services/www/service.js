@@ -305,7 +305,7 @@ module.exports = {
 									let requestID = tokgen();
 									let actionName = `${publishSchema.namespace}.${resolver}`;
 									let user = context.user;
-									let params = args;
+									let params = Object.assign({}, args);
 									params.$user = _.pick(user, ["id", "code", "avatar", "roles", "username", "fullName"]);
 									this.logger.debug(`Request via GraphQL '${actionName}' ${requestID}`, params);
 
@@ -314,25 +314,33 @@ module.exports = {
 										requestID,
 										action: {
 											name: "request.graphql"
-										}
+										},
+										metrics: this.broker.options.metrics
 									});
+									ctx._metricStart();
 
 									return this.Promise.resolve()
-									// Check permission
-									.then(() => {
-										//return this.checkActionPermission(user, route.permission, route.role);
-									})
+										// Check permission
+										.then(() => {
+											//return this.checkActionPermission(user, route.permission, route.role);
+										})
 
-									// Call the action handler
-									.then(() => {
-										return ctx.call(actionName, params);
-									})
+										// Call the action handler
+										.then(() => {
+											return ctx.call(actionName, params);
+										})
 
-									// Response the error
-									.catch((err) => {
-										this.logger.error("Request error: ", err);
-										throw err;
-									});						
+										.then(json => {
+											ctx._metricFinish();
+											return json;
+										})
+
+										// Response the error
+										.catch((err) => {
+											ctx._metricFinish(err);
+											this.logger.error("Request error: ", err);
+											throw err;
+										});						
 
 								};
 

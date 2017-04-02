@@ -33,7 +33,9 @@ module.exports = {
 	// Exposed actions
 	actions: {
 		list: {
-			cache: true,
+			cache: {
+				keys: [ "limit", "offset", "sort", "filter", "author" ]
+			},
 			defaultMethod: "get",
 			handler(ctx) {
 				let filter = {};
@@ -54,7 +56,9 @@ module.exports = {
 
 		// return a model by ID
 		get: {
-			cache: true, // if true, we can't increment the views!
+			cache: {
+				keys: [ "code" ]
+			},
 			permission: C.PERM_PUBLIC,
 			defaultMethod: "get",
 			needModel: true,
