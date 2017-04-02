@@ -236,8 +236,10 @@ module.exports = {
 							requestID,
 							action: {
 								name: "request.ws"
-							}
+							},
+							metrics: this.broker.options.metrics
 						});
+						ctx._metricStart();
 
 						return this.Promise.resolve()
 						// Check permission
@@ -254,6 +256,7 @@ module.exports = {
 						.then(json => {
 							if (_.isFunction(callback))
 								callback(this.sendJSON(null, json));
+							ctx._metricFinish();
 						})
 
 						// Response the error
@@ -261,6 +264,7 @@ module.exports = {
 							this.logger.error("Request error: ", err);
 							if (_.isFunction(callback))
 								callback(this.sendJSON(null, null, err));
+							ctx._metricFinish(err);
 						});		
 									
 					};
