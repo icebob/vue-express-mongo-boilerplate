@@ -1,14 +1,11 @@
-# vue-express-mongo-boilerplate #
+# Vue, Express, MongoDB full-stack JS Boilerplate
+
+<img src="http://vuejs.org/images/logo.png" height="50"> <img src="https://coligo.io/images/express.svg" height="50"> <img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/45/MongoDB-Logo.svg/527px-MongoDB-Logo.svg.png" height="50"> <img src="https://worldvectorlogo.com/logos/nodejs-icon.svg" height="50"> <img src="https://camo.githubusercontent.com/66747a6e05a799aec9c6e04a3e721ca567748e8b/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313336353838312f313931383337332f32653035373166612d376462632d313165332d383436352d3839356632393164343366652e706e67" height="50">
+
 [![Known Vulnerabilities](https://snyk.io/test/github/icebob/vue-express-mongo-boilerplate/badge.svg)](https://snyk.io/test/github/icebob/vue-express-mongo-boilerplate)
 ![Node 6](https://img.shields.io/badge/node-6.x.x-green.svg)
 ![VueJS 2](https://img.shields.io/badge/vuejs-2.1.8-green.svg)
 ![Webpack 2](https://img.shields.io/badge/webpack-2.2.0-green.svg)
-
-<img src="http://vuejs.org/images/logo.png" width="50">
-<img src="https://coligo.io/images/express.svg" width="100">
-<img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/45/MongoDB-Logo.svg/527px-MongoDB-Logo.svg.png" width="100">
-<img src="https://worldvectorlogo.com/logos/nodejs-icon.svg" width="50">
-<img src="https://camo.githubusercontent.com/66747a6e05a799aec9c6e04a3e721ca567748e8b/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313336353838312f313931383337332f32653035373166612d376462632d313165332d383436352d3839356632393164343366652e706e67" width="100">
 
 This is a full stack webapp boilerplate project with VueJS + ExpressJS + Mongo. NOT an out-of-box project. 
 The goal is to create an up-to-date starter repo which contains all important functions (user signup, login, oauth, profile, ...etc) except the business-logic. So when neccessary I can create a new webapp and only need to develop the business logic.
@@ -17,12 +14,12 @@ Server-side code is based on the [Moleculer](https://github.com/ice-services/mol
 *This is just my personal boilerplate, it may or may not be a good fit for your project(s).*
 Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/hackathon-starter](https://github.com/sahat/hackathon-starter)
 
+**If you like my work, please [donate](https://www.paypal.me/meregnorbert). Thank you!**
 
 ### [Live Demo](http://vemapp.e-paper.space/) (login: test/test1234 or sign-up)
 
-If you like my work, please **[donate](https://www.paypal.me/meregnorbert)**. Thank you!
-
 ## Features
+
 **Server-side**
 * [x] **[Node.JS](https://nodejs.org)** v6.x.x
 * [x] **[Express](https://github.com/expressjs/express)**
@@ -65,6 +62,7 @@ If you like my work, please **[donate](https://www.paypal.me/meregnorbert)**. Th
 * [x] [Logz.io](http://logz.io/)
 
 ## Usage
+
 Install dependencies
 ```
 $ npm install
@@ -92,10 +90,15 @@ $ npm start
 ## Screenshots
 
 ### Login screen
+
 ![Login screen](https://cloud.githubusercontent.com/assets/306521/20032026/e2241716-a381-11e6-8ec2-4e0263308762.png)
+
 ### Index page after login
+
 ![Index page](https://cloud.githubusercontent.com/assets/306521/20032034/e401f10c-a381-11e6-86bb-5325671d32bf.png)
+
 ### Devices page
+
 ![Devices module](https://cloud.githubusercontent.com/assets/306521/20032035/e5e7ec60-a381-11e6-9481-e1db97126797.png)
 
 ## Directory structure
@@ -159,9 +162,12 @@ $ npm start
 ```
 
 ## Bundled server-side
+
 If you want to bundle your NodeJS server-side code run webpack on server code with `npm run build && npm run build:server` command. It if was success, run the server: `npm run start:bundle`
 
 If you want to export bundled version copy these folders & files to the new place:
+
+```txt
 - server
 	- locales
 	- public
@@ -169,12 +175,16 @@ If you want to export bundled version copy these folders & files to the new plac
 	- bundle.js
 - package.json
 - config.js (optional)
+```
 
 Before start, you have to install production dependencies with npm: `npm install --production`
 
 ## Obtaining API keys for social signup/login
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1000px-Google_2015_logo.svg.png" width="100">
+![Google Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/128px-Google_2015_logo.svg.png)
+
+These are the instructions for Google:
+
 - Visit [Google Cloud Console](https://cloud.google.com/console/project)
 - Click on the **Create Project** button
 - Enter *Project Name*, then click on **Create** button
@@ -191,9 +201,10 @@ Before start, you have to install production dependencies with npm: `npm install
 - Click on **Create Client ID** button
 - Copy and paste *Client ID* and *Client secret* keys into `config.js` file
 
-<hr>
+![Facebook Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Facebook_New_Logo_%282015%29.svg/128px-Facebook_New_Logo_%282015%29.svg.png)
 
-<img src="http://www.doit.ba/img/facebook.jpg" width="100">
+These are the instructions for Facebook:
+
 - Visit [Facebook Developers](https://developers.facebook.com/)
 - Click **My Apps**, then select **Add a New App* from the dropdown menu
 - Select **Website** platform and enter a new name for your app
@@ -209,9 +220,10 @@ Before start, you have to install production dependencies with npm: `npm install
 
 **Note:** After a successful sign in with Facebook, a user will be redirected back to home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
 
-<hr>
+![GitHub Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/GitHub_logo_2013_padded.svg/128px-GitHub_logo_2013_padded.svg.png)
 
-<img src="https://github.global.ssl.fastly.net/images/modules/logos_page/GitHub-Logo.png" width="100">
+These are the instructions for GitHub:
+
 - Go to [Account Settings](https://github.com/settings/profile)
 - Select **Applications** from the sidebar
 - Then inside **Developer applications** click on **Register new application**
@@ -220,9 +232,10 @@ Before start, you have to install production dependencies with npm: `npm install
 - Click **Register application**
 - Now copy and paste *Client ID* and *Client Secret* keys into `config.js` file
 
-<hr>
+![Twitter Logo](https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/64px-Twitter_bird_logo_2012.svg.png)
 
-<img src="https://g.twimg.com/ios_homescreen_icon.png" width="45">
+These are the instructions for Twitter:
+
 - Sign in at [https://apps.twitter.com/](https://apps.twitter.com/)
 - Click **Create a new application**
 - Enter your application name, website and description
@@ -234,6 +247,7 @@ Before start, you have to install production dependencies with npm: `npm install
 - Copy and paste *Consumer Key* and *Consumer Secret* keys into `config.js` file
 
 ## License
+
 vue-express-mongo-boilerplate is available under the [MIT license](https://tldrlegal.com/license/mit-license).
 
 ## Contact
