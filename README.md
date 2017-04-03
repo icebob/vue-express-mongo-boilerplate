@@ -10,13 +10,13 @@
 <img src="https://worldvectorlogo.com/logos/nodejs-icon.svg" width="50">
 <img src="https://camo.githubusercontent.com/66747a6e05a799aec9c6e04a3e721ca567748e8b/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313336353838312f313931383337332f32653035373166612d376462632d313165332d383436352d3839356632393164343366652e706e67" width="100">
 
-**This project is under heavy development!!!**
-
-This is a full stack javascript boilerplate project with VueJS & ExpressJS + Mongo server. Not an out-of-box webapp. Server-side code is based on the [Moleculer](https://github.com/ice-services/moleculer) microservices framework.
-
-Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/hackathon-starter](https://github.com/sahat/hackathon-starter)
+This is a full stack webapp boilerplate project with VueJS + ExpressJS + Mongo. NOT an out-of-box project. 
+The goal is to create an up-to-date starter repo which contains all important functions (user signup, login, oauth, profile, ...etc) except the business-logic. So when neccessary I can create a new webapp and only need to develop the business logic.
+Server-side code is based on the [Moleculer](https://github.com/ice-services/moleculer) microservices framework.
 
 *This is just my personal boilerplate, it may or may not be a good fit for your project(s).*
+Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/hackathon-starter](https://github.com/sahat/hackathon-starter)
+
 
 ### [Live Demo](http://vemapp.e-paper.space/) (login: test/test1234 or sign-up)
 
