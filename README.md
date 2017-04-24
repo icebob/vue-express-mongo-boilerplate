@@ -6,6 +6,7 @@
 ![Node 6](https://img.shields.io/badge/node-6.x.x-green.svg)
 ![VueJS 2](https://img.shields.io/badge/vuejs-2.1.8-green.svg)
 ![Webpack 2](https://img.shields.io/badge/webpack-2.2.0-green.svg)
+[![Trace](https://resources.risingstack.com/Monitored+with+Trace+by+RisingStack.svg)](https://trace.risingstack.com/?utm_source=opensource&utm_medium=Icebob)
 
 This is a full stack webapp boilerplate project with VueJS + ExpressJS + MongoDB. NOT an out-of-box project. 
 The goal is to create an up-to-date starter repo which contains all important functions (user signup, login, oauth, profile, ...etc) except the business-logic. So when neccessary I can create a new webapp and only need to develop the business logic.
