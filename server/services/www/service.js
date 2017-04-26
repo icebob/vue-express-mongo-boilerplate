@@ -155,14 +155,12 @@ module.exports = {
 						params.$user = _.pick(user, ["id", "code", "avatar", "roles", "username", "fullName"]);
 						this.logger.debug(`Request via REST '${route.path}' ${requestID}`, params);
 
-						let ctx = new Context({
-							broker: this.broker,
-							requestID,
-							action: {
-								name: "request.rest"
-							},
-							metrics: this.broker.options.metrics
+						let ctx = new Context(this.broker, {
+							name: "request.rest"
 						});
+						ctx.generateID();
+						ctx.metrics = true;
+						ctx.requestID = requestID;
 						ctx._metricStart();
 
 						return this.Promise.resolve()
@@ -181,6 +179,7 @@ module.exports = {
 							res.append("Request-Id", requestID);
 							this.sendJSON(res, json);
 							ctx._metricFinish();
+							return json;
 						})
 
 						// Response the error
@@ -231,14 +230,12 @@ module.exports = {
 
 						this.logger.debug(`Request via WS '${route.path}' ${requestID}`, params);
 
-						let ctx = new Context({
-							broker: this.broker,
-							requestID,
-							action: {
-								name: "request.ws"
-							},
-							metrics: this.broker.options.metrics
+						let ctx = new Context(this.broker, {
+							name: "request.ws"
 						});
+						ctx.generateID();
+						ctx.metrics = true;
+						ctx.requestID = requestID;
 						ctx._metricStart();
 
 						return this.Promise.resolve()
@@ -257,6 +254,8 @@ module.exports = {
 							if (_.isFunction(callback))
 								callback(this.sendJSON(null, json));
 							ctx._metricFinish();
+
+							return json;
 						})
 
 						// Response the error
@@ -313,14 +312,12 @@ module.exports = {
 									params.$user = _.pick(user, ["id", "code", "avatar", "roles", "username", "fullName"]);
 									this.logger.debug(`Request via GraphQL '${actionName}' ${requestID}`, params);
 
-									let ctx = new Context({
-										broker: this.broker,
-										requestID,
-										action: {
-											name: "request.graphql"
-										},
-										metrics: this.broker.options.metrics
+									let ctx = new Context(this.broker, {
+										name: "request.graphql"
 									});
+									ctx.generateID();
+									ctx.metrics = true;
+									ctx.requestID = requestID;
 									ctx._metricStart();
 
 									return this.Promise.resolve()
@@ -349,7 +346,6 @@ module.exports = {
 								};
 
 								resolvers[name] = handler.bind(this);
-
 							}
 
 						});

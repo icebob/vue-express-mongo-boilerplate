@@ -215,7 +215,7 @@
 
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 	@import "../../scss/common/mixins";
 
 	.container {
