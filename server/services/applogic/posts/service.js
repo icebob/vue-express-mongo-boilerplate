@@ -158,6 +158,7 @@ module.exports = {
 							_id: model.id
 						}).then(() => model);
 					})
+					.then(json => this.populateModels(ctx, json))
 					.then((json) => {
 						this.notifyModelChanges(ctx, "removed", json, ctx.params.$user);
 						
