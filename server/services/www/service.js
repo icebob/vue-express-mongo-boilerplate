@@ -13,7 +13,7 @@ let util 		= require("util");
 let _	 		= require("lodash");
 let express		= require("express");
 
-let Context		= require("Moleculer").Context;
+let Context		= require("moleculer").Context;
 
 let graphqlTools 		= require("graphql-tools");
 let GraphQLScalarType 	= require("graphql").GraphQLScalarType;
