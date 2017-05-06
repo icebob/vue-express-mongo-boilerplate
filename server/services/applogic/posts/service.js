@@ -41,7 +41,7 @@ module.exports = {
 				let filter = {};
 
 				if (ctx.params.filter == "my")
-					filter.author = ctx.user.id;
+					filter.author = ctx.params.$user.id;
 				else if (ctx.params.author != null)
 					filter.author = ctx.params.author;
 
