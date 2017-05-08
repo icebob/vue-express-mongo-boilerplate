@@ -68,6 +68,9 @@ module.exports = {
 	cacheTimeout: 5 * 60, // 5 mins
 
 	mailer: {
+		enabled: false, // change this flag to true to turn emailing feature on.
+		
+		//if enabled = true make sure to configure one of the methods below
 		from: "noreply@vem-app.com"
 		/*
 		transport: "smtp",

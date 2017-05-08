@@ -137,6 +137,11 @@ module.exports = function(app, db) {
 				},
 
 				function sendResetEmailToUser(token, user, done) {
+					if (!config.mailer.enabled) {
+						const err = "Trying to send email without config.mailer not enabled; emailing skipped. Have you configured mailer yet?";
+						logger.error(err);
+						return done(err, user);
+					}
 					let subject = req.t("mailSubjectLogin", config);
 
 					res.render("mail/passwordLessLogin", {

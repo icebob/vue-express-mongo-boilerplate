@@ -138,7 +138,8 @@ module.exports = function(app, db) {
 					provider: "local"
 				});
 
-				if (token) {
+				if (token && config.mailer.enabled) {
+					// user email verification is only enabled if mailer is enabled
 					user.verified = false;
 					user.verifyToken = token;
 				} else {
@@ -160,6 +161,10 @@ module.exports = function(app, db) {
 			},
 
 			function sendEmail(user, done) {
+				if (!config.mailer.enabled) {
+					logger.error("config.mailer not enabled; emailing skipped. Have you configured mailer yet?");
+					return done(null, user);
+				}
 				if (user.verified) {
 					// Send welcome email
 					let subject = req.t("mailSubjectWelcome", config);
@@ -257,6 +262,12 @@ module.exports = function(app, db) {
 			},
 
 			function sendWelcomeEmailToUser(user, done) {
+				if (!config.mailer.enabled) {
+					// this should never be triggered since token only exists when mailer IS configured""
+					const err = "Trying to send email without config.mailer enabled; emailing skipped. Have you configured mailer yet?";
+					logger.error(err);
+					return done(err, user);
+				}
 				let subject = req.t("mailSubjectWelcome", config);
 
 				res.render("mail/welcome", {
@@ -393,6 +404,11 @@ module.exports = function(app, db) {
 			},
 
 			function sendResetEmailToUser(token, user, done) {
+				if (!config.mailer.enabled) {
+					const err = "Trying to send email without config.mailer enabled; emailing skipped. Have you configured mailer yet?";
+					logger.error(err);
+					return done(err, user);
+				}
 				let subject = req.t("mailSubjectResetPassword", config);
 
 				res.render("mail/passwordReset", {
@@ -491,6 +507,11 @@ module.exports = function(app, db) {
 			},
 
 			function sendPasswordChangeEmailToUser(user, done) {
+				if (!config.mailer.enabled) {
+					const err = "Trying to send email without config.mailer enabled; emailing skipped. Have you configured mailer yet?";
+					logger.error(err);
+					return done(err, user);
+				}
 				let subject = req.t("mailSubjectPasswordChanged", config);
 
 				res.render("mail/passwordChange", {
