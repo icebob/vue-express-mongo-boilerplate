@@ -68,7 +68,8 @@ module.exports = {
 	cacheTimeout: 5 * 60, // 5 mins
 
 	mailer: {
-		from: "noreply@vem-app.com"
+		enabled: false,
+		from: "noreply@vem-app.com",
 		/*
 		transport: "smtp",
 		smtp: {
