@@ -26,7 +26,7 @@ let self = {
 	 * We will assign it in `init`
 	 */
 	broker: null,
-	
+
 	/**
 	 * Mongo store instance.
 	 * We will assign it in `init`
@@ -39,16 +39,16 @@ let self = {
 	 */
 	namespaces: {},
 
-	/** 
+	/**
 	 * List of logged in online users/sockets
 	 * @type {Array}
 	 */
 	userSockets: [],
 
 	/**
-	 * Init Socket.IO module and load socket handlers 
+	 * Init Socket.IO module and load socket handlers
 	 * from applogic
-	 * 
+	 *
 	 * @param  {Object} app Express App
 	 * @param  {Object} db  MongoDB connection
 	 * @param  {Service} service  WWW service instance
@@ -62,7 +62,7 @@ let self = {
 			mongooseConnection: db.connection,
 			collection: config.sessions.collection,
 			autoReconnect: true
-		});		
+		});
 
 		// Create a new HTTP server
 		let server = http.createServer(app);
@@ -88,6 +88,23 @@ let self = {
 				socket.emit(event, payload);
 		});
 
+		// send to specific user
+
+		self.broker.on("socket.emit.user", ({ username, event, payload }) => {
+			self.broker.logger.debug("Send WS message to '" + username + "':", payload);
+
+			// will send to ALL users that are logged into that account
+
+			_.map(self.userSockets,  function(c){
+				if(c.request.user.username === username){
+					let socket = self.IO.sockets.connected[c.id];
+					if (socket) {
+						socket.emit(event, payload);
+					}
+				}
+			});
+		});
+
 		self.broker.on("socket.emit.role", ({ role, event, payload }) => {
 			self.IO.emit(event, payload); // TODO only for role
 		});
@@ -101,7 +118,7 @@ let self = {
 
 	/**
 	 * Create a new Socket.IO namespace
-	 * 
+	 *
 	 * @param {any} ns		name of namespace
 	 * @param {any} role	required role for namespace
 	 * @returns
@@ -118,7 +135,7 @@ let self = {
 
 	/**
 	 * Initialize IO namespace. Apply authentication middleware
-	 * 
+	 *
 	 * @param  {String} ns         		Name of namespace
 	 * @param  {Object} io         		IO instance
 	 * @param  {Object} mongoStore 		Mongo Session store
@@ -157,8 +174,8 @@ let self = {
 								let user = socket.request.user;
 
 								if (roleRequired) {
-									if (user.roles && user.roles.indexOf(roleRequired) !== -1) 
-										next(null, true);	
+									if (user.roles && user.roles.indexOf(roleRequired) !== -1)
+										next(null, true);
 									else {
 										logger.warn(`Websocket user has no access to this namespace '${ns}'!`, user.username);
 										next(new Error(`You have NO access to this namespace '${ns}'!`), false);
@@ -204,7 +221,7 @@ let self = {
 
 	/**
 	 * Emit a message to a namespace
-	 * 
+	 *
 	 * @param {any} namespace
 	 * @param {any} command
 	 * @param {any} data
@@ -219,7 +236,7 @@ let self = {
 
 	/**
 	 * Add a socket to the online users list
-	 * 
+	 *
 	 * @param {any} socket
 	 */
 	addOnlineUser(socket) {
@@ -229,7 +246,7 @@ let self = {
 
 	/**
 	 * Remove a socket from the online users
-	 * 
+	 *
 	 * @param {any} socket
 	 */
 	removeSocket(socket) {
@@ -238,7 +255,7 @@ let self = {
 
 	/**
 	 * Remove sockets of user from the online users
-	 * 
+	 *
 	 * @param {any} socket
 	 */
 	removeOnlineUser(socket) {
