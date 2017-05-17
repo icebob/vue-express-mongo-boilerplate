@@ -1,36 +1,36 @@
 "use strict";
 
-let logger 			= require("../../core/logger");
-let config 			= require("../../config");
-let redis 			= require("../../core/redis");
+const logger 			= require("../../core/logger");
+const config 			= require("../../config");
+const redis 			= require("../../core/redis");
 
-let express 		= require("express");
-let http 			= require("http");
-let path 			= require("path");
+const express 			= require("express");
+const http 				= require("http");
+const path 				= require("path");
 
-let moment 			= require("moment");
-let flash 			= require("express-flash");
-let favicon 		= require("serve-favicon");
-let morgan 			= require("morgan");
-let bodyParser 		= require("body-parser");
-let cookieParser	= require("cookie-parser");
-let validator 		= require("express-validator");
-let csrf 			= require("csurf");
-let netjet			= require("netjet");
+const moment 			= require("moment");
+const flash 			= require("express-flash");
+const favicon 			= require("serve-favicon");
+const morgan 			= require("morgan");
+const bodyParser 		= require("body-parser");
+const cookieParser		= require("cookie-parser");
+const validator 		= require("express-validator");
+const csrf 				= require("csurf");
+const netjet			= require("netjet");
 
-let session 		= require("express-session");
-let compress 		= require("compression");
-let methodOverride 	= require("method-override");
-let helmet 			= require("helmet");
-let crossdomain 	= require("helmet-crossdomain");
-let mongoose 		= require("mongoose");
-let MongoStore 		= require("connect-mongo")(session);
+const session 			= require("express-session");
+const compress 			= require("compression");
+const methodOverride 	= require("method-override");
+const helmet 			= require("helmet");
+const crossdomain 		= require("helmet-crossdomain");
+const mongoose 			= require("mongoose");
+const MongoStore 		= require("connect-mongo")(session);
+const RateLimit 		= require("express-rate-limit");
+const i18next 			= require("i18next");
+const i18nextExpress 	= require("i18next-express-middleware");
+const i18nextFs 		= require("i18next-node-fs-backend");
 
-let i18next 		= require("i18next");
-let i18nextExpress 	= require("i18next-express-middleware");
-let i18nextFs 		= require("i18next-node-fs-backend");
-
-let serverFolder = path.normalize(path.join(config.rootPath, "server"));
+const serverFolder = path.normalize(path.join(config.rootPath, "server"));
 
 /**
  * Initialize local variables
@@ -117,6 +117,17 @@ function initMiddleware(app) {
 
 		// app.use(require('express-status-monitor')());
 	}
+
+	app.enable("trust proxy"); // if behind a reverse proxy (Heroku, Bluemix, AWS if you use an ELB, custom Nginx setup, etc)
+
+	// Rate limiter
+	const apiLimiter = new RateLimit({
+		windowMs: 1*60*1000, // 1 minute
+		max: 50,
+		delayMs: 0 // disabled
+	});
+	
+	app.use("/api", apiLimiter);
 }
 
 /**

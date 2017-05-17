@@ -59,6 +59,7 @@
     "express": "4.15.2",
     "express-flash": "0.0.2",
     "express-list-endpoints": "3.0.0",
+    "express-rate-limit": "2.8.0",
     "express-session": "1.15.2",
     "express-status-monitor": "0.1.9",
     "express-validator": "3.2.0",

@@ -3188,6 +3188,12 @@ express-list-endpoints@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/express-list-endpoints/-/express-list-endpoints-3.0.0.tgz#59144e76b19957f9b117b6350239288f16ee28b7"
 
+express-rate-limit@2.8.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/express-rate-limit/-/express-rate-limit-2.8.0.tgz#678ea64fe339b5d7c64c4df81538bb12a5ef1cc4"
+  dependencies:
+    defaults "^1.0.3"
+
 express-session@1.15.2:
   version "1.15.2"
   resolved "https://registry.yarnpkg.com/express-session/-/express-session-1.15.2.tgz#d98516443a4ccb8688e1725ae584c02daa4093d4"
@@ -7456,7 +7462,7 @@ readable-stream@1.1.x, "readable-stream@1.x >=1.1.9":
     isarray "0.0.1"
     string_decoder "~0.10.x"
 
-readable-stream@2, "readable-stream@> 1.0.0 < 3.0.0", readable-stream@^2.0.0, readable-stream@^2.0.2, readable-stream@^2.0.5, readable-stream@^2.0.6, readable-stream@^2.1.4, readable-stream@^2.1.5, readable-stream@^2.2.0, readable-stream@^2.2.2, readable-stream@^2.2.6, readable-stream@^2.2.9:
+readable-stream@2, "readable-stream@> 1.0.0 < 3.0.0", readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.5, readable-stream@^2.0.6, readable-stream@^2.1.4, readable-stream@^2.1.5, readable-stream@^2.2.0, readable-stream@^2.2.2, readable-stream@^2.2.6, readable-stream@^2.2.9:
   version "2.2.9"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.2.9.tgz#cf78ec6f4a6d1eb43d26488cac97f042e74b7fc8"
   dependencies:
@@ -7468,7 +7474,7 @@ readable-stream@2, "readable-stream@> 1.0.0 < 3.0.0", readable-stream@^2.0.0, re
     string_decoder "~1.0.0"
     util-deprecate "~1.0.1"
 
-readable-stream@2.2.7, readable-stream@^2.0.1:
+readable-stream@2.2.7:
   version "2.2.7"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.2.7.tgz#07057acbe2467b22042d36f98c5ad507054e95b1"
   dependencies:
