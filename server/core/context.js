@@ -237,7 +237,7 @@ class Context {
 
 		// check role
 		.then(() => {
-			if (permission == C.PERM_ADMIN && this.isAdmin()) {
+			if (permission == C.PERM_ADMIN && !this.isAdmin()) {
 				this.errorForbidden();
 			}
 			else if (permission == C.PERM_USER && this.user.roles.indexOf(C.ROLE_USER) == -1) {
