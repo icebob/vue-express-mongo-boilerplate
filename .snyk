@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.7.0
+version: v1.7.1
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
@@ -26,3 +26,30 @@ patch:
         patched: '2016-11-05T16:53:47.533Z'
     - jade > transformers > uglify-js:
         patched: '2016-11-05T17:17:21.252Z'
+  'npm:ms:20170412':
+    - compression > debug > ms:
+        patched: '2017-05-25T02:19:02.329Z'
+    - socket.io > socket.io-adapter > debug > ms:
+        patched: '2017-05-25T02:19:02.329Z'
+    - express-status-monitor > socket.io > engine.io > debug > ms:
+        patched: '2017-05-25T02:19:02.329Z'
+    - express-status-monitor > socket.io > socket.io-adapter > debug > ms:
+        patched: '2017-05-25T02:19:02.329Z'
+    - express-status-monitor > socket.io > socket.io-client > debug > ms:
+        patched: '2017-05-25T02:19:02.329Z'
+    - express-status-monitor > socket.io > socket.io-client > engine.io-client > debug > ms:
+        patched: '2017-05-25T02:19:02.329Z'
+    - express-status-monitor > socket.io > debug > ms:
+        patched: '2017-05-25T02:19:02.329Z'
+    - nodemailer-mailgun-transport > mailgun-js > debug > ms:
+        patched: '2017-05-25T02:19:02.329Z'
+    - express-status-monitor > socket.io > socket.io-parser > debug > ms:
+        patched: '2017-05-25T02:19:02.329Z'
+    - express-status-monitor > socket.io > socket.io-adapter > socket.io-parser > debug > ms:
+        patched: '2017-05-25T02:19:02.329Z'
+    - express-status-monitor > socket.io > socket.io-client > socket.io-parser > debug > ms:
+        patched: '2017-05-25T02:19:02.329Z'
+    - socket.io-client > debug > ms:
+        patched: '2017-05-25T02:19:02.329Z'
+    - socket.io > socket.io-client > debug > ms:
+        patched: '2017-05-25T02:19:02.329Z'
