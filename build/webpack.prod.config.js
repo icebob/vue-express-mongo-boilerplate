@@ -16,10 +16,10 @@ module.exports = merge(baseWpConfig, {
 				loader: ExtractTextPlugin.extract({
 					fallback: "style-loader",
 					use: [{
-						loader: "css-loader",
+						loader: "css-loader"/*,
 						options: {
 							modules: true
-						}
+						}*/
 					}, {
 						loader: "postcss-loader"
 					}, {
@@ -34,10 +34,10 @@ module.exports = merge(baseWpConfig, {
 						sass: ExtractTextPlugin.extract({
 							fallback: "vue-style-loader",
 							use: [{
-								loader: "css-loader",
+								loader: "css-loader"/*,
 								options: {
 									modules: true
-								}
+								}*/
 							}, {
 								loader: "postcss-loader"
 							}, {
