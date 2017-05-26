@@ -4,8 +4,8 @@
 
 [![Known Vulnerabilities](https://snyk.io/test/github/icebob/vue-express-mongo-boilerplate/badge.svg)](https://snyk.io/test/github/icebob/vue-express-mongo-boilerplate)
 ![Node 6](https://img.shields.io/badge/node-6.x.x-green.svg)
-![VueJS 2](https://img.shields.io/badge/vuejs-2.1.8-green.svg)
-![Webpack 2](https://img.shields.io/badge/webpack-2.2.0-green.svg)
+![VueJS 2](https://img.shields.io/badge/vuejs-2.3.x-green.svg)
+![Webpack 2](https://img.shields.io/badge/webpack-2.6.x-green.svg)
 [![Trace](https://resources.risingstack.com/Monitored+with+Trace+by+RisingStack.svg)](https://trace.risingstack.com/?utm_source=opensource&utm_medium=Icebob)
 
 This is a full stack webapp boilerplate project with VueJS + ExpressJS + MongoDB. NOT an out-of-box project. 
