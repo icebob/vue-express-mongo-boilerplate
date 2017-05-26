@@ -14,8 +14,8 @@ module.exports = merge(baseWpConfig, {
 			{
 				test: /\.scss$/,
 				loader: ExtractTextPlugin.extract({
-					fallbackLoader: "style-loader",
-					loader: [{
+					fallback: "style-loader",
+					use: [{
 						loader: "css-loader",
 						options: {
 							modules: true
@@ -32,8 +32,8 @@ module.exports = merge(baseWpConfig, {
 				options: {
 					loaders: {
 						sass: ExtractTextPlugin.extract({
-							fallbackLoader: "vue-style-loader",
-							loader: [{
+							fallback: "vue-style-loader",
+							use: [{
 								loader: "css-loader",
 								options: {
 									modules: true

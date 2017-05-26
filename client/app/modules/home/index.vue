@@ -760,7 +760,7 @@
 
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 	@import "../../../scss/themes/blurred/variables";
 
 	.container {

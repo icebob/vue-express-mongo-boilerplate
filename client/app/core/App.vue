@@ -127,7 +127,7 @@
 	};
 </script>
 
-<style lang="sass">
+<style lang="scss">
 	@import "../../scss/style.scss";
 
 </style>
