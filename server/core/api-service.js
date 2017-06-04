@@ -29,7 +29,7 @@ class APIService extends Moleculer.Service {
 	/**
 	 * Publish actions of service.
 	 * Generate REST routes, Socket event & GraphQL schemas
-	 * 
+	 *
 	 * @memberOf Service
 	 */
 	publishActions() {
@@ -45,11 +45,11 @@ class APIService extends Moleculer.Service {
 
 	/**
 	 * Check model is exists. If not throw an error
-	 * 
+	 *
 	 * @param {model} model				Model
 	 * @param {any} errMessageCode		Error message code if model not found
 	 * @returns {Object}
-	 * 
+	 *
 	 * @memberOf Service
 	 */
 	checkModel(model, errMessageCode) {
@@ -61,13 +61,13 @@ class APIService extends Moleculer.Service {
 
 	/**
 	 * Check the model owner is the user, or has 'admin' role
-	 * 
+	 *
 	 * @param {any} model			Model
 	 * @param {any} fieldName		name of owner field in model
 	 * @param {any} user			User of request
 	 * @param {string} errMessageCode Error message code (optional)
 	 * @returns
-	 * 
+	 *
 	 * @memberOf Service
 	 */
 	checkModelOwner(model, fieldName, user, errMessageCode = "app:YouAreNotTheOwner") {
@@ -80,11 +80,11 @@ class APIService extends Moleculer.Service {
 	/**
 	 * Convert the `docs` MongoDB model to JSON object.
 	 * With `propFilter` can be filter the properties
-	 * 
+	 *
 	 * @param {MongoDocument} 	docs		MongoDB document(s)
 	 * @param {String} 			propFilter	Filter properties of model. It is a space-separated `String` or an `Array`
 	 * @returns								JSON object/array
-	 * 
+	 *
 	 * @memberOf Service
 	 */
 	toJSON(docs, propFilter) {
@@ -117,12 +117,12 @@ class APIService extends Moleculer.Service {
 	 *
 	 * Example:
 	 * 		GET /posts?offset=20&limit=10&sort=-votes,createdAt
-	 * 
+	 *
 	 * @param  {query} query Mongo query object
 	 * @param  {Context} ctx Context of request
 	 * @return {query}
-	 * 
-	 * @memberOf Context	
+	 *
+	 * @memberOf Context
 	 */
 	applyFilters(query, ctx) {
 		// TODO full-text search with `q` params
@@ -141,12 +141,12 @@ class APIService extends Moleculer.Service {
 
 	/**
 	 * Populate models by schema
-	 * 
+	 *
 	 * @param {Context} ctx				Context
 	 * @param {Array} 	docs			Models
 	 * @param {Object} 	populateSchema	schema for population
 	 * @returns	{Promise}
-	 * 
+	 *
 	 * @memberOf Service
 	 */
 	populateModels(ctx, docs, populateSchema) {
@@ -157,7 +157,7 @@ class APIService extends Moleculer.Service {
 				if (_.isString(actionName)) {
 					let items = _.isArray(docs) ? docs : [docs];
 
-					// Collect IDs from field of docs (flatten, compact & unique list) 
+					// Collect IDs from field of docs (flatten, compact & unique list)
 					let idList = _.uniq(_.flattenDeep(_.compact(items.map(doc => doc[field]))));
 					if (idList.length > 0) {
 
@@ -197,7 +197,7 @@ class APIService extends Moleculer.Service {
 	 * Resolve ID from ID(s) or code(s)
 	 * @param {Context} ctx		Context
 	 * @returns
-	 * 
+	 *
 	 * @memberOf Service
 	 */
 	resolveID(ctx) {
@@ -223,10 +223,10 @@ class APIService extends Moleculer.Service {
 	 * 		{Boolean} 			resultAsObject		if true, return an object instead of Array, and the key is the ID
 	 * 		{Boolean} 			populate			populate the models
 	 * 		{Boolean|String}	propFilter			run toJSON with filter. If `propFilter` is string, use it as filter
-	 * 
+	 *
 	 * @param {Context} ctx		Context
 	 * @returns
-	 * 
+	 *
 	 * @memberOf Service
 	 */
 	resolveModel(ctx) {
@@ -300,15 +300,16 @@ class APIService extends Moleculer.Service {
 
 	/**
 	 * Notificate the connected users if the model changed
-	 * 
+	 *
 	 * @param {any} ctx		Context
 	 * @param {any} type	Type of changes (created, updated, deleted...etc)
 	 * @param {any} data	JSON payload
 	 * @param {any} user	User who made changes
-	 * 
+	 * @param {any} pvtMsg	Send WS only to user instead of broadcast
+	 *
 	 * @memberOf Service
 	 */
-	notifyModelChanges(ctx, type, data, user) {
+	notifyModelChanges(ctx, type, data, user, pvtMsg) {
 		const event = this.name + "." + type;
 
 		const payload = {
@@ -318,10 +319,10 @@ class APIService extends Moleculer.Service {
 		Promise.resolve(payload)
 			.then(payload => {
 				if (user) {
-					return ctx.call("persons.model", { 
+					return ctx.call("persons.model", {
 						code: user.code,
 						resultAsObject: true,
-						propFilter: true 
+						propFilter: true
 					}).then(user => {
 						payload.user = user;
 						return payload;
@@ -335,17 +336,27 @@ class APIService extends Moleculer.Service {
 				this.broker.emit(event, payload);
 
 				// Send notification via socket
-				this.broker.emit("socket.emit.role", {
-					role: this.settings.role,
-					event,
-					payload
-				});
+				if(pvtMsg){
+					this.broker.emit("socket.emit.user", {
+						username: user.username,
+						event: event,
+						payload: payload
+					});
+				}
+				else{
+					this.broker.emit("socket.emit.role", {
+						role: this.settings.role,
+						event,
+						payload
+					});
+				}
+
 			}).catch(err => this.logger.error("Unable to get user record!", err));
 	}
 
 	/**
 	 * Clear cache entities
-	 * 
+	 *
 	 * @memberOf Service
 	 */
 	clearCache() {
