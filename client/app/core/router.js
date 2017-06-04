@@ -6,6 +6,7 @@ import VueRouter from "vue-router";
 import Home from "../modules/home";
 import Counter from "../modules/counter";
 import Devices from "../modules/devices";
+import Users from "../modules/users";
 import Posts from "../modules/posts";
 import Profile from "../modules/profile";
 
@@ -18,8 +19,8 @@ export default new VueRouter({
 		{ path: "/devices", component: Devices },
 		{ path: "/posts", component: Posts },
 		{ path: "/counter", component: Counter },	
-		{ path: "/profile", component: Profile }
-		// { path: "/users", component: User, meta: { needRole: "admin" } },
+		{ path: "/profile", component: Profile },
+		{ path: "/users", component: Users, meta: { needRole: "admin" } }
 		//{ path: "*", component: NotFound }
 	]
 });

@@ -147,6 +147,7 @@ $ npm start
 |   |   |   +---posts
 |   |   |   +---profile
 |   |   |   +---session
+|   |   |   +---users
 |   |   |    
 |   |   +---core
 |   |   +---www

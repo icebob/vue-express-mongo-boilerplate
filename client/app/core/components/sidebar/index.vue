@@ -20,6 +20,12 @@
 						span.icon
 							i.fa.fa-tablet
 						span.label {{ "Devices" | i18n }}
+						
+				router-link(tag="li", to="/users")
+					a(:title="_('Users')")
+						span.icon
+							i.fa.fa-users
+						span.label {{ "Users" | i18n }}
 
 				router-link(tag="li", to="/posts")
 					a(:title="_('Posts')")
