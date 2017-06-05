@@ -11,10 +11,7 @@ let BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlug
 let ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 let extractLoaders = [{
-	loader: "css-loader",
-	options: {
-		modules: true
-	}
+	loader: "css-loader"
 }, {
 	loader: "postcss-loader"
 }, {
@@ -26,8 +23,8 @@ module.exports = merge(baseWpConfig, {
 		rules: [{
 			test: /\.scss$/,
 			loader: ExtractTextPlugin.extract({
-				fallbackLoader: "style-loader",
-				loader: extractLoaders
+				fallback: "style-loader",
+				use: extractLoaders
 			})
 		}, {
 			test: /\.vue$/,
@@ -35,8 +32,8 @@ module.exports = merge(baseWpConfig, {
 			options: {
 				loaders: {
 					sass: ExtractTextPlugin.extract({
-						fallbackLoader: "vue-style-loader",
-						loader: extractLoaders
+						fallback: "vue-style-loader",
+						use: extractLoaders
 					})
 				}
 			}
