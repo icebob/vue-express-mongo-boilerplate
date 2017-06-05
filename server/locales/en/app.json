@@ -50,6 +50,16 @@
 	"Inactive": "Inactive",
 	"AddNewDevice": "Add new device",
 
+
+    "Users": "Users",
+    "FullName": "Full Name",
+    "Email": "Email",
+    "Username": "Username",
+    "verified?": "Verified",
+    "apiKey": "apiKey",
+    "AddNewUser": "Add New User",
+
+
 	"SelectedOfAll": "Selected {{ selected }} of {{ all }}",
 	"Search3dots": "Search...",
 	

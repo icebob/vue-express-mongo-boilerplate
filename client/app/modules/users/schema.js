@@ -24,7 +24,7 @@ module.exports = {
 				}
 			},
 			{
-				title: _("Full Name"),
+				title: _("FullName"),
 				field: "fullName"
 			},
 			{
@@ -48,7 +48,7 @@ module.exports = {
 			// 	field: "provider"
 			// },
 			{
-				title: _("verified?"),
+				title: _("Verified"),
 				field: "verified",
 				formatter(value, model, col) {
 					return value ? "<i class='fa fa-check'/>" : "<i class='fa fa-ban'/>";
@@ -108,7 +108,7 @@ module.exports = {
 			{
 				type: "input",
 				inputType: "text",
-				label: _("Full Name"),
+				label: _("FullName"),
 				model: "fullName",
 				featured: true,
 				required: true,
@@ -158,7 +158,7 @@ module.exports = {
 			// },		
 			{
 				type: "switch",
-				label: _("verified?"),
+				label: _("Verified"),
 				model: "verified",
 				multi: true,
 				default: 0,
