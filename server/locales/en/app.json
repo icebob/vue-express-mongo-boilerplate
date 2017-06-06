@@ -54,10 +54,15 @@
     "Users": "Users",
     "FullName": "Full Name",
     "Email": "Email",
+    "Roles": "Roles",
     "Username": "Username",
-    "verified?": "Verified",
+    "Verified": "Verified",
     "apiKey": "apiKey",
     "AddNewUser": "Add New User",
+	"UserNameUpdated": "Username Updated",
+    "UserUpdated": "User Updated",
+    "UserNameDeleted": "Username Deleted",
+    "UserDeleted": "User Deleted",
 
 
 	"SelectedOfAll": "Selected {{ selected }} of {{ all }}",

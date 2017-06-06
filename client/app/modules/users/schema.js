@@ -2,7 +2,6 @@ import Vue from "vue";
 import moment from "moment";
 import { deviceTypes } from "./types";
 import { validators } from "vue-form-generator";
-
 import { find } from "lodash";
 
 let _ = Vue.prototype._;
@@ -32,21 +31,13 @@ module.exports = {
 				field: "email"
 			},
 			{
+				title: _("Roles"),
+				field: "roles"
+			},
+			{
 				title: _("Username"),
 				field: "username"
 			},
-			// {
-			// 	title: _("passwordLess?"),
-			// 	field: "passwordLess",
-			// 	formatter(value, model, col) {
-			// 		return value ? "<i class='fa fa-check'/>" : "<i class='fa fa-ban'/>";
-			// 	},
-			// 	align: "center"
-			// },
-			// {
-			// 	title: _("provider"),
-			// 	field: "provider"
-			// },
 			{
 				title: _("Verified"),
 				field: "verified",
@@ -59,17 +50,6 @@ module.exports = {
 				title: _("apiKey"),
 				field: "apiKey"
 			},
-			// {
-			// 	title: _("lastLogin"),
-			// 	field: "lastLogin",
-			// 	formatter(value) {
-			// 		return moment(value).fromNow();
-			// 	}
-			// },
-			// {
-			// 	title: _("locale"),
-			// 	field: "locale"
-			// },
 			{
 				title: _("Status"),
 				field: "status",
@@ -126,6 +106,20 @@ module.exports = {
 				validator: validators.email
 			},	
 			{
+				type: "checklist",
+				label: _("roles"),
+				model: "roles",
+				listBox: true,
+				values: [
+					// { value: "admin", name: "Admin"}, // should use constants.js but that is located in server/core so am hardcoding
+					// { value: "user", name: "User"},
+					// { value: "guest", name: "Guest"}
+					"admin",
+					"user",
+					"guest"
+				]
+			},
+			{
 				type: "input",
 				inputType: "text",
 				label: _("Username"),
@@ -135,27 +129,6 @@ module.exports = {
 				placeholder: _("Username"),
 				validator: validators.string
 			},	
-			// {
-			// 	type: "switch",
-			// 	label: _("passwordLess?"),
-			// 	model: "passwordLess",
-			// 	multi: true,
-			// 	default: 1,
-			// 	textOn: _("Active"),
-			// 	textOff: _("Inactive"),
-			// 	valueOn: 1,
-			// 	valueOff: 0
-			// },
-			// {
-			// 	type: "input",
-			// 	inputType: "text",
-			// 	label: _("provider"),
-			// 	model: "provider",
-			// 	featured: false,
-			// 	required: false,
-			// 	placeholder: _("defaults to 'local' if blank"),
-			// 	validator: validators.string
-			// },		
 			{
 				type: "switch",
 				label: _("Verified"),
@@ -175,15 +148,6 @@ module.exports = {
 				placeholder: _("apiKey"),
 				validator: validators.string
 			},
-			// {
-			// 	type: "input",
-			// 	inputType: "text",
-			// 	label: _("locale"),
-			// 	model: "locale",
-			// 	featured: false,
-			// 	required: false,
-			// 	validator: validators.string
-			// },
 			{
 				type: "switch",
 				label: _("Status"),
