@@ -4,6 +4,7 @@ let logger 		= require("../../../core/logger");
 let config 		= require("../../../config");
 let C 	 		= require("../../../core/constants");
 let E 			= require("../../../core/errors");
+let path 		= require("path");
 let async 		= require("async");
 let crypto 		= require("crypto");
 let mailer 		= require("../../../libs/mailer");
@@ -27,7 +28,7 @@ module.exports = {
 		
 		hashedIdentity: true,
 		// modelPropFilter: "code fullName email username password passwordLess passwordLessToken provider profile socialLinks roles resetPasswordToken resetPasswordExpires verified verifyToken apiKey lastLogin locale status createdAt updatedAt"
-		modelPropFilter: "code fullName email username provider profile socialLinks roles verified verifyToken lastLogin locale status createdAt updatedAt"
+		modelPropFilter: "code fullName email username provider profile socialLinks roles verified apiKey lastLogin locale status createdAt updatedAt"
 	},
 	
 	actions: {
@@ -74,9 +75,10 @@ module.exports = {
 		create: {
 			defaultMethod: "post",
 			handler(ctx) {
+				let resetToken;
 				return this.Promise.resolve(ctx)
 				.then(() => {
-					let resetToken = crypto.randomBytes(25).toString("hex");
+					resetToken = crypto.randomBytes(25).toString("hex");
 					let resetTokenExpiry = Date.now() + 24 * 3600000; // expire in 24 hours
 					let user = new User({
 						fullName: ctx.params.fullName,
@@ -111,15 +113,16 @@ module.exports = {
 					return json;
 				})
 				.then(json => {
-					console.log('this', this);
 					// 	let subject = req.t("mailSubjectResetPassword", config);
 					let subject = "mailSubjectResetPassword";
-					let html = pug.render("../../../views/mail/passwordReset", {
+					pug.renderFile(path.join(__dirname, "../../../views/mail/passwordReset.pug"), {
 						name: ctx.params.fullName,
-						// resetLink: "http://" + req.headers.host + "/reset/" + token // no idea how to do this
-						resetLink: "http://localhost:3000/reset/" + ctx.params.resetToken
+						resetLink: config.app.url + "reset/" + resetToken,
+						app: config.app
 					}, function(err, html) {
-						if (err) console.log("error in rendering mail", err);
+						if (err) 
+							return Promise.reject(new Error("Unable to render e-mail! " + err.message));
+
 						mailer.send(ctx.params.email, subject, html, function(err, info) {
 							if (err)
 								this.notifyModelChanges(ctx, "error", "UnableToSendEmail", ctx.params.$user);
