@@ -193,6 +193,33 @@ class APIService extends Moleculer.Service {
 		return this.Promise.resolve(docs);
 	}
 
+
+	/**
+	 * When editing a user, check if a given field (that is supposed to be unique) is duplicate
+	 *
+	 * @param {any} model			Model
+	 * @param {any} fieldName		name of unique field in model
+	 * @param {string} errMessageCode Error message code (optional)
+	 * @returns
+	 *
+	 * @memberOf Service
+	 */
+	// checkDuplicateField(ctx, fieldName, errMessageCode = "app:DuplicateField") {
+	checkDuplicateField(ctx, fieldName) {
+		// if (model[fieldName] == user.id || user.roles.indexOf(C.ROLE_ADMIN) !== -1)
+		// 	return model;
+		return this.Promise.resolve(ctx)
+			.then(ctx => {
+				
+				let query = this.collection.find({
+					fieldName: ctx.params[fieldName]
+				});
+				console.log('checkDuplicateField query ' + ctx.params[fieldName],query);
+				return ctx.params[fieldName];
+				// throw new E.RequestError(E.FORBIDDEN, C.DUPLICATE_FIELD, errMessageCode);
+			});
+	}
+
 	/**
 	 * Resolve ID from ID(s) or code(s)
 	 * @param {Context} ctx		Context

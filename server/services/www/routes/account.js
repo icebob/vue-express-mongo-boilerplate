@@ -547,6 +547,27 @@ module.exports = function(app, db) {
 			});
 	});	
 
+	// Generate API key for an arbitrary user WITHOUT saving
+	app.get("/generateAPIKey/:userid", function(req, res) {
+		if (!req.isAuthenticated())
+			return response.json(res, null, response.UNAUTHORIZED);
+		
+		User
+			.findById(req.params.userid)
+			.exec((err, user) => {
+				if (err) 
+					return response.json(res, null, response.SERVER_ERROR);
+
+				if (!user) {
+					return response.json(res, null, response.NOT_FOUND, req.t("InvalidUser"));
+				}
+
+				let apiKey = tokgen();
+				// console.log('apiKey', apiKey);
+				response.json(res, apiKey);
+			});
+	});	
+
 	// Unlink social account
 	app.get("/unlink/:provider", function(req, res) {
 		if (!req.isAuthenticated())

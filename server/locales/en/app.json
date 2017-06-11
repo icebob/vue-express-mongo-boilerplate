@@ -50,7 +50,11 @@
 	"Inactive": "Inactive",
 	"AddNewDevice": "Add new device",
 
-
+    "roles": "roles",
+    "UserNameAdded": "Username Added",
+    "UserAdded": "User Added",
+    "clickToGenerate": "clickToGenerate",
+	
     "Users": "Users",
     "FullName": "Full Name",
     "Email": "Email",

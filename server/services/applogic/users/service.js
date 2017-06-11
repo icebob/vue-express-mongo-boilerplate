@@ -28,7 +28,7 @@ module.exports = {
 		
 		hashedIdentity: true,
 		// modelPropFilter: "code fullName email username password passwordLess passwordLessToken provider profile socialLinks roles resetPasswordToken resetPasswordExpires verified verifyToken apiKey lastLogin locale status createdAt updatedAt"
-		modelPropFilter: "code fullName email username provider profile socialLinks roles verified apiKey lastLogin locale status createdAt updatedAt"
+		modelPropFilter: "_id code fullName email username provider profile socialLinks roles verified apiKey lastLogin locale status createdAt updatedAt"
 	},
 	
 	actions: {
@@ -145,6 +145,7 @@ module.exports = {
 				return this.Promise.resolve(ctx)
 				.then(ctx => this.resolveID(ctx))
 				.then(modelID => this.checkModel(modelID, "app:UserNotFound"))
+				// .then(ctx => this.checkDuplicateField(ctx,"username"))
 				.then(modelID => this.collection.findById(modelID).exec())
 				.then(doc => {
 

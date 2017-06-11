@@ -3,6 +3,7 @@ import moment from "moment";
 import { deviceTypes } from "./types";
 import { validators } from "vue-form-generator";
 import { find } from "lodash";
+import axios from "axios";
 
 let _ = Vue.prototype._;
 
@@ -111,9 +112,6 @@ module.exports = {
 				model: "roles",
 				listBox: true,
 				values: [
-					// { value: "admin", name: "Admin"}, // should use constants.js but that is located in server/core so am hardcoding
-					// { value: "user", name: "User"},
-					// { value: "guest", name: "Guest"}
 					"admin",
 					"user",
 					"guest"
@@ -145,8 +143,26 @@ module.exports = {
 				inputType: "text",
 				label: _("apiKey"),
 				model: "apiKey",
+				readonly: true,
 				placeholder: _("apiKey"),
-				validator: validators.string
+				validator: validators.string,
+				get(model) {
+					if (model.apiKey)
+						return model.apiKey;
+					else
+						return _("clickToGenerate");
+				},
+				buttons: [
+					{
+						classes: "btn-ToBeCompleted",
+						label: "Generate",
+						onclick: function(model) {
+							axios.get("/generateAPIKey/" + model._id).then((response) => {
+								model.apiKey = response.data.data;
+							});
+						}
+					}
+				]
 			},
 			{
 				type: "switch",
