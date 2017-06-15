@@ -108,7 +108,7 @@
     "winston": "2.3.1",
     "winston-daily-rotate-file": "1.4.6",
     "winston-graylog2": "0.6.0",
-    "winston-loggly-bulk": "1.4.2",
+    "winston-loggly-bulk": "2.0.0",
     "winston-logsene": "1.2.1",
     "winston-logzio": "1.0.3",
     "winston-papertrail": "1.0.5"
