@@ -100,7 +100,20 @@ module.exports = {
 					});
 					user.passwordLess = true; // No password for this account. He/she can login via social login or passwordless login
 					user.verified = true; // No need to verify a social signup
-					return user.save();
+					return user.save().catch(err => {
+						if (err && err.code === 11000) {
+							let field = err.message.split(".$")[1];
+							field = field.split(" dup key")[0];
+							field = field.substring(0, field.lastIndexOf("_"));						
+							let newErr = new Error("Unable to save user!");
+							newErr.params = {
+								field: field
+							};
+							newErr.status = 400;
+							throw newErr;
+						}
+						throw err;
+					});
 				})
 				.then(doc => this.toJSON(doc))
 				.then(json => this.populateModels(ctx, json))
