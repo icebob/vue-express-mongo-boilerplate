@@ -555,15 +555,14 @@ module.exports = function(app, db) {
 		User
 			.findById(req.params.userid)
 			.exec((err, user) => {
-				if (err) 
-					return response.json(res, null, response.SERVER_ERROR);
+				// if (err) 
+				// 	return response.json(res, null, response.SERVER_ERROR);
 
-				if (!user) {
-					return response.json(res, null, response.NOT_FOUND, req.t("InvalidUser"));
-				}
+				// if (!user) {
+				// 	return response.json(res, null, response.NOT_FOUND, req.t("InvalidUser"));
+				// }
 
 				let apiKey = tokgen();
-				// console.log('apiKey', apiKey);
 				response.json(res, apiKey);
 			});
 	});	

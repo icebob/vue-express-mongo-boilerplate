@@ -30,10 +30,11 @@ export const downloadRows = ({ commit }) => {
 export const saveRow = ({ commit }, model) => {
 	axios.post(NAMESPACE, model).then((response) => {
 		let res = response.data;
-
 		if (res.status == 200 && res.data)
 			created({ commit }, res.data, true);
-	}).catch((response) => {
+	}).catch((err) => {
+		//SWYX: changing based on https://github.com/mzabriskie/axios error handling
+		const response = err.response;
 		if (response.data.error)
 			toastr.error(response.data.error.message);
 	});		
@@ -50,7 +51,9 @@ export const updateRow = ({ commit }, row) => {
 		let res = response.data;
 		if (res.data)
 			commit(UPDATE, res.data);
-	}).catch((response) => {
+	}).catch((err) => {
+		//SWYX: changing based on https://github.com/mzabriskie/axios error handling
+		const response = err.response;
 		if (response.data.error)
 			toastr.error(response.data.error.message);
 	});	

@@ -28,7 +28,7 @@ module.exports = {
 		
 		hashedIdentity: true,
 		// modelPropFilter: "code fullName email username password passwordLess passwordLessToken provider profile socialLinks roles resetPasswordToken resetPasswordExpires verified verifyToken apiKey lastLogin locale status createdAt updatedAt"
-		modelPropFilter: "_id code fullName email username provider profile socialLinks roles verified apiKey lastLogin locale status createdAt updatedAt"
+		modelPropFilter: "code fullName email username provider profile socialLinks roles verified apiKey lastLogin locale status createdAt updatedAt"
 	},
 	
 	actions: {
@@ -102,13 +102,16 @@ module.exports = {
 					user.verified = true; // No need to verify a social signup
 					return user.save().catch(err => {
 						if (err && err.code === 11000) {
-							let field = err.message.split(".$")[1];
+							let field = err.message.split("index: ")[1];
 							field = field.split(" dup key")[0];
-							field = field.substring(0, field.lastIndexOf("_"));						
-							let newErr = new Error("Unable to save user!");
+							field = field.substring(0, field.lastIndexOf("_"));
+							let newErr = new Error("Unable to create user!");
 							newErr.params = {
-								field: field
+								field: field,
 							};
+							newErr.msgCode = "DuplicateFieldError: " + field;
+							newErr.message = "Unable to create user, duplicate field " + field;
+							newErr.type = "BAD_REQUEST";
 							newErr.status = 400;
 							throw newErr;
 						}
@@ -181,7 +184,23 @@ module.exports = {
 					if (ctx.params.locale != null) doc.locale = ctx.params.locale;
 					if (ctx.params.status != null) doc.status = ctx.params.status;
 
-					return doc.save();
+					return doc.save().catch(err => {
+						if (err && err.code === 11000) {
+							let field = err.message.split("index: ")[1];
+							field = field.split(" dup key")[0];
+							field = field.substring(0, field.lastIndexOf("_"));
+							let newErr = new Error("Unable to update user!");
+							newErr.params = {
+								field: "DuplicateFieldError: " + field,
+							};
+							newErr.msgCode = "DuplicateFieldError: " + field;
+							newErr.message = "Unable to update user, duplicate field " + field;
+							newErr.type = "BAD_REQUEST";
+							newErr.status = 400;
+							throw newErr;
+						}
+						throw err;
+					});
 				})
 				.then(doc => this.toJSON(doc))
 				.then(json => this.populateModels(ctx, json))
