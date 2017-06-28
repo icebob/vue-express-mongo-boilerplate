@@ -41,7 +41,6 @@ module.exports = {
 				let filter = {};
 
 				let query = this.collection.find(filter);
-
 				return this.applyFilters(query, ctx).exec()
 				.then(docs => this.toJSON(docs))
 				.then(json => this.populateModels(ctx, json));
@@ -108,9 +107,10 @@ module.exports = {
 							let newErr = new Error("Unable to create user!");
 							newErr.params = {
 								field: field,
+								toastmessage: "Unable to create user, duplicate field: " + field,
 							};
 							newErr.msgCode = "DuplicateFieldError: " + field;
-							newErr.message = "Unable to create user, duplicate field " + field;
+							newErr.message = "Unable to create user, duplicate field: " + field;
 							newErr.type = "BAD_REQUEST";
 							newErr.status = 400;
 							throw newErr;
@@ -192,6 +192,7 @@ module.exports = {
 							let newErr = new Error("Unable to update user!");
 							newErr.params = {
 								field: "DuplicateFieldError: " + field,
+								toastmessage: "Unable to create user, duplicate field: " + field,
 							};
 							newErr.msgCode = "DuplicateFieldError: " + field;
 							newErr.message = "Unable to update user, duplicate field " + field;
@@ -219,6 +220,7 @@ module.exports = {
 			defaultMethod: "delete",
 			needModel: true,
 			handler(ctx) {
+				console.log('remote', ctx);
 				return this.Promise.resolve(ctx)
 				.then(ctx => ctx.call(this.name + ".model", { code: ctx.params.code }))
 				.then(model => this.checkModel(model, "app:UserNotFound"))

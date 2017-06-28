@@ -148,7 +148,6 @@ module.exports = {
 				placeholder: _("apiKey"),
 				validator: validators.string,
 				get(model) {
-					console.log('getmodel', model);
 					if (model.apiKey)
 						{ return model.apiKey; } 
 					else
@@ -162,7 +161,6 @@ module.exports = {
 						label: "Generate",
 						onclick: function(model) {
 							axios.get("/generateAPIKey/" + model._id).then((response) => {
-								console.log('generateAPIKey',response);
 								model.apiKey = response.data.data;
 							});
 						}
