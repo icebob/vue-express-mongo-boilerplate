@@ -3,7 +3,6 @@ import toastr from "../../../core/toastr";
 // import { LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE } from "./types";
 import { LOAD, LOAD_MORE, ADD, SELECT, CLEAR_SELECT, UPDATE, VOTE, UNVOTE, REMOVE, 
 	NO_MORE_ITEMS, FETCHING, CHANGE_SORT, CHANGE_VIEWMODE } from "./types";
-import axios from "axios";
 import Service from "../../../core/service";
 
 export const NAMESPACE = "/api/users";
@@ -61,21 +60,12 @@ export const updated = ({ commit }, row) => {
 	commit(UPDATE, row);
 };
 
-//// unable to use service.rest because it insists on using 'post' method
-// export const removeRow = ({ commit }, row) => {
-// 	service.rest(row.code).then((response) => {
-// 		commit(REMOVE,row);
-// 	}).catch((err) => {
-// 		toastr.error(err.message);
-// 	});
-// };
-
-export const removeRow = ({ commit }, row) => {
-	axios.delete(NAMESPACE + "/" + row.code).then((response) => {
-		commit(REMOVE, row);
-	}).catch((response) => {
-		if (response.data.error)
-			toastr.error(response.data.error.message);
+//https://github.com/sw-yx/vue-express-mongo-boilerplate/pull/5#issuecomment-311987964
+export const removeRow = function(store, model) {
+	service.rest("remove", { code: model.code }).then((data) => {
+		removed(store, data);
+	}).catch((err) => {
+		toastr.error(err.message);
 	});
 };
 
