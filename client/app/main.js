@@ -10,6 +10,7 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 import Filters from "./core/filters";
 import VueI18Next from "./core/i18next.js";
 import VueFormGenerator from "vue-form-generator";
+//import "vue-form-generator/dist/vfg.css";
 import VueWebsocket from "./core/websocket";
 
 import store from "./core/store";

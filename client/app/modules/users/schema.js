@@ -24,6 +24,10 @@ module.exports = {
 				}
 			},
 			{
+				title: _("Username"),
+				field: "username"
+			},
+			{
 				title: _("FullName"),
 				field: "fullName"
 			},
@@ -36,20 +40,12 @@ module.exports = {
 				field: "roles"
 			},
 			{
-				title: _("Username"),
-				field: "username"
-			},
-			{
 				title: _("Verified"),
 				field: "verified",
 				formatter(value, model, col) {
 					return value ? "<i class='fa fa-check'/>" : "<i class='fa fa-ban'/>";
 				},
 				align: "center"
-			},
-			{
-				title: _("apiKey"),
-				field: "apiKey"
 			},
 			{
 				title: _("Status"),
@@ -93,7 +89,7 @@ module.exports = {
 				model: "fullName",
 				featured: true,
 				required: true,
-				placeholder: _("Full Name"),
+				placeholder: _("FullName"),
 				validator: validators.string
 			},	
 			{

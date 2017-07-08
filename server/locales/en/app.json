@@ -51,7 +51,6 @@
 	"AddNewDevice": "Add new device",
 
     "roles": "roles",
-    "UserNameAdded": "Username Added",
     "UserAdded": "User Added",
     "clickToGenerate": "clickToGenerate",
 	
@@ -63,11 +62,15 @@
     "Verified": "Verified",
     "apiKey": "apiKey",
     "AddNewUser": "Add New User",
-	"UserNameUpdated": "Username Updated",
     "UserUpdated": "User Updated",
-    "UserNameDeleted": "Username Deleted",
     "UserDeleted": "User Deleted",
+	"UserNameAdded": "User '{{data.fullName}}' added by {{user.fullName}}!",
+	"UserNameUpdated": "User '{{data.fullName}}' updated by {{user.fullName}}!",
+	"UserNameDeleted": "User '{{data.fullName}}' deleted by {{user.fullName}}!",
 
+	"DuplicateFieldErrorUsername": "Duplicated value in field 'username'!",
+	"DuplicateFieldErrorEmail": "Duplicated value in field 'email'!",
+	"DuplicateFieldErrorApiKey": "Duplicated value in field 'apiKey'!",
 
 	"SelectedOfAll": "Selected {{ selected }} of {{ all }}",
 	"Search3dots": "Search...",

@@ -1,8 +1,6 @@
 import Vue from "vue";
 import toastr from "../../../core/toastr";
-// import { LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE } from "./types";
-import { LOAD, LOAD_MORE, ADD, SELECT, CLEAR_SELECT, UPDATE, VOTE, UNVOTE, REMOVE, 
-	NO_MORE_ITEMS, FETCHING, CHANGE_SORT, CHANGE_VIEWMODE } from "./types";
+import { LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE } from "./types";
 import Service from "../../../core/service";
 
 export const NAMESPACE = "/api/users";
@@ -18,16 +16,10 @@ export const clearSelection = ({ commit }) => {
 };
 
 export const downloadRows = function ({ commit }) {
-	// commit(FETCHING, true);
 	return service.rest("list", {}).then((data) => {
-		if (data.length == 0)
-			commit(NO_MORE_ITEMS);
-		else
-			commit(LOAD, data);
+		commit(LOAD, data);
 	}).catch((err) => {
 		toastr.error(err.message);
-	}).then(() => {
-		commit(FETCHING, false);		
 	});
 };
 
@@ -36,7 +28,7 @@ export const saveRow = function({ commit }, model) {
 	service.rest("create", model).then((data) => {
 		created({ commit }, data, true);
 	}).catch((err) => {
-		toastr.error(err.params.toastmessage);
+		toastr.error(err.message);
 	});
 };
 
@@ -46,13 +38,11 @@ export const created = ({ commit }, row, needSelect) => {
 		commit(SELECT, row, false);
 };
 
-export const updateRow = ({ commit }, row) => {
-	service.rest(row.code, row).then((response) => {
-		let res = response.data;
-		if (res.data)
-			commit(UPDATE, res.data);
+export const updateRow = ({ commit }, model) => {
+	service.rest("update", model).then((data) => {
+		updated({ commit }, data);
 	}).catch((err) => {
-		toastr.error(err.params.toastmessage);
+		toastr.error(err.message);
 	});
 };
 
