@@ -61,7 +61,7 @@ export default class Service {
 					reject(response);
 			}).catch((error) => {
 				if (error.response && error.response.data && error.response.data.error) {
-					console.error("REST request error!", error.response.data.error);
+					console.error("REST request error!", error.response);
 					reject(error.response.data.error);
 				} else
 					reject(error);

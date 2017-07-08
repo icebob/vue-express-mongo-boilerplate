@@ -50,6 +50,25 @@
 	"Inactive": "Inactive",
 	"AddNewDevice": "Add new device",
 
+    "roles": "roles",
+    "UserNameAdded": "Username Added",
+    "UserAdded": "User Added",
+    "clickToGenerate": "clickToGenerate",
+	
+    "Users": "Users",
+    "FullName": "Full Name",
+    "Email": "Email",
+    "Roles": "Roles",
+    "Username": "Username",
+    "Verified": "Verified",
+    "apiKey": "apiKey",
+    "AddNewUser": "Add New User",
+	"UserNameUpdated": "Username Updated",
+    "UserUpdated": "User Updated",
+    "UserNameDeleted": "Username Deleted",
+    "UserDeleted": "User Deleted",
+
+
 	"SelectedOfAll": "Selected {{ selected }} of {{ all }}",
 	"Search3dots": "Search...",
 	

@@ -40,7 +40,8 @@ body {
 		display: block;
 		background-color: black;
 
-		background-image: url('~images/frontend-background.jpg');
+		// background-image: url('~images/frontend-background.jpg'); 
+		background-image: url('../images/frontend-background.jpg'); // https://github.com/angular/angular-cli/issues/4778
 		width: 100%;
 		height: 100%;
 		background-size: cover;
@@ -98,7 +99,8 @@ body {
 	box-shadow: 0 0 10px rgba(0,0,0,1);
 	
 	.bg {
-		background-image: url('~images/frontend-background.jpg');
+		// background-image: url('~images/frontend-background.jpg'); 
+		background-image: url('../images/frontend-background.jpg'); // https://github.com/angular/angular-cli/issues/4778
 		background-size: cover;
 		background-position: center center;
 		position: absolute;

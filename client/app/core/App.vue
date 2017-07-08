@@ -116,7 +116,6 @@
 			this.$socket.open();
 			console.log("App started!");
 			window.app = this;
-
 			this.getSessionUser();
 
 			// debug

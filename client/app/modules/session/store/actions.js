@@ -8,7 +8,9 @@ export const getSessionUser = ({ commit }) => {
 	axios.get(NAMESPACE + "/me").then((response) => {
 		let res = response.data;
 		if (res.status == 200)
+		{
 			commit(SET_USER, res.data);
+		}
 		else
 			console.error("Request error!", res.error);
 
