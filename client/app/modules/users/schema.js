@@ -3,9 +3,34 @@ import moment from "moment";
 import { deviceTypes } from "./types";
 import { validators } from "vue-form-generator";
 import { find } from "lodash";
-import axios from "axios";
+import toastr from "../../core/toastr";
+import Service from "../../core/service";
+
+let service = new Service("users"); 
 
 let _ = Vue.prototype._;
+
+function colorForRole(role) {
+	switch(role) {
+	case "admin": return "danger";
+	case "user": return "primary";
+	default: return "";
+	}
+}
+
+const RoleTypes = [
+	{ id: "admin", name: "Administrator" },
+	{ id: "user", name: "User" }
+];
+
+function resolveRoleName(role) {
+	let r = RoleTypes.find(r => r.id == role);
+	if (r)
+		return r.name;
+
+	return role;
+}
+
 
 module.exports = {
 
@@ -37,7 +62,13 @@ module.exports = {
 			},
 			{
 				title: _("Roles"),
-				field: "roles"
+				field: "roles",
+				formatter(value, model, col) {
+					if (Array.isArray(value)) {
+						return value.map(role => `<div class="tag ${colorForRole(role)}">${resolveRoleName(role)}</div>`).join("");
+					}
+				},
+				align: "center"
 			},
 			{
 				title: _("Verified"),
@@ -107,12 +138,8 @@ module.exports = {
 				label: _("roles"),
 				model: "roles",
 				listBox: true,
-				values: [
-					"admin",
-					"user",
-					"guest"
-				],
-				checklistOptions: { value: "user" }
+				values: RoleTypes,
+				default: "user"
 			},
 			{
 				type: "input",
@@ -155,9 +182,13 @@ module.exports = {
 					{
 						classes: "btn-ToBeCompleted",
 						label: "Generate",
-						onclick: function(model) {
-							axios.get("/generateAPIKey/" + model._id).then((response) => {
-								model.apiKey = response.data.data;
+						onclick: function(model, field, event, self) {
+							service.rest("generateApiKey")
+							.then(apiKey => {
+								Vue.set(model, "apiKey", apiKey);
+							})
+							.catch((err) => {
+								toastr.error(err.message);
 							});
 						}
 					}

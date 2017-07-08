@@ -98,7 +98,7 @@
 	"PostNameVoted": "{{user.fullName}} szavazott a(z) '{{data.title}}' bejegyzésre!",
 	"PostNameUnvoted": "{{user.fullName}} törölte a szavazatát a(z) '{{data.title}}' bejegyzésről!",
 
-	"InvalidCode": "Invalid code!",
+	"InvalidCode": "Hibás kód!",
 
 	"Demo": "Demó",
 

@@ -8,6 +8,7 @@ let path 		= require("path");
 let async 		= require("async");
 let crypto 		= require("crypto");
 let mailer 		= require("../../../libs/mailer");
+let tokgen 		= require("../../../libs/tokgen");
 
 let _			= require("lodash");
 
@@ -188,6 +189,14 @@ module.exports = {
 
 					return json;
 				});	
+			}							
+		},
+
+		generateApiKey: {
+			needModel: false,
+			handler(ctx) {
+				let apiKey = tokgen();
+				return this.Promise.resolve(apiKey);
 			}							
 		},
 

@@ -21,7 +21,7 @@
 							i.fa.fa-tablet
 						span.label {{ "Devices" | i18n }}
 						
-				router-link(tag="li", to="/users", v-if="me.roles && me.roles.indexOf('admin') >= 0")
+				router-link(tag="li", to="/users", v-if="me && me.roles && me.roles.indexOf('admin') >= 0")
 					a(:title="_('Users')")
 						span.icon
 							i.fa.fa-users

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import toastr from "../../../core/toastr";
-import { LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE } from "./types";
+import { LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE, UPDATE_APIKEY } from "./types";
 import Service from "../../../core/service";
 
 export const NAMESPACE = "/api/users";

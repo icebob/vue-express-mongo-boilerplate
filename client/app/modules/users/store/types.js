@@ -4,3 +4,4 @@ export const SELECT			= "SELECT";
 export const CLEAR_SELECT	= "CLEAR_SELECT";
 export const UPDATE			= "UPDATE";
 export const REMOVE			= "REMOVE";
+export const UPDATE_APIKEY	= "UPDATE_APIKEY";
