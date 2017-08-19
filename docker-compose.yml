@@ -1,0 +1,20 @@
+version: '3'
+services:
+  web:
+    image: vue-express-mongo-site
+    build: .
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - "mongo"
+    network_mode: "host"
+  mongo:
+    image: "mongo"
+
+    ports:
+      - "27017:27017"
+    network_mode: "host"
