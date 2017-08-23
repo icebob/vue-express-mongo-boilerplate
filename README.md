@@ -86,6 +86,18 @@ For production
 $ npm start
 ```
 
+## Docker
+
+Building the images for the first time
+```
+$ docker-compose build
+```
+
+Starting the images
+```
+$ docker-compose up
+```
+
 ## Screenshots
 
 ### Login screen
