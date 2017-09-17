@@ -148,7 +148,18 @@ module.exports = function(app, db) {
 
 				user.save(function(err, user) {
 					if (err && err.code === 11000) {
-						let field = err.message.split(".$")[1];
+						let field;
+						if(err.message.includes(".$")) {
+							field = err.message.split(".$")[1];
+						}
+						else if (err.message.includes("index: ")) {
+							field = err.message.split("index: ")[1];
+						}
+						else {
+							req.flash("error", { msg: req.t("UserSaveError") });
+							done(err, user);
+							return
+						}
 						field = field.split(" dup key")[0];
 						field = field.substring(0, field.lastIndexOf("_"));						
 						if (field == "email")
