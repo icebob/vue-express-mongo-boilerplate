@@ -11,9 +11,26 @@ module.exports = {
 		logger.info(`Sending email to ${recipients} with subject ${subject}...`);
 		logger.debug("Deprecated! libs/mailer is deprecated. Use Service.get('mailer') instead!");
 
+		// recipients can be a comma separated string or array which will be sent by the 'to' field
+		// recipients can also be an object with to, cc, bcc properties etc. See: 'Common fields' https://community.nodemailer.com/
+		let emailRecipients = {}
+		if (recipients instanceof Object) {
+			if(recipients instanceof Array) {
+				emailRecipients.to = recipients
+			}
+			else {
+				emailRecipients = recipients
+			}
+		}
+		else {
+			emailRecipients.to = recipients
+		} 
+
 		let mailOptions = {
 			from: config.mailer.from,
-			to: recipients,
+			to: emailRecipients.to,
+			cc: emailRecipients.cc,
+			bcc: emailRecipients.bcc,
 			subject: subject,
 			html: body
 		};
