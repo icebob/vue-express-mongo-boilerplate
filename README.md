@@ -226,6 +226,8 @@ These are the instructions for Facebook:
 
 **Note:** After a successful sign in with Facebook, a user will be redirected back to home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
 
+**Update:** Added a commented workaround to App.vue, otherwise the FB users may end up on a blank page on redirect.
+
 ![GitHub Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/GitHub_logo_2013_padded.svg/128px-GitHub_logo_2013_padded.svg.png)
 
 These are the instructions for GitHub:
