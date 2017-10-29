@@ -9,7 +9,7 @@ root = true
 
 # change these settings to your own preference
 indent_style = tab
-indent_size = 1
+indent_size = 4
 
 # we recommend you to keep these unchanged
 end_of_line = lf
