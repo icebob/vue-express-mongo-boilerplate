@@ -16,7 +16,7 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 
 **If you like my work, please [donate](https://www.paypal.me/meregnorbert). Thank you!**
 
-### [Live Demo](http://vemapp.e-paper.space/) (login: test/test1234 or sign-up)
+### [Live Demo](http://vemapp.moleculer.services/) (login: test/test1234 or sign-up)
 
 ## Features
 
