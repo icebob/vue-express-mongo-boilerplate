@@ -7,8 +7,8 @@
 ![VueJS 2](https://img.shields.io/badge/vuejs-2.3.x-green.svg)
 ![Webpack 2](https://img.shields.io/badge/webpack-2.6.x-green.svg)
 
-This is a full stack webapp boilerplate project with VueJS + ExpressJS + MongoDB. NOT an out-of-box project. 
-The goal is to create an up-to-date starter repo which contains all important functions (user signup, login, oauth, profile, ...etc) except the business-logic. So when neccessary I can create a new webapp and only need to develop the business logic.
+This is a full stack webapp boilerplate project with VueJS + ExpressJS + MongoDB. It is NOT an out-of-box project. 
+I make it in order to create an up-to-date starter repo which contains all important functions (user signup, login, oauth, profile, ...etc) except the business-logic. So when neccessary I can create a new webapp and only need to develop the business logic.
 
 *This is just my personal boilerplate, it may or may not be a good fit for your project(s).*
 Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/hackathon-starter](https://github.com/sahat/hackathon-starter)
