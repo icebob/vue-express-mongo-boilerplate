@@ -111,7 +111,7 @@
     "winston-graylog2": "0.6.0",
     "winston-loggly-bulk": "2.0.0",
     "winston-logsene": "1.2.1",
-    "winston-logzio": "1.0.3",
+    "winston-logzio": "1.0.5",
     "winston-papertrail": "1.0.5"
   },
   "devDependencies": {
