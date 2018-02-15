@@ -76,7 +76,7 @@
     "i18next-node-fs-backend": "1.0.0",
     "ioredis": "3.0.0",
     "le_node": "1.7.0",
-    "lodash": "4.17.4",
+    "lodash": "4.17.5",
     "method-override": "2.3.10",
     "mkdirp": "0.5.1",
     "moment": "2.19.3",
