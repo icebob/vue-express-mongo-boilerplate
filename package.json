@@ -108,7 +108,7 @@
     "uuid-token-generator": "1.0.0",
     "winston": "2.3.1",
     "winston-daily-rotate-file": "1.4.6",
-    "winston-graylog2": "0.6.0",
+    "winston-graylog2": "0.7.1",
     "winston-loggly-bulk": "2.0.0",
     "winston-logsene": "1.2.1",
     "winston-logzio": "1.0.5",
