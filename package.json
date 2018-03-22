@@ -98,7 +98,7 @@
     "passport-localapikey-update": "0.5.0",
     "passport-twitter": "1.0.4",
     "pretty-bytes": "4.0.2",
-    "pug": "2.0.0-beta6",
+    "pug": "2.0.0",
     "require-webpack-compat": "3.0.0",
     "serve-favicon": "2.4.5",
     "slug": "0.9.1",
