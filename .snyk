@@ -69,3 +69,8 @@ patch:
         patched: '2018-06-21T02:58:21.837Z'
     - node-sass > node-gyp > request > hawk > cryptiles > boom > hoek:
         patched: '2018-06-21T02:58:21.837Z'
+  'npm:lodash:20180130':
+    - cli-table2 > lodash:
+        patched: '2018-07-05T02:57:35.883Z'
+    - nodemailer-sendgrid-transport > sendgrid > lodash:
+        patched: '2018-07-05T02:57:35.883Z'
