@@ -572,11 +572,15 @@ class Context {
 	 */
 	queryPageSort(query) {
 		if (this.params) {
-			if (this.params.limit)
-				query.limit(this.params.limit);
+			if (this.params.limit) {
+				let limit = parseInt(this.params.limit);
+				query.limit(limit);
+			}
 
-			if (this.params.offset)
-				query.skip(this.params.offset);
+			if (this.params.offset) {
+				let offset = parseInt(this.params.offset);
+				query.skip(offset);
+			}
 
 			if (this.params.sort)
 				query.sort(this.params.sort.replace(/,/, " "));
