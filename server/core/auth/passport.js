@@ -30,7 +30,7 @@ module.exports = function(app) {
 				return done(err);
 			
 			// Check that the user is not disabled or deleted
-			if (user.status !== 1)
+			if (!user || user.status !== 1)
 				return done(null, false);
 
 			return done(null, user);
