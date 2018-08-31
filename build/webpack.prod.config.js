@@ -6,47 +6,67 @@ let webpack = require("webpack");
 let merge = require("webpack-merge");
 let baseWpConfig = require("./webpack.base.config");
 //let StatsPlugin = require("stats-webpack-plugin");
-let ExtractTextPlugin = require("extract-text-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = merge(baseWpConfig, {
+	mode: 'production',
 	module: {
 		rules: [
 			{
 				test: /\.scss$/,
-				loader: ExtractTextPlugin.extract({
-					fallback: "style-loader",
-					use: [{
-						loader: "css-loader"/*,
+				use: [
+					MiniCssExtractPlugin.loader,
+					{
+						loader: "css-loader",
 						options: {
-							modules: true
-						}*/
-					}, {
-						loader: "postcss-loader"
-					}, {
-						loader: "sass-loader"
-					}]
-				})
+							modules: true,
+							sourceMap: true,
+							importLoader: 2
+						}
+					},
+					"sass-loader"
+				]
 			}, {
 				test: /\.vue$/,
 				loader: "vue-loader",
 				options: {
 					loaders: {
-						sass: ExtractTextPlugin.extract({
-							fallback: "vue-style-loader",
-							use: [{
-								loader: "css-loader"/*,
+						sass: [
+							MiniCssExtractPlugin.loader,
+							{
+								loader: "css-loader",
 								options: {
-									modules: true
-								}*/
-							}, {
-								loader: "postcss-loader"
-							}, {
-								loader: "sass-loader"
-							}]
-						})
+									modules: true,
+									sourceMap: true,
+									importLoader: 2
+								}
+							},
+							"sass-loader"
+						]
 					}
 				}
+			}, {
+				test: /\.pug$/,
+				loader: 'pug-plain-loader'
 			}
+		]
+	},
+	optimization: {
+		splitChunks: {
+			cacheGroups: {
+				vendor: {
+					chunks: "initial",
+					test: "vendor",
+					name: "vendor",
+					enforce: true
+				}
+			}
+		},
+		minimizer: [
+			new UglifyJsPlugin({
+				warningsFilter: (src) => true
+			})
 		]
 	},
 	plugins: [
@@ -55,19 +75,11 @@ module.exports = merge(baseWpConfig, {
 				"NODE_ENV": JSON.stringify("production")
 			}
 		}),
-		new webpack.optimize.CommonsChunkPlugin({
-			name: "vendor"
-		}),		
-		new webpack.optimize.UglifyJsPlugin({
-			compress: {
-				warnings: false
-			}
-		}),
 		new webpack.LoaderOptionsPlugin({
 			minimize: true
 		}),
 
-		new ExtractTextPlugin("styles/[name].css")
+		new MiniCssExtractPlugin("styles/[name].css")
 
 		/*new StatsPlugin(path.resolve(__dirname, "stats.json"), {
 			chunkModules: true

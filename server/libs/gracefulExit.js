@@ -13,7 +13,7 @@ let gracefulExit = function() {
 	}
 	mongoose.connection.close(function() {
 		return agenda.stop(function() {
-			logger.info();
+			logger.info({});
 			logger.info(chalk.bold("---------------------[ Server stopped at %s Uptime: %s ]---------------------------"), moment().format("YYYY-MM-DD HH:mm:ss.SSS"), moment.duration(process.uptime() * 1000).humanize());
 			return process.exit(0);
 		});

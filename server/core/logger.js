@@ -21,7 +21,7 @@ transports.push(new winston.transports.Console({
 
 /**
  * Logentries transporter
- * 
+ *
  * https://logentries.com/
  */
 if (config.logging.logentries.enabled && config.logging.logentries.token) {
@@ -35,7 +35,7 @@ if (config.logging.logentries.enabled && config.logging.logentries.token) {
 
 /**
  * Papertrail transporter
- * 
+ *
  * https://papertrailapp.com/
  */
 if (config.logging.papertrail.enabled) {
@@ -66,7 +66,7 @@ if (config.logging.file.enabled) {
 	if (!fs.existsSync(logDir)) {
 		mkdirp(logDir);
 	}
-	
+
 	transports.push(new (require("winston-daily-rotate-file"))({
 		filename: path.join(logDir, "server.log"),
 		level: config.logging.file.level || "info",
@@ -74,7 +74,7 @@ if (config.logging.file.enabled) {
 		json: config.logging.file.json || false,
 		handleExceptions: true
 	}));
-		
+
 	if (config.logging.file.exceptionFile) {
 		transports.push(new winston.transports.File({
 			filename: path.join(logDir, "exceptions.log"),
@@ -85,10 +85,10 @@ if (config.logging.file.enabled) {
 			handleExceptions: true,
 			humanReadableUnhandledException: true
 		}));
-	}	
+	}
 }
 
-let logger = new winston.Logger({
+let logger = winston.createLogger({
 	level: "debug",
 	transports: transports,
 	exitOnError: false
@@ -96,7 +96,7 @@ let logger = new winston.Logger({
 
 /**
  * Loggly transporter
- * 
+ *
  * https://www.loggly.com/
  */
 if (config.logging.loggly.enabled && config.logging.loggly.token) {
@@ -112,7 +112,7 @@ if (config.logging.loggly.enabled && config.logging.loggly.token) {
 
 /**
  * Logsene transporter
- * 
+ *
  * https://sematext.com/logsene/
  */
 if (config.logging.logsene.enabled && config.logging.logsene.token) {
@@ -126,7 +126,7 @@ if (config.logging.logsene.enabled && config.logging.logsene.token) {
 
 /**
  * Logz.io transporter
- * 
+ *
  * https://sematext.com/logsene/
  */
 if (config.logging.logzio.enabled && config.logging.logzio.token) {
@@ -139,7 +139,7 @@ if (config.logging.logzio.enabled && config.logging.logzio.token) {
 
 /**
  * Graylog transporter
- * 
+ *
  * https://www.graylog.org/
  */
 if (config.logging.graylog.enabled) {
