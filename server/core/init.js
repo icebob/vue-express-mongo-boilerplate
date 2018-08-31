@@ -14,5 +14,5 @@ if (!fs.existsSync(config.dataFolder)) {
 if (!config.isProductionMode()) {
 	logger.info("Loaded configuration:");
 	logger.info(config);
-	logger.info();
+	logger.info({});
 }

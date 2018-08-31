@@ -2,7 +2,7 @@
 
 // Common style
 * {
-	box-sizing: border-box;  
+	box-sizing: border-box;
 }
 
 html {
@@ -13,7 +13,7 @@ html {
 	font-weight: 400;
 	font-smoothing: antialiased;
 	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;	
+	-moz-osx-font-smoothing: grayscale;
 }
 
 @mixin clearfix() {
@@ -38,9 +38,7 @@ body {
 		top: 0; bottom: 0;
 
 		display: block;
-		background-color: black;
-
-		background-image: url('~images/frontend-background.jpg');
+		background: black url('../images/frontend-background.jpg');
 		width: 100%;
 		height: 100%;
 		background-size: cover;
@@ -69,7 +67,7 @@ body {
 		color: $textColor;
 		border-bottom: 1px solid $masterColor;
 		text-decoration: none;
-		
+
 		&:hover {
 			border-bottom: 2px solid $masterColor;
 		}
@@ -93,18 +91,18 @@ body {
 	text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
 
 	padding: 20px;
-	
+
 	border-radius: 10px;
 	box-shadow: 0 0 10px rgba(0,0,0,1);
-	
+
 	.bg {
-		background-image: url('~images/frontend-background.jpg');
+		background-image: url('../images/frontend-background.jpg');
 		background-size: cover;
 		background-position: center center;
 		position: absolute;
 		left: 0; right: 0; top: 0; bottom: 0;
 	} // .bg
-	
+
 	.bg-overlay {
 		background: radial-gradient(circle at top, $overlayColor, Black);
 		background-image: -webkit-radial-gradient(top center, $overlayColor, Black);
@@ -112,7 +110,7 @@ body {
 		left: 0; right: 0; top: 0; bottom: 0;
 		opacity: 0.9;
 	} // .bg-overlay
-	
+
 	.content {
 		position: relative;
 
@@ -123,7 +121,7 @@ body {
 			text-transform: uppercase;
 
 			margin-bottom: 0.5rem;
-		
+
 		} // .title
 
 		label {
@@ -137,7 +135,7 @@ body {
 
 		.form-group {
 			margin-bottom: 0.5rem;
-		
+
 			input {
 				width: 100%;
 				font-size: 1.0rem;
@@ -146,7 +144,7 @@ body {
 				margin: 3px 0px 10px 0px;
 				border: none;
 				padding: 10px;
-				border-radius: 3px;			
+				border-radius: 3px;
 				background-color: rgba(255, 255, 255, 0.1);
 				transition: opacity .3s ease;
 
@@ -162,8 +160,8 @@ body {
 
 				input {
 
-					opacity: 0; 
-					position:absolute; 
+					opacity: 0;
+					position:absolute;
 					left: -9999px;
 
 					& + label {
@@ -188,7 +186,7 @@ body {
 							background: rgba($buttonPrimaryColor, 0);
 							transition: .2s cubic-bezier(.24,0,.5,1);
 						}
-						
+
 						/* White toggle */
 						&:after {
 							$h: $sw-height - 2px;
@@ -222,15 +220,15 @@ body {
 							background: rgba($buttonPrimaryColor, 1);
 							transition: width .2s cubic-bezier(0,0,0,.1) !important;
 						}
-						
+
 						& + label:after{
 							left: $sw-width - $sw-height + 1;
 						}
-						
+
 						& + label{
 							box-shadow: inset 0 0 0px 25px #e4e4e4;
 							transition: box-shadow 2.5s cubic-bezier(0,1.2,.94,.95)}
-					}				
+					}
 
 				} // input
 
@@ -239,11 +237,11 @@ body {
 			.hint {
 				font-size: 0.75em;
 				text-align: center;
-				color: rgba(255,255,255, 0.7);			
+				color: rgba(255,255,255, 0.7);
 			}
 
 		} // .form-group
-		
+
 		.socials {
 			display: flex;
 			align-items: center;
@@ -261,9 +259,9 @@ body {
 				text-align: center;
 				border-radius: 100%;
 				border-bottom: 0;
-				
+
 				i {
-					
+
 				}
 
 				&.facebook {
@@ -301,12 +299,12 @@ body {
 						background-color: lighten($c, 10%);
 					}
 				}
-				
+
 			} // a.group
 
 
 		} // .socials
-		
+
 		.or {
 			width: 100%;
 			position: relative;
@@ -338,10 +336,10 @@ body {
 					left: 60%;
 				}
 			}
-		} // .or	
+		} // .or
 
 		.flash {
-			
+
 			.alert {
 				text-align: center;
 				padding: 0.2rem 0.6rem;
@@ -364,7 +362,7 @@ body {
 			}
 
 		} // .flash
-	
+
 		button {
 			background-color: $buttonPrimaryColor;
 			color: $buttonTextColor;
@@ -378,12 +376,12 @@ body {
 			width: 100%;
 			border-radius: 20px;
 			cursor: pointer;
-			
+
 			&:hover {
 				background-color: lighten($buttonPrimaryColor, 10%);
 			}
 		} // button
-		
+
 		hr {
 			border: 0;
 			border-bottom: 1px solid rgba(255, 255, 255, 0.3);
@@ -395,27 +393,27 @@ body {
 			font-size: 0.9rem;
 			margin: 0.5rem;
 		}
-		
+
 		.alreadyLink {
 			text-align: center;
 			font-size: 0.9rem;
 			text-transform: uppercase;
 			color: rgba(255, 255, 255, 0.6);
-			
+
 			span {
 				margin-right: 0.5em;
 			}
 
 		}
-		
+
 	} // .content
-	
+
 } //. panel
 
 
 .page {
 	position: absolute;
-	left: 0; 
+	left: 0;
 	right: 0;
 	top: 0;
 	bottom: 0;
@@ -435,11 +433,11 @@ body {
 
 	h3 {
 		font-size: 2.0rem;
-	}	
+	}
 
 	h4 {
 		font-size: 1.5rem;
-	}	
+	}
 
 	.logos {
 		margin: 8rem 0;
@@ -453,9 +451,9 @@ body {
 			font-size: 4rem;
 			font-weight: 300;
 			color: rgba(255,255,255, 0.3);
-			vertical-align: middle;	
+			vertical-align: middle;
 
-			padding: 0 1rem;		
+			padding: 0 1rem;
 		}
 	}
 
@@ -477,7 +475,7 @@ body {
 		font-family: $fontFamily;
 		font-size: 2.0rem;
 		font-weight: 300;
-		
+
 		&:hover {
 			background-color: lighten($buttonPrimaryColor, 10%);
 		}
@@ -486,7 +484,7 @@ body {
 
 .footer {
 	position: absolute;
-	left: 0; 
+	left: 0;
 	right: 0;
 	bottom: 0;
 

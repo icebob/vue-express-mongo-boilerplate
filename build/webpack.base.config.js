@@ -2,6 +2,7 @@
 
 let path = require("path");
 let webpack = require("webpack");
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
 	devtool: "#inline-source-map",
@@ -54,7 +55,7 @@ module.exports = {
 					name: "images/[name]-[hash:6].[ext]",
 					limit: 10000
 				}
-			}, 
+			},
 			{
 				test: /\.png$/,
 				loader: "url-loader",
@@ -62,7 +63,7 @@ module.exports = {
 					name: "images/[name]-[hash:6].[ext]",
 					limit: 10000
 				}
-			}, 
+			},
 			{
 				test: /\.jpg$/,
 				loader: "file-loader",
@@ -78,7 +79,7 @@ module.exports = {
 					limit: 10000,
 					prefix: "font/"
 				}
-			}, 
+			},
 			{
 				test: /\.(ttf|eot)$/,
 				loader: "file-loader",
@@ -103,5 +104,6 @@ module.exports = {
 	},
 
 	plugins: [
+		new VueLoaderPlugin()
 	]
 };
