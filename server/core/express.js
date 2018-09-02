@@ -23,7 +23,7 @@ let compress 		= require("compression");
 let methodOverride 	= require("method-override");
 let helmet 			= require("helmet");
 let crossdomain 	= require("helmet-crossdomain");
-let mongoose 		= require("mongoose");
+let mongoose 		= require("../core/mongoose");
 let MongoStore 		= require("connect-mongo")(session);
 
 let i18next 		= require("i18next");

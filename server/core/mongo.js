@@ -4,7 +4,7 @@ let logger 			= require("./logger");
 let config 			= require("../config");
 
 let chalk 			= require("chalk");
-let mongoose 		= require("mongoose");
+let mongoose 		= require("../core/mongoose");
 let autoIncrement 	= require("mongoose-auto-increment");
 
 module.exports = function() {
@@ -16,7 +16,7 @@ module.exports = function() {
 
 	if (mongoose.connection.readyState !== 1) {
 		logger.info("Connecting to Mongo " + config.db.uri + "...");
-		db = mongoose.createConnection(config.db.uri, config.db.options, function mongoAfterConnect(err) {
+		db = mongoose.connect(config.db.uri, config.db.options, function mongoAfterConnect(err) {
 			if (err) {
 				logger.error("Could not connect to MongoDB!");
 				return logger.error(err);
@@ -43,7 +43,7 @@ module.exports = function() {
 				https://github.com/icebob/mongoose-autoincrement
 
 		 */
-		autoIncrement.initialize(db);
+		autoIncrement.initialize(mongoose.connection);
 
 		mongoose.connection.once("open", function mongoAfterOpen() {
 			logger.info(chalk.yellow.bold("Mongo DB connected."));
@@ -63,11 +63,10 @@ module.exports = function() {
 			}
 		});
 
-
 	} else {
 		logger.info("Mongo already connected.");
 		db = mongoose;
 	}
 
-	return db;
+	return mongoose.connection;
 };
