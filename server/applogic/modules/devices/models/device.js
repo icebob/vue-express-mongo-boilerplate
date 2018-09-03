@@ -5,7 +5,7 @@ let config    		= require("../../../../config");
 let logger    		= require("../../../../core/logger");
 
 let db	    		= require("../../../../core/mongo");
-let mongoose 		= require("mongoose");
+let mongoose 		= require("../../../../core/mongoose");
 let Schema 			= mongoose.Schema;
 let hashids 		= require("../../../../libs/hashids")("devices");
 let autoIncrement 	= require("mongoose-auto-increment");
@@ -43,7 +43,7 @@ let DeviceSchema = new Schema({
 		"default": 1
 	},
 	lastCommunication: {
-		type: Date,	
+		type: Date,
 		"default": Date.now
 	},
 	metadata: {}

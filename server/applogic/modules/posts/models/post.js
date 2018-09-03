@@ -7,7 +7,7 @@ let logger    		= require("../../../../core/logger");
 let _ 				= require("lodash");
 
 let db	    		= require("../../../../core/mongo");
-let mongoose 		= require("mongoose");
+let mongoose 		= require("../../../../core/mongoose");
 let Schema 			= mongoose.Schema;
 let hashids 		= require("../../../../libs/hashids")("posts");
 let autoIncrement 	= require("mongoose-auto-increment");

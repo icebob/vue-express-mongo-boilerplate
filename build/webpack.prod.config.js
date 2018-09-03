@@ -18,12 +18,12 @@ module.exports = merge(baseWpConfig, {
 				use: [
 					MiniCssExtractPlugin.loader,
 					{
-						loader: "css-loader",
+						loader: "css-loader"/*,
 						options: {
 							modules: true,
 							sourceMap: true,
 							importLoader: 2
-						}
+						}*/
 					},
 					"sass-loader"
 				]
@@ -35,12 +35,12 @@ module.exports = merge(baseWpConfig, {
 						sass: [
 							MiniCssExtractPlugin.loader,
 							{
-								loader: "css-loader",
+								loader: "css-loader"/*,
 								options: {
 									modules: true,
 									sourceMap: true,
 									importLoader: 2
-								}
+								}*/
 							},
 							"sass-loader"
 						]
@@ -56,7 +56,6 @@ module.exports = merge(baseWpConfig, {
 		splitChunks: {
 			cacheGroups: {
 				vendor: {
-					chunks: "initial",
 					test: "vendor",
 					name: "vendor",
 					enforce: true
@@ -79,7 +78,9 @@ module.exports = merge(baseWpConfig, {
 			minimize: true
 		}),
 
-		new MiniCssExtractPlugin("styles/[name].css")
+		new MiniCssExtractPlugin({
+			filename: "styles/[name].css"
+		})
 
 		/*new StatsPlugin(path.resolve(__dirname, "stats.json"), {
 			chunkModules: true

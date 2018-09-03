@@ -4,7 +4,7 @@ let path = require("path");
 let pkg = require("./package.json");
 
 module.exports = {
-	
+
 	// Secret for ID hashing
 	hashSecret: "{{hashSecret}}",
 
@@ -33,7 +33,8 @@ module.exports = {
 		// uri: process.env.MONGO_URI || "mongodb://localhost/vemapp",
 		options: {
 			user: process.env.MONGO_USERNAME || "",
-			pass: process.env.MONGO_PASSWORD || ""
+			pass: process.env.MONGO_PASSWORD || "",
+			useNewUrlParser: true
 		}
 	},
 
@@ -42,7 +43,7 @@ module.exports = {
 		enabled: false,
 		uri: process.env.REDIS_URI || "redis://localhost:6379",
 		options: null
-	},	
+	},
 
 	// Mail sending settings
 	mailer: {
@@ -88,7 +89,7 @@ module.exports = {
 	features: {
 		disableSignUp: false,
 		verificationRequired: true
-	},	
+	},
 
 	// Social authentication (OAuth) keys
 	authKeys: {
@@ -111,12 +112,12 @@ module.exports = {
 		twitter: {
 			clientID: null,
 			clientSecret: null
-		}		
+		}
 	},
 
 	// Logging settings
 	logging: {
-		
+
 		console: {
 			// level: "debug"
 		},
@@ -152,17 +153,17 @@ module.exports = {
 			token: null,
 			subdomain: null
 		},
-		
+
 		logsene: {
 			enabled: false,
 			token: null
 		},
-		
+
 		logzio: {
 			enabled: false,
 			token: null
 		}
-		
+
 	}
 
 };
