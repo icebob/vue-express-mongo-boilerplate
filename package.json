@@ -165,7 +165,7 @@
     "url-loader": "0.5.8",
     "uuid": "3.0.1",
     "vue": "2.5.17",
-    "vue-form-generator": "2.2.2",
+    "vue-form-generator": "2.1.1",
     "vue-html-loader": "1.2.4",
     "vue-loader": "15.4.1",
     "vue-router": "3.0.1",

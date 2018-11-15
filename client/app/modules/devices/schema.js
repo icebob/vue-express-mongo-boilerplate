@@ -67,7 +67,7 @@ module.exports = {
 	form: {
 		fields: [
 			{
-				type: "text",
+				type: "input",
 				label: _("ID"),
 				model: "code",
 				readonly: true,
@@ -89,9 +89,9 @@ module.exports = {
 				default: "rasperry",
 				validator: validators.required
 
-			},	
+			},
 			{
-				type: "text",
+				type: "input",
 				label: _("Name"),
 				model: "name",
 				featured: true,
@@ -100,15 +100,15 @@ module.exports = {
 				validator: validators.string
 			},
 			{
-				type: "text",
+				type: "input",
 				label: _("Description"),
 				model: "description",
 				featured: false,
 				required: false,
 				validator: validators.string
-			},	
+			},
 			{
-				type: "text",
+				type: "input",
 				label: _("Address"),
 				model: "address",
 				placeholder: _("AddressOfDevice"),
