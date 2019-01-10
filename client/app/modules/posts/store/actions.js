@@ -4,7 +4,7 @@ import Service from "../../../core/service";
 import { LOAD, LOAD_MORE, ADD, UPDATE, VOTE, UNVOTE, REMOVE, 
 	NO_MORE_ITEMS, FETCHING, CHANGE_SORT, CHANGE_VIEWMODE } from "./types";
 
-export const NAMESPACE	 	= "/api/posts";
+const NAMESPACE	 	= "/api/posts";
 
 let service = new Service("posts"); 
 

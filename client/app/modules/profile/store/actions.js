@@ -1,7 +1,7 @@
 import Vue from "vue";
 import toastr from "../../../core/toastr";
 
-export const NAMESPACE = "/api/profile";
+const NAMESPACE = "/api/profile";
 
 import Service from "../../../core/service";
 let service = new Service("profile"); 
