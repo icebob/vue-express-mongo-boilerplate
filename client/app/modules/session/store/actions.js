@@ -2,7 +2,7 @@ import Vue from "vue";
 import axios from "axios";
 import { ADD_MESSAGE, ADD_NOTIFICATION, SET_USER, SEARCH } from "./types";
 
-export const NAMESPACE= "/api/session";
+const NAMESPACE= "/api/session";
 
 export const getSessionUser = ({ commit }) => {
 	axios.get(NAMESPACE + "/me").then((response) => {

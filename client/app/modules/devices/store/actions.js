@@ -3,7 +3,7 @@ import toastr from "../../../core/toastr";
 import { LOAD, ADD, SELECT, CLEAR_SELECT, UPDATE, REMOVE } from "./types";
 import axios from "axios";
 
-export const NAMESPACE = "/api/devices";
+const NAMESPACE = "/api/devices";
 
 export const selectRow = ({ commit }, row, multiSelect) => {
 	commit(SELECT, row, multiSelect);
