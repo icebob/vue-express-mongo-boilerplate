@@ -62,7 +62,7 @@
     "express-list-endpoints": "3.0.1",
     "express-session": "1.15.6",
     "express-status-monitor": "1.1.5",
-    "express-validator": "5.3.0",
+    "express-validator": "6.0.0",
     "fakerator": "0.3.0",
     "glob": "7.1.3",
     "graphql": "0.13.2",
