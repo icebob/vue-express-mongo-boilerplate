@@ -53,7 +53,7 @@
     "cli-table2": "0.2.0",
     "clui": "0.3.6",
     "compression": "1.7.3",
-    "connect-mongo": "2.0.1",
+    "connect-mongo": "3.0.0",
     "cookie-parser": "1.4.3",
     "cross-env": "5.2.0",
     "csurf": "1.9.0",
