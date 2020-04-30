@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.13.5
+version: v1.14.1
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
@@ -78,3 +78,20 @@ patch:
         patched: '2019-10-03T22:41:48.298Z'
     - nodemailer-mailgun-transport > mailgun-js > proxy-agent > pac-proxy-agent > https-proxy-agent:
         patched: '2019-10-03T22:41:48.298Z'
+  SNYK-JS-LODASH-567746:
+    - lodash:
+        patched: '2020-04-30T22:43:51.024Z'
+    - async > lodash:
+        patched: '2020-04-30T22:43:51.024Z'
+    - winston-graylog2 > lodash:
+        patched: '2020-04-30T22:43:51.024Z'
+    - winston > async > lodash:
+        patched: '2020-04-30T22:43:51.024Z'
+    - nodemailer-mailgun-transport > mailgun-js > async > lodash:
+        patched: '2020-04-30T22:43:51.024Z'
+    - node-sass > gaze > globule > lodash:
+        patched: '2020-04-30T22:43:51.024Z'
+    - node-sass > sass-graph > lodash:
+        patched: '2020-04-30T22:43:51.024Z'
+    - nodemailer-html-to-text > html-to-text > lodash:
+        patched: '2020-04-30T22:43:51.024Z'
