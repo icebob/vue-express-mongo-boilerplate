@@ -57,6 +57,7 @@ Inspired by [dstroot/skeleton](https://github.com/dstroot/skeleton) and [sahat/h
 * [x] [LogEntries](https://logentries.com/)
 * [x] [Loggly](https://www.loggly.com/)
 * [x] [Logsene](https://sematext.com/logsene/)
+* [x] [Logit.io](http://logit.io/)
 * [x] [Logz.io](http://logz.io/)
 
 ## Usage
